@@ -1,0 +1,1069 @@
+/* =========================================================
+   สไตล์ชีท: ระบบบริหารจัดการ การประปาหมู่บ้านวังยาง
+   Theme: Modern Government & Community Water Utility
+   ========================================================= */
+
+:root {
+  --primary: #0284c7;
+  --primary-hover: #0369a1;
+  --primary-light: #e0f2fe;
+  --secondary: #475569;
+  --success: #16a34a;
+  --success-light: #dcfce7;
+  --warning: #d97706;
+  --warning-light: #fef3c7;
+  --danger: #dc2626;
+  --danger-light: #fee2e2;
+  --bg-app: #f8fafc;
+  --card-bg: #ffffff;
+  --border: #e2e8f0;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --sidebar-w: 260px;
+  --radius: 8px;
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Sarabun', 'Prompt', -apple-system, sans-serif;
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  line-height: 1.5;
+  font-size: 15px;
+}
+
+/* Layout */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: var(--sidebar-w);
+  background: #0f172a;
+  color: #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 20px;
+  border-bottom: 1px solid #1e293b;
+}
+
+.brand-icon {
+  font-size: 30px;
+  background: #1e293b;
+  border-radius: 10px;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-title h2 {
+  font-size: 17px;
+  font-weight: 700;
+  color: #38bdf8;
+  letter-spacing: -0.2px;
+}
+
+.brand-title span {
+  font-size: 13.5px;
+  color: #94a3b8;
+  display: block;
+}
+
+.nav-menu {
+  flex: 1;
+  padding: 14px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+/* Sidebar Section Headers (หมวดหมู่บริการแยกตามหน้าที่) */
+.sidebar-section-header {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #38bdf8;
+  padding: 12px 10px 4px 10px;
+  letter-spacing: 0.2px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: 8px;
+}
+
+.sidebar-section-header:first-of-type {
+  border-top: none;
+  margin-top: 0;
+  padding-top: 2px;
+}
+
+.sidebar-section-header .sec-icon {
+  font-size: 14px;
+}
+
+.nav-item-sub {
+  padding-left: 28px !important;
+  font-size: 13.5px !important;
+  opacity: 0.9;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 11px 14px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius);
+  color: #94a3b8;
+  font-size: 14px;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease-in-out;
+  text-decoration: none;
+}
+
+.nav-item:visited {
+  color: #94a3b8;
+}
+
+.nav-item:hover {
+  background: #1e293b;
+  color: #ffffff;
+}
+
+.nav-item.active, .nav-item.active:visited {
+  background: var(--primary);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.nav-item .icon {
+  font-size: 18px;
+}
+
+/* Dashboard Internal Sub-Tab Bar */
+.dashboard-tabs-bar .nav-item {
+  color: #475569;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  font-weight: 600;
+  transition: all 0.15s ease;
+}
+
+.dashboard-tabs-bar .nav-item:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.dashboard-tabs-bar .nav-item.active {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+  box-shadow: 0 2px 4px rgba(2, 132, 199, 0.25);
+}
+
+/* Main Content */
+.main-content {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  padding: 24px 32px;
+  max-width: 1400px;
+}
+
+/* Top Bar */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.top-bar-title h1 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.top-bar-title span {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.top-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.select-cycle-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Tab Panels */
+.tab-pane {
+  display: none;
+}
+
+.tab-pane.active {
+  display: block;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+}
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
+
+.btn-secondary {
+  background: #334155;
+  color: #fff;
+}
+.btn-secondary:hover {
+  background: #1e293b;
+}
+
+.btn-outline {
+  background: #fff;
+  border-color: var(--border);
+  color: var(--text-main);
+}
+.btn-outline:hover {
+  background: #f1f5f9;
+}
+
+.btn-sm {
+  padding: 5px 12px;
+  font-size: 13px;
+}
+
+/* Cards & Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  background: #fff;
+  padding: 18px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-label {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 4px 0 6px 0;
+}
+
+.stat-desc {
+  font-size: 13px;
+}
+
+.card {
+  background: #fff;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  margin-bottom: 24px;
+  padding: 20px;
+}
+
+.filter-card {
+  background: #fff;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 16px;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.filter-inputs {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* Forms */
+.form-input, .form-select {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--text-main);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.form-input:focus, .form-select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.form-help {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* Tables */
+.table-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  text-align: left;
+}
+
+.table th {
+  background: #f8fafc;
+  padding: 12px 14px;
+  font-weight: 600;
+  color: #475569;
+  border-bottom: 1px solid var(--border);
+}
+
+.table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.table tbody tr.row-paid {
+  background: #f0fdf4;
+}
+
+.reading-input {
+  width: 85px;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  text-align: right;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.reading-input:focus {
+  border-color: var(--primary);
+  background: #fff;
+}
+
+/* Badges */
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.badge-paid {
+  background: var(--success-light);
+  color: var(--success);
+}
+
+.badge-unpaid {
+  background: var(--danger-light);
+  color: var(--danger);
+}
+
+/* Text Utilities */
+.text-right { text-align: right; }
+.text-center { text-align: center; }
+.text-primary { color: var(--primary); }
+.text-success { color: var(--success); }
+.text-warning { color: var(--warning); }
+.text-danger { color: var(--danger); }
+.text-muted { color: var(--text-muted); }
+.mt-4 { margin-top: 16px; }
+
+/* =========================================================
+   RECEIPT DESIGN (ใบเสร็จรับเงินมาตรฐาน)
+   ========================================================= */
+.receipt-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.printable-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.receipt-document {
+  width: 100%;
+  max-width: 820px;
+  background: #fff;
+  border: 2px solid #334155;
+  border-radius: 4px;
+  padding: 30px 36px;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+}
+
+.receipt-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  border-bottom: 2px solid #0f172a;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+}
+
+.receipt-emblem {
+  font-size: 44px;
+  line-height: 1;
+  padding: 6px;
+  border: 2px solid #0284c7;
+  border-radius: 50%;
+  margin-right: 14px;
+}
+
+.receipt-title-block {
+  flex: 1;
+}
+
+.receipt-title-block h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.2px;
+}
+
+.receipt-title-block p {
+  font-size: 13px;
+  color: #475569;
+  margin-top: 2px;
+}
+
+.receipt-badge-title {
+  display: inline-block;
+  margin-top: 6px;
+  background: #0284c7;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 3px 12px;
+  border-radius: 4px;
+}
+
+.receipt-meta-box {
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  padding: 8px 12px;
+  background: #f8fafc;
+  min-width: 180px;
+}
+
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.meta-row:last-child {
+  margin-bottom: 0;
+}
+
+.meta-label {
+  color: #64748b;
+}
+
+.highlight-red {
+  color: #dc2626;
+  font-size: 15px;
+}
+
+.receipt-customer-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  background: #f1f5f9;
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin-bottom: 18px;
+  font-size: 14px;
+}
+
+.receipt-customer-info p {
+  margin-bottom: 4px;
+}
+
+.receipt-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 18px;
+  font-size: 14px;
+}
+
+.receipt-table th {
+  border: 1px solid #0f172a;
+  background: #e2e8f0;
+  padding: 8px;
+  font-weight: 600;
+}
+
+.receipt-table td {
+  border: 1px solid #cbd5e1;
+  padding: 8px;
+}
+
+.row-subtotal td {
+  background: #f8fafc;
+  border-top: 2px solid #94a3b8;
+}
+
+.row-arrears td {
+  color: #b91c1c;
+}
+
+.row-grand-total td {
+  background: #e0f2fe;
+  border: 2px solid #0284c7;
+  font-size: 16px;
+}
+
+.baht-text-cell {
+  font-size: 13px;
+}
+
+.grand-amount {
+  font-size: 18px;
+  color: #0369a1;
+}
+
+.receipt-signatures {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 30px;
+  text-align: center;
+}
+
+.sig-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sig-line {
+  color: #94a3b8;
+  margin-bottom: 6px;
+}
+
+.sig-title {
+  font-size: 13.5px;
+  font-weight: 500;
+}
+
+.sig-role {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.receipt-note {
+  margin-top: 24px;
+  padding-top: 12px;
+  border-top: 1px dashed #cbd5e1;
+  font-size: 13px;
+  color: #64748b;
+  text-align: center;
+}
+
+/* =========================================================
+   VOUCHERS / ฎีกาเบิกจ่าย
+   ========================================================= */
+.voucher-filter-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.voucher-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.voucher-document {
+  background: #fff;
+  border: 2px solid #475569;
+  border-radius: 4px;
+  padding: 26px 30px;
+  box-shadow: var(--shadow);
+  max-width: 820px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.voucher-header {
+  text-align: center;
+  border-bottom: 2px solid #0f172a;
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+}
+
+.voucher-header h3 {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.voucher-header h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0284c7;
+}
+
+.voucher-body {
+  font-size: 15px;
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+
+.voucher-body .highlight-box {
+  background: #f8fafc;
+  border-left: 4px solid #0284c7;
+  padding: 10px 16px;
+  margin: 12px 0;
+}
+
+/* =========================================================
+   MONTHLY FINANCIAL REPORT (รายงานการเงินประจำเดือน)
+   ========================================================= */
+.financial-top-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.report-document {
+  background: #fff;
+  border: 1px solid #94a3b8;
+  border-radius: 4px;
+  padding: 36px 40px;
+  max-width: 960px;
+  margin: 0 auto;
+  width: 100%;
+  box-shadow: var(--shadow-lg);
+}
+
+.report-header {
+  text-align: center;
+  border-bottom: 2px solid #0f172a;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+
+.report-header h2 {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.report-header h3 {
+  font-size: 17px;
+  color: #0284c7;
+  margin-top: 2px;
+}
+
+.report-header p {
+  font-size: 14px;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+.financial-tables-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.fin-header {
+  padding: 8px 12px;
+  border-radius: 4px 4px 0 0;
+  color: #fff;
+}
+
+.rev-header { background: #059669; }
+.exp-header { background: #dc2626; }
+
+.fin-table {
+  border: 1px solid var(--border);
+  margin-bottom: 0;
+}
+
+.fin-total-row td {
+  font-size: 15px;
+  border-top: 2px solid #0f172a;
+}
+
+.highlight-green { background: #ecfdf5; }
+.highlight-red { background: #fef2f2; }
+.sub-basis { font-size: 13px; color: #64748b; font-weight: normal; }
+
+.fin-summary-box {
+  background: #f8fafc;
+  border: 2px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+  padding: 8px 0;
+  border-bottom: 1px dashed #cbd5e1;
+}
+
+.summary-item.grand-highlight {
+  font-size: 18px;
+  border-bottom: none;
+  padding-top: 12px;
+}
+
+.highlight-blue {
+  color: #0284c7;
+  font-size: 22px;
+}
+
+.baht-text-line {
+  font-size: 13px;
+  color: #475569;
+  text-align: right;
+  margin-top: 2px;
+  margin-bottom: 16px;
+}
+
+.funds-split-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 2px solid #cbd5e1;
+}
+
+.fund-box {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 6px;
+  background: #fff;
+  border: 1px solid #cbd5e1;
+}
+
+.cash-box { border-left: 6px solid #16a34a; }
+.bank-box { border-left: 6px solid #0284c7; }
+
+.fund-icon { font-size: 32px; }
+.fund-info { display: flex; flex-direction: column; }
+.fund-label { font-size: 13.5px; color: #64748b; font-weight: 500; }
+.fund-amount { font-size: 20px; margin: 2px 0; }
+.fund-desc { font-size: 13px; }
+
+.report-signatures {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 36px;
+  text-align: center;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-dialog {
+  background: #fff;
+  border-radius: var(--radius);
+  width: 100%;
+  max-width: 600px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.modal-header {
+  padding: 16px 20px;
+  background: #f8fafc;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+/* Analytics Charts & KPI Grid */
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 24px;
+}
+@media (max-width: 900px) {
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chart-card {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+.chart-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.chart-card-header h4 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.chart-badge {
+  font-size: 13px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  background: var(--primary-light);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Debt Aging Badges (แบบ กค.4) */
+.badge-aging-1 {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 600;
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+.badge-aging-2 {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 600;
+  background: #ffedd5;
+  color: #c2410c;
+  border: 1px solid #fed7aa;
+}
+.badge-aging-3 {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 700;
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  animation: pulse 2s infinite;
+}
+
+.only-print {
+  display: none;
+}
+
+/* =========================================================
+   PRINT STYLES (@media print)
+   Optimized for A4 / Village Office Printer
+   ========================================================= */
+@media print {
+  body {
+    background: #fff;
+    color: #000;
+    font-size: 12pt;
+  }
+  .only-print {
+    display: block !important;
+  }
+
+  .no-print, .sidebar, .top-bar, .filter-card, .stats-grid, .modal {
+    display: none !important;
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 0;
+    max-width: 100%;
+  }
+
+  .tab-pane {
+    display: none !important;
+  }
+
+  .tab-pane.active {
+    display: block !important;
+  }
+
+  .receipt-document, .report-document, .voucher-document {
+    border: 1px solid #000 !important;
+    box-shadow: none !important;
+    padding: 15mm 15mm !important;
+    max-width: 100% !important;
+    page-break-after: always;
+  }
+
+  .receipt-badge-title {
+    background: #000 !important;
+    color: #fff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .row-grand-total td {
+    background: #e2e8f0 !important;
+    border: 1px solid #000 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .rev-header, .exp-header {
+    background: #334155 !important;
+    color: #fff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

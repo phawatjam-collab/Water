@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ระบบบริหารจัดการ การประปาหมู่บ้านวังยาง</title>
+  <!-- Google Fonts: Sarabun & Prompt -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Sidebar / Navigation -->
+  <div class="app-layout">
+    <aside class="sidebar no-print">
+      <div class="brand">
+        <div class="brand-icon">💧</div>
+        <div class="brand-title">
+          <h2>การประปาหมู่บ้านวังยาง</h2>
+          <span>ระบบบริหารจัดการน้ำประปาชุมชน</span>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <button class="nav-item active" data-tab="tab-readings">
+          <span class="icon">📝</span> บันทึกจดมิเตอร์ประจำเดือน
+        </button>
+        <button class="nav-item" data-tab="tab-receipts">
+          <span class="icon">🧾</span> พิมพ์ใบเสร็จรับเงิน
+        </button>
+        <button class="nav-item" data-tab="tab-vouchers">
+          <span class="icon">📜</span> ใบสำคัญรับเงิน / ฎีกาเบิกจ่าย
+        </button>
+        <button class="nav-item" data-tab="tab-financials">
+          <span class="icon">📊</span> สรุปรายรับ-รายจ่ายประจำเดือน
+        </button>
+        <button class="nav-item" data-tab="tab-customers">
+          <span class="icon">👥</span> ทะเบียนสมาชิกผู้ใช้น้ำ
+        </button>
+        <button class="nav-item" data-tab="tab-settings">
+          <span class="icon">⚙️</span> ตั้งค่าอัตราค่าน้ำ & ค่าธรรมเนียม
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="cycle-badge">
+          <span>รอบบิลปัจจุบัน:</span>
+          <strong id="sidebar-cycle-name">สิงหาคม 2567 (8-2567)</strong>
+        </div>
+        <div class="tariff-badge">
+          <span>อัตราค่าน้ำ:</span>
+          <strong id="sidebar-tariff-rate">7.00 บาท/หน่วย (+10 บ.)</strong>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Top Bar -->
+      <header class="top-bar no-print">
+        <div class="top-bar-title">
+          <h1 id="page-title">บันทึกจดมิเตอร์ประจำเดือน</h1>
+          <span id="page-subtitle">บันทึกเลขมิเตอร์ คำนวณค่าน้ำ และทบยอดค้างชำระอัตโนมัติ</span>
+        </div>
+        <div class="top-bar-actions">
+          <div class="select-cycle-wrap">
+            <label for="cycle-select">เลือกงวดประจำเดือน:</label>
+            <select id="cycle-select" class="form-select">
+              <option value="8-2567" selected>สิงหาคม 2567 (8-2567)</option>
+              <option value="7-2567">กรกฎาคม 2567 (7-2567)</option>
+              <option value="6-2567">มิถุนายน 2567 (6-2567)</option>
+            </select>
+          </div>
+          <button class="btn btn-outline" id="btn-open-cycle" title="เปิดรอบบิลเดือนใหม่">➕ เปิดรอบบิลใหม่</button>
+          <button class="btn btn-outline" id="btn-export-excel" title="ส่งออกข้อมูลเป็น Excel">📥 ส่งออก Excel</button>
+          <button class="btn btn-primary" onclick="window.print()">🖨️ สั่งพิมพ์เอกสาร</button>
+        </div>
+      </header>
+
+      <!-- ======================================================= -->
+      <!-- TAB 1: จดมิเตอร์ประจำเดือน -->
+      <!-- ======================================================= -->
+      <section id="tab-readings" class="tab-pane active">
+        <!-- Quick Summary Cards -->
+        <div class="stats-grid no-print">
+          <div class="stat-card">
+            <span class="stat-label">ผู้ใช้น้ำทั้งหมด</span>
+            <span class="stat-value" id="stat-total-users">0 ครัวเรือน</span>
+            <span class="stat-desc text-muted">จดแล้ว <span id="stat-read-users">0</span> ครัวเรือน</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">ยอดใช้น้ำรวมประจำงวด</span>
+            <span class="stat-value text-primary" id="stat-total-units">0 ลบ.ม.</span>
+            <span class="stat-desc text-muted">เฉลี่ยต่อหลังคาเรือน <span id="stat-avg-units">0</span> ลบ.ม.</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">ยอดเรียกเก็บงวดนี้</span>
+            <span class="stat-value text-warning" id="stat-current-billing">0.00 ฿</span>
+            <span class="stat-desc text-muted">รวมยอดค้างเก่า <span id="stat-arrears-total">0.00</span> ฿</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">ยอดจัดเก็บได้จริง (รับชำระแล้ว)</span>
+            <span class="stat-value text-success" id="stat-paid-amount">0.00 ฿</span>
+            <span class="stat-desc text-success">ชำระแล้ว <span id="stat-paid-count">0</span> ราย</span>
+          </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-card no-print">
+          <div class="filter-inputs">
+            <input type="text" id="reading-search-input" class="form-input" placeholder="🔍 ค้นหาชื่อ, สกุล, บ้านเลขที่ หรือรหัสผู้ใช้น้ำ...">
+            <select id="reading-zone-filter" class="form-select">
+              <option value="">ทุกโซน / ทุกหมู่</option>
+            </select>
+            <select id="reading-status-filter" class="form-select">
+              <option value="">ทุกสถานะการชำระ</option>
+              <option value="PAID">ชำระแล้ว (PAID)</option>
+              <option value="UNPAID">ค้างชำระ (UNPAID)</option>
+            </select>
+          </div>
+          <div class="filter-actions">
+            <button class="btn btn-outline" id="btn-recalc-all">🔄 คำนวณยอดใหม่ทั้งหมด</button>
+            <button class="btn btn-secondary" id="btn-batch-mark-paid">✅ ตัดรับชำระรายการที่เลือก</button>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="card table-card">
+          <div class="table-responsive">
+            <table class="table" id="readings-table">
+              <thead>
+                <tr>
+                  <th width="40"><input type="checkbox" id="check-all-readings"></th>
+                  <th width="70">ลำดับ</th>
+                  <th width="110">รหัสผู้ใช้น้ำ</th>
+                  <th>ชื่อ - สกุล</th>
+                  <th>บ้านเลขที่ / โซน</th>
+                  <th width="100" class="text-right">เลขครั้งก่อน</th>
+                  <th width="110" class="text-right">เลขครั้งหลัง</th>
+                  <th width="90" class="text-right">หน่วยที่ใช้</th>
+                  <th width="100" class="text-right">ค่าน้ำงวดนี้</th>
+                  <th width="90" class="text-right">ค้างเก่า</th>
+                  <th width="110" class="text-right">ยอดสุทธิ</th>
+                  <th width="100" class="text-center">สถานะ</th>
+                  <th width="130" class="text-center no-print">จัดการ</th>
+                </tr>
+              </thead>
+              <tbody id="readings-table-body">
+                <!-- Dynamic Content -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================= -->
+      <!-- TAB 2: พิมพ์ใบเสร็จรับเงิน (Receipt Generation) -->
+      <!-- ======================================================= -->
+      <section id="tab-receipts" class="tab-pane">
+        <div class="card no-print receipt-toolbar">
+          <div class="toolbar-left">
+            <label for="receipt-customer-select">เลือกพิมพ์ใบเสร็จของสมาชิก:</label>
+            <select id="receipt-customer-select" class="form-select">
+              <!-- Customers list -->
+            </select>
+          </div>
+          <div class="toolbar-right">
+            <button class="btn btn-outline" id="btn-prev-receipt">⬅️ รายก่อนหน้า</button>
+            <button class="btn btn-outline" id="btn-next-receipt">รายถัดไป ➡️</button>
+            <button class="btn btn-primary" onclick="window.print()">🖨️ สั่งพิมพ์ใบเสร็จนี้</button>
+            <button class="btn btn-secondary" id="btn-print-all-receipts">📑 พิมพ์ใบเสร็จทั้งหมดในงวด</button>
+          </div>
+        </div>
+
+        <!-- Receipt Printable Container -->
+        <div class="printable-wrapper" id="receipt-print-area">
+          <div class="receipt-document">
+            <div class="receipt-header">
+              <div class="receipt-emblem">💧</div>
+              <div class="receipt-title-block">
+                <h2>การประปาหมู่บ้านวังยาง</h2>
+                <p>ที่ทำการกองทุนระบบน้ำประปาหมู่บ้านวังยาง หมู่ที่ 3 ตำบลวังยาง</p>
+                <div class="receipt-badge-title">ใบเสร็จรับเงินค่าน้ำประปา</div>
+              </div>
+              <div class="receipt-meta-box">
+                <div class="meta-row">
+                  <span class="meta-label">เลขที่:</span>
+                  <strong class="meta-val highlight-red" id="rcpt-no">8-2567/541</strong>
+                </div>
+                <div class="meta-row">
+                  <span class="meta-label">วันที่:</span>
+                  <span class="meta-val" id="rcpt-date">-</span>
+                </div>
+                <div class="meta-row">
+                  <span class="meta-label">ประจำงวด:</span>
+                  <strong class="meta-val" id="rcpt-cycle">สิงหาคม 2567</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="receipt-customer-info">
+              <div class="info-col">
+                <p><strong>ผู้ใช้น้ำ:</strong> <span id="rcpt-name">นายสมชาย ใจดี</span></p>
+                <p><strong>บ้านเลขที่:</strong> <span id="rcpt-house">12 หมู่ 3</span></p>
+                <p><strong>กลุ่ม/โซน:</strong> <span id="rcpt-zone">โซนเหนือ - ซอย 1</span></p>
+              </div>
+              <div class="info-col">
+                <p><strong>รหัสผู้ใช้น้ำ:</strong> <span id="rcpt-code">WY-001</span> (ลำดับที่ <span id="rcpt-seq">1</span>)</p>
+                <p><strong>เลขมิเตอร์:</strong> <span id="rcpt-serial">M-2023-001</span></p>
+                <p><strong>กำหนดชำระ:</strong> <span id="rcpt-due">10 กันยายน 2567</span></p>
+              </div>
+            </div>
+
+            <!-- Reading Details Table -->
+            <table class="receipt-table">
+              <thead>
+                <tr>
+                  <th>รายการคำนวณ</th>
+                  <th class="text-right">เลขมิเตอร์ครั้งก่อน</th>
+                  <th class="text-right">เลขมิเตอร์ครั้งหลัง</th>
+                  <th class="text-right">จำนวนหน่วยที่ใช้</th>
+                  <th class="text-right">อัตรา/หน่วย</th>
+                  <th class="text-right">จำนวนเงิน (บาท)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>ค่าน้ำประปาประจำงวด</td>
+                  <td class="text-right" id="rcpt-prev-reading">150.00</td>
+                  <td class="text-right" id="rcpt-curr-reading">170.00</td>
+                  <td class="text-right" id="rcpt-units">20.00</td>
+                  <td class="text-right" id="rcpt-rate">7.00</td>
+                  <td class="text-right" id="rcpt-water-charge">140.00</td>
+                </tr>
+                <tr>
+                  <td colspan="5">ค่าบำรุงรักษามิเตอร์ประจำเดือน</td>
+                  <td class="text-right" id="rcpt-maintenance-fee">10.00</td>
+                </tr>
+                <tr class="row-subtotal">
+                  <td colspan="5"><strong>รวมยอดเงินงวดปัจจุบัน</strong></td>
+                  <td class="text-right"><strong id="rcpt-current-total">150.00</strong></td>
+                </tr>
+                <tr class="row-arrears">
+                  <td colspan="5">ยอดค้างชำระยกมาจากเดือนก่อน</td>
+                  <td class="text-right" id="rcpt-arrears">0.00</td>
+                </tr>
+                <tr class="row-grand-total">
+                  <td colspan="3" class="baht-text-cell">
+                    <span>(ตัวอักษร): </span>
+                    <strong id="rcpt-baht-text">หนึ่งร้อยห้าสิบบาทถ้วน</strong>
+                  </td>
+                  <td colspan="2" class="text-right"><strong>ยอดรวมสุทธิที่ต้องชำระ:</strong></td>
+                  <td class="text-right"><strong class="grand-amount" id="rcpt-grand-total">150.00</strong></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Receipt Footer Signatures -->
+            <div class="receipt-signatures">
+              <div class="sig-block">
+                <div class="sig-line">...................................................</div>
+                <div class="sig-title">(<span id="rcpt-payer-name">...................................................</span>)</div>
+                <div class="sig-role">ผู้ชำระเงิน</div>
+              </div>
+              <div class="sig-block">
+                <div class="sig-line">...................................................</div>
+                <div class="sig-title">( นายสมาน เก็บเงินดี )</div>
+                <div class="sig-role">เจ้าหน้าที่จัดเก็บค่าน้ำ</div>
+              </div>
+              <div class="sig-block">
+                <div class="sig-line">...................................................</div>
+                <div class="sig-title">( นายประธาน บริหารกิจการ )</div>
+                <div class="sig-role">ประธานกรรมการการประปาหมู่บ้านวังยาง</div>
+              </div>
+            </div>
+
+            <div class="receipt-note">
+              * โปรดเก็บใบเสร็จรับเงินไว้เป็นหลักฐาน หากมีข้อสงสัยโปรดติดต่อคณะกรรมการการประปาหมู่บ้านวังยาง
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================= -->
+      <!-- TAB 3: ใบสำคัญรับเงิน / ฎีกาเบิกจ่าย (Vouchers / Mail Merge) -->
+      <!-- ======================================================= -->
+      <section id="tab-vouchers" class="tab-pane">
+        <div class="card no-print voucher-filter-bar">
+          <div class="voucher-info-box">
+            <h3>📜 ฎีกาเบิกจ่ายและใบสำคัญรับเงิน ประจำงวด <span id="voucher-cycle-text">สิงหาคม 2567</span></h3>
+            <p class="text-muted">ระบบคำนวณค่าตอบแทนเจ้าหน้าที่เก็บค่าน้ำ 10% จากยอดจัดเก็บจริง และค่าตอบแทนคณะกรรมการอัตโนมัติ</p>
+          </div>
+          <div class="voucher-actions">
+            <button class="btn btn-outline" id="btn-add-custom-voucher">➕ เพิ่มรายการเบิกจ่ายใหม่</button>
+            <button class="btn btn-primary" onclick="window.print()">🖨️ สั่งพิมพ์ชุดใบสำคัญรับเงินทั้งหมด</button>
+          </div>
+        </div>
+
+        <div class="voucher-list-container" id="voucher-print-area">
+          <!-- Vouchers Cards dynamically rendered -->
+        </div>
+      </section>
+
+      <!-- ======================================================= -->
+      <!-- TAB 4: รายงานสรุปรายรับ-รายจ่ายประจำเดือน (Financial Report) -->
+      <!-- ======================================================= -->
+      <section id="tab-financials" class="tab-pane">
+        <div class="card no-print financial-top-actions">
+          <div>
+            <h3>รายงานสถานะการเงินและการจัดเก็บรายได้</h3>
+            <p class="text-muted">สรุปรายรับ-รายจ่าย ยอดเงินสดในมือ และเงินฝากธนาคาร ประจำงวด <span id="fin-cycle-display">สิงหาคม 2567</span></p>
+          </div>
+          <div>
+            <button class="btn btn-outline" id="btn-edit-financials">✏️ ปรับปรุงรายการรับ-จ่าย</button>
+            <button class="btn btn-primary" onclick="window.print()">🖨️ พิมพ์รายงานสรุปการเงิน</button>
+          </div>
+        </div>
+
+        <!-- Printable Financial Report -->
+        <div class="printable-wrapper" id="financial-print-area">
+          <div class="report-document">
+            <div class="report-header">
+              <h2>รายงานสรุปรายรับ - รายจ่าย ประจำเดือน</h2>
+              <h3>กิจการประปาหมู่บ้านวังยาง หมู่ที่ 3 ตำบลวังยาง</h3>
+              <p>ประจำงวดเดือน <span id="rpt-fin-month-year">สิงหาคม 2567 (8-2567)</span></p>
+            </div>
+
+            <!-- Financial Tables 2 Columns -->
+            <div class="financial-tables-grid">
+              
+              <!-- Column 1: รายรับ -->
+              <div class="fin-col">
+                <div class="fin-header rev-header">
+                  <h4>1. รายรับประจำเดือน (Revenues)</h4>
+                </div>
+                <table class="table fin-table">
+                  <thead>
+                    <tr>
+                      <th>รายการรายรับ</th>
+                      <th class="text-right" width="130">จำนวนเงิน (บาท)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1.1 ยอดเก็บค่าน้ำและค่าบำรุงมาตรเดือนปัจจุบัน</td>
+                      <td class="text-right" id="fin-rev-current">24,500.00</td>
+                    </tr>
+                    <tr>
+                      <td>1.2 ยอดค่าน้ำค้างชำระสะสมที่ตามเก็บได้</td>
+                      <td class="text-right" id="fin-rev-arrears">3,200.00</td>
+                    </tr>
+                    <tr>
+                      <td>1.3 ค่าธรรมเนียมติดตั้งผู้ใช้น้ำรายใหม่</td>
+                      <td class="text-right" id="fin-rev-new-meter">1,500.00</td>
+                    </tr>
+                    <tr>
+                      <td>1.4 ดอกเบี้ยเงินฝากธนาคาร</td>
+                      <td class="text-right" id="fin-rev-interest">125.50</td>
+                    </tr>
+                    <tr>
+                      <td>1.5 รายรับอื่นๆ / เงินอุดหนุน</td>
+                      <td class="text-right" id="fin-rev-other">0.00</td>
+                    </tr>
+                    <tr class="fin-total-row highlight-green">
+                      <td><strong>รวมรายรับทั้งสิ้น (A)</strong></td>
+                      <td class="text-right"><strong id="fin-total-revenue">29,325.50</strong></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Column 2: รายจ่าย -->
+              <div class="fin-col">
+                <div class="fin-header exp-header">
+                  <h4>2. รายจ่ายประจำเดือน (Expenses)</h4>
+                </div>
+                <table class="table fin-table">
+                  <thead>
+                    <tr>
+                      <th>รายการรายจ่าย</th>
+                      <th class="text-right" width="130">จำนวนเงิน (บาท)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>2.1 ค่าตอบแทนผู้ดูแลระบบประปา</td>
+                      <td class="text-right" id="fin-exp-caretaker">3,000.00</td>
+                    </tr>
+                    <tr>
+                      <td>2.2 ค่าตอบแทนคณะกรรมการประปา</td>
+                      <td class="text-right" id="fin-exp-committee">2,500.00</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        2.3 ค่าตอบแทนเจ้าหน้าที่เก็บค่าน้ำ
+                        <div class="sub-basis" id="fin-collector-basis">(คิด 10% จากยอดจัดเก็บ 27,700 บาท)</div>
+                      </td>
+                      <td class="text-right" id="fin-exp-collector">2,770.00</td>
+                    </tr>
+                    <tr>
+                      <td>2.4 ค่ากระแสไฟฟ้า (บ่อบาดาล/ปั๊มสูบน้ำ)</td>
+                      <td class="text-right" id="fin-exp-electricity">6,840.00</td>
+                    </tr>
+                    <tr>
+                      <td>2.5 ค่าวัสดุอุปกรณ์ / ซ่อมบำรุงระบบท่อ</td>
+                      <td class="text-right" id="fin-exp-repairs">1,450.00</td>
+                    </tr>
+                    <tr>
+                      <td>2.6 รายจ่ายอื่นๆ</td>
+                      <td class="text-right" id="fin-exp-other">300.00</td>
+                    </tr>
+                    <tr class="fin-total-row highlight-red">
+                      <td><strong>รวมรายจ่ายทั้งสิ้น (B)</strong></td>
+                      <td class="text-right"><strong id="fin-total-expense">16,860.00</strong></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+            </div>
+
+            <!-- Financial Summary Box -->
+            <div class="fin-summary-box">
+              <div class="summary-card-inner">
+                <div class="summary-item">
+                  <span class="lbl">กำไร / (ขาดทุน) ประจำเดือน (A - B):</span>
+                  <span class="val text-success" id="fin-net-profit">+12,465.50 บาท</span>
+                </div>
+                <div class="summary-item">
+                  <span class="lbl">ยอดเงินคงเหลือสะสมยกมาจากเดือนก่อน:</span>
+                  <span class="val" id="fin-prev-balance">145,200.00 บาท</span>
+                </div>
+                <div class="summary-item grand-highlight">
+                  <span class="lbl">ยอดเงินคงเหลือสะสมสุทธิสิ้นเดือน:</span>
+                  <strong class="val highlight-blue" id="fin-total-balance">157,665.50 บาท</strong>
+                </div>
+                <div class="baht-text-line">
+                  (ตัวอักษร: <span id="fin-balance-text-th">หนึ่งแสนห้าหมื่นเจ็ดพันหกร้อยหกสิบห้าบาทห้าสิบสตางค์</span>)
+                </div>
+              </div>
+
+              <!-- Separation of Funds -->
+              <div class="funds-split-grid">
+                <div class="fund-box cash-box">
+                  <div class="fund-icon">💵</div>
+                  <div class="fund-info">
+                    <span class="fund-label">เงินสดในมือ (สำรองจ่าย)</span>
+                    <strong class="fund-amount" id="fin-cash-in-hand">5,000.00 บาท</strong>
+                    <span class="fund-desc text-muted">เก็บไว้ที่เหรัญญิกสำหรับหมุนเวียน</span>
+                  </div>
+                </div>
+                <div class="fund-box bank-box">
+                  <div class="fund-icon">🏦</div>
+                  <div class="fund-info">
+                    <span class="fund-label">เงินฝากธนาคาร</span>
+                    <strong class="fund-amount text-primary" id="fin-bank-deposit">152,665.50 บาท</strong>
+                    <span class="fund-desc text-muted">บัญชี ธ.ก.ส./ออมสิน สาขาอำเภอ</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Committee Signatures -->
+            <div class="report-signatures">
+              <div class="sig-block">
+                <div class="sig-line">...................................................</div>
+                <div class="sig-title">( นายสมาน เก็บเงินดี )</div>
+                <div class="sig-role">เจ้าหน้าที่การเงิน / ผู้จัดทำรายงาน</div>
+              </div>
+              <div class="sig-block">
+                <div class="sig-line">...................................................</div>
+                <div class="sig-title">( นางจำเนียร ตรวจบัญชี )</div>
+                <div class="sig-role">เหรัญญิก / ผู้ตรวจทาน</div>
+              </div>
+              <div class="sig-block">
+                <div class="sig-line">...................................................</div>
+                <div class="sig-title">( นายประธาน บริหารกิจการ )</div>
+                <div class="sig-role">ประธานกรรมการการประปาหมู่บ้านวังยาง</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================= -->
+      <!-- TAB 5: ทะเบียนสมาชิกผู้ใช้น้ำ (Customers) -->
+      <!-- ======================================================= -->
+      <section id="tab-customers" class="tab-pane">
+        <div class="card no-print customer-top-actions">
+          <div class="search-wrap">
+            <input type="text" id="cust-search" class="form-input" placeholder="🔍 ค้นหาสมาชิกด้วยชื่อ, นามสกุล, บ้านเลขที่ หรือรหัส...">
+          </div>
+          <div>
+            <button class="btn btn-primary" id="btn-add-customer">➕ เพิ่มสมาชิกผู้ใช้น้ำใหม่</button>
+          </div>
+        </div>
+
+        <div class="card table-card">
+          <div class="table-responsive">
+            <table class="table" id="customers-table">
+              <thead>
+                <tr>
+                  <th width="70">ลำดับ</th>
+                  <th width="120">รหัสผู้ใช้น้ำ</th>
+                  <th>ชื่อ - สกุล</th>
+                  <th>บ้านเลขที่</th>
+                  <th>กลุ่ม / โซน</th>
+                  <th>เบอร์โทรศัพท์</th>
+                  <th>หมายเลขมิเตอร์</th>
+                  <th>สถานะ</th>
+                  <th width="120" class="text-center no-print">จัดการ</th>
+                </tr>
+              </thead>
+              <tbody id="customers-table-body">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================= -->
+      <!-- TAB 6: ตั้งค่าอัตราค่าน้ำ & พารามิเตอร์ระบบ (Settings) -->
+      <!-- ======================================================= -->
+      <section id="tab-settings" class="tab-pane">
+        <div class="card">
+          <div class="card-header">
+            <h3>⚙️ กำหนดอัตราค่าน้ำและค่าธรรมเนียมบำรุงรักษา</h3>
+            <p class="text-muted">กำหนดอัตราตามมติที่ประชุมคณะกรรมการประปาหมู่บ้านวังยาง</p>
+          </div>
+          <div class="card-body">
+            <form id="settings-form">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label" for="setting-water-rate">อัตราค่าน้ำต่อหน่วย (บาท/ลบ.ม.):</label>
+                  <input type="number" id="setting-water-rate" class="form-input" step="0.5" min="1" value="7.00">
+                  <span class="form-help">อัตราตามมติล่าสุด (เดิม 6 บาท ปรับเป็น 7 หรือ 8 บาท)</span>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="setting-maintenance-fee">ค่าบำรุงรักษามิเตอร์ประจำเดือน (บาท/เดือน):</label>
+                  <input type="number" id="setting-maintenance-fee" class="form-input" step="1" min="0" value="10.00">
+                  <span class="form-help">ค่าบำรุงรักษามาตรวัดน้ำเรียกเก็บทุกเดือน</span>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="setting-collector-pct">สัดส่วนค่าตอบแทนคนเก็บค่าน้ำ (%):</label>
+                  <input type="number" id="setting-collector-pct" class="form-input" step="1" min="0" max="100" value="10">
+                  <span class="form-help">ค่ามาตรฐาน 10% จากยอดที่จัดเก็บได้จริง</span>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="setting-cash-reserve">วงเงินสดในมือสำรองจ่าย (บาท):</label>
+                  <input type="number" id="setting-cash-reserve" class="form-input" step="500" min="0" value="5000">
+                  <span class="form-help">เงินสดสำรองติดตัวเหรัญญิก ส่วนที่เหลือฝากธนาคาร</span>
+                </div>
+              </div>
+              <div class="form-actions mt-4">
+                <button type="button" class="btn btn-primary" id="btn-save-settings">💾 บันทึกการตั้งค่า</button>
+                <button type="button" class="btn btn-outline" id="btn-reset-demo">🔄 โหลดข้อมูลตัวอย่างใหม่</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Modal for Adding/Editing Customer -->
+  <div class="modal" id="customer-modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="cust-modal-title">เพิ่มสมาชิกผู้ใช้น้ำ</h3>
+          <button class="modal-close" onclick="closeModal('customer-modal')">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="cust-form">
+            <input type="hidden" id="cust-id">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">รหัสผู้ใช้น้ำ:</label>
+                <input type="text" id="form-cust-code" class="form-input" placeholder="เช่น WY-006" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">ลำดับการจด:</label>
+                <input type="number" id="form-cust-seq" class="form-input" value="6" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">ชื่อ:</label>
+                <input type="text" id="form-cust-first" class="form-input" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">นามสกุล:</label>
+                <input type="text" id="form-cust-last" class="form-input" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">บ้านเลขที่:</label>
+                <input type="text" id="form-cust-house" class="form-input" placeholder="เช่น 24 หมู่ 3" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">กลุ่ม / โซน:</label>
+                <input type="text" id="form-cust-zone" class="form-input" placeholder="เช่น โซนเหนือ, ซอย 2" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">เบอร์โทรศัพท์:</label>
+                <input type="text" id="form-cust-phone" class="form-input">
+              </div>
+              <div class="form-group">
+                <label class="form-label">หมายเลขซีเรียลมิเตอร์:</label>
+                <input type="text" id="form-cust-serial" class="form-input" placeholder="เช่น M-2023-006">
+              </div>
+            </div>
+            <div class="form-actions mt-4 text-right">
+              <button type="button" class="btn btn-outline" onclick="closeModal('customer-modal')">ยกเลิก</button>
+              <button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
+            </div>
+          </form>
+        </div>
+      </div>
+  <!-- Modal for Opening New Billing Cycle -->
+  <div class="modal" id="cycle-modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>➕ เปิดรอบบิลประจำเดือนใหม่</h3>
+          <button class="modal-close" onclick="closeModal('cycle-modal')">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="cycle-form">
+            <p class="text-muted" style="margin-bottom: 14px;">
+              ระบบจะดึง <strong>"เลขมิเตอร์ครั้งหลัง"</strong> ของเดือนที่แล้วมาเป็น <strong>"เลขครั้งก่อน"</strong> และทบ <strong>"ยอดค้างชำระ"</strong> มายังรอบใหม่อัตโนมัติ
+            </p>
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">เดือน (1 - 12):</label>
+                <input type="number" id="form-cycle-month" class="form-input" min="1" max="12" value="9" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">ปี พ.ศ.:</label>
+                <input type="number" id="form-cycle-year" class="form-input" value="2567" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">รหัสรอบบิล:</label>
+                <input type="text" id="form-cycle-code" class="form-input" value="9-2567" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">ยกยอดมาจากงวด:</label>
+                <input type="text" id="form-cycle-prev" class="form-input" value="8-2567" readonly>
+              </div>
+            </div>
+            <div class="form-actions mt-4 text-right">
+              <button type="button" class="btn btn-outline" onclick="closeModal('cycle-modal')">ยกเลิก</button>
+              <button type="submit" class="btn btn-primary">สร้างรอบบิลและทบยอด</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../src/services/bahtText.js"></script>
+  <script src="../src/services/billingService.js"></script>
+  <script src="../src/services/receiptService.js"></script>
+  <script src="../src/services/financialReportService.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
