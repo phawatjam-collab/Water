@@ -9,7 +9,7 @@
 - **โฟลเดอร์โปรเจกต์**: `D:\Games\Plumber\` (เชื่อมผ่าน Junction ไปยัง `D:\Games\xamppp\htdocs\plumber\`)
 - **URL เข้าใช้งาน**: [http://localhost/plumber/](http://localhost/plumber/)
 - **ฐานข้อมูล MySQL**: `db_wangyang_water` (ดูผ่าน phpMyAdmin ได้ที่ [http://localhost/phpmyadmin/](http://localhost/phpmyadmin/))
-- **GitHub Repository**: [https://github.com/phawatjam-collab/Plumber.git](https://github.com/phawatjam-collab/Plumber.git)
+- **GitHub Repository**: [https://github.com/phawatjam-collab/Water.git](https://github.com/phawatjam-collab/Water.git)
 
 ---
 
