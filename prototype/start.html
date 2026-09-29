@@ -252,11 +252,10 @@
       margin-left: auto;
       font-weight: 600;
     }
-    .tag-guest { background: #334155; color: #94a3b8; }
+    .tag-user { background: #065f46; color: #a7f3d0; }
     .tag-member { background: #0369a1; color: #bae6fd; }
-    .tag-reader { background: #b45309; color: #fef3c7; }
-    .tag-finance { background: #4338ca; color: #e0e7ff; }
-    .tag-admin { background: #7c3aed; color: #f3e8ff; }
+    .tag-staff { background: #1e40af; color: #bfdbfe; }
+    .tag-admin { background: #6b21a8; color: #f3e8ff; }
 
     /* Center Prototype Viewport */
     .viewport-container {
@@ -396,8 +395,12 @@
         <span>📝</span> Design Notes
       </button>
 
-      <a href="Plumber_v4.rp" download="Plumber_v4.rp" class="axure-action-btn" style="background: #7c3aed; border-color: #7c3aed; color: #fff;">
+      <a href="Plumber_v4.rp" download class="axure-action-btn" style="background: #7c3aed; border-color: #7c3aed; color: #fff;">
         <span>📥</span> ดาวน์โหลด Plumber_v4.rp
+      </a>
+
+      <a href="../open_axure.bat" class="axure-action-btn" style="background: #0284c7; border-color: #0284c7; color: #fff;" title="เปิดในโปรแกรม Axure RP 11">
+        <span>🎨</span> เปิดใน Axure RP 11
       </a>
 
       <a href="../index.php" target="_blank" class="axure-action-btn primary">
@@ -413,7 +416,7 @@
     <aside class="axure-sidebar" id="axure-sidebar">
       <div class="sidebar-header">
         <h3><span>📁</span> Pages (Sitemap)</h3>
-        <span style="font-size: 11px; background: #1e293b; padding: 2px 8px; border-radius: 9999px; color: #94a3b8;">4 Roles / 11 Screens</span>
+        <span style="font-size: 11px; background: #1e293b; padding: 2px 8px; border-radius: 9999px; color: #94a3b8;">10 Screens</span>
       </div>
 
       <div class="sidebar-search-box">
@@ -421,66 +424,62 @@
       </div>
 
       <nav class="page-tree" id="page-tree">
-        <!-- Role 1: User (Public Citizen) -->
+        <!-- Section 1: Public & Citizen (User) -->
         <div class="tree-folder">
-          <div class="folder-title">👥 1. ผู้ใช้ทั่วไป / ประชาชน (User)</div>
+          <div class="folder-title">👥 ประชาชนทั่วไป (User)</div>
           <a class="page-node active" data-page="home" onclick="loadPage('../index.php', '01. หน้าแรก (Home Portal)', 'home')">
             <span>🏠</span> 01. หน้าแรก (Home Portal)
-            <span class="role-tag tag-guest">User</span>
+            <span class="role-tag tag-user">User</span>
           </a>
           <a class="page-node" data-page="citizen" onclick="loadPage('../portal_citizen.php', '02. ตรวจสอบค่าน้ำออนไลน์', 'citizen')">
             <span>🔍</span> 02. ตรวจสอบค่าน้ำออนไลน์
-            <span class="role-tag tag-guest">User</span>
+            <span class="role-tag tag-user">User</span>
           </a>
           <a class="page-node" data-page="tickets" onclick="loadPage('../portal_citizen.php#citizen-services', '03. แจ้งท่อแตก & คำร้อง', 'tickets')">
             <span>🔧</span> 03. แจ้งท่อแตก & คำร้อง
-            <span class="role-tag tag-guest">User</span>
+            <span class="role-tag tag-user">User</span>
           </a>
         </div>
 
-        <!-- Role 2: Member (Water User) -->
+        <!-- Section 2: Member Portal -->
         <div class="tree-folder">
-          <div class="folder-title">👤 2. สมาชิกผู้ใช้น้ำ (Member)</div>
+          <div class="folder-title">👤 สมาชิกผู้ใช้น้ำ (Member)</div>
           <a class="page-node" data-page="member" onclick="loadPage('../api/auth.php?action=login&login_type=member&customer_code=WY-001', '04. แดชบอร์ดสมาชิก (WY-001)', 'member')">
-            <span>🧾</span> 04. แดชบอร์ด & บิลสมาชิก (WY-001)
+            <span>🧾</span> 04. แดชบอร์ดสมาชิก (WY-001)
             <span class="role-tag tag-member">Member</span>
           </a>
         </div>
 
-        <!-- Role 3: Staff (Operations & Field) -->
+        <!-- Section 3: Staff Operations -->
         <div class="tree-folder">
-          <div class="folder-title">💼 3. เจ้าหน้าที่การประปา (Staff)</div>
-          <a class="page-node" data-page="reader" onclick="loadPage('../api/auth.php?action=login&role=staff', '05. สมุดจดมิเตอร์น้ำ (แบบ ป.17)', 'reader')">
+          <div class="folder-title">💼 งานปฏิบัติการเจ้าหน้าที่ (Staff)</div>
+          <a class="page-node" data-page="reader" onclick="loadPage('../api/auth.php?action=login&login_type=staff&username=staff&password=123456&redirect=meter_reading.php', '05. สมุดจดมิเตอร์น้ำ (แบบ ป.17)', 'reader')">
             <span>📝</span> 05. สมุดจดมิเตอร์น้ำ (ป.17)
-            <span class="role-tag tag-reader">Staff</span>
+            <span class="role-tag tag-staff">Staff</span>
           </a>
-          <a class="page-node" data-page="finance" onclick="loadPage('../finance_billing.php', '06. ตัดรับชำระเงินค่าน้ำ & ใบเสร็จ', 'finance')">
-            <span>🧾</span> 06. ตัดรับชำระเงิน & ใบเสร็จ
-            <span class="role-tag tag-finance">Staff</span>
+          <a class="page-node" data-page="finance" onclick="loadPage('../api/auth.php?action=login&login_type=staff&username=staff&password=123456&redirect=finance_billing.php', '06. ตัดรับชำระเงินค่าน้ำ', 'finance')">
+            <span>🧾</span> 06. ตัดรับชำระเงินค่าน้ำ
+            <span class="role-tag tag-staff">Staff</span>
           </a>
-          <a class="page-node" data-page="arrears" onclick="loadPage('../finance_billing.php#pane-arrears', '07. ทะเบียนหนี้ค้างชำระ', 'arrears')">
+          <a class="page-node" data-page="arrears" onclick="loadPage('../api/auth.php?action=login&login_type=staff&username=staff&password=123456&redirect=finance_billing.php%23pane-arrears', '07. ทะเบียนหนี้ค้างชำระ', 'arrears')">
             <span>⚠️</span> 07. ทะเบียนหนี้ค้างชำระ
-            <span class="role-tag tag-finance">Staff</span>
+            <span class="role-tag tag-staff">Staff</span>
           </a>
-          <a class="page-node" data-page="vouchers" onclick="loadPage('../finance_billing.php#pane-vouchers', '08. ฎีกาเบิกจ่ายเงินกองทุน', 'vouchers')">
+          <a class="page-node" data-page="vouchers" onclick="loadPage('../api/auth.php?action=login&login_type=staff&username=staff&password=123456&redirect=finance_billing.php%23pane-vouchers', '08. ฎีกาเบิกจ่ายเงินกองทุน', 'vouchers')">
             <span>📜</span> 08. ฎีกาเบิกจ่าย (10% จัดเก็บ)
-            <span class="role-tag tag-finance">Staff</span>
-          </a>
-          <a class="page-node" data-page="members_registry" onclick="loadPage('../executive_reports.php#pane-members', '09. ทะเบียนสมาชิกผู้ใช้น้ำ', 'members_registry')">
-            <span>👥</span> 09. ทะเบียนสมาชิกผู้ใช้น้ำ
-            <span class="role-tag tag-finance">Staff</span>
+            <span class="role-tag tag-staff">Staff</span>
           </a>
         </div>
 
-        <!-- Role 4: Admin (Executive Master) -->
+        <!-- Section 4: Admin Executive -->
         <div class="tree-folder">
-          <div class="folder-title">👑 4. ผู้ดูแลระบบ / คณะกรรมการ (Admin)</div>
-          <a class="page-node" data-page="dashboard" onclick="loadPage('../api/auth.php?action=login&role=admin', '10. ศูนย์ควบคุมระบบรวม (Dashboard)', 'dashboard')">
-            <span>📈</span> 10. ศูนย์ควบคุมระบบรวม (Dashboard)
+          <div class="folder-title">🏛️ ผู้ดูแลระบบและนโยบาย (Admin)</div>
+          <a class="page-node" data-page="executive" onclick="loadPage('../api/auth.php?action=login&login_type=staff&username=admin&password=123456&redirect=executive_reports.php', '09. งบการเงิน & รายงาน (แบบ กค.3)', 'executive')">
+            <span>📊</span> 09. งบการเงิน & รายงาน (กค.3)
             <span class="role-tag tag-admin">Admin</span>
           </a>
-          <a class="page-node" data-page="executive" onclick="loadPage('../executive_reports.php', '11. งบการเงิน & รายงาน (แบบ กค.3)', 'executive')">
-            <span>📊</span> 11. งบการเงิน & รายงาน (กค.3)
+          <a class="page-node" data-page="dashboard" onclick="loadPage('../api/auth.php?action=login&login_type=staff&username=admin&password=123456&redirect=dashboard.php', '10. ศูนย์ควบคุมระบบรวม (Dashboard)', 'dashboard')">
+            <span>📈</span> 10. ศูนย์ควบคุมระบบรวม
             <span class="role-tag tag-admin">Admin</span>
           </a>
         </div>

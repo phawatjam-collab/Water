@@ -9,34 +9,35 @@
 
 | รายการ | ตำแหน่งไฟล์ / URL | วิธีการเปิดใช้งาน |
 |---|---|---|
-| **ไฟล์โปรเจกต์ Axure RP 11** | `D:\Games\Plumber\axure\Plumber_v4.rp` (เวอร์ชันล่าสุด v4)<br>`D:\Games\Plumber\prototype\Plumber_v4.rp` | ดับเบิลคลิกไฟล์เพื่อเปิดในโปรแกรม **Axure RP 11** ได้ทันที |
+| รายการ | ตำแหน่งไฟล์ / URL | วิธีการเปิดใช้งาน |
+|---|---|---|
+| **ไฟล์โปรเจกต์ Axure RP 11 หลัก** | `D:\Games\Plumber\axure\Plumber_v4.rp`<br>`C:\Users\Little_Jedi\Downloads\Plumber_v4.rp` | ดับเบิลคลิกไฟล์ หรือรัน [open_axure.bat](file:///D:/Games/Plumber/open_axure.bat) หรือชอร์ตคัตบนเดสก์ท็อป |
 | **ตัวเปิดโปรแกรม Axure RP 11** | `D:\Games\AXURE\AxureRP11.exe` | ตัวโปรแกรม Axure RP 11 ที่ติดตั้งอยู่ในเครื่อง |
-| **Interactive Test Prototype (Local Web Preview)** | [http://localhost/plumber/prototype/](http://localhost/plumber/prototype/)<br>(หรือเปิด `D:\Games\Plumber\prototype\start.html`) | เปิดในเบราว์เซอร์เพื่อทดสอบคลิกเล่น Prototype พร้อมแถบเมนู Axure Player |
+| **Interactive Test Prototype (Local Web Preview)** | [http://localhost/plumber/prototype/](http://localhost/plumber/prototype/)<br>(หรือเปิด `D:\Games\Plumber\prototype\start.html`) | เปิดในเบราว์เซอร์เพื่อทดสอบคลิกเล่น Prototype พร้อมแถบเมนู Axure Player และสลับ 4 บทบาท |
 | **ระบบจริงที่เชื่อมฐานข้อมูล MySQL (XAMPP)** | [http://localhost/plumber/](http://localhost/plumber/) | ใช้งานระบบจริงที่มีการบันทึกฐานข้อมูล MySQL |
 
 ---
 
-## 🗂️ 2. โครงสร้างผังหน้าจอ (Sitemap & Page Hierarchy ตาม 4 บทบาทหลัก)
+## 🗂️ 2. โครงสร้างผังหน้าจอ (Sitemap & Page Hierarchy - 4 บทบาทหลัก)
 
 ในโปรแกรม **Axure RP 11** ให้กำหนดโครงสร้างในแถบ **Pages** ฝั่งซ้ายดังนี้:
 
 ```text
-📁 Wang Yang Water Supply System (Axure RP 11 - v4)
-├── 📁 01_User_Public (ผู้ใช้ทั่วไป / ประชาชน)
-│   ├── 📄 01_Home_Portal (หน้าแรกและบริการสาธารณะ)
+📁 Wang Yang Water Supply System (Plumber_v4.rp)
+├── 📂 01_User_Public (ผู้ใช้ทั่วไป / ประชาชน)
+│   ├── 📄 01_Home_Portal (หน้าแรกและภาพรวมชุมชน)
 │   ├── 📄 02_Citizen_Check_Bill (ตรวจสอบค่าน้ำออนไลน์ & PromptPay QR)
 │   └── 📄 03_Citizen_Service_Tickets (แจ้งท่อแตกรั่ว & ยื่นคำร้อง)
-├── 📁 02_Member_Portal (สมาชิกผู้ใช้น้ำ)
+├── 📂 02_Member_Portal (สมาชิกผู้ใช้น้ำ)
 │   └── 📄 04_Member_Personal_Portal (แดชบอร์ดสมาชิก & บิลส่วนตัว WY-001)
-├── 📁 03_Staff_Operations (เจ้าหน้าที่การประปา)
+├── 📂 03_Staff_Operations (เจ้าหน้าที่การประปา)
 │   ├── 📄 05_Field_Meter_Reading_P17 (สมุดจดมิเตอร์ภาคสนาม แบบ ป.17)
 │   ├── 📄 06_Finance_Billing_Receipt (ตัดรับชำระเงินค่าน้ำ & ใบเสร็จมาตรฐาน)
 │   ├── 📄 07_Finance_Arrears_Ledger (ทะเบียนหนี้ค้างชำระ & ทบยอด)
-│   ├── 📄 08_Finance_Voucher_Disbursement (ฎีกาเบิกจ่าย & คิด 10% ยอดจัดเก็บจริง)
-│   └── 📄 09_Members_Registry (ทะเบียนสมาชิกผู้ใช้น้ำ)
-└── 📁 04_Admin_Executive (ผู้ดูแลระบบ / คณะกรรมการ)
-    ├── 📄 10_Master_Admin_Dashboard (ศูนย์ควบคุมระบบรวม & สรุปภาพรวม)
-    └── 📄 11_Executive_Financial_Report_GC3 (รายงานงบการเงิน แบบ กค.3)
+│   └── 📄 08_Finance_Voucher_Disbursement (ฎีกาเบิกจ่าย & คิด 10% ยอดจัดเก็บจริง)
+└── 📂 04_Admin_Executive (ผู้ดูแลระบบ / ประธานกรรมการ)
+    ├── 📄 09_Executive_Financial_Report_GC3 (รายงานงบการเงิน แบบ กค.3)
+    └── 📄 10_Master_Admin_Dashboard (ศูนย์ควบคุมระบบรวม & สรุปภาพรวม)
 ```
 
 ---
@@ -47,11 +48,11 @@
 1. **Master: `Global_Sidebar`**
    - **ขนาด**: กว้าง 260px, สูง 100% (Fit to viewport)
    - **สไตล์**: Background `#0f172a`, Text `#cbd5e1`, Active Node `#0284c7`
-   - **Interaction**: ใช้เงื่อนไข Conditional Logic อ้างอิงตัวแปร Global Variable `[[ varRole ]]` เพื่อซ่อน/แสดงเมนูตาม 4 บทบาทหลัก:
-     - `If varRole equals "user"` -> แสดงเฉพาะเมนูประชาชน (01-03)
-     - `If varRole equals "member"` -> แสดงเมนูบิลส่วนตัวและคำร้อง (04)
-     - `If varRole equals "staff"` -> แสดงงานปฏิบัติการเจ้าหน้าที่ (จดมิเตอร์, การเงิน, ทะเบียนหนี้, ฎีกาเบิกจ่าย 05-09)
-     - `If varRole equals "admin"` -> แสดงครบทุกเมนูบริหารและปฏิบัติการ (01-11)
+   - **Interaction**: ใช้เงื่อนไข Conditional Logic อ้างอิงตัวแปร Global Variable `[[ varRole ]]` เพื่อซ่อน/แสดงเมนูตาม 4 สิทธิ์:
+     - `If varRole equals "user"` -> แสดงเฉพาะเมนูประชาชนทั่วไป (ค้นหาค่าน้ำ, แจ้งท่อแตก/คำร้อง)
+     - `If varRole equals "member"` -> แสดงเมนูบิลส่วนตัวและคำร้องของสมาชิก
+     - `If varRole equals "staff"` -> แสดงงานปฏิบัติการเจ้าหน้าที่ครบชุด (สมุดจดมิเตอร์ ป.17, ตัดรับชำระ, ออกใบเสร็จ, ฎีกา 10%, ทะเบียนสมาชิก)
+     - `If varRole equals "admin"` -> แสดงครบทุกเมนู (ศูนย์ควบคุม Dashboard, รายงานงบการเงิน กค.3, ตั้งค่านโยบายอัตราค่าน้ำ, และงานปฏิบัติการ)
 
 2. **Master: `Global_Topbar`**
    - **ขนาด**: กว้าง 100%, สูง 70px
