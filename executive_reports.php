@@ -1,11 +1,11 @@
 <?php
 /**
  * 4. งานกำกับนโยบายและรายงานการเงินกองทุน (แบบ กค.3)
- * สิทธิ์การใช้งาน: คณะกรรมการบริหาร / ประธาน (admin) เท่านั้น
+ * สิทธิ์การใช้งาน: คณะกรรมการบริหาร / ประธาน (admin) และ เจ้าหน้าที่ (staff)
  */
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/sidebar.php';
-$currentUser = requireRole(['admin', 'finance']);
+$currentUser = requireRole(['admin', 'staff']);
 
 require_once __DIR__ . '/api/db.php';
 $cycleStmt = $pdo->query("SELECT * FROM billing_cycles ORDER BY id DESC");

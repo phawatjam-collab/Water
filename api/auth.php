@@ -25,20 +25,24 @@ if ($action === 'login') {
 
     $loginSuccess = false;
 
-    // 1. เข้าสู่ระบบแบบสมาชิกผู้ใช้น้ำ (Member Login)
-    if ($loginType === 'member' || !empty($customerCode)) {
+    // 1. เข้าสู่ระบบแบบผู้ใช้ทั่วไป / ประชาชน (User Login)
+    if ($loginType === 'user' || $username === 'user') {
+        $loginSuccess = loginUser('user');
+    }
+    // 2. เข้าสู่ระบบแบบสมาชิกผู้ใช้น้ำ (Member Login)
+    elseif ($loginType === 'member' || !empty($customerCode)) {
         $codeToFind = !empty($customerCode) ? $customerCode : $username;
         $loginSuccess = loginMember($codeToFind);
     } 
-    // 2. ถ้ากรอก username ที่ขึ้นต้นด้วย WY- หรือเป็นตัวเลข ให้ลองตรวจสอบสมาชิกก่อน
+    // 3. ถ้ากรอก username ที่ขึ้นต้นด้วย WY- หรือเป็นตัวเลข ให้ลองตรวจสอบสมาชิกก่อน
     elseif (!empty($username) && (preg_match('/^WY-/i', $username) || is_numeric($username))) {
         $loginSuccess = loginMember($username);
     }
-    // 3. เข้าสู่ระบบแบบเจ้าหน้าที่ (Staff Login ด้วย Username & Password)
+    // 4. เข้าสู่ระบบแบบเจ้าหน้าที่ / แอดมิน (Staff / Admin Login ด้วย Username & Password)
     elseif (!empty($username)) {
         $loginSuccess = loginStaff($username, $password);
     }
-    // 4. เข้าสู่ระบบด้วย role (Compatibility fallback)
+    // 5. เข้าสู่ระบบด้วย role (Compatibility fallback)
     elseif (!empty($role)) {
         $loginSuccess = loginUser($role);
     }

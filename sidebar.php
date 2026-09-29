@@ -12,11 +12,11 @@ function renderAppSidebar($activeRoute = 'home') {
     // กรองและกำหนดหมวดหมู่เมนูตามระดับสิทธิ์ของผู้ใช้งานจริง (Role-Based Access Control)
     $sections = [];
 
-    if (!$currentUser || $currentRole === 'guest') {
-        // 1. ระดับประชาชนทั่วไป / ผู้ใช้ทั่วไป (Public Citizen Portal - ยังไม่เข้าสู่ระบบ)
+    if (!$currentUser || $currentRole === 'guest' || $currentRole === 'user') {
+        // 1. ระดับประชาชนทั่วไป / ผู้ใช้ทั่วไป (Public Citizen / General User)
         $sections = [
             [
-                'title' => 'บริการประชาชนทั่วไป',
+                'title' => 'บริการประชาชนทั่วไป (User)',
                 'icon' => '👥',
                 'items' => [
                     [
@@ -49,7 +49,7 @@ function renderAppSidebar($activeRoute = 'home') {
         $billUrl = 'portal_citizen.php' . (!empty($memberCustomerCode) ? '?customer=' . urlencode($memberCustomerCode) : '');
         $sections = [
             [
-                'title' => 'บริการสมาชิกผู้ใช้น้ำ',
+                'title' => 'บริการสมาชิกผู้ใช้น้ำ (Member)',
                 'icon' => '👤',
                 'items' => [
                     [
@@ -76,8 +76,8 @@ function renderAppSidebar($activeRoute = 'home') {
                 ]
             ]
         ];
-    } elseif ($currentRole === 'reader') {
-        // 3. ระดับเจ้าหน้าที่จดมิเตอร์ภาคสนาม (Reader)
+    } elseif ($currentRole === 'staff' || $currentRole === 'reader' || $currentRole === 'finance') {
+        // 3. ระดับเจ้าหน้าที่การประปา (Staff - รวมงานปฏิบัติการภาคสนามและการเงิน)
         $sections = [
             [
                 'title' => 'บริการทั่วไป',
@@ -89,12 +89,19 @@ function renderAppSidebar($activeRoute = 'home') {
                         'icon' => '🏠',
                         'url' => 'index.php',
                         'is_sub' => false
+                    ],
+                    [
+                        'id' => 'citizen',
+                        'title' => 'ตรวจสอบและบริการประชาชน',
+                        'icon' => '👥',
+                        'url' => 'portal_citizen.php',
+                        'is_sub' => false
                     ]
                 ]
             ],
             [
-                'title' => 'งานภาคสนาม',
-                'icon' => '🚶‍♂️',
+                'title' => 'งานปฏิบัติการเจ้าหน้าที่ (Staff)',
+                'icon' => '💼',
                 'items' => [
                     [
                         'id' => 'field',
@@ -102,33 +109,10 @@ function renderAppSidebar($activeRoute = 'home') {
                         'icon' => '📝',
                         'url' => 'meter_reading.php',
                         'is_sub' => false
-                    ]
-                ]
-            ]
-        ];
-    } elseif ($currentRole === 'finance') {
-        // 4. ระดับฝ่ายการเงินและเหรัญญิก (Finance)
-        $sections = [
-            [
-                'title' => 'บริการทั่วไป',
-                'icon' => '🌐',
-                'items' => [
-                    [
-                        'id' => 'home',
-                        'title' => 'หน้าแรก',
-                        'icon' => '🏠',
-                        'url' => 'index.php',
-                        'is_sub' => false
-                    ]
-                ]
-            ],
-            [
-                'title' => 'งานการเงินและบัญชี',
-                'icon' => '💼',
-                'items' => [
+                    ],
                     [
                         'id' => 'finance',
-                        'title' => 'ตัดรับชำระเงินค่าน้ำ',
+                        'title' => 'ตัดรับชำระเงิน & ออกใบเสร็จ',
                         'icon' => '🧾',
                         'url' => 'finance_billing.php',
                         'is_sub' => false
@@ -158,11 +142,11 @@ function renderAppSidebar($activeRoute = 'home') {
             ]
         ];
     } elseif ($currentRole === 'admin') {
-        // 5. ระดับคณะกรรมการบริหาร / แอดมิน (Admin / Executive)
+        // 4. ระดับผู้ดูแลระบบ / คณะกรรมการบริหาร (Admin / Executive - ครบทุกโมดูล)
         $sections = [
             [
-                'title' => 'บริการทั่วไป',
-                'icon' => '🌐',
+                'title' => 'ภาพรวม & บริหารระบบ (Admin)',
+                'icon' => '🏛️',
                 'items' => [
                     [
                         'id' => 'home',
@@ -170,13 +154,14 @@ function renderAppSidebar($activeRoute = 'home') {
                         'icon' => '🏠',
                         'url' => 'index.php',
                         'is_sub' => false
-                    ]
-                ]
-            ],
-            [
-                'title' => 'บริหารและนโยบายกองทุน',
-                'icon' => '🏛️',
-                'items' => [
+                    ],
+                    [
+                        'id' => 'dashboard',
+                        'title' => 'แดชบอร์ดสรุปผลรวม',
+                        'icon' => '📈',
+                        'url' => 'dashboard.php',
+                        'is_sub' => false
+                    ],
                     [
                         'id' => 'executive',
                         'title' => 'งบการเงิน & รายงาน',
@@ -197,18 +182,11 @@ function renderAppSidebar($activeRoute = 'home') {
                         'icon' => '⚙️',
                         'url' => 'executive_reports.php#pane-policy',
                         'is_sub' => true
-                    ],
-                    [
-                        'id' => 'dashboard',
-                        'title' => 'แดชบอร์ดสรุปผลรวม',
-                        'icon' => '📈',
-                        'url' => 'dashboard.php',
-                        'is_sub' => false
                     ]
                 ]
             ],
             [
-                'title' => 'ระบบปฏิบัติการ',
+                'title' => 'งานปฏิบัติการ (Staff Operations)',
                 'icon' => '🛠️',
                 'items' => [
                     [
@@ -223,6 +201,13 @@ function renderAppSidebar($activeRoute = 'home') {
                         'title' => 'งานการเงิน & ฎีกาเบิกจ่าย',
                         'icon' => '🧾',
                         'url' => 'finance_billing.php',
+                        'is_sub' => false
+                    ],
+                    [
+                        'id' => 'citizen',
+                        'title' => 'ตรวจสอบและบริการประชาชน',
+                        'icon' => '👥',
+                        'url' => 'portal_citizen.php',
                         'is_sub' => false
                     ]
                 ]
@@ -281,33 +266,38 @@ function renderAppTopBar($title, $subtitle) {
             <span>👤</span>
             <?php if (($currentUser['role'] ?? '') === 'member'): ?>
               <strong>สมาชิก: <?php echo htmlspecialchars($currentUser['name']); ?> (รหัส: <?php echo htmlspecialchars($currentUser['customer_code'] ?? ''); ?>)</strong>
+            <?php elseif (($currentUser['role'] ?? '') === 'user'): ?>
+              <strong>ผู้ใช้ทั่วไป: <?php echo htmlspecialchars($currentUser['name']); ?> (User)</strong>
             <?php else: ?>
               <strong><?php echo htmlspecialchars($currentUser['name']); ?> (<?php echo htmlspecialchars($currentUser['role_title']); ?>)</strong>
             <?php endif; ?>
           </div>
+          <button type="button" class="btn btn-outline btn-open-login" onclick="openLoginModal()" style="font-size: 12.5px; padding: 6px 10px; border-radius: 6px; cursor: pointer; color: #475569; border: 1px solid #cbd5e1; background: #fff;" title="สลับบทบาท">
+            🔄 สลับบทบาท
+          </button>
           <a href="api/auth.php?action=logout" style="color: #dc2626; font-size: 13px; font-weight: 600; text-decoration: none; padding: 6px 12px; background: #fee2e2; border-radius: 6px; border: 1px solid #fecaca; display: inline-flex; align-items: center; gap: 4px;">
             <span>🚪</span> ออกจากระบบ
           </a>
         <?php else: ?>
           <span style="font-size: 13.5px; color: #64748b; font-weight: 500; display: inline-flex; align-items: center; gap: 4px;">
-            <span>👤</span> ผู้ใช้ทั่วไป / สมาชิก
+            <span>👥</span> ผู้ใช้ทั่วไป / ประชาชน (User)
           </span>
           <button type="button" class="btn btn-primary btn-open-login" onclick="openLoginModal()" style="font-size: 13.5px; padding: 8px 16px; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-family: inherit;">
-            🔐 เข้าสู่ระบบ
+            🔐 เข้าสู่ระบบ / สลับสิทธิ์
           </button>
         <?php endif; ?>
       </div>
     </header>
 
-    <!-- Unified Login Modal for Members and Staff -->
+    <!-- Unified Login Modal for 4 Core Roles (Admin, Staff, Member, User) -->
     <div id="login-modal" class="modal" style="display: none;">
-      <div class="modal-dialog" style="max-width: 460px;">
+      <div class="modal-dialog" style="max-width: 480px;">
         <div class="modal-header" style="background: #0f172a; color: #fff; padding: 16px 20px;">
           <div style="display: flex; align-items: center; gap: 10px;">
             <div style="background: #0284c7; font-size: 20px; width: 38px; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">🔐</div>
             <div>
               <h4 style="margin: 0; font-size: 16px; font-weight: 700; color: #38bdf8;">เข้าสู่ระบบจัดการน้ำประปา</h4>
-              <span style="font-size: 13px; color: #94a3b8;">การประปาหมู่บ้านวังยาง หมู่ที่ 3</span>
+              <span style="font-size: 13px; color: #94a3b8;">4 บทบาทหลัก: Admin, Staff, Member, User</span>
             </div>
           </div>
           <button type="button" class="modal-close" onclick="closeLoginModal()" style="color: #94a3b8; font-size: 24px; background: none; border: none; cursor: pointer;">&times;</button>
@@ -316,53 +306,68 @@ function renderAppTopBar($title, $subtitle) {
         <div class="modal-body" style="padding: 20px 24px;">
           <?php if (isset($_GET['error'])): ?>
             <div style="background: #fee2e2; border: 1px solid #fca5a5; color: #b91c1c; padding: 10px 14px; border-radius: 6px; font-size: 13.5px; margin-bottom: 14px; text-align: center;">
-              ⚠️ ข้อมูลเข้าสู่ระบบไม่ถูกต้อง กรุณาตรวจสอบรหัสสมาชิก หรือชื่อผู้ใช้งานและรหัสผ่าน
+              ⚠️ ข้อมูลเข้าสู่ระบบไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง
             </div>
           <?php endif; ?>
+
+          <!-- Quick 1-Click Role Switcher -->
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; margin-bottom: 16px;">
+            <span style="font-size: 12px; font-weight: 600; color: #64748b; display: block; margin-bottom: 6px;">⚡ เข้าสู่ระบบด่วน 4 บทบาทหลัก (1-Click Test Access):</span>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
+              <button type="button" onclick="quickLoginRole('admin')" style="background: #f3e8ff; color: #7c3aed; border: 1px solid #d8b4fe; border-radius: 6px; padding: 6px 2px; font-size: 12px; font-weight: 600; cursor: pointer;">👑 Admin</button>
+              <button type="button" onclick="quickLoginRole('staff')" style="background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd; border-radius: 6px; padding: 6px 2px; font-size: 12px; font-weight: 600; cursor: pointer;">💼 Staff</button>
+              <button type="button" onclick="quickLoginRole('member')" style="background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; border-radius: 6px; padding: 6px 2px; font-size: 12px; font-weight: 600; cursor: pointer;">👤 Member</button>
+              <button type="button" onclick="quickLoginRole('user')" style="background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; border-radius: 6px; padding: 6px 2px; font-size: 12px; font-weight: 600; cursor: pointer;">👥 User</button>
+            </div>
+          </div>
 
           <!-- Login Type Switch Tabs -->
           <div style="display: flex; gap: 8px; margin-bottom: 20px; background: #f1f5f9; padding: 4px; border-radius: 8px;">
             <button type="button" id="tab-btn-member" class="login-tab-btn active" onclick="switchLoginTab('member')" style="flex: 1; padding: 8px 12px; border: none; border-radius: 6px; font-size: 13.5px; font-weight: 600; cursor: pointer; background: #0284c7; color: #fff; font-family: inherit; transition: all 0.15s;">
-              👤 สมาชิกผู้ใช้น้ำ
+              👤 สมาชิก / ประชาชน (Member / User)
             </button>
             <button type="button" id="tab-btn-staff" class="login-tab-btn" onclick="switchLoginTab('staff')" style="flex: 1; padding: 8px 12px; border: none; border-radius: 6px; font-size: 13.5px; font-weight: 600; cursor: pointer; background: transparent; color: #64748b; font-family: inherit; transition: all 0.15s;">
-              💼 เจ้าหน้าที่ / กรรมการ
+              💼 เจ้าหน้าที่ / แอดมิน (Staff / Admin)
             </button>
           </div>
 
-          <!-- Form 1: Member Login -->
+          <!-- Form 1: Member / User Login -->
           <form id="member-login-form" action="api/auth.php" method="POST" style="display: block;">
             <input type="hidden" name="action" value="login">
             <input type="hidden" name="login_type" value="member">
             
             <div style="margin-bottom: 14px;">
               <label style="font-weight: 600; font-size: 13.5px; color: #334155; display: block; margin-bottom: 6px;">รหัสสมาชิกผู้ใช้น้ำ หรือบ้านเลขที่:</label>
-              <input type="text" name="customer_code" class="form-input" required placeholder="เช่น WY-001 หรือ 12 หรือเบอร์โทรศัพท์" style="width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; font-family: inherit; box-sizing: border-box;">
-              <span style="font-size: 12.5px; color: #64748b; margin-top: 4px; display: block;">* สมาชิกสามารถใช้รหัสผู้ใช้น้ำ (เช่น WY-001) หรือเบอร์โทรที่ลงทะเบียนไว้</span>
+              <input type="text" name="customer_code" class="form-input" required placeholder="เช่น WY-001 หรือ 12/3 หรือเบอร์โทรศัพท์" style="width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; font-family: inherit; box-sizing: border-box;">
+              <span style="font-size: 12.5px; color: #64748b; margin-top: 4px; display: block;">* สมาชิกผู้ใช้น้ำ (Member) ใช้รหัส WY-001 หรือเบอร์โทรศัพท์</span>
             </div>
 
             <button type="submit" class="btn btn-primary" style="width: 100%; padding: 11px; font-size: 14.5px; font-weight: 600; border-radius: 6px; background: #0284c7; color: #fff; border: none; cursor: pointer; font-family: inherit; margin-top: 8px;">
-              🚀 เข้าสู่ระบบสมาชิก
+              🚀 เข้าสู่ระบบสมาชิกผู้ใช้น้ำ (Member)
+            </button>
+
+            <button type="button" onclick="quickLoginRole('user')" class="btn btn-outline" style="width: 100%; margin-top: 10px; padding: 9px; font-size: 13px; border: 1px solid #cbd5e1; border-radius: 6px; background: #fff; color: #475569; cursor: pointer; font-family: inherit;">
+              👥 เข้าใช้งานในฐานะผู้ใช้ทั่วไป / ประชาชน (User Mode)
             </button>
           </form>
 
-          <!-- Form 2: Staff Login -->
+          <!-- Form 2: Staff / Admin Login -->
           <form id="staff-login-form" action="api/auth.php" method="POST" style="display: none;">
             <input type="hidden" name="action" value="login">
             <input type="hidden" name="login_type" value="staff">
 
             <div style="margin-bottom: 14px;">
               <label style="font-weight: 600; font-size: 13.5px; color: #334155; display: block; margin-bottom: 6px;">ชื่อผู้ใช้งาน (Username):</label>
-              <input type="text" name="username" class="form-input" required placeholder="เช่น admin, finance, reader" style="width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; font-family: inherit; box-sizing: border-box;">
+              <input type="text" name="username" class="form-input" required placeholder="เช่น staff หรือ admin" style="width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; font-family: inherit; box-sizing: border-box;">
             </div>
 
             <div style="margin-bottom: 16px;">
               <label style="font-weight: 600; font-size: 13.5px; color: #334155; display: block; margin-bottom: 6px;">รหัสผ่าน (Password):</label>
-              <input type="password" name="password" class="form-input" required placeholder="••••••••" style="width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; font-family: inherit; box-sizing: border-box;">
+              <input type="password" name="password" class="form-input" required placeholder="•••••••• (ค่าเริ่มต้น: 123456)" style="width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; font-family: inherit; box-sizing: border-box;">
             </div>
 
             <button type="submit" class="btn btn-primary" style="width: 100%; padding: 11px; font-size: 14.5px; font-weight: 600; border-radius: 6px; background: #0284c7; color: #fff; border: none; cursor: pointer; font-family: inherit;">
-              🚀 เข้าสู่ระบบเจ้าหน้าที่
+              🚀 เข้าสู่ระบบเจ้าหน้าที่ / แอดมิน
             </button>
           </form>
         </div>
@@ -414,6 +419,31 @@ function renderAppTopBar($title, $subtitle) {
             memberTabBtn.style.background = 'transparent';
             memberTabBtn.style.color = '#64748b';
           }
+        }
+      }
+
+      function quickLoginRole(role) {
+        if (role === 'admin') {
+          switchLoginTab('staff');
+          const uInput = document.querySelector('#staff-login-form input[name="username"]');
+          const pInput = document.querySelector('#staff-login-form input[name="password"]');
+          if (uInput) uInput.value = 'admin';
+          if (pInput) pInput.value = '123456';
+          document.getElementById('staff-login-form')?.submit();
+        } else if (role === 'staff') {
+          switchLoginTab('staff');
+          const uInput = document.querySelector('#staff-login-form input[name="username"]');
+          const pInput = document.querySelector('#staff-login-form input[name="password"]');
+          if (uInput) uInput.value = 'staff';
+          if (pInput) pInput.value = '123456';
+          document.getElementById('staff-login-form')?.submit();
+        } else if (role === 'member') {
+          switchLoginTab('member');
+          const cInput = document.querySelector('#member-login-form input[name="customer_code"]');
+          if (cInput) cInput.value = 'WY-001';
+          document.getElementById('member-login-form')?.submit();
+        } else if (role === 'user') {
+          window.location.href = 'api/auth.php?action=login&login_type=user';
         }
       }
 

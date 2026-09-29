@@ -1,11 +1,11 @@
 <?php
 /**
  * 2. งานจดบันทึกมาตรวัดน้ำภาคสนาม (แบบ ป.17)
- * สิทธิ์การใช้งาน: เจ้าหน้าที่จดมิเตอร์ภาคสนาม (reader) และ ผู้ดูแลระบบ (admin)
+ * สิทธิ์การใช้งาน: เจ้าหน้าที่การประปา (staff) และ ผู้ดูแลระบบ (admin)
  */
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/sidebar.php';
-$currentUser = requireRole(['reader', 'admin']);
+$currentUser = requireRole(['staff', 'admin']);
 
 require_once __DIR__ . '/api/db.php';
 $cycleStmt = $pdo->query("SELECT * FROM billing_cycles ORDER BY id DESC");

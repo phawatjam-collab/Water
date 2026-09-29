@@ -8,36 +8,72 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// รายชื่อบัญชีผู้ใช้ระบบ (Demo Accounts ประจำตำแหน่ง)
+// รายชื่อบัญชีผู้ใช้ระบบ (4 บทบาทหลัก: admin, staff, member, user)
 $VALID_USERS = [
     'admin' => [
         'username' => 'admin',
         'role' => 'admin',
-        'role_title' => 'คณะกรรมการบริหาร / แอดมิน',
+        'role_title' => 'ผู้ดูแลระบบ (Admin)',
         'name' => 'นายประธาน บริหารกิจการ',
-        'position' => 'ประธานกรรมการการประปาหมู่บ้านวังยาง',
+        'position' => 'ประธานกรรมการ / ผู้ดูแลระบบการประปา',
         'badge_color' => '#7c3aed',
         'badge_bg' => '#f3e8ff',
-        'default_page' => 'executive_reports.php'
+        'default_page' => 'dashboard.php'
     ],
+    'staff' => [
+        'username' => 'staff',
+        'role' => 'staff',
+        'role_title' => 'เจ้าหน้าที่การประปา (Staff)',
+        'name' => 'นายสมาน ปฏิบัติงานดี',
+        'position' => 'เจ้าหน้าที่การประปา (จดมิเตอร์ / การเงิน / บริการประชาชน)',
+        'badge_color' => '#0284c7',
+        'badge_bg' => '#e0f2fe',
+        'default_page' => 'meter_reading.php'
+    ],
+    'member' => [
+        'username' => 'member',
+        'role' => 'member',
+        'role_title' => 'สมาชิกผู้ใช้น้ำ (Member)',
+        'name' => 'นายสมชาย ไชยรัก',
+        'position' => 'สมาชิกผู้ใช้น้ำ (บ้านเลขที่ 12/3 ม.1)',
+        'customer_code' => 'WY-001',
+        'house_no' => '12/3',
+        'zone' => 'โซน 1 (วังยางเหนือ)',
+        'phone' => '081-234-5678',
+        'meter_serial' => 'MTR-1001',
+        'badge_color' => '#0284c7',
+        'badge_bg' => '#e0f2fe',
+        'default_page' => 'portal_citizen.php?customer=WY-001'
+    ],
+    'user' => [
+        'username' => 'user',
+        'role' => 'user',
+        'role_title' => 'ผู้ใช้ทั่วไป / ประชาชน (User)',
+        'name' => 'ประชาชนทั่วไป',
+        'position' => 'ผู้ใช้บริการทั่วไป (Public Citizen)',
+        'badge_color' => '#059669',
+        'badge_bg' => '#d1fae5',
+        'default_page' => 'index.php'
+    ],
+    // บัญชีเดิมเพื่อความเข้ากันได้ (Backward Compatibility -> Map to Staff)
     'finance' => [
         'username' => 'finance',
-        'role' => 'finance',
-        'role_title' => 'ฝ่ายการเงินและเหรัญญิก',
+        'role' => 'staff',
+        'role_title' => 'เจ้าหน้าที่การประปา (Staff)',
         'name' => 'นางจำเนียร ตรวจบัญชี',
-        'position' => 'เหรัญญิก / เจ้าหน้าที่การเงิน',
-        'badge_color' => '#4338ca',
-        'badge_bg' => '#e0e7ff',
+        'position' => 'เจ้าหน้าที่การเงินและบัญชี',
+        'badge_color' => '#0284c7',
+        'badge_bg' => '#e0f2fe',
         'default_page' => 'finance_billing.php'
     ],
     'reader' => [
         'username' => 'reader',
-        'role' => 'reader',
-        'role_title' => 'เจ้าหน้าที่จดมิเตอร์ภาคสนาม',
+        'role' => 'staff',
+        'role_title' => 'เจ้าหน้าที่การประปา (Staff)',
         'name' => 'นายสมาน เก็บเงินดี',
-        'position' => 'เจ้าหน้าที่จดมาตรวัดน้ำภาคสนาม',
-        'badge_color' => '#b45309',
-        'badge_bg' => '#fef3c7',
+        'position' => 'เจ้าหน้าที่จดมาตรวัดน้ำ',
+        'badge_color' => '#0284c7',
+        'badge_bg' => '#e0f2fe',
         'default_page' => 'meter_reading.php'
     ]
 ];
@@ -69,42 +105,60 @@ function getAuthDbConnection() {
  * ล็อกอินสำหรับสมาชิกผู้ใช้น้ำ (ค้นหาจากรหัสผู้ใช้น้ำ เช่น WY-001 หรือเบอร์โทรศัพท์ หรือบ้านเลขที่)
  */
 function loginMember($identifier) {
+    global $VALID_USERS;
     $identifier = trim($identifier);
     if (empty($identifier)) return false;
 
+    // ตรวจสอบกรณีล็อกอินด้วยคำว่า 'member'
+    if (strtolower($identifier) === 'member' && isset($VALID_USERS['member'])) {
+        $_SESSION['water_user'] = $VALID_USERS['member'];
+        return true;
+    }
+
     $db = getAuthDbConnection();
-    if (!$db) return false;
+    if ($db) {
+        try {
+            $stmt = $db->prepare("
+                SELECT * FROM customers 
+                WHERE customer_code = ? OR phone = ? OR house_no = ?
+                LIMIT 1
+            ");
+            $stmt->execute([$identifier, $identifier, $identifier]);
+            $cust = $stmt->fetch();
 
-    try {
-        $stmt = $db->prepare("
-            SELECT * FROM customers 
-            WHERE customer_code = ? OR phone = ? OR house_no = ?
-            LIMIT 1
-        ");
-        $stmt->execute([$identifier, $identifier, $identifier]);
-        $cust = $stmt->fetch();
+            if ($cust) {
+                $_SESSION['water_user'] = [
+                    'username' => $cust['customer_code'],
+                    'role' => 'member',
+                    'role_title' => 'สมาชิกผู้ใช้น้ำ (Member)',
+                    'name' => $cust['first_name'] . ' ' . $cust['last_name'],
+                    'position' => 'สมาชิกผู้ใช้น้ำ (บ้านเลขที่ ' . $cust['house_no'] . ')',
+                    'customer_code' => $cust['customer_code'],
+                    'house_no' => $cust['house_no'],
+                    'zone' => $cust['zone'],
+                    'phone' => $cust['phone'],
+                    'meter_serial' => $cust['meter_serial'],
+                    'badge_color' => '#0284c7',
+                    'badge_bg' => '#e0f2fe',
+                    'default_page' => 'portal_citizen.php?customer=' . urlencode($cust['customer_code'])
+                ];
+                return true;
+            }
+        } catch (Exception $e) {
+            // Fallback for demo if DB error
+        }
+    }
 
-        if ($cust) {
-            $_SESSION['water_user'] = [
-                'username' => $cust['customer_code'],
-                'role' => 'member',
-                'role_title' => 'สมาชิกผู้ใช้น้ำ',
-                'name' => $cust['first_name'] . ' ' . $cust['last_name'],
-                'position' => 'สมาชิกผู้ใช้น้ำ (บ้านเลขที่ ' . $cust['house_no'] . ')',
-                'customer_code' => $cust['customer_code'],
-                'house_no' => $cust['house_no'],
-                'zone' => $cust['zone'],
-                'phone' => $cust['phone'],
-                'meter_serial' => $cust['meter_serial'],
-                'badge_color' => '#0284c7',
-                'badge_bg' => '#e0f2fe',
-                'default_page' => 'portal_citizen.php?customer=' . urlencode($cust['customer_code'])
-            ];
+    // กรณีพิมพ์รหัส WY- หรือตัวเลข แล้วไม่พบในฐานข้อมูล ให้ใช้เดโมสมาชิก
+    if (preg_match('/^WY-/i', $identifier) || is_numeric($identifier)) {
+        if (isset($VALID_USERS['member'])) {
+            $demoMember = $VALID_USERS['member'];
+            $demoMember['customer_code'] = strtoupper($identifier);
+            $_SESSION['water_user'] = $demoMember;
             return true;
         }
-    } catch (Exception $e) {
-        // Fallback for demo if DB error
     }
+
     return false;
 }
 
@@ -132,8 +186,9 @@ function loginStaff($username, $password = '') {
  */
 function loginUser($role) {
     global $VALID_USERS;
-    if (isset($VALID_USERS[$role])) {
-        $_SESSION['water_user'] = $VALID_USERS[$role];
+    $r = strtolower(trim($role));
+    if (isset($VALID_USERS[$r])) {
+        $_SESSION['water_user'] = $VALID_USERS[$r];
         return true;
     }
     return false;
@@ -148,19 +203,38 @@ function logoutUser() {
 
 /**
  * ตรวจสอบสิทธิ์การเข้าใช้งาน (RBAC Gatekeeper)
- * @param array $allowedRoles รายการ role ที่อนุญาต เช่น ['admin', 'finance']
+ * 4 บทบาทหลัก: admin, staff, member, user
+ * @param array $allowedRoles รายการ role ที่อนุญาต เช่น ['admin', 'staff']
  */
 function requireRole($allowedRoles = []) {
     $user = getCurrentUser();
 
     // 1. ยังไม่ได้เข้าสู่ระบบ (Guest Session)
     if (!$user) {
+        // หากหน้านั้นอนุญาต user หรือไม่ระบุ role แสดงว่าเปิดสาธารณะ
+        if (empty($allowedRoles) || in_array('user', $allowedRoles)) {
+            return null;
+        }
         renderAccessDeniedPage(null, $allowedRoles);
         exit;
     }
 
-    // 2. ถ้า role ไม่อยู่ในรายการที่อนุญาต (และไม่ใช่ super admin ที่เข้าได้ทุกหน้า)
-    if (!empty($allowedRoles) && !in_array($user['role'], $allowedRoles) && $user['role'] !== 'admin') {
+    // 2. ตรวจสอบสิทธิ์การเข้าถึง
+    $userRole = $user['role'] ?? 'user';
+    if (in_array($userRole, ['finance', 'reader'])) {
+        $userRole = 'staff';
+    }
+
+    $hasPermission = false;
+    if ($userRole === 'admin') {
+        $hasPermission = true; // Admin เข้าถึงได้ทุกโมดูล
+    } elseif (in_array($userRole, $allowedRoles)) {
+        $hasPermission = true;
+    } elseif ($userRole === 'staff' && (in_array('staff', $allowedRoles) || in_array('finance', $allowedRoles) || in_array('reader', $allowedRoles))) {
+        $hasPermission = true;
+    }
+
+    if (!empty($allowedRoles) && !$hasPermission) {
         renderAccessDeniedPage($user, $allowedRoles);
         exit;
     }
@@ -174,9 +248,10 @@ function requireRole($allowedRoles = []) {
 function renderAccessDeniedPage($user, $allowedRoles) {
     http_response_code(403);
     $rolesText = [
-        'admin' => 'คณะกรรมการบริหาร / ประธาน (Admin)',
-        'finance' => 'ฝ่ายการเงินและเหรัญญิก (Finance)',
-        'reader' => 'เจ้าหน้าที่จดมิเตอร์ภาคสนาม (Field Reader)'
+        'admin'  => 'ผู้ดูแลระบบ (Admin)',
+        'staff'  => 'เจ้าหน้าที่การประปา (Staff)',
+        'member' => 'สมาชิกผู้ใช้น้ำ (Member)',
+        'user'   => 'ผู้ใช้ทั่วไป / ประชาชน (User)'
     ];
     $neededRoles = array_map(function($r) use ($rolesText) {
         return $rolesText[$r] ?? $r;
