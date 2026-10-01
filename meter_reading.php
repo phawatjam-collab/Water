@@ -162,6 +162,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
               <th width="100">รหัสผู้ใช้</th>
               <th>ชื่อ - นามสกุล</th>
               <th>บ้านเลขที่</th>
+              <th width="120">เบอร์โทรศัพท์</th>
               <th>โซน / คุ้ม</th>
               <th>เลขมิเตอร์</th>
               <th width="110" class="text-right">เลขครั้งก่อน</th>
@@ -279,7 +280,8 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
         const matchSearch = c.first_name.toLowerCase().includes(searchVal) ||
                             c.last_name.toLowerCase().includes(searchVal) ||
                             c.house_no.toLowerCase().includes(searchVal) ||
-                            c.customer_code.toLowerCase().includes(searchVal);
+                            c.customer_code.toLowerCase().includes(searchVal) ||
+                            (c.phone && c.phone.includes(searchVal));
         return matchZone && matchSearch;
       });
 
@@ -301,6 +303,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
             <td><strong>${c.customer_code}</strong></td>
             <td><strong>${c.first_name} ${c.last_name}</strong></td>
             <td>${c.house_no}</td>
+            <td><a href="tel:${c.phone || ''}" style="color: #0284c7; text-decoration: none; font-weight: 600; white-space: nowrap;">📞 ${c.phone || '-'}</a></td>
             <td><span style="font-size: 13.5px; color: #475569;">${c.zone}</span></td>
             <td><code style="font-size: 13px;">${c.meter_serial || '-'}</code></td>
             <td class="text-right" style="color: #475569; font-weight: 600;">${prev.toFixed(1)}</td>

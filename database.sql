@@ -95,7 +95,7 @@ DROP TABLE IF EXISTS `meter_readings`;
 CREATE TABLE `meter_readings` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `billing_cycle_id` int(11) NOT NULL,
-  `customer_id` int(11) NOT NULL,
+  `customer_id` int(4) unsigned zerofill NOT NULL,
   `previous_reading` decimal(10,2) NOT NULL DEFAULT 0.00,
   `current_reading` decimal(10,2) NOT NULL DEFAULT 0.00,
   `units_used` decimal(10,2) NOT NULL DEFAULT 0.00,
@@ -116,7 +116,9 @@ CREATE TABLE `meter_readings` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_cycle_customer` (`billing_cycle_id`,`customer_id`),
   KEY `idx_reading_cycle` (`billing_cycle_id`),
-  KEY `idx_reading_cust` (`customer_id`)
+  KEY `idx_reading_cust` (`customer_id`),
+  CONSTRAINT `fk_readings_customer` FOREIGN KEY (`customer_id`) REFERENCES `tb_customers` (`cus_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_readings_cycle` FOREIGN KEY (`billing_cycle_id`) REFERENCES `billing_cycles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -126,7 +128,7 @@ CREATE TABLE `meter_readings` (
 
 LOCK TABLES `meter_readings` WRITE;
 /*!40000 ALTER TABLE `meter_readings` DISABLE KEYS */;
-INSERT INTO `meter_readings` VALUES (1,1,1,150.00,170.00,20.00,7.00,140.00,10.00,150.00,0.00,150.00,0.00,0.00,'PAID',NULL,'8-2567/501','2567-08-27',NULL,NULL),(2,1,2,210.00,235.00,25.00,7.00,175.00,10.00,185.00,0.00,185.00,0.00,0.00,'PAID',NULL,'8-2567/502','2567-08-27',NULL,NULL),(3,1,3,380.00,412.00,32.00,7.00,224.00,10.00,234.00,150.00,384.00,0.00,0.00,'UNPAID',NULL,NULL,'2567-08-27',NULL,NULL),(4,1,4,95.00,110.00,15.00,7.00,105.00,10.00,115.00,0.00,115.00,0.00,0.00,'PAID',NULL,'8-2567/503','2567-08-27',NULL,NULL),(5,1,5,512.00,540.00,28.00,7.00,196.00,10.00,206.00,0.00,206.00,0.00,0.00,'PAID',NULL,'8-2567/504','2567-08-27',NULL,NULL),(6,1,6,180.00,198.00,18.00,7.00,126.00,10.00,136.00,80.00,216.00,0.00,0.00,'UNPAID',NULL,NULL,'2567-08-27',NULL,NULL),(7,1,7,304.00,326.00,22.00,7.00,154.00,10.00,164.00,0.00,164.00,0.00,0.00,'PAID',NULL,'8-2567/505','2567-08-27',NULL,NULL),(8,1,8,420.00,455.00,35.00,7.00,245.00,10.00,255.00,0.00,255.00,0.00,0.00,'PAID',NULL,'8-2567/506','2567-08-27',NULL,NULL);
+INSERT INTO `meter_readings` VALUES (1,1,0001,150.00,170.00,20.00,7.00,140.00,10.00,150.00,0.00,150.00,0.00,0.00,'PAID',NULL,'8-2567/501','2567-08-27',NULL,NULL),(2,1,0002,210.00,235.00,25.00,7.00,175.00,10.00,185.00,0.00,185.00,0.00,0.00,'PAID',NULL,'8-2567/502','2567-08-27',NULL,NULL),(3,1,0003,380.00,412.00,32.00,7.00,224.00,10.00,234.00,150.00,384.00,0.00,0.00,'UNPAID',NULL,NULL,'2567-08-27',NULL,NULL),(4,1,0004,95.00,110.00,15.00,7.00,105.00,10.00,115.00,0.00,115.00,0.00,0.00,'PAID',NULL,'8-2567/503','2567-08-27',NULL,NULL),(5,1,0005,512.00,540.00,28.00,7.00,196.00,10.00,206.00,0.00,206.00,0.00,0.00,'PAID',NULL,'8-2567/504','2567-08-27',NULL,NULL),(6,1,0006,180.00,198.00,18.00,7.00,126.00,10.00,136.00,80.00,216.00,0.00,0.00,'UNPAID',NULL,NULL,'2567-08-27',NULL,NULL),(7,1,0007,304.00,326.00,22.00,7.00,154.00,10.00,164.00,0.00,164.00,0.00,0.00,'PAID',NULL,'8-2567/505','2567-08-27',NULL,NULL),(8,1,0008,420.00,455.00,35.00,7.00,245.00,10.00,255.00,0.00,255.00,0.00,0.00,'PAID',NULL,'8-2567/506','2567-08-27',NULL,NULL);
 /*!40000 ALTER TABLE `meter_readings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -288,11 +290,15 @@ CREATE TABLE `tb_customers` (
   `cus_id` int(4) unsigned zerofill NOT NULL AUTO_INCREMENT,
   `cus_firstname` varchar(20) NOT NULL,
   `cus_surname` varchar(30) NOT NULL,
-  `install_type_id` int(1) NOT NULL,
+  `install_type_id` int(1) unsigned zerofill NOT NULL,
   `house_id` varchar(20) NOT NULL,
   `cus_tel` varchar(10) NOT NULL,
-  `zone_id` int(2) NOT NULL,
-  PRIMARY KEY (`cus_id`)
+  `zone_id` int(2) unsigned zerofill NOT NULL,
+  PRIMARY KEY (`cus_id`),
+  KEY `fk_customers_installation` (`install_type_id`),
+  KEY `fk_customers_zone` (`zone_id`),
+  CONSTRAINT `fk_customers_installation` FOREIGN KEY (`install_type_id`) REFERENCES `tb_installation` (`install_id`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_customers_zone` FOREIGN KEY (`zone_id`) REFERENCES `tb_zone` (`zone_id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -302,7 +308,7 @@ CREATE TABLE `tb_customers` (
 
 LOCK TABLES `tb_customers` WRITE;
 /*!40000 ALTER TABLE `tb_customers` DISABLE KEYS */;
-INSERT INTO `tb_customers` VALUES (0001,'สมเกียรติ','เจริญผล',1,'10/1 ม.1','0810001111',1),(0002,'สมชาย','ไชยรัก',1,'12/3 ม.1','0812345678',1),(0003,'สุดา','วังยาง',2,'45 ม.2','0898765432',2),(0004,'บุญส่ง','เกษมสุข',1,'25 ม.2','0843338899',2),(0005,'อนันต์','เกตุดี',1,'8/1 ม.1','0811112233',1),(0006,'วิภาดา','ชลธาร',3,'90/7 ม.3','0865556677',3),(0007,'กัญญา','ศรีสวัสดิ์',2,'52/1 ม.3','0874442211',3),(0008,'ชูเกียรติ','รุ่งเรือง',1,'60 ม.3','0839993344',3);
+INSERT INTO `tb_customers` VALUES (0001,'สมเกียรติ','เจริญผล',1,'10/1 ม.1','0810001111',01),(0002,'สมชาย','ไชยรัก',1,'12/3 ม.1','0812345678',01),(0003,'สุดา','วังยาง',2,'45 ม.2','0898765432',02),(0004,'บุญส่ง','เกษมสุข',1,'25 ม.2','0843338899',02),(0005,'อนันต์','เกตุดี',1,'8/1 ม.1','0811112233',01),(0006,'วิภาดา','ชลธาร',3,'90/7 ม.3','0865556677',03),(0007,'กัญญา','ศรีสวัสดิ์',2,'52/1 ม.3','0874442211',03),(0008,'ชูเกียรติ','รุ่งเรือง',1,'60 ม.3','0839993344',03);
 /*!40000 ALTER TABLE `tb_customers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -346,7 +352,9 @@ CREATE TABLE `tb_users` (
   `cus_id` int(4) unsigned zerofill DEFAULT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
   PRIMARY KEY (`user_id`),
-  UNIQUE KEY `username` (`username`)
+  UNIQUE KEY `username` (`username`),
+  KEY `fk_users_customers` (`cus_id`),
+  CONSTRAINT `fk_users_customers` FOREIGN KEY (`cus_id`) REFERENCES `tb_customers` (`cus_id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -416,10 +424,6 @@ INSERT INTO `water_loss_logs` VALUES (1,'8-2567',240.00,197.00,43.00,17.92,301.0
 UNLOCK TABLES;
 
 --
--- Dumping routines for database 'db_city_water_supply'
---
-
---
 -- Current Database: `db_city_water_supply`
 --
 
@@ -452,4 +456,4 @@ USE `db_city_water_supply`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-10-01 13:18:11
+-- Dump completed on 2026-10-01 14:10:19

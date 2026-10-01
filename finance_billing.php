@@ -148,6 +148,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
                 <th>ชื่อ - นามสกุล</th>
                 <th>บ้านเลขที่</th>
                 <th>โซน</th>
+                <th width="120">เบอร์โทรศัพท์</th>
                 <th class="text-right">หน่วยใช้</th>
                 <th class="text-right">ยอดรวมสุทธิ</th>
                 <th class="text-center" width="130">สถานะการชำระ</th>
@@ -196,7 +197,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
           <div>
             <strong>ชื่อผู้ใช้น้ำ:</strong> <span id="r-name">-</span><br>
             <strong>รหัสผู้ใช้น้ำ:</strong> <span id="r-code">-</span> | <strong>บ้านเลขที่:</strong> <span id="r-house">-</span><br>
-            <strong>หมายเลขมิเตอร์:</strong> <span id="r-serial">-</span>
+            <strong>หมายเลขมิเตอร์:</strong> <span id="r-serial">-</span> | <strong>เบอร์โทรศัพท์:</strong> <span id="r-phone">-</span>
           </div>
         </div>
 
@@ -310,6 +311,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
                 <th>ชื่อ - นามสกุล</th>
                 <th>บ้านเลขที่</th>
                 <th>โซน</th>
+                <th width="120">เบอร์โทรศัพท์</th>
                 <th>มิเตอร์</th>
                 <th class="text-center">อายุหนี้ (งวด)</th>
                 <th class="text-right">ยอดค้างรวม (บาท)</th>
@@ -478,6 +480,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
               <td><strong>${r.first_name} ${r.last_name}</strong></td>
               <td>${r.house_no}</td>
               <td>${r.zone}</td>
+              <td><a href="tel:${r.phone || ''}" style="color: #2563eb; text-decoration: none;">📞 ${r.phone || '-'}</a></td>
               <td class="text-right font-bold">${parseFloat(r.units_used || 0).toFixed(1)}</td>
               <td class="text-right font-bold text-danger">${grand.toFixed(2)} ฿</td>
               <td class="text-center">
@@ -548,6 +551,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
           document.getElementById('r-code').textContent = d.customer.code;
           document.getElementById('r-house').textContent = d.customer.houseNo;
           document.getElementById('r-serial').textContent = d.customer.meterSerial;
+          document.getElementById('r-phone').textContent = d.customer.phone || '-';
 
           document.getElementById('r-prev').textContent = d.meter.previous.toFixed(2);
           document.getElementById('r-curr').textContent = d.meter.current.toFixed(2);
@@ -590,7 +594,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
         document.getElementById('fa-3m-amt').textContent = `${data.summary.amount3M.toFixed(2)}`;
 
         if (debtorsList.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="10" class="text-center text-muted" style="padding: 20px;">🎉 ไม่มีลูกหนี้ค้างชำระในงวดนี้</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="11" class="text-center text-muted" style="padding: 20px;">🎉 ไม่มีลูกหนี้ค้างชำระในงวดนี้</td></tr>';
           return;
         }
 
@@ -601,6 +605,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
             <td><strong>${d.name}</strong></td>
             <td>${d.houseNo}</td>
             <td>${d.zone}</td>
+            <td><a href="tel:${d.phone}" style="color: #2563eb; text-decoration: none;">📞 ${d.phone}</a></td>
             <td>${d.meterSerial}</td>
             <td class="text-center"><strong>${d.monthsOverdue}</strong> เดือน</td>
             <td class="text-right font-bold text-danger">${d.totalDebt.toFixed(2)} ฿</td>
@@ -629,7 +634,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
               หนังสือเตือนให้ชำระหนี้ค่าน้ำประปา (ฉบับที่ ${d.monthsOverdue >= 2 ? '2' : '1'})
             </div>
           </div>
-          <div><strong>เรียน:</strong> คุณ${d.name} (บ้านเลขที่ ${d.houseNo} โซน: ${d.zone})</div>
+          <div><strong>เรียน:</strong> คุณ${d.name} (บ้านเลขที่ ${d.houseNo} โซน: ${d.zone} | เบอร์โทร: ${d.phone})</div>
           <p style="text-indent: 30px; margin: 10px 0;">
             จากการตรวจสอบบัญชี ปรากฏว่าท่านค้างชำระค่าน้ำประปาเป็นเวลา <strong>${d.monthsOverdue} งวด</strong> ยอดหนี้รวมทั้งสิ้น <strong>${d.totalDebt.toFixed(2)} บาท (${d.totalDebtTextTh})</strong> ขอให้ท่านนำเงินไปชำระ ณ ที่ทำการกองทุนประปาหมู่บ้าน ภายใน <strong>๗ วัน</strong>
           </p>

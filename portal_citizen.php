@@ -290,7 +290,7 @@ $currentUser = getCurrentUser();
                   ${match.first_name} ${match.last_name}
                 </h2>
                 <div style="font-size: 14px; color: #64748b;">
-                  🏠 บ้านเลขที่ ${match.house_no} | โซน: <strong>${match.zone}</strong> | มาตรเลขที่: <strong>${match.meter_serial || '-'}</strong>
+                  🏠 บ้านเลขที่ ${match.house_no} | โซน: <strong>${match.zone}</strong> | 📞 เบอร์โทรศัพท์: <strong style="color: #0284c7;">${match.phone || '-'}</strong> | มาตรเลขที่: <strong>${match.meter_serial || '-'}</strong>
                 </div>
               </div>
               <div style="text-align: right;">

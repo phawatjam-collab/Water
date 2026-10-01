@@ -51,6 +51,7 @@ $receipt = [
         'name' => $cust['first_name'] . ' ' . $cust['last_name'],
         'houseNo' => $cust['house_no'],
         'zone' => $cust['zone'],
+        'phone' => $cust['phone'] ?: '-',
         'meterSerial' => $cust['meter_serial'] ?: '-'
     ],
     'meter' => [

@@ -182,6 +182,14 @@ function renderAppSidebar($activeRoute = 'home') {
                         'icon' => '⚙️',
                         'url' => 'executive_reports.php#pane-policy',
                         'is_sub' => true
+                    ],
+                    [
+                        'id' => 'phpmyadmin',
+                        'title' => 'จัดการฐานข้อมูล (phpMyAdmin)',
+                        'icon' => '🗄️',
+                        'url' => 'http://localhost/phpmyadmin/index.php?lang=th',
+                        'target' => '_blank',
+                        'is_sub' => true
                     ]
                 ]
             ],
@@ -241,7 +249,7 @@ function renderAppSidebar($activeRoute = 'home') {
               $isActive = ($activeRoute === $item['id']);
               $subClass = !empty($item['is_sub']) ? 'nav-item-sub' : '';
             ?>
-            <a href="<?php echo htmlspecialchars($item['url']); ?>" class="nav-item <?php echo $subClass; ?> <?php echo $isActive ? 'active' : ''; ?>">
+            <a href="<?php echo htmlspecialchars($item['url']); ?>" <?php echo !empty($item['target']) ? 'target="' . htmlspecialchars($item['target']) . '" rel="noopener noreferrer"' : ''; ?> class="nav-item <?php echo $subClass; ?> <?php echo $isActive ? 'active' : ''; ?>">
               <span class="icon"><?php echo $item['icon']; ?></span>
               <span style="flex: 1;"><?php echo htmlspecialchars($item['title']); ?></span>
             </a>
