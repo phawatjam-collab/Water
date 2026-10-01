@@ -8,7 +8,7 @@
 
 - **โฟลเดอร์โปรเจกต์**: `D:\Games\Plumber\` (เชื่อมผ่าน Junction ไปยัง `D:\Games\xamppp\htdocs\plumber\`)
 - **URL เข้าใช้งาน**: [http://localhost/plumber/](http://localhost/plumber/)
-- **ฐานข้อมูล MySQL**: `db_wangyang_water` (ดูผ่าน phpMyAdmin ได้ที่ [http://localhost/phpmyadmin/](http://localhost/phpmyadmin/))
+- **ฐานข้อมูล MySQL**: `db_city_water_supply` (ดูผ่าน phpMyAdmin ได้ที่ [http://localhost/phpmyadmin/](http://localhost/phpmyadmin/))
 - **GitHub Repository**: [https://github.com/phawatjam-collab/Water.git](https://github.com/phawatjam-collab/Water.git)
 
 ---
@@ -17,9 +17,9 @@
 
 หากต้องการนำเข้าฐานข้อมูลบนเครื่องใหม่ หรือตั้งค่าบน phpMyAdmin:
 1. เปิดเบราว์เซอร์ไปที่ [http://localhost/phpmyadmin/](http://localhost/phpmyadmin/)
-2. สร้างฐานข้อมูลใหม่ชื่อ **`db_wangyang_water`** (การเปรียบเทียบ: `utf8mb4_general_ci` หรือ `utf8mb4_unicode_ci`)
+2. สร้างฐานข้อมูลใหม่ชื่อ **`db_city_water_supply`** (การเปรียบเทียบ: `utf8mb4_general_ci` หรือ `utf8mb4_unicode_ci`)
 3. คลิกแท็บ **Import (นำเข้า)**
-4. เลือกไฟล์ **`database.sql`** (หรือ `database/db_wangyang_water.sql`) จากโฟลเดอร์โปรเจกต์
+4. เลือกไฟล์ **`database.sql`** จากโฟลเดอร์โปรเจกต์ (รวมทั้งตาราง `tb_customers`, `tb_installation`, `tb_zone`, `tb_users` และตารางส่วนต่อขยายไว้ครบวงจร)
 5. กดปุ่ม **Import (ดำเนินการ)** ด้านล่าง ฐานข้อมูลจะถูกสร้างและนำเข้าข้อมูลพร้อมใช้งานทันที
 
 ---

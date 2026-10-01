@@ -1,11 +1,11 @@
 <?php
 /**
- * การเชื่อมต่อฐานข้อมูล MySQL (db_wangyang_water) ผ่าน PDO
- * ระบบบริหารจัดการการประปาหมู่บ้านวังยาง (งานกลุ่ม)
+ * การเชื่อมต่อฐานข้อมูล MySQL (db_city_water_supply) ผ่าน PDO
+ * ระบบบริหารจัดการการประปาหมู่บ้านวังยาง (อ้างอิงและพัฒนาต่อยอดจาก db_city_water_supply)
  */
 
 $host = 'localhost';
-$db_name = 'db_wangyang_water';
+$db_name = 'db_city_water_supply';
 $username = 'root';
 $password = '';
 
@@ -21,7 +21,7 @@ try {
     }
     echo json_encode([
         'success' => false,
-        'error' => 'ไม่สามารถเชื่อมต่อฐานข้อมูล db_wangyang_water ได้: ' . $e->getMessage()
+        'error' => 'ไม่สามารถเชื่อมต่อฐานข้อมูล db_city_water_supply ได้: ' . $e->getMessage()
     ], JSON_UNESCAPED_UNICODE);
     exit;
 }

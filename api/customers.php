@@ -1,17 +1,44 @@
 <?php
+/**
+ * API จัดการข้อมูลสมาชิกผู้ใช้น้ำ (Customers API)
+ * เชื่อมต่อโดยตรงกับตาราง tb_customers, tb_zone, tb_installation ในฐานข้อมูล db_city_water_supply
+ */
 require_once __DIR__ . '/db.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
 
+// ฟังก์ชันแปลงชื่อโซนเป็น zone_id (1, 2, 3)
+function resolveZoneId($zone, $zoneId = null) {
+    if (!empty($zoneId) && is_numeric($zoneId) && $zoneId >= 1 && $zoneId <= 3) {
+        return (int)$zoneId;
+    }
+    if (empty($zone)) return 1;
+    if (strpos($zone, '3') !== false || mb_strpos($zone, 'ใต้') !== false) return 3;
+    if (strpos($zone, '2') !== false || mb_strpos($zone, 'กลาง') !== false) return 2;
+    return 1;
+}
+
+// ฟังก์ชันแปลงขนาดมิเตอร์เป็น install_type_id (1: 5/8", 2: 1", 3: 1.5")
+function resolveInstallTypeId($meterSize, $typeId = null) {
+    if (!empty($typeId) && is_numeric($typeId) && $typeId >= 1 && $typeId <= 3) {
+        return (int)$typeId;
+    }
+    if (empty($meterSize)) return 1;
+    if (strpos($meterSize, '1.5') !== false) return 3;
+    if (strpos($meterSize, '1') !== false) return 2;
+    return 1;
+}
+
+// 1. GET: ดึงรายการลูกค้าทั้งหมด หรือค้นหา
 if ($method === 'GET') {
     $search = isset($_GET['search']) ? trim($_GET['search']) : '';
     $sql = "SELECT * FROM customers";
     $params = [];
 
     if ($search !== '') {
-        $sql .= " WHERE first_name LIKE ? OR last_name LIKE ? OR house_no LIKE ? OR customer_code LIKE ?";
+        $sql .= " WHERE first_name LIKE ? OR last_name LIKE ? OR house_no LIKE ? OR customer_code LIKE ? OR phone LIKE ?";
         $kw = "%{$search}%";
-        $params = [$kw, $kw, $kw, $kw];
+        $params = [$kw, $kw, $kw, $kw, $kw];
     }
     $sql .= " ORDER BY seq_no ASC";
 
@@ -20,57 +47,87 @@ if ($method === 'GET') {
     send_json($stmt->fetchAll());
 }
 
+// 2. POST: เพิ่มข้อมูลลูกค้าใหม่ลงใน tb_customers
 if ($method === 'POST') {
     $body = json_decode(file_get_contents('php://input'), true);
-    if (!$body) send_json(['error' => 'Invalid JSON'], 400);
+    if (!$body) send_json(['error' => 'Invalid JSON payload'], 400);
 
-    $customer_code = $body['customerCode'] ?? '';
-    $seq_no = (int)($body['seqNo'] ?? 99);
-    $first_name = $body['firstName'] ?? '';
-    $last_name = $body['lastName'] ?? '';
-    $house_no = $body['houseNo'] ?? '';
-    $zone = $body['zone'] ?? '';
-    $phone = $body['phone'] ?? '';
-    $meter_serial = $body['meterSerial'] ?? '';
+    $firstName = trim($body['firstName'] ?? '');
+    $lastName  = trim($body['lastName'] ?? '-');
+    $houseNo   = trim($body['houseNo'] ?? '');
+    $phone     = trim($body['phone'] ?? '');
+    $zoneInput = $body['zone'] ?? '';
+    $zoneId    = resolveZoneId($zoneInput, $body['zoneId'] ?? null);
+    $meterSize = $body['meterSize'] ?? '';
+    $installId = resolveInstallTypeId($meterSize, $body['installTypeId'] ?? null);
+
+    if (empty($firstName)) {
+        send_json(['error' => 'กรุณาระบุชื่อลูกค้า'], 400);
+    }
 
     $stmt = $pdo->prepare("
-        INSERT INTO customers (customer_code, seq_no, first_name, last_name, house_no, zone, phone, meter_serial)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO tb_customers (cus_firstname, cus_surname, install_type_id, house_id, cus_tel, zone_id)
+        VALUES (?, ?, ?, ?, ?, ?)
     ");
-    $stmt->execute([$customer_code, $seq_no, $first_name, $last_name, $house_no, $zone, $phone, $meter_serial]);
-    send_json(['success' => true, 'id' => $pdo->lastInsertId()]);
+    $stmt->execute([$firstName, $lastName ?: '-', $installId, $houseNo ?: 'ไม่ระบุ', $phone ?: '-', $zoneId]);
+    $newId = (int)$pdo->lastInsertId();
+
+    send_json([
+        'success' => true,
+        'id' => $newId,
+        'customer_code' => sprintf('WY-%03d', $newId),
+        'message' => 'บันทึกข้อมูลลูกค้าใหม่ลงใน tb_customers สำเร็จ'
+    ]);
 }
 
+// 3. PUT: แก้ไขข้อมูลลูกค้าใน tb_customers
 if ($method === 'PUT') {
     $body = json_decode(file_get_contents('php://input'), true);
     $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-    if ($id <= 0 || !$body) send_json(['error' => 'Invalid ID or data'], 400);
+    if ($id <= 0 || !$body) send_json(['error' => 'Invalid ID or payload'], 400);
+
+    $firstName = trim($body['firstName'] ?? '');
+    $lastName  = trim($body['lastName'] ?? '-');
+    $houseNo   = trim($body['houseNo'] ?? '');
+    $phone     = trim($body['phone'] ?? '');
+    $zoneInput = $body['zone'] ?? '';
+    $zoneId    = resolveZoneId($zoneInput, $body['zoneId'] ?? null);
+    $meterSize = $body['meterSize'] ?? '';
+    $installId = resolveInstallTypeId($meterSize, $body['installTypeId'] ?? null);
 
     $stmt = $pdo->prepare("
-        UPDATE customers 
-        SET customer_code = ?, seq_no = ?, first_name = ?, last_name = ?, house_no = ?, zone = ?, phone = ?, meter_serial = ?, status = ?
-        WHERE id = ?
+        UPDATE tb_customers 
+        SET cus_firstname = ?, cus_surname = ?, install_type_id = ?, house_id = ?, cus_tel = ?, zone_id = ?
+        WHERE cus_id = ?
     ");
     $stmt->execute([
-        $body['customerCode'],
-        (int)$body['seqNo'],
-        $body['firstName'],
-        $body['lastName'],
-        $body['houseNo'],
-        $body['zone'],
-        $body['phone'] ?? '',
-        $body['meterSerial'] ?? '',
-        $body['status'] ?? 'ACTIVE',
+        $firstName,
+        $lastName ?: '-',
+        $installId,
+        $houseNo ?: 'ไม่ระบุ',
+        $phone ?: '-',
+        $zoneId,
         $id
     ]);
-    send_json(['success' => true]);
+
+    send_json([
+        'success' => true,
+        'id' => $id,
+        'message' => 'แก้ไขข้อมูลลูกค้าใน tb_customers สำเร็จ'
+    ]);
 }
 
+// 4. DELETE: ลบข้อมูลลูกค้าออกจาก tb_customers
 if ($method === 'DELETE') {
     $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
     if ($id <= 0) send_json(['error' => 'Invalid ID'], 400);
 
-    $stmt = $pdo->prepare("DELETE FROM customers WHERE id = ?");
+    $stmt = $pdo->prepare("DELETE FROM tb_customers WHERE cus_id = ?");
     $stmt->execute([$id]);
-    send_json(['success' => true]);
+
+    send_json([
+        'success' => true,
+        'id' => $id,
+        'message' => 'ลบข้อมูลลูกค้าจาก tb_customers สำเร็จ'
+    ]);
 }

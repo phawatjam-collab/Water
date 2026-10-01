@@ -7,7 +7,7 @@ require_once __DIR__ . '/sidebar.php';
 $currentUser = getCurrentUser();
 
 $host = 'localhost';
-$db_name = 'db_wangyang_water';
+$db_name = 'db_city_water_supply';
 $username = 'root';
 $password = '';
 

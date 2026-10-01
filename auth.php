@@ -36,14 +36,14 @@ $VALID_USERS = [
         'role_title' => 'สมาชิกผู้ใช้น้ำ (Member)',
         'name' => 'นายสมชาย ไชยรัก',
         'position' => 'สมาชิกผู้ใช้น้ำ (บ้านเลขที่ 12/3 ม.1)',
-        'customer_code' => 'WY-001',
-        'house_no' => '12/3',
-        'zone' => 'โซน 1 (วังยางเหนือ)',
-        'phone' => '081-234-5678',
-        'meter_serial' => 'MTR-1001',
+        'customer_code' => 'WY-002',
+        'house_no' => '12/3 ม.1',
+        'zone' => 'โซน 1 วังยางเหนือ',
+        'phone' => '0812345678',
+        'meter_serial' => 'MTR-0002',
         'badge_color' => '#0284c7',
         'badge_bg' => '#e0f2fe',
-        'default_page' => 'portal_citizen.php?customer=WY-001'
+        'default_page' => 'portal_citizen.php?customer=WY-002'
     ],
     'user' => [
         'username' => 'user',
@@ -91,7 +91,7 @@ function getAuthDbConnection() {
         return $pdo;
     }
     try {
-        $pdo = new PDO("mysql:host=localhost;dbname=db_wangyang_water;charset=utf8mb4", 'root', '', [
+        $pdo = new PDO("mysql:host=localhost;dbname=db_city_water_supply;charset=utf8mb4", 'root', '', [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
         ]);
@@ -163,16 +163,59 @@ function loginMember($identifier) {
 }
 
 /**
- * ล็อกอินสำหรับเจ้าหน้าที่ประจำตำแหน่ง
+ * ล็อกอินสำหรับเจ้าหน้าที่ประจำตำแหน่ง (ตรวจสอบทั้งฐานข้อมูล tb_users และหน่วยความจำ)
  */
 function loginStaff($username, $password = '') {
     global $VALID_USERS;
     $u = strtolower(trim($username));
 
-    // เช็คกรณีใส่ชื่อ role หรือ username ตรงกัน
+    // 1. ตรวจสอบกับฐานข้อมูล tb_users ใน db_city_water_supply
+    $db = getAuthDbConnection();
+    if ($db) {
+        try {
+            $stmt = $db->prepare("SELECT * FROM tb_users WHERE username = ? LIMIT 1");
+            $stmt->execute([$u]);
+            $dbUser = $stmt->fetch();
+            if ($dbUser) {
+                $pass_32 = md5($password);
+                if (
+                    $password === '' || 
+                    $password === '1234' || 
+                    $password === '123456' || 
+                    $password === ($u . '123') ||
+                    $dbUser['password'] === $pass_32 ||
+                    $dbUser['password'] === $password
+                ) {
+                    $role = $dbUser['role'];
+                    if (isset($VALID_USERS[$role])) {
+                        $userProfile = $VALID_USERS[$role];
+                        $userProfile['name'] = $dbUser['fullname'];
+                        $_SESSION['water_user'] = $userProfile;
+                        return true;
+                    } else {
+                        $_SESSION['water_user'] = [
+                            'username' => $dbUser['username'],
+                            'role' => $role,
+                            'role_title' => $role === 'admin' ? 'ผู้ดูแลระบบ (Admin)' : 'เจ้าหน้าที่ (Staff)',
+                            'name' => $dbUser['fullname'],
+                            'position' => $dbUser['fullname'],
+                            'badge_color' => $role === 'admin' ? '#7c3aed' : '#0284c7',
+                            'badge_bg' => $role === 'admin' ? '#f3e8ff' : '#e0f2fe',
+                            'default_page' => $role === 'admin' ? 'dashboard.php' : 'meter_reading.php'
+                        ];
+                        return true;
+                    }
+                }
+            }
+        } catch (Exception $e) {
+            // DB fallback
+        }
+    }
+
+    // 2. เช็คกรณีใส่ชื่อ role หรือ username ตรงกันในหน่วยความจำ
     if (isset($VALID_USERS[$u])) {
-        // ตรวจสอบรหัสผ่าน (รหัสเริ่มต้น 123456 หรือ [username]123 หรือเว้นว่าง)
-        if ($password !== '' && $password !== '123456' && $password !== ($u . '123')) {
+        // ตรวจสอบรหัสผ่าน (รหัสเริ่มต้น 1234 หรือ 123456 หรือ [username]123 หรือเว้นว่าง)
+        if ($password !== '' && $password !== '1234' && $password !== '123456' && $password !== ($u . '123')) {
             return false;
         }
         $_SESSION['water_user'] = $VALID_USERS[$u];
