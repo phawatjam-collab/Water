@@ -8,11 +8,12 @@ $action = $_GET['action'] ?? ($_POST['action'] ?? '');
 $isJsonRequest = (isset($_SERVER['CONTENT_TYPE']) && strpos($_SERVER['CONTENT_TYPE'], 'application/json') !== false)
               || (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false && empty($_POST));
 
-if (empty($action) && $isJsonRequest) {
+$rawInput = [];
+if ($isJsonRequest) {
     $rawInput = json_decode(file_get_contents('php://input'), true) ?: [];
-    $action = $rawInput['action'] ?? 'login';
-} else {
-    $rawInput = [];
+    if (empty($action)) {
+        $action = $rawInput['action'] ?? 'login';
+    }
 }
 
 if ($action === 'login') {
