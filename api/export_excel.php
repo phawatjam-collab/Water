@@ -18,6 +18,7 @@ $readingsStmt = $pdo->prepare("
         CONCAT(c.first_name, ' ', c.last_name) as fullname,
         c.house_no as house,
         c.zone as zone,
+        c.phone as phone,
         r.previous_reading as prev_reading,
         r.current_reading as curr_reading,
         r.units_used as units,
@@ -49,7 +50,7 @@ $output = fopen('php://output', 'w');
 
 // Headers
 fputcsv($output, [
-    'ลำดับ', 'รหัสผู้ใช้น้ำ', 'ชื่อ-สกุล', 'บ้านเลขที่', 'โซน/กลุ่ม',
+    'ลำดับ', 'รหัสผู้ใช้น้ำ', 'ชื่อ-สกุล', 'บ้านเลขที่', 'โซน/กลุ่ม', 'เบอร์โทรศัพท์',
     'เลขมิเตอร์ครั้งก่อน', 'เลขมิเตอร์ครั้งหลัง', 'หน่วยที่ใช้',
     'ค่าน้ำ (บาท)', 'ค่าบำรุงรักษา (บาท)', 'ยอดงวดนี้ (บาท)',
     'ยอดค้างเก่า (บาท)', 'ยอดรวมสุทธิ (บาท)', 'สถานะการชำระ', 'เลขที่ใบเสร็จ'
@@ -62,6 +63,7 @@ foreach ($rows as $r) {
         $r['fullname'],
         $r['house'],
         $r['zone'],
+        (string)($r['phone'] ?: '-'),
         number_format($r['prev_reading'], 2, '.', ''),
         number_format($r['curr_reading'], 2, '.', ''),
         number_format($r['units'], 2, '.', ''),

@@ -612,6 +612,7 @@ $currentUser = requireRole(['admin']);
                   <th>ชื่อ - นามสกุล</th>
                   <th>บ้านเลขที่</th>
                   <th>โซน / ซอย</th>
+                  <th width="120">เบอร์โทรศัพท์</th>
                   <th>มิเตอร์</th>
                   <th class="text-center">อายุหนี้ (งวด)</th>
                   <th class="text-right">ยอดค้าง (บาท)</th>

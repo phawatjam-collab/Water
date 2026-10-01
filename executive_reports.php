@@ -494,7 +494,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
             <td><strong>${c.first_name} ${c.last_name}</strong></td>
             <td>${c.house_no}</td>
             <td>${c.zone}</td>
-            <td>${c.phone || '-'}</td>
+            <td><a href="tel:${c.phone || ''}" style="color: #4338ca; text-decoration: none; font-weight: 600;">📞 ${c.phone || '-'}</a></td>
             <td><code>${c.meter_serial || '-'}</code></td>
             <td class="text-center"><span class="badge badge-paid" style="font-size: 13px;">ปกติ</span></td>
           </tr>

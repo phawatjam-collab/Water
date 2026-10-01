@@ -741,7 +741,7 @@ function filterAndRenderArrearsRows() {
   });
 
   if (filtered.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="10" class="text-center text-muted" style="padding: 24px;">🎉 ไม่มีลูกหนี้ค้างชำระตามเงื่อนไขที่เลือก</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="11" class="text-center text-muted" style="padding: 24px;">🎉 ไม่มีลูกหนี้ค้างชำระตามเงื่อนไขที่เลือก</td></tr>`;
     return;
   }
 
@@ -752,6 +752,7 @@ function filterAndRenderArrearsRows() {
       <td><strong>${d.name}</strong></td>
       <td>${d.houseNo}</td>
       <td>${d.zone}</td>
+      <td><a href="tel:${d.phone}" style="color: #0284c7; text-decoration: none; font-weight: 600;">📞 ${d.phone || '-'}</a></td>
       <td>${d.meterSerial}</td>
       <td class="text-center"><strong>${d.monthsOverdue}</strong> งวด</td>
       <td class="text-right"><strong class="text-danger font-bold">${d.totalDebt.toLocaleString('th-TH', { minimumFractionDigits: 2 })} ฿</strong></td>
@@ -889,6 +890,7 @@ function renderCustomersTable() {
     const match = cust.firstName.toLowerCase().includes(search) ||
                   cust.lastName.toLowerCase().includes(search) ||
                   cust.houseNo.toLowerCase().includes(search) ||
+                  (cust.phone && cust.phone.toLowerCase().includes(search)) ||
                   cust.customerCode.toLowerCase().includes(search);
     if (!match) return;
 
@@ -899,7 +901,7 @@ function renderCustomersTable() {
       <td>${cust.firstName} ${cust.lastName}</td>
       <td>${cust.houseNo}</td>
       <td>${cust.zone}</td>
-      <td>${cust.phone || '-'}</td>
+      <td><a href="tel:${cust.phone || ''}" style="color: #0284c7; text-decoration: none; font-weight: 600;">📞 ${cust.phone || '-'}</a></td>
       <td>${cust.meterSerial || '-'}</td>
       <td><span class="badge badge-paid">${cust.status}</span></td>
       <td class="text-center no-print">
