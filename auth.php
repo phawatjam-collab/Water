@@ -7,6 +7,7 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+date_default_timezone_set('Asia/Bangkok');
 
 // รายชื่อบัญชีผู้ใช้ระบบ (4 บทบาทหลัก: admin, staff, member, user)
 $VALID_USERS = [
