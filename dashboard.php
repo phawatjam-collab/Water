@@ -43,6 +43,7 @@ $currentUser = requireRole(['admin']);
           </div>
           <button class="btn btn-outline" id="btn-open-cycle" title="เปิดรอบบิลเดือนใหม่">➕ เปิดรอบบิลใหม่</button>
           <button class="btn btn-outline" id="btn-export-excel" title="ส่งออกข้อมูลเป็น Excel">📥 ส่งออก Excel</button>
+          <a href="api/backup.php" class="btn btn-outline" style="text-decoration: none; display: inline-flex; align-items: center; gap: 4px;" title="ดาวน์โหลดไฟล์สำรองฐานข้อมูล SQL">💾 สำรองฐานข้อมูล (.sql)</a>
           <button class="btn btn-primary" onclick="window.print()">🖨️ สั่งพิมพ์เอกสาร</button>
 
           <!-- Topbar User Profile Chip -->
@@ -76,6 +77,9 @@ $currentUser = requireRole(['admin']);
         </button>
         <button class="nav-item" data-tab="tab-settings" style="width: auto; padding: 8px 14px; border-radius: 6px; font-size: 13.5px; border: 1px solid #e2e8f0; color: #475569;">
           <span class="icon">⚙️</span> ตั้งค่าอัตราค่าน้ำ
+        </button>
+        <button class="nav-item" data-tab="tab-tickets" style="width: auto; padding: 8px 14px; border-radius: 6px; font-size: 13.5px; border: 1px solid #e2e8f0; color: #475569;">
+          <span class="icon">🔧</span> แจ้งซ่อม/คำร้อง
         </button>
       </div>
 
@@ -704,6 +708,68 @@ $currentUser = requireRole(['admin']);
               </div>
             </form>
           </div>
+      <!-- ======================================================= -->
+      <!-- TAB 7: แจ้งซ่อมบำรุงและคำร้องบริการ (Service Tickets) -->
+      <!-- ======================================================= -->
+      <section id="tab-tickets" class="tab-pane">
+        <div class="stats-grid no-print" style="margin-bottom: 20px;">
+          <div class="stat-card">
+            <span class="stat-label">คำร้องทั้งหมด</span>
+            <span class="stat-value" id="ticket-stat-total">0</span>
+            <span class="stat-desc text-muted">รวมทุกสถานะ</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">รอดำเนินการ (Pending)</span>
+            <span class="stat-value" style="color: #d97706;" id="ticket-stat-pending">0</span>
+            <span class="stat-desc text-muted">รอช่างเข้าตรวจสอบ</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">กำลังดำเนินการ (In Progress)</span>
+            <span class="stat-value" style="color: #0284c7;" id="ticket-stat-progress">0</span>
+            <span class="stat-desc text-muted">ช่างกำลังลงพื้นที่</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">แก้ไขเรียบร้อย (Resolved)</span>
+            <span class="stat-value text-success" id="ticket-stat-resolved">0</span>
+            <span class="stat-desc text-muted">ซ่อมเสร็จสมบูรณ์</span>
+          </div>
+        </div>
+
+        <div class="card no-print" style="margin-bottom: 16px; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <label for="ticket-filter-status" style="font-size: 13.5px; font-weight: 600;">กรองสถานะ:</label>
+            <select id="ticket-filter-status" class="form-select" style="min-width: 160px;">
+              <option value="ALL">ทั้งหมด</option>
+              <option value="PENDING">🟡 รอดำเนินการ</option>
+              <option value="IN_PROGRESS">🔵 กำลังซ่อมแซม</option>
+              <option value="RESOLVED">🟢 แก้ไขเรียบร้อย</option>
+            </select>
+            <input type="text" id="ticket-search-input" class="form-input" placeholder="🔍 ค้นหารหัส, ผู้แจ้ง หรือเบอร์โทร..." style="min-width: 250px;">
+          </div>
+          <button type="button" class="btn btn-outline" id="btn-refresh-tickets">🔄 รีเฟรชรายการ</button>
+        </div>
+
+        <div class="card table-card">
+          <div class="table-responsive">
+            <table class="table" id="tickets-admin-table">
+              <thead>
+                <tr>
+                  <th width="120">รหัสคำร้อง</th>
+                  <th width="140">วันที่แจ้ง</th>
+                  <th>ผู้แจ้งเหตุ</th>
+                  <th width="120">เบอร์โทรศัพท์</th>
+                  <th>สถานที่ / โซน</th>
+                  <th>ประเภทคำร้อง</th>
+                  <th>รายละเอียดอาการ</th>
+                  <th width="130" class="text-center">สถานะ</th>
+                  <th width="120" class="text-center no-print">จัดการ</th>
+                </tr>
+              </thead>
+              <tbody id="tickets-admin-tbody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 
@@ -816,6 +882,51 @@ $currentUser = requireRole(['admin']);
         <div class="form-actions text-right" style="padding: 12px 20px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 10px;">
           <button type="button" class="btn btn-outline" onclick="closeModal('arrears-notice-modal')">ปิดหน้าต่าง</button>
           <button type="button" class="btn btn-primary" onclick="printArrearsNotice()" style="background: #dc2626; border-color: #dc2626;">🖨️ สั่งพิมพ์หนังสือเตือน</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for Updating Service Ticket Status -->
+  <div class="modal" id="ticket-edit-modal">
+    <div class="modal-dialog" style="max-width: 540px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="ticket-modal-title" style="margin: 0; font-size: 16px; font-weight: 700;">🔧 บันทึกการดำเนินการซ่อมบำรุง</h3>
+          <button class="modal-close" onclick="closeModal('ticket-edit-modal')">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="ticket-edit-form" onsubmit="handleTicketUpdateSubmit(event)">
+            <input type="hidden" id="edit-ticket-id">
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label class="form-label">รหัสคำร้อง:</label>
+              <input type="text" id="edit-ticket-no" class="form-input" readonly style="background: #f1f5f9; font-weight: 700;">
+            </div>
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label class="form-label">ผู้แจ้ง / อาการ:</label>
+              <div id="edit-ticket-summary" style="padding: 10px; background: #f8fafc; border-radius: 6px; font-size: 13.5px; border: 1px solid #e2e8f0;"></div>
+            </div>
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label class="form-label">อัปเดตสถานะงาน:</label>
+              <select id="edit-ticket-status" class="form-select" required>
+                <option value="PENDING">🟡 รอดำเนินการ (รอช่างเข้าพื้นที่)</option>
+                <option value="IN_PROGRESS">🔵 กำลังดำเนินการซ่อมบำรุง</option>
+                <option value="RESOLVED">🟢 แก้ไขเรียบร้อยแล้ว (ปิดงาน)</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label class="form-label">บันทึกผลการตรวจสอบ / การซ่อมแซม:</label>
+              <textarea id="edit-ticket-notes" class="form-input" rows="3" placeholder="ระบุการใช้อุปกรณ์ การเปลี่ยนท่อ ข้อต่อ หรือแนวทางแก้ไข..."></textarea>
+            </div>
+            <div class="form-group" style="margin-bottom: 14px;">
+              <label class="form-label">ค่าใช้จ่ายในการซ่อมบำรุง (บาท):</label>
+              <input type="number" id="edit-ticket-cost" class="form-input" step="10" min="0" value="0">
+            </div>
+            <div class="form-actions text-right">
+              <button type="button" class="btn btn-outline" onclick="closeModal('ticket-edit-modal')">ยกเลิก</button>
+              <button type="submit" class="btn btn-primary">💾 บันทึกผลการซ่อม</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

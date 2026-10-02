@@ -186,6 +186,39 @@ $currentUser = getCurrentUser();
           <button class="btn btn-outline" style="width: 100%;" onclick="openServiceModal('แจ้งมาตรวัดน้ำชำรุด')">🔧 แจ้งตรวจเช็กมิเตอร์</button>
         </div>
       </div>
+
+      <!-- Ticket Tracker Section -->
+      <div class="card" style="margin-top: 24px; padding: 24px; border-left: 4px solid #0284c7;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+          <div>
+            <h4 style="font-family: 'Prompt', sans-serif; font-size: 16px; color: #0f172a; margin: 0 0 4px 0;">🔍 ติดตามสถานะคำร้องแจ้งซ่อม</h4>
+            <span style="font-size: 13px; color: #64748b;">กรอกเบอร์โทรศัพท์ที่ใช้แจ้ง หรือรหัสคำร้อง (เช่น TK-2567-0801) เพื่อตรวจสอบความคืบหน้า</span>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <input type="text" id="track-ticket-input" class="form-input" placeholder="พิมพ์เบอร์โทร หรือรหัส TK-..." style="min-width: 240px;">
+            <button type="button" class="btn btn-primary" onclick="trackServiceTickets()">ค้นหาคำร้อง</button>
+          </div>
+        </div>
+        <div id="ticket-track-results" style="display: none;">
+          <div class="table-responsive">
+            <table class="table" style="font-size: 13.5px;">
+              <thead>
+                <tr>
+                  <th width="130">รหัสคำร้อง</th>
+                  <th>วันที่แจ้ง</th>
+                  <th>ผู้แจ้ง</th>
+                  <th>ประเภทคำร้อง</th>
+                  <th>สถานที่ / จุดสังเกต</th>
+                  <th width="120" class="text-center">สถานะ</th>
+                  <th>บันทึกจากเจ้าหน้าที่</th>
+                </tr>
+              </thead>
+              <tbody id="ticket-track-tbody">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
 
     </main>
@@ -211,6 +244,14 @@ $currentUser = getCurrentUser();
               <input type="text" class="form-input" id="req-phone" required placeholder="เช่น 081-xxxxxxx">
             </div>
             <div class="form-group" style="margin-bottom: 12px;">
+              <label class="form-label">คุ้ม / โซน:</label>
+              <select class="form-select" id="req-zone">
+                <option value="โซน 1 วังยางเหนือ">โซน 1 วังยางเหนือ</option>
+                <option value="โซน 2 วังยางกลาง">โซน 2 วังยางกลาง</option>
+                <option value="โซน 3 วังยางใต้">โซน 3 วังยางใต้</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 12px;">
               <label class="form-label">สถานที่ / จุดสังเกต (บ้านเลขที่ / ซอย):</label>
               <input type="text" class="form-input" id="req-location" required placeholder="เช่น หน้าบ้านเลขที่ 25 ซอยวัดเหนือ">
             </div>
@@ -220,7 +261,7 @@ $currentUser = getCurrentUser();
             </div>
             <div class="form-actions text-right">
               <button type="button" class="btn btn-outline" onclick="closeModal('service-request-modal')">ยกเลิก</button>
-              <button type="submit" class="btn btn-primary">ส่งคำร้องเข้าระบบ</button>
+              <button type="submit" class="btn btn-primary" id="btn-submit-ticket">ส่งคำร้องเข้าระบบ</button>
             </div>
           </form>
         </div>
@@ -403,13 +444,102 @@ $currentUser = getCurrentUser();
       document.getElementById(id).classList.remove('show');
     }
 
-    function handleServiceSubmit(e) {
+    async function handleServiceSubmit(e) {
       e.preventDefault();
-      const topic = document.getElementById('form-service-topic').value;
-      const name = document.getElementById('req-name').value;
-      alert(`✅ บันทึกคำร้อง "${topic}" ของ ${name} เรียบร้อยแล้ว! เจ้าหน้าที่จะประสานงานและลงพื้นที่ตรวจสอบโดยเร็ว`);
-      closeModal('service-request-modal');
-      e.target.reset();
+      const btn = document.getElementById('btn-submit-ticket');
+      const originalText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = '⏳ กำลังส่งข้อมูล...';
+
+      const payload = {
+        issue_type: document.getElementById('form-service-topic').value,
+        reporter_name: document.getElementById('req-name').value.trim(),
+        phone: document.getElementById('req-phone').value.trim(),
+        zone: document.getElementById('req-zone').value,
+        house_no: document.getElementById('req-location').value.trim(),
+        description: document.getElementById('req-details').value.trim()
+      };
+
+      try {
+        const res = await fetch('api/tickets.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          alert(`✅ ${data.message}`);
+          closeModal('service-request-modal');
+          e.target.reset();
+
+          // Auto-track the newly submitted ticket
+          const trackInput = document.getElementById('track-ticket-input');
+          if (trackInput) {
+            trackInput.value = payload.phone;
+            trackServiceTickets();
+          }
+        } else {
+          alert('❌ ไม่สามารถส่งคำร้องได้: ' + (data.error || 'กรุณาลองใหม่อีกครั้ง'));
+        }
+      } catch (err) {
+        console.error(err);
+        alert('❌ เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = originalText;
+      }
+    }
+
+    async function trackServiceTickets() {
+      const kw = document.getElementById('track-ticket-input').value.trim();
+      const resultsDiv = document.getElementById('ticket-track-results');
+      const tbody = document.getElementById('ticket-track-tbody');
+
+      if (!kw) {
+        alert('กรุณากรอกเบอร์โทรศัพท์ หรือรหัสคำร้องเพื่อค้นหา');
+        return;
+      }
+
+      tbody.innerHTML = '<tr><td colspan="7" class="text-center" style="padding: 16px;">กำลังค้นหาข้อมูล...</td></tr>';
+      resultsDiv.style.display = 'block';
+
+      try {
+        const res = await fetch(`api/tickets.php?search=${encodeURIComponent(kw)}`);
+        const data = await res.json();
+        const tickets = data.tickets || [];
+
+        if (tickets.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7" class="text-center" style="padding: 20px; color: #64748b;">ไม่พบข้อมูลคำร้องที่ตรงกับคำค้นหา</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = tickets.map(t => {
+          let badgeHtml = '';
+          if (t.status === 'PENDING') {
+            badgeHtml = '<span class="badge" style="background: #fef3c7; color: #b45309; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">🟡 รอดำเนินการ</span>';
+          } else if (t.status === 'IN_PROGRESS') {
+            badgeHtml = '<span class="badge" style="background: #e0f2fe; color: #0284c7; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">🔵 กำลังตรวจสอบ/ซ่อม</span>';
+          } else {
+            badgeHtml = '<span class="badge" style="background: #d1fae5; color: #047857; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">🟢 แก้ไขเรียบร้อย</span>';
+          }
+
+          return `
+            <tr>
+              <td><strong>${t.ticket_no}</strong></td>
+              <td>${t.created_at ? t.created_at.substring(0, 16) : '-'}</td>
+              <td>${t.reporter_name} (${t.phone})</td>
+              <td>${t.issue_type}</td>
+              <td>${t.house_no} (${t.zone})</td>
+              <td class="text-center">${badgeHtml}</td>
+              <td style="color: #475569;">${t.repair_notes || (t.status === 'RESOLVED' ? 'ซ่อมแซมเสร็จสมบูรณ์' : 'อยู่ระหว่างประสานงานช่าง')}</td>
+            </tr>
+          `;
+        }).join('');
+
+      } catch (err) {
+        console.error(err);
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center" style="padding: 20px; color: #dc2626;">เกิดข้อผิดพลาดในการดึงข้อมูลคำร้อง</td></tr>';
+      }
     }
 
     // Auto-search if customer param is present in URL or logged-in member

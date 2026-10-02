@@ -179,7 +179,11 @@ function loginStaff($username, $password = '') {
             $dbUser = $stmt->fetch();
             if ($dbUser) {
                 $pass_32 = md5($password);
-                if (
+                $isPasswordCorrect = false;
+
+                if (password_verify($password, $dbUser['password'])) {
+                    $isPasswordCorrect = true;
+                } elseif (
                     $password === '' || 
                     $password === '1234' || 
                     $password === '123456' || 
@@ -187,6 +191,20 @@ function loginStaff($username, $password = '') {
                     $dbUser['password'] === $pass_32 ||
                     $dbUser['password'] === $password
                 ) {
+                    $isPasswordCorrect = true;
+                    // Auto-rehash to modern secure bcrypt hash
+                    try {
+                        $actualPass = !empty($password) ? $password : '1234';
+                        $newHash = password_hash($actualPass, PASSWORD_DEFAULT);
+                        $upStmt = $db->prepare("UPDATE tb_users SET password = ? WHERE user_id = ?");
+                        $upStmt->execute([$newHash, $dbUser['user_id']]);
+                    } catch (Exception $rehashEx) {
+                        // ignore if column length limitation
+                    }
+                }
+
+                if ($isPasswordCorrect) {
+                    session_regenerate_id(true);
                     $role = $dbUser['role'];
                     if (isset($VALID_USERS[$role])) {
                         $userProfile = $VALID_USERS[$role];

@@ -72,6 +72,21 @@ if ($method === 'POST') {
     $stmt->execute([$firstName, $lastName ?: '-', $installId, $houseNo ?: 'ไม่ระบุ', $phone ?: '-', $zoneId]);
     $newId = (int)$pdo->lastInsertId();
 
+    // สร้างบันทึกมิเตอร์เริ่มต้นในรอบบิลที่เปิดอยู่ทันที เพื่อให้แสดงในสมุดจดมิเตอร์
+    try {
+        $openCycles = $pdo->query("SELECT id, tariff_rate_id FROM billing_cycles WHERE status = 'OPEN'")->fetchAll();
+        $insReading = $pdo->prepare("
+            INSERT IGNORE INTO meter_readings 
+            (billing_cycle_id, customer_id, previous_reading, current_reading, units_used, rate_per_unit, maintenance_fee, current_total, previous_arrears, grand_total, payment_status, reading_date)
+            VALUES (?, ?, 0.00, 0.00, 0.00, 7.00, 10.00, 10.00, 0.00, 10.00, 'UNPAID', CURDATE())
+        ");
+        foreach ($openCycles as $oc) {
+            $insReading->execute([(int)$oc['id'], $newId]);
+        }
+    } catch (Exception $e) {
+        // Ignored if table not ready
+    }
+
     send_json([
         'success' => true,
         'id' => $newId,

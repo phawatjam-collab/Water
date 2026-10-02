@@ -23,6 +23,31 @@ let appState = {
   selectedReceiptCustomerIndex: 0
 };
 
+function showToast(message, type = 'success', duration = 3500) {
+  let container = document.querySelector('.toast-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.className = 'toast-container';
+    document.body.appendChild(container);
+  }
+  const icons = {
+    success: '✅',
+    error: '❌',
+    info: 'ℹ️',
+    warning: '⚠️'
+  };
+  const toast = document.createElement('div');
+  toast.className = `toast-msg toast-${type}`;
+  toast.innerHTML = `<span>${icons[type] || '🔔'}</span> <span>${message}</span>`;
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(50px)';
+    setTimeout(() => toast.remove(), 300);
+  }, duration);
+}
+
 // -------------------------------------------------------------
 // 1. Data Fetching from PHP API
 // -------------------------------------------------------------
@@ -1252,6 +1277,145 @@ window.addEventListener('DOMContentLoaded', async () => {
       renderReadingsTable();
     }
   });
+
+  // -------------------------------------------------------------
+  // Service Tickets Management (Tab 7)
+  // -------------------------------------------------------------
+  let adminTicketsData = [];
+
+  async function loadServiceTicketsAdmin() {
+    const tbody = document.getElementById('tickets-admin-tbody');
+    if (!tbody) return;
+
+    try {
+      const res = await fetch(`${API_BASE}/tickets.php`);
+      const data = await res.json();
+      adminTicketsData = data.tickets || [];
+
+      // Update stat cards
+      const stats = data.stats || {};
+      if (document.getElementById('ticket-stat-total')) document.getElementById('ticket-stat-total').textContent = stats.total || 0;
+      if (document.getElementById('ticket-stat-pending')) document.getElementById('ticket-stat-pending').textContent = stats.pending || 0;
+      if (document.getElementById('ticket-stat-progress')) document.getElementById('ticket-stat-progress').textContent = stats.inProgress || 0;
+      if (document.getElementById('ticket-stat-resolved')) document.getElementById('ticket-stat-resolved').textContent = stats.resolved || 0;
+
+      filterAndRenderTickets();
+    } catch (err) {
+      console.error('Error loading tickets:', err);
+      tbody.innerHTML = '<tr><td colspan="9" class="text-center" style="padding: 20px; color: #dc2626;">เกิดข้อผิดพลาดในการโหลดรายการคำร้อง</td></tr>';
+    }
+  }
+
+  function filterAndRenderTickets() {
+    const tbody = document.getElementById('tickets-admin-tbody');
+    if (!tbody) return;
+
+    const statusFilter = document.getElementById('ticket-filter-status')?.value || 'ALL';
+    const kw = (document.getElementById('ticket-search-input')?.value || '').toLowerCase().trim();
+
+    let filtered = adminTicketsData;
+    if (statusFilter !== 'ALL') {
+      filtered = filtered.filter(t => t.status === statusFilter);
+    }
+    if (kw) {
+      filtered = filtered.filter(t => 
+        (t.ticket_no && t.ticket_no.toLowerCase().includes(kw)) ||
+        (t.reporter_name && t.reporter_name.toLowerCase().includes(kw)) ||
+        (t.phone && t.phone.toLowerCase().includes(kw)) ||
+        (t.house_no && t.house_no.toLowerCase().includes(kw)) ||
+        (t.issue_type && t.issue_type.toLowerCase().includes(kw))
+      );
+    }
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="9" class="text-center" style="padding: 24px; color: #64748b;">ไม่พบรายการคำร้องแจ้งซ่อม</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = filtered.map(t => {
+      let badgeHtml = '';
+      if (t.status === 'PENDING') {
+        badgeHtml = '<span class="badge" style="background: #fef3c7; color: #b45309; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">🟡 รอดำเนินการ</span>';
+      } else if (t.status === 'IN_PROGRESS') {
+        badgeHtml = '<span class="badge" style="background: #e0f2fe; color: #0284c7; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">🔵 กำลังซ่อมแซม</span>';
+      } else {
+        badgeHtml = '<span class="badge" style="background: #d1fae5; color: #047857; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">🟢 แก้ไขเรียบร้อย</span>';
+      }
+
+      return `
+        <tr>
+          <td><strong style="color: #0284c7;">${t.ticket_no}</strong></td>
+          <td style="font-size: 13px;">${t.created_at ? t.created_at.substring(0, 16) : '-'}</td>
+          <td><strong>${t.reporter_name}</strong></td>
+          <td><a href="tel:${t.phone}" style="color: #0284c7; text-decoration: none;">📞 ${t.phone}</a></td>
+          <td>${t.house_no} <br><small class="text-muted">${t.zone}</small></td>
+          <td><span style="font-weight: 600; color: #334155;">${t.issue_type}</span></td>
+          <td style="max-width: 250px; font-size: 13px;">${t.description || '-'}</td>
+          <td class="text-center">${badgeHtml}</td>
+          <td class="text-center no-print">
+            <button type="button" class="btn btn-outline btn-sm btn-edit-ticket" data-id="${t.id}" style="padding: 4px 10px; font-size: 12.5px;">
+              ✏️ อัปเดตงาน
+            </button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+    // Attach edit button handlers
+    document.querySelectorAll('.btn-edit-ticket').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.id;
+        const ticket = adminTicketsData.find(x => String(x.id) === String(id));
+        if (ticket) {
+          document.getElementById('edit-ticket-id').value = ticket.id;
+          document.getElementById('edit-ticket-no').value = ticket.ticket_no;
+          document.getElementById('edit-ticket-summary').innerHTML = `
+            <strong>ผู้แจ้ง:</strong> ${ticket.reporter_name} (โทร ${ticket.phone})<br>
+            <strong>เรื่อง:</strong> ${ticket.issue_type} | <strong>สถานที่:</strong> ${ticket.house_no} (${ticket.zone})<br>
+            <strong>อาการ:</strong> ${ticket.description || '-'}
+          `;
+          document.getElementById('edit-ticket-status').value = ticket.status;
+          document.getElementById('edit-ticket-notes').value = ticket.repair_notes || '';
+          document.getElementById('edit-ticket-cost').value = parseFloat(ticket.repair_cost) || 0;
+          openModal('ticket-edit-modal');
+        }
+      });
+    });
+  }
+
+  window.handleTicketUpdateSubmit = async function(e) {
+    e.preventDefault();
+    const id = document.getElementById('edit-ticket-id').value;
+    const status = document.getElementById('edit-ticket-status').value;
+    const repair_notes = document.getElementById('edit-ticket-notes').value.trim();
+    const repair_cost = parseFloat(document.getElementById('edit-ticket-cost').value) || 0;
+
+    try {
+      const res = await fetch(`${API_BASE}/tickets.php?id=${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status, repair_notes, repair_cost })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        showToast('บันทึกผลการซ่อมแซมและอัปเดตสถานะเรียบร้อยแล้ว!', 'success');
+        closeModal('ticket-edit-modal');
+        await loadServiceTicketsAdmin();
+      } else {
+        showToast('เกิดข้อผิดพลาด: ' + (data.error || 'ไม่สามารถอัปเดตได้'), 'error');
+      }
+    } catch (err) {
+      console.error(err);
+      showToast('เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์', 'error');
+    }
+  };
+
+  document.getElementById('ticket-filter-status')?.addEventListener('change', filterAndRenderTickets);
+  document.getElementById('ticket-search-input')?.addEventListener('input', filterAndRenderTickets);
+  document.getElementById('btn-refresh-tickets')?.addEventListener('click', loadServiceTicketsAdmin);
+
+  // Hook tab-tickets button click to load data
+  document.querySelector('[data-tab="tab-tickets"]')?.addEventListener('click', loadServiceTicketsAdmin);
 
   // Handle Logged-in Staff User Session
   const rawUser = sessionStorage.getItem('plumber_user');

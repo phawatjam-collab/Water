@@ -346,7 +346,7 @@ DROP TABLE IF EXISTS `tb_users`;
 CREATE TABLE `tb_users` (
   `user_id` int(4) unsigned zerofill NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL,
-  `password` varchar(32) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `fullname` varchar(100) NOT NULL,
   `role` varchar(20) NOT NULL DEFAULT 'staff',
   `cus_id` int(4) unsigned zerofill DEFAULT NULL,
