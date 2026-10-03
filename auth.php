@@ -265,7 +265,8 @@ function logoutUser() {
 
 /**
  * ตรวจสอบสิทธิ์การเข้าใช้งาน (RBAC Gatekeeper)
- * 4 บทบาทหลัก: admin, staff, member, user
+ * 3 บทบาทหลักที่ต้องยืนยันตัวตน: admin, staff, member
+ * (ผู้ใช้ทั่วไป / ประชาชน คือ Guest ไม่ต้องล็อกอิน สามารถเข้าถึงหน้าสาธารณะได้ทันที)
  * @param array $allowedRoles รายการ role ที่อนุญาต เช่น ['admin', 'staff']
  */
 function requireRole($allowedRoles = []) {
@@ -273,8 +274,8 @@ function requireRole($allowedRoles = []) {
 
     // 1. ยังไม่ได้เข้าสู่ระบบ (Guest Session)
     if (!$user) {
-        // หากหน้านั้นอนุญาต user หรือไม่ระบุ role แสดงว่าเปิดสาธารณะ
-        if (empty($allowedRoles) || in_array('user', $allowedRoles)) {
+        // หากหน้านั้นอนุญาต public/guest หรือไม่ระบุ role แสดงว่าเปิดสาธารณะ
+        if (empty($allowedRoles) || in_array('guest', $allowedRoles) || in_array('public', $allowedRoles) || in_array('user', $allowedRoles)) {
             return null;
         }
         renderAccessDeniedPage(null, $allowedRoles);
@@ -282,7 +283,7 @@ function requireRole($allowedRoles = []) {
     }
 
     // 2. ตรวจสอบสิทธิ์การเข้าถึง
-    $userRole = $user['role'] ?? 'user';
+    $userRole = $user['role'] ?? 'guest';
     if (in_array($userRole, ['finance', 'reader'])) {
         $userRole = 'staff';
     }
@@ -312,8 +313,7 @@ function renderAccessDeniedPage($user, $allowedRoles) {
     $rolesText = [
         'admin'  => 'ผู้ดูแลระบบ (Admin)',
         'staff'  => 'เจ้าหน้าที่การประปา (Staff)',
-        'member' => 'สมาชิกผู้ใช้น้ำ (Member)',
-        'user'   => 'ผู้ใช้ทั่วไป / ประชาชน (User)'
+        'member' => 'สมาชิกผู้ใช้น้ำ (Member)'
     ];
     $neededRoles = array_map(function($r) use ($rolesText) {
         return $rolesText[$r] ?? $r;

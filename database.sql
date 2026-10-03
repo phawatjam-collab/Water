@@ -364,7 +364,7 @@ CREATE TABLE `tb_users` (
 
 LOCK TABLES `tb_users` WRITE;
 /*!40000 ALTER TABLE `tb_users` DISABLE KEYS */;
-INSERT INTO `tb_users` VALUES (0001,'admin','81dc9bdb52d04dc20036dbd8313ed055','ผู้ดูแลระบบประปา','admin',NULL,'2026-09-29 17:54:38'),(0002,'staff','81dc9bdb52d04dc20036dbd8313ed055','เจ้าหน้าที่น้ำประปา','staff',NULL,'2026-09-29 17:54:38'),(0003,'member','81dc9bdb52d04dc20036dbd8313ed055','นายสมชาย ไชยรัก (สมาชิกประปา)','member',0002,'2026-09-29 17:54:38'),(0007,'user','81dc9bdb52d04dc20036dbd8313ed055','ประชาชนทั่วไป (User)','user',NULL,'2026-10-01 00:36:13');
+INSERT INTO `tb_users` VALUES (0001,'admin','81dc9bdb52d04dc20036dbd8313ed055','ผู้ดูแลระบบประปา','admin',NULL,'2026-09-29 17:54:38'),(0002,'staff','81dc9bdb52d04dc20036dbd8313ed055','เจ้าหน้าที่น้ำประปา','staff',NULL,'2026-09-29 17:54:38'),(0003,'member','81dc9bdb52d04dc20036dbd8313ed055','นายสมชาย ไชยรัก (สมาชิกประปา)','member',0002,'2026-09-29 17:54:38');
 /*!40000 ALTER TABLE `tb_users` ENABLE KEYS */;
 UNLOCK TABLES;
 
