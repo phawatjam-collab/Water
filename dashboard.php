@@ -746,7 +746,12 @@ $currentUser = requireRole(['admin']);
             </select>
             <input type="text" id="ticket-search-input" class="form-input" placeholder="🔍 ค้นหารหัส, ผู้แจ้ง หรือเบอร์โทร..." style="min-width: 250px;">
           </div>
-          <button type="button" class="btn btn-outline" id="btn-refresh-tickets">🔄 รีเฟรชรายการ</button>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" class="btn btn-outline" id="btn-line-settings" onclick="openLineSettingsModal()" style="border-color: #06c755; color: #16a34a; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
+              <span>📲</span> ตั้งค่า LINE Notify
+            </button>
+            <button type="button" class="btn btn-outline" id="btn-refresh-tickets">🔄 รีเฟรชรายการ</button>
+          </div>
         </div>
 
         <div class="card table-card">
@@ -755,12 +760,13 @@ $currentUser = requireRole(['admin']);
               <thead>
                 <tr>
                   <th width="120">รหัสคำร้อง</th>
-                  <th width="140">วันที่แจ้ง</th>
+                  <th width="130">วันที่แจ้ง</th>
                   <th>ผู้แจ้งเหตุ</th>
                   <th width="120">เบอร์โทรศัพท์</th>
                   <th>สถานที่ / โซน</th>
                   <th>ประเภทคำร้อง</th>
                   <th>รายละเอียดอาการ</th>
+                  <th width="70" class="text-center">รูปถ่าย</th>
                   <th width="130" class="text-center">สถานะ</th>
                   <th width="120" class="text-center no-print">จัดการ</th>
                 </tr>
@@ -925,6 +931,52 @@ $currentUser = requireRole(['admin']);
             <div class="form-actions text-right">
               <button type="button" class="btn btn-outline" onclick="closeModal('ticket-edit-modal')">ยกเลิก</button>
               <button type="submit" class="btn btn-primary">💾 บันทึกผลการซ่อม</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for LINE Notify Settings -->
+  <div class="modal" id="line-notify-modal">
+    <div class="modal-dialog" style="max-width: 520px;">
+      <div class="modal-content">
+        <div class="modal-header" style="background: #06c755; color: #fff;">
+          <h3 style="margin: 0; font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+            <span>📲</span> ตั้งค่าการแจ้งเตือน LINE Notify
+          </h3>
+          <button class="modal-close" onclick="closeModal('line-notify-modal')" style="color: #fff; background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
+        </div>
+        <div class="modal-body" style="padding: 20px;">
+          <form id="line-notify-form" onsubmit="handleLineSettingsSubmit(event)">
+            <p style="font-size: 13.5px; color: #475569; margin-top: 0; line-height: 1.5;">
+              เมื่อชาวบ้านส่งคำร้องแจ้งท่อแตก น้ำรั่ว หรือมาตรวัดน้ำชำรุด ระบบจะส่งข้อความและรูปถ่ายแจ้งเตือนเข้ากลุ่ม LINE ของเจ้าหน้าที่ประปาอัตโนมัติทันที
+            </p>
+
+            <div class="form-group" style="margin-bottom: 14px;">
+              <label class="form-label" style="font-weight: 600;">สถานะระบบแจ้งเตือน:</label>
+              <select id="line-setting-enabled" class="form-select">
+                <option value="1">🟢 เปิดใช้งานระบบแจ้งเตือน LINE (Enabled)</option>
+                <option value="0">🔴 ปิดการแจ้งเตือนชั่วคราว (Disabled)</option>
+              </select>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 14px;">
+              <label class="form-label" style="font-weight: 600;">LINE Notify Access Token:</label>
+              <input type="password" id="line-setting-token" class="form-input" placeholder="กรอก Token จาก notify-bot.line.me">
+              <span id="line-token-status" style="font-size: 12.5px; color: #64748b; display: block; margin-top: 4px;">* กำลังตรวจสอบสถานะ Token...</span>
+            </div>
+
+            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px 14px; margin-bottom: 16px; font-size: 13px; color: #166534; line-height: 1.5;">
+              💡 <strong>วิธีรับ Token:</strong> เข้าเว็บไซต์ <a href="https://notify-bot.line.me" target="_blank" style="color: #06c755; font-weight: 700;">notify-bot.line.me</a> &rarr; เข้าสู่ระบบด้วย LINE &rarr; เมนู My page &rarr; กด <em>Generate token</em> &rarr; เลือกห้องแชท/กลุ่มช่างที่ต้องการ &rarr; คัดลอก Token มาวางที่นี่
+            </div>
+
+            <div class="form-actions text-right" style="display: flex; justify-content: flex-end; gap: 8px;">
+              <button type="button" class="btn btn-outline" onclick="closeModal('line-notify-modal')">ปิด</button>
+              <button type="submit" class="btn btn-primary" style="background: #06c755; border-color: #06c755; font-weight: 600;" id="btn-save-line-settings">
+                💾 บันทึกและทดสอบส่งแจ้งเตือน
+              </button>
             </div>
           </form>
         </div>

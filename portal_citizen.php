@@ -209,6 +209,7 @@ $currentUser = getCurrentUser();
                   <th>ผู้แจ้ง</th>
                   <th>ประเภทคำร้อง</th>
                   <th>สถานที่ / จุดสังเกต</th>
+                  <th width="80" class="text-center">รูปถ่าย</th>
                   <th width="120" class="text-center">สถานะ</th>
                   <th>บันทึกจากเจ้าหน้าที่</th>
                 </tr>
@@ -255,13 +256,22 @@ $currentUser = getCurrentUser();
               <label class="form-label">สถานที่ / จุดสังเกต (บ้านเลขที่ / ซอย):</label>
               <input type="text" class="form-input" id="req-location" required placeholder="เช่น หน้าบ้านเลขที่ 25 ซอยวัดเหนือ">
             </div>
-            <div class="form-group" style="margin-bottom: 14px;">
+            <div class="form-group" style="margin-bottom: 12px;">
               <label class="form-label">รายละเอียดเพิ่มเติม:</label>
               <textarea class="form-input" id="req-details" rows="3" placeholder="ระบุรายละเอียดอาการที่พบ..."></textarea>
             </div>
+            <div class="form-group" style="margin-bottom: 14px;">
+              <label class="form-label">📸 แนบรูปถ่ายจุดเกิดเหตุ (ท่อแตก / น้ำรั่ว / หน้าปัดมิเตอร์):</label>
+              <input type="file" id="req-photo" class="form-input" accept="image/*" style="padding: 6px 10px;" onchange="previewTicketImage(this)">
+              <div id="photo-preview-container" style="display: none; margin-top: 8px; text-align: center; background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px dashed #cbd5e1;">
+                <img id="photo-preview-img" src="" alt="ตัวอย่างรูปภาพ" style="max-height: 140px; max-width: 100%; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.08);">
+                <button type="button" onclick="clearPhotoPreview()" style="display: block; margin: 6px auto 0; font-size: 12.5px; color: #dc2626; background: none; border: none; cursor: pointer; font-weight: 600;">❌ ลบรูปภาพ</button>
+              </div>
+              <span style="font-size: 12px; color: #64748b; display: block; margin-top: 4px;">* รองรับไฟล์ภาพ JPG, PNG, WEBP ขนาดไม่เกิน 5 MB</span>
+            </div>
             <div class="form-actions text-right">
               <button type="button" class="btn btn-outline" onclick="closeModal('service-request-modal')">ยกเลิก</button>
-              <button type="submit" class="btn btn-primary" id="btn-submit-ticket">ส่งคำร้องเข้าระบบ</button>
+              <button type="submit" class="btn btn-primary" id="btn-submit-ticket">🚀 ส่งคำร้องเข้าระบบ</button>
             </div>
           </form>
         </div>
@@ -444,38 +454,67 @@ $currentUser = getCurrentUser();
       document.getElementById(id).classList.remove('show');
     }
 
+    function previewTicketImage(input) {
+      const container = document.getElementById('photo-preview-container');
+      const img = document.getElementById('photo-preview-img');
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          img.src = e.target.result;
+          container.style.display = 'block';
+        };
+        reader.readAsDataURL(input.files[0]);
+      } else {
+        clearPhotoPreview();
+      }
+    }
+
+    function clearPhotoPreview() {
+      const input = document.getElementById('req-photo');
+      const container = document.getElementById('photo-preview-container');
+      const img = document.getElementById('photo-preview-img');
+      if (input) input.value = '';
+      if (img) img.src = '';
+      if (container) container.style.display = 'none';
+    }
+
     async function handleServiceSubmit(e) {
       e.preventDefault();
       const btn = document.getElementById('btn-submit-ticket');
       const originalText = btn.textContent;
       btn.disabled = true;
-      btn.textContent = '⏳ กำลังส่งข้อมูล...';
+      btn.textContent = '⏳ กำลังส่งข้อมูลและอัปโหลดรูปภาพ...';
 
-      const payload = {
-        issue_type: document.getElementById('form-service-topic').value,
-        reporter_name: document.getElementById('req-name').value.trim(),
-        phone: document.getElementById('req-phone').value.trim(),
-        zone: document.getElementById('req-zone').value,
-        house_no: document.getElementById('req-location').value.trim(),
-        description: document.getElementById('req-details').value.trim()
-      };
+      const formData = new FormData();
+      formData.append('issue_type', document.getElementById('form-service-topic').value);
+      formData.append('reporter_name', document.getElementById('req-name').value.trim());
+      formData.append('phone', document.getElementById('req-phone').value.trim());
+      formData.append('zone', document.getElementById('req-zone').value);
+      formData.append('house_no', document.getElementById('req-location').value.trim());
+      formData.append('description', document.getElementById('req-details').value.trim());
+
+      const photoInput = document.getElementById('req-photo');
+      if (photoInput && photoInput.files && photoInput.files[0]) {
+        formData.append('photo', photoInput.files[0]);
+      }
 
       try {
         const res = await fetch('api/tickets.php', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+          body: formData
         });
         const data = await res.json();
         if (res.ok && data.success) {
-          alert(`✅ ${data.message}`);
+          let lineNotice = data.line_notified ? '\n📲 ระบบส่งการแจ้งเตือนด่วนเข้า LINE เจ้าหน้าที่แล้ว' : '';
+          alert(`✅ ${data.message}${lineNotice}`);
           closeModal('service-request-modal');
           e.target.reset();
+          clearPhotoPreview();
 
           // Auto-track the newly submitted ticket
           const trackInput = document.getElementById('track-ticket-input');
           if (trackInput) {
-            trackInput.value = payload.phone;
+            trackInput.value = formData.get('phone');
             trackServiceTickets();
           }
         } else {
@@ -500,7 +539,7 @@ $currentUser = getCurrentUser();
         return;
       }
 
-      tbody.innerHTML = '<tr><td colspan="7" class="text-center" style="padding: 16px;">กำลังค้นหาข้อมูล...</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="8" class="text-center" style="padding: 16px;">กำลังค้นหาข้อมูล...</td></tr>';
       resultsDiv.style.display = 'block';
 
       try {
@@ -509,7 +548,7 @@ $currentUser = getCurrentUser();
         const tickets = data.tickets || [];
 
         if (tickets.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="7" class="text-center" style="padding: 20px; color: #64748b;">ไม่พบข้อมูลคำร้องที่ตรงกับคำค้นหา</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="8" class="text-center" style="padding: 20px; color: #64748b;">ไม่พบข้อมูลคำร้องที่ตรงกับคำค้นหา</td></tr>';
           return;
         }
 
@@ -523,6 +562,10 @@ $currentUser = getCurrentUser();
             badgeHtml = '<span class="badge" style="background: #d1fae5; color: #047857; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">🟢 แก้ไขเรียบร้อย</span>';
           }
 
+          const photoHtml = t.photo_url 
+            ? `<a href="${t.photo_url}" target="_blank" title="คลิกดูภาพขยาย"><img src="${t.photo_url}" style="width: 44px; height: 44px; object-fit: cover; border-radius: 6px; border: 1px solid #cbd5e1; cursor: pointer;"></a>`
+            : '<span class="text-muted" style="font-size: 12px;">ไม่มี</span>';
+
           return `
             <tr>
               <td><strong>${t.ticket_no}</strong></td>
@@ -530,6 +573,7 @@ $currentUser = getCurrentUser();
               <td>${t.reporter_name} (${t.phone})</td>
               <td>${t.issue_type}</td>
               <td>${t.house_no} (${t.zone})</td>
+              <td class="text-center">${photoHtml}</td>
               <td class="text-center">${badgeHtml}</td>
               <td style="color: #475569;">${t.repair_notes || (t.status === 'RESOLVED' ? 'ซ่อมแซมเสร็จสมบูรณ์' : 'อยู่ระหว่างประสานงานช่าง')}</td>
             </tr>
@@ -538,7 +582,7 @@ $currentUser = getCurrentUser();
 
       } catch (err) {
         console.error(err);
-        tbody.innerHTML = '<tr><td colspan="7" class="text-center" style="padding: 20px; color: #dc2626;">เกิดข้อผิดพลาดในการดึงข้อมูลคำร้อง</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="8" class="text-center" style="padding: 20px; color: #dc2626;">เกิดข้อผิดพลาดในการดึงข้อมูลคำร้อง</td></tr>';
       }
     }
 

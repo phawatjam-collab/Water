@@ -1328,7 +1328,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
 
     if (filtered.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="9" class="text-center" style="padding: 24px; color: #64748b;">ไม่พบรายการคำร้องแจ้งซ่อม</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="10" class="text-center" style="padding: 24px; color: #64748b;">ไม่พบรายการคำร้องแจ้งซ่อม</td></tr>';
       return;
     }
 
@@ -1342,6 +1342,10 @@ window.addEventListener('DOMContentLoaded', async () => {
         badgeHtml = '<span class="badge" style="background: #d1fae5; color: #047857; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">🟢 แก้ไขเรียบร้อย</span>';
       }
 
+      const photoHtml = t.photo_url 
+        ? `<a href="${t.photo_url}" target="_blank" title="คลิกดูภาพขยาย"><img src="${t.photo_url}" style="width: 44px; height: 44px; object-fit: cover; border-radius: 6px; border: 1px solid #cbd5e1; cursor: pointer; transition: transform 0.15s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"></a>`
+        : '<span class="text-muted" style="font-size: 12px;">ไม่มี</span>';
+
       return `
         <tr>
           <td><strong style="color: #0284c7;">${t.ticket_no}</strong></td>
@@ -1351,6 +1355,7 @@ window.addEventListener('DOMContentLoaded', async () => {
           <td>${t.house_no} <br><small class="text-muted">${t.zone}</small></td>
           <td><span style="font-weight: 600; color: #334155;">${t.issue_type}</span></td>
           <td style="max-width: 250px; font-size: 13px;">${t.description || '-'}</td>
+          <td class="text-center">${photoHtml}</td>
           <td class="text-center">${badgeHtml}</td>
           <td class="text-center no-print">
             <button type="button" class="btn btn-outline btn-sm btn-edit-ticket" data-id="${t.id}" style="padding: 4px 10px; font-size: 12.5px;">
@@ -1369,10 +1374,13 @@ window.addEventListener('DOMContentLoaded', async () => {
         if (ticket) {
           document.getElementById('edit-ticket-id').value = ticket.id;
           document.getElementById('edit-ticket-no').value = ticket.ticket_no;
+          let photoPreviewHtml = ticket.photo_url 
+            ? `<div style="margin-top: 8px;"><a href="${ticket.photo_url}" target="_blank" title="คลิกดูภาพขนาดเต็ม"><img src="${ticket.photo_url}" style="max-height: 130px; border-radius: 6px; border: 1px solid #cbd5e1; box-shadow: 0 2px 4px rgba(0,0,0,0.05);"></a><br><small style="color: #64748b;">(คลิกที่รูปเพื่อเปิดดูภาพขนาดเต็ม)</small></div>`
+            : '';
           document.getElementById('edit-ticket-summary').innerHTML = `
             <strong>ผู้แจ้ง:</strong> ${ticket.reporter_name} (โทร ${ticket.phone})<br>
             <strong>เรื่อง:</strong> ${ticket.issue_type} | <strong>สถานที่:</strong> ${ticket.house_no} (${ticket.zone})<br>
-            <strong>อาการ:</strong> ${ticket.description || '-'}
+            <strong>อาการ:</strong> ${ticket.description || '-'}${photoPreviewHtml}
           `;
           document.getElementById('edit-ticket-status').value = ticket.status;
           document.getElementById('edit-ticket-notes').value = ticket.repair_notes || '';
@@ -1407,6 +1415,68 @@ window.addEventListener('DOMContentLoaded', async () => {
     } catch (err) {
       console.error(err);
       showToast('เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์', 'error');
+    }
+  };
+
+  window.openLineSettingsModal = async function() {
+    try {
+      const res = await fetch(`${API_BASE}/tickets.php?action=get_line_settings`);
+      const data = await res.json();
+      const tokenInput = document.getElementById('line-setting-token');
+      const statusSpan = document.getElementById('line-token-status');
+      const enabledSelect = document.getElementById('line-setting-enabled');
+
+      if (enabledSelect) enabledSelect.value = String(data.enabled ?? 1);
+      if (data.has_token) {
+        tokenInput.value = '';
+        tokenInput.placeholder = `Token ปัจจุบัน: ${data.token}`;
+        statusSpan.innerHTML = `🟢 มีการบันทึก Token เรียบร้อยแล้ว (หากไม่ต้องการเปลี่ยน ให้เว้นว่างไว้)`;
+      } else {
+        tokenInput.value = '';
+        tokenInput.placeholder = 'กรอก Token จาก notify-bot.line.me';
+        statusSpan.innerHTML = `⚪ ยังไม่มีการตั้งค่า Token`;
+      }
+      openModal('line-notify-modal');
+    } catch (e) {
+      console.error(e);
+      openModal('line-notify-modal');
+    }
+  };
+
+  window.handleLineSettingsSubmit = async function(e) {
+    e.preventDefault();
+    const tokenVal = document.getElementById('line-setting-token').value.trim();
+    const enabledVal = document.getElementById('line-setting-enabled').value;
+    const btn = document.getElementById('btn-save-line-settings');
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = '⏳ กำลังบันทึกและทดสอบ...';
+
+    try {
+      const res = await fetch(`${API_BASE}/tickets.php?action=save_line_settings`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          token: tokenVal ? tokenVal : 'KEEP_CURRENT',
+          enabled: parseInt(enabledVal, 10)
+        })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        showToast(data.message, 'success');
+        if (data.test_result && data.test_result.success) {
+          showToast('📲 ส่งข้อความทดสอบเข้า LINE เรียบร้อยแล้ว!', 'success');
+        }
+        closeModal('line-notify-modal');
+      } else {
+        showToast('❌ ไม่สามารถบันทึกได้: ' + (data.error || 'กรุณาลองใหม่'), 'error');
+      }
+    } catch (err) {
+      console.error(err);
+      showToast('❌ เกิดข้อผิดพลาดในการเชื่อมต่อ', 'error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = originalText;
     }
   };
 

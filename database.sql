@@ -229,6 +229,7 @@ CREATE TABLE `service_tickets` (
   `zone` varchar(100) NOT NULL,
   `issue_type` varchar(50) NOT NULL,
   `description` text DEFAULT NULL,
+  `photo_url` varchar(255) DEFAULT NULL,
   `status` varchar(30) DEFAULT 'PENDING',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `resolved_at` timestamp NULL DEFAULT NULL,
@@ -245,8 +246,30 @@ CREATE TABLE `service_tickets` (
 
 LOCK TABLES `service_tickets` WRITE;
 /*!40000 ALTER TABLE `service_tickets` DISABLE KEYS */;
-INSERT INTO `service_tickets` VALUES (1,'TK-2567-0801','นายสมพร ใจกล้า','081-999-1234','15/2 หมู่ 3','โซนเหนือ - ซอย 1','ท่อเมนแตก/รั่ว','มีน้ำเอ่อล้นบริเวณหน้าบ้าน คาดว่าข้อต่อท่อ PVC แตกใต้ดิน','PENDING','2026-09-27 16:34:22',NULL,NULL,0.00),(2,'TK-2567-0802','นางบัวลอย บุญมี','089-777-5544','22 หมู่ 3','โซนกลาง - ซอยวัด','น้ำไม่ไหล/ไหลอ่อน','น้ำประปาไหลอ่อนมากตั้งแต่ช่วงเช้า','IN_PROGRESS','2026-09-27 16:34:22',NULL,NULL,0.00),(3,'TK-2567-0803','นายคำดี รุ่งเรือง','086-444-8899','40 หมู่ 3','โซนใต้ - ท้ายบ้าน','มาตรวัดน้ำชำรุด','หน้าปัดมิเตอร์แตก ตัวเลขไม่เดิน','RESOLVED','2026-09-27 16:34:22',NULL,NULL,0.00),(4,'TK-20260927-377','นายสมพร นครพนม','0819876543','12/1 หมู่ 3','โซนเหนือ','ท่อแตก/รั่ว','ท่อเมนหน้าบ้านแตก น้ำพุ่งท่วมทางเข้า','PENDING','2026-09-27 16:41:08',NULL,NULL,0.00);
+INSERT INTO `service_tickets` VALUES (1,'TK-2567-0801','นายสมพร ใจกล้า','081-999-1234','15/2 หมู่ 3','โซนเหนือ - ซอย 1','ท่อเมนแตก/รั่ว','มีน้ำเอ่อล้นบริเวณหน้าบ้าน คาดว่าข้อต่อท่อ PVC แตกใต้ดิน',NULL,'PENDING','2026-09-27 16:34:22',NULL,NULL,0.00),(2,'TK-2567-0802','นางบัวลอย บุญมี','089-777-5544','22 หมู่ 3','โซนกลาง - ซอยวัด','น้ำไม่ไหล/ไหลอ่อน','น้ำประปาไหลอ่อนมากตั้งแต่ช่วงเช้า',NULL,'IN_PROGRESS','2026-09-27 16:34:22',NULL,NULL,0.00),(3,'TK-2567-0803','นายคำดี รุ่งเรือง','086-444-8899','40 หมู่ 3','โซนใต้ - ท้ายบ้าน','มาตรวัดน้ำชำรุด','หน้าปัดมิเตอร์แตก ตัวเลขไม่เดิน',NULL,'RESOLVED','2026-09-27 16:34:22',NULL,NULL,0.00),(4,'TK-20260927-377','นายสมพร นครพนม','0819876543','12/1 หมู่ 3','โซนเหนือ','ท่อแตก/รั่ว','ท่อเมนหน้าบ้านแตก น้ำพุ่งท่วมทางเข้า',NULL,'PENDING','2026-09-27 16:41:08',NULL,NULL,0.00);
 /*!40000 ALTER TABLE `service_tickets` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `system_settings`
+--
+
+DROP TABLE IF EXISTS `system_settings`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `system_settings` (
+  `setting_key` varchar(50) NOT NULL,
+  `setting_value` text DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`setting_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+LOCK TABLES `system_settings` WRITE;
+/*!40000 ALTER TABLE `system_settings` DISABLE KEYS */;
+INSERT INTO `system_settings` VALUES ('line_notify_token','','LINE Notify Bearer Token สำหรับแจ้งเตือนคำร้อง',NOW()),('line_notify_enabled','1','เปิด/ปิดระบบแจ้งเตือน LINE (1=เปิด, 0=ปิด)',NOW()),('system_name','การประปาหมู่บ้านวังยาง','ชื่อหน่วยงานประปา',NOW());
+/*!40000 ALTER TABLE `system_settings` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
