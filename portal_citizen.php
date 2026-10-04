@@ -23,6 +23,7 @@ $currentUser = getCurrentUser();
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <?php renderPwaHead(); ?>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     .citizen-hero-box {
