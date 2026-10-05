@@ -136,8 +136,8 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
         <p style="opacity: 0.9; font-size: 13.5px; margin: 0 0 10px 0;">
           สแกน QR บนมิเตอร์ หรือคีย์เลขครั้งหลัง ระบบคำนวณเงินทันที พร้อมรองรับการนำเข้าไฟล์ Excel/CSV
         </p>
-        <button type="button" onclick="openStaffGuideModal()" style="background: rgba(255,255,255,0.2); color: #fff; border: 1px solid rgba(255,255,255,0.4); font-size: 12.5px; font-weight: 600; padding: 5px 12px; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
-          📖 วิธีจดมิเตอร์ & คู่มือพนักงาน
+        <button type="button" onclick="openAddCustomerModal()" style="background: #ffffff; color: #0284c7; border: none; font-size: 13.5px; font-weight: 700; padding: 7px 16px; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
+          ➕ เพิ่มผู้ใช้น้ำ / ติดตั้งมิเตอร์ใหม่
         </button>
       </div>
 
@@ -152,73 +152,6 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; margin-top: 6px; opacity: 0.85;">
           <span id="field-count-pending">ยังไม่จด: 0 หลัง</span>
           <span id="field-count-done">จดแล้ว: 0 หลัง</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Quick SOP Staff Guide Accordion/Card -->
-    <div class="card no-print" style="margin-bottom: 20px; border-left: 5px solid #0284c7; background: #fff;">
-      <div style="padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="toggleQuickGuide()">
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <span style="font-size: 24px;">📖</span>
-          <div>
-            <h3 style="margin: 0; font-size: 15.5px; font-weight: 700; color: #0f172a; font-family: 'Prompt', sans-serif;">
-              คู่มือแนะนำ: วิธีจดมิเตอร์น้ำภาคสนาม 4 ขั้นตอน (สำหรับเจ้าหน้าที่)
-            </h3>
-            <span style="font-size: 13px; color: #64748b;">
-              สรุปขั้นตอนการทำงานหน้างาน วิธีอ่านหน้าปัดมิเตอร์จริง และระบบช่วยคำนวณอัตโนมัติ
-            </span>
-          </div>
-        </div>
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <button type="button" class="btn btn-outline" onclick="event.stopPropagation(); openStaffGuideModal();" style="font-size: 12.5px; padding: 5px 12px; border-radius: 6px; font-weight: 600; color: #0284c7; border-color: #38bdf8; background: #f0f9ff;">
-            🔍 เปิดคู่มือฉบับเต็ม
-          </button>
-          <span id="quick-guide-arrow" style="font-size: 16px; color: #64748b; transition: transform 0.2s;">▼</span>
-        </div>
-      </div>
-
-      <div id="quick-guide-content" style="display: block; padding: 0 20px 18px 20px; border-top: 1px solid #f1f5f9; margin-top: 4px;">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; margin-top: 14px;">
-          <!-- Step 1 -->
-          <div class="sop-step-card">
-            <span class="sop-step-num">01</span>
-            <div style="font-size: 20px; margin-bottom: 4px;">🎯</div>
-            <strong style="font-size: 14px; color: #0f172a; display: block; margin-bottom: 3px;">1. เลือกงวด & โซนเดินจด</strong>
-            <p style="font-size: 12.5px; color: #64748b; margin: 0; line-height: 1.4;">
-              เลือกงวดเดือนปัจจุบัน และกรองคุ้ม/โซนที่รับผิดชอบ หรือคลิกแท็บ <strong>"⏳ ยังไม่จด"</strong> เพื่อเก็บตกหลังที่ค้าง
-            </p>
-          </div>
-
-          <!-- Step 2 -->
-          <div class="sop-step-card">
-            <span class="sop-step-num">02</span>
-            <div style="font-size: 20px; margin-bottom: 4px;">🔍</div>
-            <strong style="font-size: 14px; color: #0f172a; display: block; margin-bottom: 3px;">2. อ่านหน้าปัดมิเตอร์จริง</strong>
-            <p style="font-size: 12.5px; color: #64748b; margin: 0; line-height: 1.4;">
-              จดเฉพาะ <strong style="color: #000;">ตัวเลขสีดำ</strong> (ลูกบาศก์เมตร) ตัวเลขสีแดง/เข็มหมุนคือลิตร (จดเป็นทศนิยมหรือปัดเศษ)
-            </p>
-          </div>
-
-          <!-- Step 3 -->
-          <div class="sop-step-card">
-            <span class="sop-step-num">03</span>
-            <div style="font-size: 20px; margin-bottom: 4px;">📱</div>
-            <strong style="font-size: 14px; color: #0f172a; display: block; margin-bottom: 3px;">3. บันทึกเลขหน้างาน</strong>
-            <p style="font-size: 12.5px; color: #64748b; margin: 0; line-height: 1.4;">
-              สแกน QR หน้าบ้าน <strong>(เร็วสุด)</strong> หรือคีย์เลขแล้วกด <kbd style="background:#e2e8f0; padding:1px 4px; border-radius:3px;">Enter</kbd> เลื่อนแถวอัตโนมัติ
-            </p>
-          </div>
-
-          <!-- Step 4 -->
-          <div class="sop-step-card">
-            <span class="sop-step-num">04</span>
-            <div style="font-size: 20px; margin-bottom: 4px;">⚠️</div>
-            <strong style="font-size: 14px; color: #0f172a; display: block; margin-bottom: 3px;">4. ตรวจสอบ & ส่งต่อ</strong>
-            <p style="font-size: 12.5px; color: #64748b; margin: 0; line-height: 1.4;">
-              ระบบจะเตือนหากใช้น้ำพุ่งสูง (>35 หน่วย) หรือเลขน้อยกว่าเดิม เมื่อจดครบส่งต่องานให้ฝ่ายการเงินออกบิล
-            </p>
-          </div>
         </div>
       </div>
     </div>
@@ -260,9 +193,9 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
       <!-- Row 2: Action Buttons (Guide, QR Scanner, CSV Import/Export, Save, Print) -->
       <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 10px;">
         <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
-          <!-- 0. Staff Guide Button -->
-          <button type="button" class="btn btn-outline" onclick="openStaffGuideModal()" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 600; color: #0284c7; border-color: #38bdf8; background: #f0f9ff;">
-            📖 วิธีจดมิเตอร์
+          <!-- 0. Add Customer Button -->
+          <button type="button" class="btn btn-primary" onclick="openAddCustomerModal()" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 700; background: #0284c7; box-shadow: 0 2px 6px rgba(2, 132, 199, 0.3);">
+            ➕ เพิ่มผู้ใช้น้ำ / มิเตอร์ใหม่
           </button>
 
           <!-- 1. QR Code Camera Scanner Button -->
@@ -452,234 +385,99 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
   </div>
 
   <!-- =========================================================
-       Modal 3: Staff Guide & Operating Procedure (คู่มือการจดมิเตอร์)
+       Modal 3: Add Customer & Meter (เพิ่มข้อมูลผู้ใช้น้ำใหม่)
        ========================================================= -->
-  <div id="modal-staff-guide" class="modal" style="display: none; align-items: center; justify-content: center;">
-    <div class="modal-dialog" style="max-width: 840px; width: 95%; max-height: 90vh; display: flex; flex-direction: column;">
+  <div id="modal-add-customer" class="modal" style="display: none; align-items: center; justify-content: center;">
+    <div class="modal-dialog" style="max-width: 520px; width: 95%;">
       <div class="modal-header" style="background: #0f172a; color: #fff; padding: 16px 20px;">
         <div style="display: flex; align-items: center; gap: 10px;">
-          <div style="background: #0284c7; font-size: 20px; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">📖</div>
+          <div style="background: #0284c7; font-size: 20px; width: 38px; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">➕</div>
           <div>
-            <h4 style="margin: 0; font-size: 16.5px; font-weight: 700; color: #38bdf8;">คู่มือขั้นตอนการจดมิเตอร์น้ำภาคสนาม (แบบ ป.17)</h4>
-            <span style="font-size: 12.5px; color: #94a3b8;">แนวทางการปฏิบัติงาน วิธีอ่านหน้าปัดมิเตอร์ และการรับมือกรณีพิเศษสำหรับเจ้าหน้าที่</span>
+            <h4 style="margin: 0; font-size: 16.5px; font-weight: 700; color: #38bdf8;">เพิ่มข้อมูลผู้ใช้น้ำ & ติดตั้งมิเตอร์ใหม่</h4>
+            <span style="font-size: 12.5px; color: #94a3b8;">บันทึกข้อมูลลูกบ้านและสร้างมิเตอร์เข้าสู่ระบบทันที</span>
           </div>
         </div>
-        <button type="button" class="modal-close" onclick="closeStaffGuideModal()" style="color: #94a3b8; font-size: 24px; background: none; border: none; cursor: pointer;">&times;</button>
+        <button type="button" class="modal-close" onclick="closeAddCustomerModal()" style="color: #94a3b8; font-size: 24px; background: none; border: none; cursor: pointer;">&times;</button>
       </div>
 
-      <!-- Guide Tabs Navigation -->
-      <div style="display: flex; gap: 4px; background: #f1f5f9; padding: 8px 16px; border-bottom: 1px solid #e2e8f0; overflow-x: auto;">
-        <button type="button" class="guide-tab-btn active" id="gtab-btn-1" onclick="switchGuideTab(1)" style="padding: 8px 14px; border: none; border-radius: 6px; font-size: 13px; font-weight: 700; cursor: pointer; background: #0284c7; color: #fff; font-family: inherit; white-space: nowrap;">
-          🔍 1. วิธีอ่านหน้าปัดจริง
-        </button>
-        <button type="button" class="guide-tab-btn" id="gtab-btn-2" onclick="switchGuideTab(2)" style="padding: 8px 14px; border: none; border-radius: 6px; font-size: 13px; font-weight: 700; cursor: pointer; background: transparent; color: #64748b; font-family: inherit; white-space: nowrap;">
-          📱 2. 3 วิธีบันทึกหน้างาน
-        </button>
-        <button type="button" class="guide-tab-btn" id="gtab-btn-3" onclick="switchGuideTab(3)" style="padding: 8px 14px; border: none; border-radius: 6px; font-size: 13px; font-weight: 700; cursor: pointer; background: transparent; color: #64748b; font-family: inherit; white-space: nowrap;">
-          ⚠️ 3. กรณีมิเตอร์วนรอบ/ท่อรั่ว
-        </button>
-        <button type="button" class="guide-tab-btn" id="gtab-btn-4" onclick="switchGuideTab(4)" style="padding: 8px 14px; border: none; border-radius: 6px; font-size: 13px; font-weight: 700; cursor: pointer; background: transparent; color: #64748b; font-family: inherit; white-space: nowrap;">
-          🧮 4. สูตรคำนวณค่าน้ำ
-        </button>
-      </div>
+      <form id="form-add-customer" onsubmit="submitAddCustomer(event)">
+        <div class="modal-body" style="padding: 20px 24px; max-height: 75vh; overflow-y: auto;">
+          <div id="add-cust-alert" style="display: none; padding: 10px 14px; border-radius: 6px; font-size: 13.5px; margin-bottom: 14px;"></div>
 
-      <div class="modal-body" style="padding: 20px; overflow-y: auto; flex: 1;">
-        <!-- TAB 1: วิธีอ่านหน้าปัดจริง -->
-        <div id="guide-pane-1" class="guide-pane" style="display: block;">
-          <h3 style="font-size: 16px; color: #0284c7; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
-            <span>💧</span> ภาพจำลองหน้าปัดมาตรวัดน้ำจริง (Mechanical Water Meter)
-          </h3>
-
-          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 16px;">
-            <div class="meter-dial-sim">
-              <span style="font-size: 11px; font-weight: 700; color: #0369a1; letter-spacing: 0.5px;">💧 การประปาหมู่บ้านวังยาง</span>
-              <span style="font-size: 10px; color: #64748b;">CLASS B • ISO 4064</span>
-              
-              <div class="meter-counter-box">
-                <span class="digit-box digit-black">0</span>
-                <span class="digit-box digit-black">1</span>
-                <span class="digit-box digit-black">7</span>
-                <span class="digit-box digit-black">5</span>
-                <span class="digit-dot">.</span>
-                <span class="digit-box digit-red">4</span>
-                <span class="unit-label">m³</span>
-              </div>
-
-              <div style="font-size: 11px; color: #475569; margin-top: 10px; font-weight: 600;">
-                ตัวอย่าง: อ่านค่าได้ <span style="color: #0284c7; font-weight: 800; font-size: 13px;">175.4</span> ลบ.ม.
-              </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+            <div>
+              <label style="font-weight: 600; font-size: 13px; color: #334155; display: block; margin-bottom: 4px;">
+                ชื่อ (First Name) <span style="color: #ef4444;">*</span>
+              </label>
+              <input type="text" name="firstName" class="form-input" required placeholder="เช่น สมเกียรติ" style="width: 100%;">
             </div>
-
-            <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 10px; font-size: 13px;">
-              <div style="display: flex; align-items: center; gap: 6px;">
-                <span style="display: inline-block; width: 14px; height: 14px; background: #000; border-radius: 3px;"></span>
-                <strong>ตัวเลขสีดำ (Black) = ลูกบาศก์เมตร (หน่วยคิวที่นำมาคิดเงิน)</strong>
-              </div>
-              <div style="display: flex; align-items: center; gap: 6px;">
-                <span style="display: inline-block; width: 14px; height: 14px; background: #dc2626; border-radius: 3px;"></span>
-                <span style="color: #64748b;">ตัวเลขสีแดง (Red) = ทศนิยมลิตร (จดเป็นทศนิยม หรือปัดเศษ)</span>
-              </div>
+            <div>
+              <label style="font-weight: 600; font-size: 13px; color: #334155; display: block; margin-bottom: 4px;">
+                นามสกุล (Last Name) <span style="color: #ef4444;">*</span>
+              </label>
+              <input type="text" name="lastName" class="form-input" required placeholder="เช่น สุขใจ" style="width: 100%;">
             </div>
           </div>
 
-          <div style="background: #eff6ff; border-left: 4px solid #0284c7; padding: 12px 16px; border-radius: 6px; font-size: 13.5px; line-height: 1.5; color: #1e3a8a;">
-            <strong>📝 คำแนะนำการกรอกลงระบบ:</strong>
-            <ul style="margin: 6px 0 0 18px; padding: 0;">
-              <li>ให้นำตัวเลขที่อ่านได้ มากรอกลงในช่อง <strong>"เลขครั้งหลัง (กรอก)"</strong></li>
-              <li>สามารถกรอกทศนิยม 1 ตำแหน่งได้ เช่น <code>175.4</code> หรือกรอกเฉพาะเลขจำนวนเต็ม <code>175</code></li>
-              <li>ระบบจะดึง <strong>เลขครั้งก่อน</strong> ของเดือนที่แล้วมาหักลบให้อัตโนมัติทันที ไม่ต้องคำนวณมือ</li>
-            </ul>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+            <div>
+              <label style="font-weight: 600; font-size: 13px; color: #334155; display: block; margin-bottom: 4px;">
+                บ้านเลขที่ <span style="color: #ef4444;">*</span>
+              </label>
+              <input type="text" name="houseNo" class="form-input" required placeholder="เช่น 24/1 ม.3" style="width: 100%;">
+            </div>
+            <div>
+              <label style="font-weight: 600; font-size: 13px; color: #334155; display: block; margin-bottom: 4px;">
+                เบอร์โทรศัพท์
+              </label>
+              <input type="tel" name="phone" class="form-input" placeholder="เช่น 0812345678" style="width: 100%;">
+            </div>
           </div>
-        </div>
 
-        <!-- TAB 2: 3 วิธีบันทึกหน้างาน -->
-        <div id="guide-pane-2" class="guide-pane" style="display: none;">
-          <h3 style="font-size: 16px; color: #0284c7; margin-bottom: 14px;">
-            📱 3 วิธีการบันทึกข้อมูลหน้างานที่สะดวกรวดเร็ว (เลือกตามความถนัด)
-          </h3>
-
-          <div style="display: flex; flex-direction: column; gap: 14px;">
-            <!-- Method 1 -->
-            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 16px;">
-              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-                <h4 style="font-size: 15px; font-weight: 700; color: #166534; margin: 0;">
-                  📷 วิธีที่ 1: กล้องสแกน QR Code หน้าบ้าน (เร็วและแม่นยำที่สุด)
-                </h4>
-                <span class="badge badge-paid">แนะนำสูงสุด</span>
-              </div>
-              <p style="font-size: 13px; color: #15803d; margin: 0 0 8px 0; line-height: 1.45;">
-                เหมาะสำหรับพนักงานที่เดินจดด้วยมือถือหรือแท็บเล็ตหน้างานจริง
-              </p>
-              <ol style="font-size: 13px; color: #1e293b; margin: 0 0 0 18px; padding: 0; line-height: 1.5;">
-                <li>กดปุ่มสีเขียว <strong>"📷 สแกน QR มิเตอร์"</strong> หรือปุ่มลอยด้านล่างจอมือถือ</li>
-                <li>ส่องกล้องไปที่สติกเกอร์ QR Code ที่ติดอยู่บนมิเตอร์น้ำของบ้านนั้น</li>
-                <li>เมื่อตรวจพบ จะมีเสียงบี๊บ <code>Beep!</code> และมือถือจะสั่นเตือน</li>
-                <li>หน้าเว็บจะ <strong>เลื่อนไปยังแถวของลูกบ้านหลังนั้นตรงกลางจออัตโนมัติ</strong> พร้อมกะพริบสีเขียว และโฟกัสช่องกรอกเลขให้พิมพ์ได้ทันที</li>
-              </ol>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+            <div>
+              <label style="font-weight: 600; font-size: 13px; color: #334155; display: block; margin-bottom: 4px;">
+                โซน / คุ้มสายจด <span style="color: #ef4444;">*</span>
+              </label>
+              <select name="zoneId" class="form-select" required style="width: 100%;">
+                <option value="1">โซน 1 วังยางเหนือ</option>
+                <option value="2">โซน 2 วังยางกลาง</option>
+                <option value="3">โซน 3 วังยางใต้</option>
+              </select>
             </div>
-
-            <!-- Method 2 -->
-            <div style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; padding: 16px;">
-              <h4 style="font-size: 15px; font-weight: 700; color: #0369a1; margin: 0 0 6px 0;">
-                ⌨️ วิธีที่ 2: เดินคีย์ตามสายจดด้วยปุ่มลัด (Enter-to-Next-Row)
-              </h4>
-              <p style="font-size: 13px; color: #0284c7; margin: 0 0 8px 0; line-height: 1.45;">
-                เหมาะสำหรับพนักงานที่เดินจดตามลำดับบ้านในคุ้ม หรือคีย์บนแป้นพิมพ์คอมพิวเตอร์
-              </p>
-              <ol style="font-size: 13px; color: #1e293b; margin: 0 0 0 18px; padding: 0; line-height: 1.5;">
-                <li>รายชื่อลูกบ้านถูกเรียงตาม <strong>ลำดับสายเดินจด (Seq No)</strong> จากต้นซอยไปท้ายซอยเรียบร้อยแล้ว</li>
-                <li>เมื่อพิมพ์ตัวเลขบ้านแรกเสร็จ ให้กดปุ่ม <kbd style="background:#e2e8f0; padding:2px 6px; border-radius:4px; font-weight:700;">Enter</kbd> หรือ <kbd style="background:#e2e8f0; padding:2px 6px; border-radius:4px; font-weight:700;">↓</kbd></li>
-                <li>ระบบจะ <strong>บันทึกลงฐานข้อมูลและคำนวณค่าน้ำทันที</strong> พร้อมกระโดดไปยังช่องกรอกของบ้านถัดไปโดยอัตโนมัติ</li>
-              </ol>
+            <div>
+              <label style="font-weight: 600; font-size: 13px; color: #334155; display: block; margin-bottom: 4px;">
+                ขนาดมาตรวัดน้ำ
+              </label>
+              <select name="installTypeId" class="form-select" style="width: 100%;">
+                <option value="1">5/8 นิ้ว (บ้านพักอาศัยทั่วไป)</option>
+                <option value="2">1 นิ้ว (ร้านค้า/การเกษตร)</option>
+                <option value="3">1.5 นิ้ว (ขนาดใหญ่)</option>
+              </select>
             </div>
+          </div>
 
-            <!-- Method 3 -->
-            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px;">
-              <h4 style="font-size: 15px; font-weight: 700; color: #334155; margin: 0 0 6px 0;">
-                📊 วิธีที่ 3: จดใส่กระดาษ / นำเข้าไฟล์ Excel หรือ CSV แบบชุด (Batch Import)
-              </h4>
-              <p style="font-size: 13px; color: #64748b; margin: 0 0 8px 0; line-height: 1.45;">
-                เหมาะสำหรับกรณีที่ชอบจดใส่กระดาษหรือสัญญาณเน็ตไม่เสถียร
-              </p>
-              <ol style="font-size: 13px; color: #1e293b; margin: 0 0 0 18px; padding: 0; line-height: 1.5;">
-                <li>กดปุ่ม <strong>"🖨️ พิมพ์สมุดจด (ป.17)"</strong> เพื่อสั่งพิมพ์กระดาษนำไปเดินจดหน้างาน หรือกด <strong>"📤 ส่งออก Excel/CSV"</strong></li>
-                <li>นำตัวเลขที่ได้มากรอกลงในโปรแกรม Microsoft Excel ในคอลัมน์เลขครั้งหลัง</li>
-                <li>กดปุ่ม <strong>"📥 นำเข้าจาก Excel/CSV"</strong> ลากไฟล์มาวาง ระบบจะ Preview ตรวจสอบความถูกต้องและบันทึกอัปเดตทั้ง 20 หลังในครั้งเดียว</li>
-              </ol>
+          <div style="margin-bottom: 8px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px 14px;">
+            <label style="font-weight: 700; font-size: 13px; color: #166534; display: block; margin-bottom: 4px;">
+              🔢 เลขมิเตอร์เริ่มต้น (เลขครั้งก่อน)
+            </label>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <input type="number" step="0.1" min="0" name="initialReading" value="0.0" class="form-input" style="width: 140px; font-weight: 700; font-family: monospace; font-size: 15px; text-align: right;">
+              <span style="font-size: 13px; color: #15803d;">ลูกบาศก์เมตร (ลบ.ม.)</span>
             </div>
+            <span style="font-size: 12px; color: #15803d; display: block; margin-top: 4px;">
+              * หากเป็นมิเตอร์ใหม่ให้ใส่ 0.0 หรือหากเปลี่ยนมิเตอร์เดิมมาให้กรอกเลขหน้าปัดปัจจุบัน
+            </span>
           </div>
         </div>
 
-        <!-- TAB 3: กรณีพิเศษ & ตรวจจับท่อรั่ว -->
-        <div id="guide-pane-3" class="guide-pane" style="display: none;">
-          <h3 style="font-size: 16px; color: #dc2626; margin-bottom: 14px;">
-            ⚠️ การรับมือกรณีพิเศษหน้างานและการตรวจจับท่อแตกรั่ว
-          </h3>
-
-          <div style="display: flex; flex-direction: column; gap: 12px;">
-            <!-- Condition 1: Rollover -->
-            <div style="background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 14px;">
-              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                <span style="font-size: 18px;">🔄</span>
-                <strong style="color: #92400e; font-size: 14.5px;">1. กรณีมิเตอร์เดินวนรอบครบ 9999 แล้วเริ่ม 0000 ใหม่</strong>
-              </div>
-              <p style="font-size: 13px; color: #78350f; margin: 0; line-height: 1.45;">
-                ตัวอย่าง: เลขครั้งก่อนคือ <code>9980</code> แต่เลขครั้งหลังอ่านได้ <code>0015</code><br>
-                👉 <strong>ระบบคำนวณให้อัตโนมัติ:</strong> ระบบจะใช้สูตร <code>(10,000 - 9980) + 15 = 35 หน่วย</code> ให้เองทันที เจ้าหน้าที่สามารถคีย์เลข <code>15</code> ตามหน้าปัดได้ตามปกติ
-              </p>
-            </div>
-
-            <!-- Condition 2: Typo Alert -->
-            <div style="background: #fee2e2; border: 1px solid #fca5a5; border-radius: 8px; padding: 14px;">
-              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                <span style="font-size: 18px;">❌</span>
-                <strong style="color: #b91c1c; font-size: 14.5px;">2. กรณีเลขครั้งหลังน้อยกว่าครั้งก่อน (แจ้งเตือนคีย์ผิด)</strong>
-              </div>
-              <p style="font-size: 13px; color: #991b1b; margin: 0; line-height: 1.45;">
-                หากพิมพ์เลขครั้งหลังน้อยกว่าครั้งก่อน เช่น เลขเดิม 150 แต่คีย์ 140 ระบบจะแสดงแถบเตือนสีส้มทันที ให้เจ้าหน้าที่ตรวจทานว่าพิมพ์สลับหลักหรือดูมิเตอร์ผิดบ้านหรือไม่
-              </p>
-            </div>
-
-            <!-- Condition 3: Leak Alert -->
-            <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 14px;">
-              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                <span style="font-size: 18px;">🚨</span>
-                <strong style="color: #991b1b; font-size: 14.5px;">3. การตรวจจับท่อแตกรั่วภายในบ้าน (ใช้น้ำพุ่งสูงเกิน 35 หน่วย)</strong>
-              </div>
-              <p style="font-size: 13px; color: #7f1d1d; margin: 0; line-height: 1.45;">
-                โดยเฉลี่ยครัวเรือนในหมู่บ้านวังยางจะใช้น้ำประมาณ 10 - 20 หน่วย/เดือน หากระบบพบหน่วยใช้น้ำ <strong>มากกว่า 35 หน่วย</strong> จะขึ้นป้ายสีแดง <code>⚠️ ใช้น้ำพุ่งสูงผิดปกติ</code> แนะนำให้เจ้าหน้าที่สอบถามลูกบ้านทันทีว่ามีลูกลอยแทงก์น้ำค้าง หรือท่อฝังใต้ดินแตกรั่วหรือไม่
-              </p>
-            </div>
-          </div>
+        <div class="modal-footer" style="padding: 12px 20px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" class="btn btn-outline" onclick="closeAddCustomerModal()">ยกเลิก</button>
+          <button type="submit" class="btn btn-primary" id="btn-submit-add-cust" style="font-weight: 700; padding: 9px 22px; background: #0284c7;">
+            💾 บันทึกและเพิ่มเข้าสมุดจดทันที
+          </button>
         </div>
-
-        <!-- TAB 4: สูตรคำนวณค่าน้ำ -->
-        <div id="guide-pane-4" class="guide-pane" style="display: none;">
-          <h3 style="font-size: 16px; color: #0284c7; margin-bottom: 14px;">
-            🧮 สูตรคำนวณค่าน้ำประปาและการคิดเงิน (ตามระเบียบกองทุน)
-          </h3>
-
-          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
-            <div style="font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 10px;">
-              สูตรคำนวณมาตรฐาน:
-            </div>
-            <div style="background: #0f172a; color: #38bdf8; padding: 12px 16px; border-radius: 6px; font-family: monospace; font-size: 14px; font-weight: 700;">
-              ยอดรวมงวดนี้ = (หน่วยน้ำที่ใช้ × 7.00 บาท) + ค่าบำรุงรักษา 10.00 บาท + หนี้ค้างเก่า
-            </div>
-
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 14px; font-size: 13px;">
-              <div style="background: #fff; border: 1px solid #cbd5e1; padding: 10px 14px; border-radius: 6px;">
-                <strong>1. อัตราค่าน้ำประปา:</strong><br>
-                <span style="color: #0284c7; font-size: 16px; font-weight: 800;">7.00 ฿</span> / หน่วย (ลบ.ม.)
-              </div>
-              <div style="background: #fff; border: 1px solid #cbd5e1; padding: 10px 14px; border-radius: 6px;">
-                <strong>2. ค่าบำรุงรักษามาตรวัด:</strong><br>
-                <span style="color: #059669; font-size: 16px; font-weight: 800;">10.00 ฿</span> / เดือน / หลัง
-              </div>
-              <div style="background: #fff; border: 1px solid #cbd5e1; padding: 10px 14px; border-radius: 6px;">
-                <strong>3. ค้างชำระเดิม:</strong><br>
-                <span style="color: #dc2626; font-size: 16px; font-weight: 800;">ทบยอดอัตโนมัติ</span>
-              </div>
-            </div>
-          </div>
-
-          <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 14px; font-size: 13px;">
-            <strong>💡 ตัวอย่างการคำนวณจริง:</strong><br>
-            บ้านนายสมเกียรติ เลขครั้งก่อน <code>150.0</code> เลขครั้งหลัง <code>170.0</code><br>
-            - หน่วยน้ำที่ใช้ = 170.0 - 150.0 = <strong>20.0 หน่วย</strong><br>
-            - ค่าน้ำดิบ = 20 หน่วย × 7 บาท = <strong>140.00 บาท</strong><br>
-            - ค่าบำรุงรักษามิเตอร์ = <strong>10.00 บาท</strong><br>
-            - ยอดค้างเก่า = <strong>0.00 บาท</strong><br>
-            👉 <strong>ยอดเงินที่เรียกเก็บงวดนี้ = 140.00 + 10.00 = 150.00 บาท</strong>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal-footer" style="padding: 12px 20px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end;">
-        <button type="button" class="btn btn-primary" onclick="closeStaffGuideModal()" style="font-weight: 600; padding: 8px 24px;">
-          เข้าใจแล้ว / ปิดหน้าต่างคู่มือ
-        </button>
-      </div>
+      </form>
     </div>
   </div>
 
@@ -692,6 +490,10 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
       <div style="font-size: 11px; opacity: 0.8;">ความคืบหน้า:</div>
       <strong id="fab-progress-text" style="font-size: 13px; color: #38bdf8;">0/0 (0%)</strong>
     </div>
+
+    <button type="button" class="btn btn-primary" onclick="openAddCustomerModal()" style="padding: 8px 12px; border-radius: 8px; font-size: 13px; background: #0284c7; color: #fff; font-weight: 700; border: none; display: inline-flex; align-items: center; gap: 4px;">
+      ➕ เพิ่มผู้ใช้
+    </button>
 
     <button type="button" class="btn btn-qr-scan" onclick="openQrScannerModal()" style="padding: 8px 16px; border-radius: 20px; font-size: 14px;">
       📷 สแกน QR
@@ -1361,59 +1163,112 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
     }
 
     // =========================================================
-    // Staff Guide Modal & Accordion Logic
+    // Staff Add Customer & Meter Logic
     // =========================================================
-    function toggleQuickGuide() {
-      const content = document.getElementById('quick-guide-content');
-      const arrow = document.getElementById('quick-guide-arrow');
-      if (content) {
-        if (content.style.display === 'none' || content.style.display === '') {
-          content.style.display = 'block';
-          if (arrow) arrow.textContent = '▲';
-        } else {
-          content.style.display = 'none';
-          if (arrow) arrow.textContent = '▼';
-        }
-      }
-    }
-
-    function openStaffGuideModal(tabIndex = 1) {
-      const modal = document.getElementById('modal-staff-guide');
+    function openAddCustomerModal() {
+      const modal = document.getElementById('modal-add-customer');
       if (modal) {
         modal.style.display = 'flex';
-        switchGuideTab(tabIndex);
+        const alertBox = document.getElementById('add-cust-alert');
+        if (alertBox) alertBox.style.display = 'none';
+        const firstInp = modal.querySelector('input[name="firstName"]');
+        if (firstInp) setTimeout(() => firstInp.focus(), 100);
       }
     }
 
-    function closeStaffGuideModal() {
-      const modal = document.getElementById('modal-staff-guide');
-      if (modal) {
-        modal.style.display = 'none';
-      }
+    function closeAddCustomerModal() {
+      const modal = document.getElementById('modal-add-customer');
+      if (modal) modal.style.display = 'none';
     }
 
-    function switchGuideTab(tabIndex) {
-      for (let i = 1; i <= 4; i++) {
-        const pane = document.getElementById(`guide-pane-${i}`);
-        const btn = document.getElementById(`gtab-btn-${i}`);
-        if (pane) pane.style.display = (i === tabIndex) ? 'block' : 'none';
-        if (btn) {
-          if (i === tabIndex) {
-            btn.style.background = '#0284c7';
-            btn.style.color = '#fff';
-          } else {
-            btn.style.background = 'transparent';
-            btn.style.color = '#64748b';
+    async function submitAddCustomer(e) {
+      e.preventDefault();
+      const form = e.target;
+      const submitBtn = document.getElementById('btn-submit-add-cust');
+      const alertBox = document.getElementById('add-cust-alert');
+      
+      const formData = new FormData(form);
+      const data = {
+        firstName: formData.get('firstName')?.trim(),
+        lastName: formData.get('lastName')?.trim(),
+        houseNo: formData.get('houseNo')?.trim(),
+        phone: formData.get('phone')?.trim(),
+        zoneId: parseInt(formData.get('zoneId'), 10),
+        installTypeId: parseInt(formData.get('installTypeId'), 10),
+        initialReading: parseFloat(formData.get('initialReading')) || 0.0
+      };
+
+      if (!data.firstName) {
+        if (alertBox) {
+          alertBox.style.display = 'block';
+          alertBox.style.background = '#fee2e2';
+          alertBox.style.color = '#b91c1c';
+          alertBox.textContent = 'กรุณาระบุชื่อลูกค้า';
+        }
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = '⏳ กำลังบันทึกข้อมูล...';
+
+      try {
+        const res = await fetch(`${API_BASE}/customers.php`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+
+        if (res.ok && result.success) {
+          closeAddCustomerModal();
+          form.reset();
+          showToast(`🎉 เพิ่มผู้ใช้น้ำใหม่ ${result.customer_code} (${data.firstName}) เข้าสู่ระบบสำเร็จ!`, 'success');
+          
+          // Refresh field readings table immediately
+          await loadFieldData();
+
+          // Scroll to the newly added row & highlight
+          setTimeout(() => {
+            const row = document.querySelector(`tr[data-customer-id="${result.id}"]`);
+            if (row) {
+              row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              row.style.transition = 'background-color 0.5s';
+              row.style.backgroundColor = '#bbf7d0';
+              setTimeout(() => {
+                row.style.backgroundColor = '';
+                const inp = row.querySelector('.meter-input-cell');
+                if (inp) inp.focus();
+              }, 1800);
+            }
+          }, 300);
+        } else {
+          if (alertBox) {
+            alertBox.style.display = 'block';
+            alertBox.style.background = '#fee2e2';
+            alertBox.style.color = '#b91c1c';
+            alertBox.textContent = `❌ ${result.error || 'เกิดข้อผิดพลาดในการบันทึกข้อมูล'}`;
           }
         }
+      } catch (err) {
+        console.error(err);
+        if (alertBox) {
+          alertBox.style.display = 'block';
+          alertBox.style.background = '#fee2e2';
+          alertBox.style.color = '#b91c1c';
+          alertBox.textContent = '❌ ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้';
+        }
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '💾 บันทึกและเพิ่มเข้าสมุดจดทันที';
       }
     }
 
-    // Auto open guide if requested via URL
+    // Auto open modal if requested via URL (?action=add_customer)
     window.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.has('open_guide')) {
-        setTimeout(openStaffGuideModal, 300);
+      if (urlParams.get('action') === 'add_customer') {
+        setTimeout(openAddCustomerModal, 300);
       }
     });
   </script>

@@ -131,10 +131,10 @@ function renderAppSidebar($activeRoute = 'home') {
                         'is_sub' => false
                     ],
                     [
-                        'id' => 'field_guide',
-                        'title' => 'คู่มือวิธีจดมิเตอร์',
-                        'icon' => '📖',
-                        'url' => 'meter_reading.php?open_guide=1',
+                        'id' => 'add_customer',
+                        'title' => 'เพิ่มข้อมูลผู้ใช้น้ำใหม่',
+                        'icon' => '➕',
+                        'url' => 'meter_reading.php?action=add_customer',
                         'is_sub' => true
                     ],
                     [
@@ -239,10 +239,10 @@ function renderAppSidebar($activeRoute = 'home') {
                         'is_sub' => false
                     ],
                     [
-                        'id' => 'field_guide',
-                        'title' => 'คู่มือวิธีจดมิเตอร์',
-                        'icon' => '📖',
-                        'url' => 'meter_reading.php?open_guide=1',
+                        'id' => 'add_customer',
+                        'title' => 'เพิ่มข้อมูลผู้ใช้น้ำใหม่',
+                        'icon' => '➕',
+                        'url' => 'meter_reading.php?action=add_customer',
                         'is_sub' => true
                     ],
                     [
@@ -358,9 +358,6 @@ function renderAppTopBar($title, $subtitle) {
           <span style="font-size: 13.5px; color: #64748b; font-weight: 500; display: inline-flex; align-items: center; gap: 4px;">
             <span>🌐</span> ประชาชนทั่วไป (Public / Guest)
           </span>
-          <a href="register.php" class="btn btn-outline" style="font-size: 13px; padding: 7px 12px; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-family: inherit; text-decoration: none; color: #0284c7; border: 1px solid #0284c7; background: #fff; font-weight: 600;">
-            <span>📝</span> ลงทะเบียน (Register)
-          </a>
           <button type="button" class="btn btn-primary btn-open-login" onclick="openLoginModal()" style="font-size: 13.5px; padding: 8px 16px; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-family: inherit;">
             🔐 เข้าสู่ระบบ (Admin / Staff / Member)
           </button>
