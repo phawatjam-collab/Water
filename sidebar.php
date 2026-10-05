@@ -124,6 +124,13 @@ function renderAppSidebar($activeRoute = 'home') {
                         'is_sub' => false
                     ],
                     [
+                        'id' => 'field_guide',
+                        'title' => 'คู่มือวิธีจดมิเตอร์',
+                        'icon' => '📖',
+                        'url' => 'meter_reading.php?open_guide=1',
+                        'is_sub' => true
+                    ],
+                    [
                         'id' => 'finance',
                         'title' => 'ตัดรับชำระเงิน & ออกใบเสร็จ',
                         'icon' => '🧾',
@@ -223,6 +230,13 @@ function renderAppSidebar($activeRoute = 'home') {
                         'icon' => '📝',
                         'url' => 'meter_reading.php',
                         'is_sub' => false
+                    ],
+                    [
+                        'id' => 'field_guide',
+                        'title' => 'คู่มือวิธีจดมิเตอร์',
+                        'icon' => '📖',
+                        'url' => 'meter_reading.php?open_guide=1',
+                        'is_sub' => true
                     ],
                     [
                         'id' => 'finance',
