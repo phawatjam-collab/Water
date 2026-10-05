@@ -167,7 +167,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
         <span>⚠️</span> 3. ทะเบียนคุมหนี้ค้างชำระ (กค.4)
       </button>
       <button class="fin-tab-btn" data-target="pane-vouchers">
-        <span>📜</span> 4. ฎีกาเบิกจ่าย & ใบสำคัญรับเงิน (10%)
+        <span>📜</span> 4. ฎีกาเบิกจ่าย & ใบสำคัญรับเงิน
       </button>
     </div>
 
@@ -438,15 +438,78 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
     </div>
 
     <!-- ========================================================= -->
-    <!-- PANE 4: ฎีกาเบิกจ่าย & ใบสำคัญรับเงิน (10%) -->
+    <!-- PANE 4: ฎีกาเบิกจ่าย & ใบสำคัญรับเงินกองทุนประปา -->
     <!-- ========================================================= -->
     <div id="pane-vouchers" class="fin-pane">
-      <div class="no-print" style="margin-bottom: 16px; display: flex; justify-content: flex-end; gap: 10px;">
-        <button type="button" class="btn btn-primary" onclick="window.print()" style="font-weight: 600; padding: 8px 18px; display: inline-flex; align-items: center; gap: 6px;">
-          🖨️ สั่งพิมพ์เอกสารฎีกาเบิกจ่ายทั้งหมด
-        </button>
+      <!-- Summary Statistics Bar -->
+      <div class="stats-grid no-print" style="margin-bottom: 16px;">
+        <div class="stat-card">
+          <span class="stat-label">ยอดจัดเก็บจริงงวดนี้</span>
+          <span class="stat-value text-primary" id="vc-stat-collected">0.00 ฿</span>
+          <span class="stat-desc text-muted">ค่าตอบแทน 10%: <strong id="vc-stat-comm">0.00</strong> ฿</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">ยอดเบิกจ่ายรวมงวดนี้</span>
+          <span class="stat-value text-danger" id="vc-stat-disbursed">0.00 ฿</span>
+          <span class="stat-desc text-muted">จากฎีกาทั้งหมด <span id="vc-stat-count">0</span> ฉบับ</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">ยอดเงินกองทุนคงเหลืองวดนี้</span>
+          <span class="stat-value text-success" id="vc-stat-balance">0.00 ฿</span>
+          <span class="stat-desc text-muted">รายรับลบรายจ่ายประจำงวด</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">จัดการและแบบฟอร์ม</span>
+          <div style="margin-top: 6px; display: flex; gap: 6px; flex-wrap: wrap;">
+            <button type="button" class="btn btn-sm btn-outline" onclick="printBlankVoucher()" style="font-size: 12.5px; padding: 5px 10px; background: #fff;" title="พิมพ์แบบฟอร์มเปล่าเพื่อนำไปเขียนด้วยมือ">
+              📄 แบบฟอร์มเปล่า
+            </button>
+            <button type="button" class="btn btn-sm btn-outline" onclick="syncCommissionVoucher()" style="font-size: 12.5px; padding: 5px 10px; background: #fff;" title="ปรับยอดค่าตอบแทน 10% ให้ตรงกับยอดจัดเก็บจริง">
+              ⚡ ซิงค์ 10%
+            </button>
+          </div>
+        </div>
       </div>
-      <div id="fin-vouchers-container">
+
+      <!-- Action & Filter Bar -->
+      <div class="card no-print" style="margin-bottom: 20px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+        <!-- Filter Category Pills -->
+        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+          <div class="fin-status-pills">
+            <button type="button" class="fin-pill-btn active" data-vc-filter="all" onclick="setVoucherFilter('all')">
+              ทั้งหมด <span id="vc-pill-all" style="font-weight: 700;">0</span>
+            </button>
+            <button type="button" class="fin-pill-btn" data-vc-filter="COMMISSION_10" onclick="setVoucherFilter('COMMISSION_10')">
+              💼 ค่าตอบแทน 10%
+            </button>
+            <button type="button" class="fin-pill-btn" data-vc-filter="MAINTENANCE" onclick="setVoucherFilter('MAINTENANCE')">
+              🔧 ซ่อมบำรุง
+            </button>
+            <button type="button" class="fin-pill-btn" data-vc-filter="ELECTRICITY" onclick="setVoucherFilter('ELECTRICITY')">
+              ⚡ ค่าไฟฟ้า
+            </button>
+            <button type="button" class="fin-pill-btn" data-vc-filter="OTHER" onclick="setVoucherFilter('OTHER')">
+              📝 อื่นๆ
+            </button>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+          <button type="button" class="btn btn-primary" onclick="openCreateVoucherModal()" style="font-weight: 600; padding: 8px 16px; display: inline-flex; align-items: center; gap: 6px;">
+            <span>➕</span> ออกฎีกาเบิกจ่ายรายการใหม่
+          </button>
+          <button type="button" class="btn btn-outline" onclick="printBlankVoucher()" style="font-weight: 600; padding: 8px 14px; display: inline-flex; align-items: center; gap: 6px; background: #fff;">
+            <span>📄</span> พิมพ์แบบฟอร์มเปล่า
+          </button>
+          <button type="button" class="btn btn-outline" onclick="window.print()" style="font-weight: 600; padding: 8px 14px; display: inline-flex; align-items: center; gap: 6px; background: #fff;">
+            <span>🖨️</span> พิมพ์ทั้งหมด
+          </button>
+        </div>
+      </div>
+
+      <!-- Vouchers List Container -->
+      <div id="fin-vouchers-container" class="voucher-list-container">
         <!-- Dynamically populated payment vouchers -->
       </div>
     </div>
@@ -469,6 +532,96 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
           <button type="button" class="btn btn-outline" onclick="closeModal('fin-notice-modal')">ปิด</button>
           <button type="button" class="btn btn-primary" onclick="printFinNotice()" style="background: #dc2626; border-color: #dc2626;">🖨️ สั่งพิมพ์หนังสือเตือน</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for Creating New Custom Payment Voucher (แบบฟอร์มออกฎีกาเบิกจ่ายรายการใหม่) -->
+  <div class="modal" id="fin-voucher-modal">
+    <div class="modal-dialog" style="max-width: 640px;">
+      <div class="modal-content">
+        <div class="modal-header" style="background: #0f172a; color: #fff;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 20px;">📜</span>
+            <h3 style="color: #38bdf8; margin: 0; font-size: 16px; font-weight: 700;">ออกฎีกาเบิกจ่ายเงิน / ใบสำคัญรับเงิน (รายการใหม่)</h3>
+          </div>
+          <button type="button" class="modal-close" onclick="closeModal('fin-voucher-modal')" style="color: #94a3b8;">&times;</button>
+        </div>
+
+        <form id="form-create-voucher" onsubmit="handleCreateVoucher(event)" style="padding: 20px 24px;">
+          <!-- Quick Preset Buttons -->
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; margin-bottom: 16px;">
+            <span style="font-size: 12px; font-weight: 600; color: #64748b; display: block; margin-bottom: 6px;">⚡ เติมข้อมูลด่วนตามประเภทค่าใช้จ่ายทั่วไป:</span>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+              <button type="button" class="btn btn-sm btn-outline" onclick="applyVoucherPreset('repair')" style="font-size: 12px; padding: 4px 8px; background: #fff;">🔧 ซ่อมท่อแตก</button>
+              <button type="button" class="btn btn-sm btn-outline" onclick="applyVoucherPreset('electric')" style="font-size: 12px; padding: 4px 8px; background: #fff;">⚡ ค่าไฟปั๊มสูบน้ำ</button>
+              <button type="button" class="btn btn-sm btn-outline" onclick="applyVoucherPreset('chemical')" style="font-size: 12px; padding: 4px 8px; background: #fff;">🧪 สารส้ม/คลอรีน</button>
+              <button type="button" class="btn btn-sm btn-outline" onclick="applyVoucherPreset('caretaker')" style="font-size: 12px; padding: 4px 8px; background: #fff;">🛠️ ค่าดูแลระบบ</button>
+              <button type="button" class="btn btn-sm btn-outline" onclick="applyVoucherPreset('commission')" style="font-size: 12px; padding: 4px 8px; background: #fff;">💼 ค่าตอบแทน 10%</button>
+              <button type="button" class="btn btn-sm btn-outline" onclick="applyVoucherPreset('meeting')" style="font-size: 12px; padding: 4px 8px; background: #fff;">👥 เบี้ยประชุมกรรมการ</button>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+            <div>
+              <label class="form-label" style="font-size: 13px; font-weight: 600;">ประเภทการเบิกจ่าย: <span class="text-danger">*</span></label>
+              <select id="vc-input-type" class="form-select" required style="width: 100%;">
+                <option value="MAINTENANCE">🔧 ค่าซ่อมบำรุง / ท่อแตก / เปลี่ยนอุปกรณ์</option>
+                <option value="ELECTRICITY">⚡ ค่ากระแสไฟฟ้าเครื่องสูบน้ำ</option>
+                <option value="CHEMICALS">🧪 คลอรีน / สารส้ม / เคมีภัณฑ์</option>
+                <option value="COMMISSION_10">💼 ค่าตอบแทนจัดเก็บค่าน้ำ (10%)</option>
+                <option value="CARETAKER">🛠️ ค่าตอบแทนผู้ดูแลรักษาระบบประปา</option>
+                <option value="COMMITTEE">👥 ค่าตอบแทน/เบี้ยประชุมกรรมการ</option>
+                <option value="SUPPLIES">📦 ค่าวัสดุสิ้นเปลือง / อุปกรณ์สำนักงาน</option>
+                <option value="OTHER">📝 ค่าใช้จ่ายอื่นๆ (กำหนดเอง)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="form-label" style="font-size: 13px; font-weight: 600;">วันที่เบิกจ่าย: <span class="text-danger">*</span></label>
+              <input type="date" id="vc-input-date" class="form-input" required style="width: 100%;">
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+            <div>
+              <label class="form-label" style="font-size: 13px; font-weight: 600;">ชื่อผู้รับเงิน / ร้านค้า: <span class="text-danger">*</span></label>
+              <input type="text" id="vc-input-recipient" class="form-input" placeholder="เช่น ร้านวังยางการช่าง, นายสมชาย ใจดี" required style="width: 100%;">
+            </div>
+
+            <div>
+              <label class="form-label" style="font-size: 13px; font-weight: 600;">ตำแหน่ง / สถานะผู้รับเงิน: <span class="text-danger">*</span></label>
+              <input type="text" id="vc-input-position" class="form-input" placeholder="เช่น ผู้จัดจำหน่ายวัสดุ, ช่างซ่อมประปา" required style="width: 100%;">
+            </div>
+          </div>
+
+          <div style="margin-bottom: 14px;">
+            <label class="form-label" style="font-size: 13px; font-weight: 600;">จำนวนเงินที่เบิกจ่าย (บาท): <span class="text-danger">*</span></label>
+            <input type="number" step="0.01" min="1" id="vc-input-amount" oninput="updateLiveBahtText(this.value)" class="form-input" placeholder="0.00" required style="width: 100%; font-size: 16px; font-weight: 700; color: #0284c7;">
+            <div id="live-baht-text" style="font-size: 13px; color: #059669; font-weight: 600; margin-top: 4px;">ตัวอักษร: ( ศูนย์บาทถ้วน )</div>
+          </div>
+
+          <div style="margin-bottom: 14px;">
+            <label class="form-label" style="font-size: 13px; font-weight: 600;">วัตถุประสงค์ / รายละเอียดรายการเบิกจ่าย: <span class="text-danger">*</span></label>
+            <textarea id="vc-input-basis" class="form-input" rows="3" placeholder="ระบุเหตุผล รายละเอียดสิ่งของหรืออุปกรณ์ที่จัดซื้อหรือซ่อมแซม..." required style="width: 100%; resize: vertical;"></textarea>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+            <div>
+              <label class="form-label" style="font-size: 13px; font-weight: 600;">ผู้อนุมัติการจ่ายเงิน:</label>
+              <input type="text" id="vc-input-approved" class="form-input" value="ประธานคณะกรรมการประปาหมู่บ้านวังยาง" style="width: 100%;">
+            </div>
+            <div>
+              <label class="form-label" style="font-size: 13px; font-weight: 600;">ประจำงวดเดือน:</label>
+              <input type="text" id="vc-input-cycle-display" class="form-input" readonly style="background: #f1f5f9; color: #64748b; width: 100%;">
+            </div>
+          </div>
+
+          <div class="form-actions text-right" style="padding-top: 14px; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 10px;">
+            <button type="button" class="btn btn-outline" onclick="closeModal('fin-voucher-modal')">ยกเลิก</button>
+            <button type="submit" class="btn btn-primary" id="btn-submit-voucher" style="font-weight: 600;">💾 บันทึกและออกฎีกาเบิกจ่าย</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -1068,6 +1221,18 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
       w.document.close();
     }
 
+    let vouchersList = [];
+    let lastCollectorCommission = 0;
+    let voucherCategoryFilter = 'all';
+
+    function setVoucherFilter(filter) {
+      voucherCategoryFilter = filter;
+      document.querySelectorAll('.fin-pill-btn[data-vc-filter]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.vcFilter === filter);
+      });
+      renderVoucherCards();
+    }
+
     async function loadVouchersData() {
       const container = document.getElementById('fin-vouchers-container');
       if (!container) return;
@@ -1076,22 +1241,110 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
         const res = await fetch(`${API_BASE}/vouchers.php?cycle=${encodeURIComponent(currentCycle)}`);
         if (!res.ok) return;
         const data = await res.json();
-        container.innerHTML = (data.vouchers || []).map(v => `
-          <div class="voucher-document" style="margin-bottom: 24px;">
+        vouchersList = data.vouchers || [];
+        lastCollectorCommission = data.collectorCommission || 0;
+
+        // Update Statistics
+        const elColl = document.getElementById('vc-stat-collected');
+        if (elColl) elColl.textContent = `${Number(data.collectedRevenue || 0).toLocaleString('th-TH', { minimumFractionDigits: 2 })} ฿`;
+        const elComm = document.getElementById('vc-stat-comm');
+        if (elComm) elComm.textContent = `${Number(data.collectorCommission || 0).toLocaleString('th-TH', { minimumFractionDigits: 2 })}`;
+        const elDisb = document.getElementById('vc-stat-disbursed');
+        if (elDisb) elDisb.textContent = `${Number(data.totalDisbursed || 0).toLocaleString('th-TH', { minimumFractionDigits: 2 })} ฿`;
+        const elCount = document.getElementById('vc-stat-count');
+        if (elCount) elCount.textContent = `${vouchersList.length} ฉบับ`;
+        const elBal = document.getElementById('vc-stat-balance');
+        if (elBal) {
+          const bal = Number(data.netBalance || 0);
+          elBal.textContent = `${bal.toLocaleString('th-TH', { minimumFractionDigits: 2 })} ฿`;
+          elBal.className = bal >= 0 ? 'stat-value text-success' : 'stat-value text-danger';
+        }
+
+        const elPillAll = document.getElementById('vc-pill-all');
+        if (elPillAll) elPillAll.textContent = vouchersList.length;
+
+        renderVoucherCards();
+      } catch (err) {
+        console.error('Error loading vouchers:', err);
+      }
+    }
+
+    function renderVoucherCards() {
+      const container = document.getElementById('fin-vouchers-container');
+      if (!container) return;
+
+      const filtered = vouchersList.filter(v => {
+        if (voucherCategoryFilter === 'all') return true;
+        if (voucherCategoryFilter === 'OTHER') {
+          return !['COMMISSION_10', 'MAINTENANCE', 'ELECTRICITY'].includes(v.voucherType);
+        }
+        return v.voucherType === voucherCategoryFilter;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="card text-center" style="padding: 40px 20px; border: 2px dashed #cbd5e1; background: #f8fafc;">
+            <div style="font-size: 36px; margin-bottom: 10px;">📜</div>
+            <h4 style="font-size: 16px; color: #475569; margin: 0 0 6px 0;">ยังไม่มีรายการฎีกาเบิกจ่ายในหมวดนี้</h4>
+            <p style="font-size: 13.5px; color: #94a3b8; margin: 0 0 16px 0;">คุณสามารถออกฎีกาเบิกจ่ายรายการใหม่ หรือสั่งพิมพ์แบบฟอร์มเปล่าสำหรับเขียนด้วยมือได้</p>
+            <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+              <button type="button" class="btn btn-primary" onclick="openCreateVoucherModal()">➕ ออกฎีกาเบิกจ่ายรายการใหม่</button>
+              <button type="button" class="btn btn-outline" onclick="printBlankVoucher()">📄 พิมพ์แบบฟอร์มเปล่า</button>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      const typeConfig = {
+        'COMMISSION_10': { label: '💼 ค่าตอบแทนจัดเก็บ 10%', bg: '#e0f2fe', color: '#0284c7' },
+        'CARETAKER': { label: '🛠️ ดูแลระบบประปา', bg: '#fef3c7', color: '#b45309' },
+        'COMMITTEE': { label: '👥 เบี้ยประชุมกรรมการ', bg: '#f3e8ff', color: '#7c3aed' },
+        'MAINTENANCE': { label: '🔧 ซ่อมบำรุง / อุปกรณ์', bg: '#fee2e2', color: '#dc2626' },
+        'ELECTRICITY': { label: '⚡ ค่าไฟฟ้าเครื่องสูบ', bg: '#ffedd5', color: '#ea580c' },
+        'CHEMICALS': { label: '🧪 สารส้ม / คลอรีน', bg: '#ecfdf5', color: '#059669' },
+        'SUPPLIES': { label: '📦 วัสดุสำนักงาน', bg: '#f1f5f9', color: '#475569' },
+        'OTHER': { label: '📝 ค่าใช้จ่ายอื่นๆ', bg: '#f1f5f9', color: '#334155' }
+      };
+
+      container.innerHTML = filtered.map(v => {
+        const cfg = typeConfig[v.voucherType] || typeConfig['OTHER'];
+        return `
+          <div class="voucher-document" id="voucher-card-${v.id}" style="margin-bottom: 24px; position: relative;">
+            <!-- Card Top Bar: Badge and Action Buttons -->
+            <div class="no-print" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px dashed #cbd5e1;">
+              <span style="background: ${cfg.bg}; color: ${cfg.color}; font-size: 12.5px; font-weight: 700; padding: 4px 12px; border-radius: 9999px;">
+                ${cfg.label}
+              </span>
+              <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn btn-sm btn-outline" onclick="printSingleVoucher(${v.id})" style="font-size: 12.5px; padding: 4px 10px; display: inline-flex; align-items: center; gap: 4px; background: #fff;">
+                  <span>🖨️</span> พิมพ์ใบนี้
+                </button>
+                <button type="button" class="btn btn-sm btn-outline" onclick="deleteVoucher(${v.id}, '${v.voucherNo}')" style="font-size: 12.5px; padding: 4px 10px; color: #dc2626; border-color: #fca5a5; background: #fff;" title="ลบรายการนี้">
+                  <span>🗑️</span> ลบ
+                </button>
+              </div>
+            </div>
+
             <div class="voucher-header">
               <h3>ใบสำคัญรับเงิน / ฎีกาเบิกจ่ายเงินกองทุนประปาหมู่บ้าน</h3>
-              <h4>การประปาหมู่บ้านวังยาง หมู่ที่ 3 ตำบลวังยาง</h4>
-              <p class="text-muted">เลขที่เอกสาร: <strong>${v.voucherNo}</strong> | วันที่: ${v.date}</p>
+              <h4>การประปาหมู่บ้านวังยาง หมู่ที่ 3 ตำบลวังยาง อำเภอวังยาง จังหวัดนครพนม</h4>
+              <p class="text-muted" style="margin-top: 6px; font-size: 13.5px;">
+                เลขที่เอกสาร: <strong>${v.voucherNo}</strong> | ประจำงวดเดือน: <strong>${v.cycleCode}</strong> | วันที่: <strong>${v.date}</strong>
+              </p>
             </div>
+
             <div class="voucher-body">
-              <p>ข้าพเจ้า <strong>${v.recipientName}</strong> ตำแหน่ง <strong>${v.recipientPosition}</strong></p>
-              <p>ได้รับเงินจากกองทุนระบบประปาหมู่บ้านวังยาง สำหรับ:</p>
+              <p>ข้าพเจ้า <strong>${v.recipientName}</strong> ตำแหน่ง / สังกัด <strong>${v.recipientPosition}</strong></p>
+              <p>ได้รับเงินจาก <strong>กองทุนระบบประปาหมู่บ้านวังยาง</strong> สำหรับ:</p>
               <div class="highlight-box">
-                <strong>วัตถุประสงค์:</strong> ${v.calculationBasis}
+                <strong>วัตถุประสงค์ / รายการค่าใช้จ่าย:</strong> ${v.calculationBasis}
+                ${v.description ? `<div style="font-size: 13px; color: #64748b; margin-top: 4px;">หมายเหตุ: ${v.description}</div>` : ''}
               </div>
               <p>เป็นจำนวนเงินทั้งสิ้น: <strong class="text-primary font-bold" style="font-size: 18px;">${Number(v.amount).toLocaleString('th-TH', { minimumFractionDigits: 2 })} บาท</strong></p>
               <p>ตัวอักษร: <strong>( ${v.amountTextTh} )</strong></p>
             </div>
+
             <div class="receipt-signatures" style="margin-top: 24px;">
               <div class="sig-block">
                 <div class="sig-line">...................................................</div>
@@ -1110,10 +1363,425 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
               </div>
             </div>
           </div>
-        `).join('');
-      } catch (err) {
-        console.error('Error loading vouchers:', err);
+        `;
+      }).join('');
+    }
+
+    function openCreateVoucherModal() {
+      const modal = document.getElementById('fin-voucher-modal');
+      if (!modal) return;
+
+      const cycleDisplay = document.getElementById('vc-input-cycle-display');
+      if (cycleDisplay) cycleDisplay.value = currentCycle;
+
+      const dateInput = document.getElementById('vc-input-date');
+      if (dateInput && !dateInput.value) {
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.value = today;
       }
+
+      modal.classList.add('show');
+    }
+
+    function applyVoucherPreset(preset) {
+      const typeSelect = document.getElementById('vc-input-type');
+      const recipInput = document.getElementById('vc-input-recipient');
+      const posInput = document.getElementById('vc-input-position');
+      const basisInput = document.getElementById('vc-input-basis');
+      const amtInput = document.getElementById('vc-input-amount');
+
+      if (preset === 'repair') {
+        typeSelect.value = 'MAINTENANCE';
+        recipInput.value = 'ร้านวังยางการช่าง & อุปกรณ์';
+        posInput.value = 'ผู้จัดจำหน่ายวัสดุอุปกรณ์ประปา';
+        basisInput.value = 'ค่าท่อ PVC ข้อต่อ กาวประสานท่อ และอุปกรณ์ซ่อมแซมจุดรั่วไหลเร่งด่วน';
+        if (!amtInput.value) amtInput.value = '1450.00';
+      } else if (preset === 'electric') {
+        typeSelect.value = 'ELECTRICITY';
+        recipInput.value = 'การไฟฟ้าส่วนภูมิภาค';
+        posInput.value = 'หน่วยงานรัฐวิสาหกิจ';
+        basisInput.value = 'ค่ากระแสไฟฟ้าสำหรับเครื่องสูบน้ำประปาบาดาลประจำเดือน';
+        if (!amtInput.value) amtInput.value = '4200.00';
+      } else if (preset === 'chemical') {
+        typeSelect.value = 'CHEMICALS';
+        recipInput.value = 'ร้านเคมีภัณฑ์นครพนม';
+        posInput.value = 'ผู้จัดจำหน่ายเคมีภัณฑ์บำบัดน้ำ';
+        basisInput.value = 'ค่าสารส้ม คลอรีนผง 65% ปรับปรุงคุณภาพน้ำประปาให้สะอาดตามมาตรฐาน';
+        if (!amtInput.value) amtInput.value = '1800.00';
+      } else if (preset === 'caretaker') {
+        typeSelect.value = 'CARETAKER';
+        recipInput.value = 'นายประสิทธิ์ ดูแลดี';
+        posInput.value = 'ผู้ดูแลรักษาระบบประปาและบ่อบาดาล';
+        basisInput.value = 'ค่าตอบแทนประจำเดือนในการเปิด-ปิดและดูแลความสะอาดระบบประปา';
+        if (!amtInput.value) amtInput.value = '3000.00';
+      } else if (preset === 'commission') {
+        typeSelect.value = 'COMMISSION_10';
+        recipInput.value = 'นายสมาน เก็บเงินดี';
+        posInput.value = 'เจ้าหน้าที่จัดเก็บค่าน้ำประปา';
+        const commAmt = lastCollectorCommission || 0;
+        amtInput.value = commAmt > 0 ? commAmt.toFixed(2) : '1000.00';
+        basisInput.value = `คิด 10% จากยอดจัดเก็บจริงประจำงวด (${amtInput.value} บาท)`;
+      } else if (preset === 'meeting') {
+        typeSelect.value = 'COMMITTEE';
+        recipInput.value = 'นายประธาน บริหารกิจการ';
+        posInput.value = 'ประธานกรรมการการประปาหมู่บ้านวังยาง';
+        basisInput.value = 'ค่าตอบแทนและเบี้ยประชุมคณะกรรมการบริหารกิจการประปา';
+        if (!amtInput.value) amtInput.value = '2500.00';
+      }
+      updateLiveBahtText(amtInput.value);
+    }
+
+    function updateLiveBahtText(val) {
+      const el = document.getElementById('live-baht-text');
+      if (!el) return;
+      const num = parseFloat(val);
+      if (isNaN(num) || num <= 0) {
+        el.textContent = 'ตัวอักษร: ( ศูนย์บาทถ้วน )';
+      } else {
+        el.textContent = `ตัวอักษร: ( ${thaiBahtTextJs(num)} )`;
+      }
+    }
+
+    function thaiBahtTextJs(number) {
+      if (isNaN(number) || number <= 0) return 'ศูนย์บาทถ้วน';
+      const numStr = Number(number).toFixed(2);
+      const parts = numStr.split('.');
+      const intPart = parts[0];
+      const decPart = parts[1];
+
+      const digits = ['', 'หนึ่ง', 'สอง', 'สาม', 'สี่', 'ห้า', 'หก', 'เจ็ด', 'แปด', 'เก้า'];
+      const places = ['', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน', 'ล้าน'];
+
+      function convertGroup(groupStr) {
+        let result = '';
+        const len = groupStr.length;
+        for (let i = 0; i < len; i++) {
+          const d = parseInt(groupStr[i], 10);
+          const place = len - 1 - i;
+          if (d !== 0) {
+            if (place === 0 && d === 1 && len > 1) {
+              result += 'เอ็ด';
+            } else if (place === 1 && d === 1) {
+              result += 'สิบ';
+            } else if (place === 1 && d === 2) {
+              result += 'ยี่สิบ';
+            } else {
+              result += digits[d] + places[place];
+            }
+          }
+        }
+        return result;
+      }
+
+      let intResult = '';
+      if (parseInt(intPart, 10) === 0) {
+        intResult = 'ศูนย์';
+      } else {
+        let remaining = intPart;
+        let isMillion = false;
+        while (remaining.length > 0) {
+          const chunk = remaining.length > 6 ? remaining.slice(-6) : remaining;
+          remaining = remaining.length > 6 ? remaining.slice(0, -6) : '';
+          const groupText = convertGroup(chunk);
+          if (isMillion && groupText) {
+            intResult = groupText + 'ล้าน' + intResult;
+          } else {
+            intResult = groupText + intResult;
+          }
+          isMillion = true;
+        }
+      }
+
+      let result = intResult + 'บาท';
+      if (parseInt(decPart, 10) === 0) {
+        result += 'ถ้วน';
+      } else {
+        let decResult = '';
+        const d0 = parseInt(decPart[0], 10);
+        const d1 = parseInt(decPart[1], 10);
+        if (d0 === 1) decResult += 'สิบ';
+        else if (d0 === 2) decResult += 'ยี่สิบ';
+        else if (d0 > 2) decResult += digits[d0] + 'สิบ';
+
+        if (d1 === 1 && d0 > 0) decResult += 'เอ็ด';
+        else if (d1 > 0) decResult += digits[d1];
+
+        result += decResult + 'สตางค์';
+      }
+      return result;
+    }
+
+    async function handleCreateVoucher(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btn-submit-voucher');
+      if (btn) btn.disabled = true;
+
+      const payload = {
+        cycleCode: currentCycle,
+        voucherType: document.getElementById('vc-input-type').value,
+        voucherDate: document.getElementById('vc-input-date').value,
+        recipientName: document.getElementById('vc-input-recipient').value.trim(),
+        recipientPosition: document.getElementById('vc-input-position').value.trim(),
+        amount: parseFloat(document.getElementById('vc-input-amount').value || 0),
+        calculationBasis: document.getElementById('vc-input-basis').value.trim(),
+        approvedBy: document.getElementById('vc-input-approved').value.trim()
+      };
+
+      try {
+        const res = await fetch(`${API_BASE}/vouchers.php?action=create`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast(`✅ บันทึกฎีกา ${data.voucher.voucherNo} เรียบร้อยแล้ว`, 'success');
+          closeModal('fin-voucher-modal');
+          document.getElementById('form-create-voucher').reset();
+          await loadVouchersData();
+        } else {
+          showToast(data.error || 'เกิดข้อผิดพลาดในการบันทึก', 'error');
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์', 'error');
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    }
+
+    async function deleteVoucher(id, voucherNo) {
+      if (!confirm(`ยืนยันการลบฎีกาเบิกจ่าย "${voucherNo}" ใช่หรือไม่?`)) return;
+
+      try {
+        const res = await fetch(`${API_BASE}/vouchers.php?action=delete&id=${id}`, { method: 'POST' });
+        const data = await res.json();
+        if (data.success) {
+          showToast(`🗑️ ลบฎีกาเบิกจ่าย ${voucherNo} เรียบร้อยแล้ว`, 'info');
+          await loadVouchersData();
+        } else {
+          showToast(data.error || 'เกิดข้อผิดพลาดในการลบ', 'error');
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์', 'error');
+      }
+    }
+
+    async function syncCommissionVoucher() {
+      try {
+        showToast('กำลังซิงค์ค่าตอบแทน 10%...', 'info');
+        const res = await fetch(`${API_BASE}/vouchers.php?action=sync_commission`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ cycleCode: currentCycle })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast(`✅ อัปเดตค่าตอบแทน 10% เป็น ${Number(data.commission).toLocaleString('th-TH', { minimumFractionDigits: 2 })} ฿ สำเร็จ`, 'success');
+          await loadVouchersData();
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('ไม่สามารถซิงค์ค่าตอบแทนได้', 'error');
+      }
+    }
+
+    function printBlankVoucher() {
+      const w = window.open('', '', 'width=880,height=750');
+      w.document.write(`
+        <!DOCTYPE html>
+        <html lang="th">
+        <head>
+          <meta charset="UTF-8">
+          <title>แบบฟอร์มเปล่า ใบสำคัญรับเงิน / ฎีกาเบิกจ่ายเงินกองทุนประปาหมู่บ้านวังยาง</title>
+          <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+          <style>
+            @page { size: A4 portrait; margin: 15mm 20mm; }
+            * { box-sizing: border-box; }
+            body { font-family: 'Sarabun', sans-serif; font-size: 15px; line-height: 1.8; color: #000; padding: 20px; }
+            .voucher-doc { border: 2px solid #000; padding: 28px 34px; border-radius: 4px; }
+            .header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 14px; margin-bottom: 20px; }
+            .header h2 { font-size: 20px; font-weight: 700; margin: 0; }
+            .header h3 { font-size: 16px; font-weight: 600; margin: 4px 0 0 0; }
+            .meta-line { display: flex; justify-content: space-between; margin-top: 10px; font-size: 14px; }
+            .dot { border-bottom: 1px dotted #000; display: inline-block; min-width: 140px; }
+            .dot-long { border-bottom: 1px dotted #000; display: inline-block; width: 100%; min-height: 24px; }
+            .box { border: 1px solid #000; padding: 14px 18px; margin: 18px 0; min-height: 90px; }
+            .sig-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 45px; text-align: center; }
+            .sig-box { display: flex; flex-direction: column; align-items: center; }
+            .sig-line { margin-bottom: 8px; }
+            .note { margin-top: 24px; font-size: 13px; color: #444; border-top: 1px dashed #666; padding-top: 8px; text-align: center; }
+            @media print {
+              body { padding: 0; }
+              .no-print { display: none; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="no-print" style="margin-bottom: 16px; text-align: right;">
+            <button onclick="window.print()" style="padding: 8px 18px; font-size: 15px; font-weight: bold; background: #0284c7; color: #fff; border: none; border-radius: 6px; cursor: pointer;">🖨️ สั่งพิมพ์แบบฟอร์มเปล่า</button>
+          </div>
+
+          <div class="voucher-doc">
+            <div class="header">
+              <h2>ใบสำคัญรับเงิน / ฎีกาเบิกจ่ายเงินกองทุนประปาหมู่บ้าน</h2>
+              <h3>กองทุนระบบการประปาหมู่บ้านวังยาง หมู่ที่ 3 ตำบลวังยาง อำเภอวังยาง จังหวัดนครพนม</h3>
+              <div class="meta-line">
+                <div>เลขที่เอกสาร: <span class="dot" style="min-width: 160px;"></span></div>
+                <div>ประจำงวดเดือน: <span class="dot" style="min-width: 120px;"></span></div>
+                <div>วันที่: ........ เดือน .................... พ.ศ. ............</div>
+              </div>
+            </div>
+
+            <div style="margin-bottom: 12px;">
+              ข้าพเจ้า <span class="dot" style="min-width: 320px;"></span> ตำแหน่ง / สังกัด <span class="dot" style="min-width: 250px;"></span>
+            </div>
+            <div>
+              ได้รับเงินจาก <strong>กองทุนระบบการประปาหมู่บ้านวังยาง</strong> สำหรับรายการดังต่อไปนี้:
+            </div>
+
+            <div class="box">
+              <strong>วัตถุประสงค์ / รายการค่าใช้จ่าย:</strong>
+              <div style="margin-top: 8px; line-height: 2;">
+                <div class="dot-long"></div>
+                <div class="dot-long" style="margin-top: 6px;"></div>
+              </div>
+            </div>
+
+            <div style="margin: 16px 0; font-size: 16px;">
+              เป็นจำนวนเงินทั้งสิ้น: <span class="dot" style="min-width: 180px; text-align: right; font-weight: bold;"></span> <strong>บาท</strong>
+              <span style="margin-left: 20px;">( ตัวอักษร: <span class="dot" style="min-width: 280px; text-align: center;"></span> )</span>
+            </div>
+
+            <div class="sig-grid">
+              <div class="sig-box">
+                <div class="sig-line">ลงชื่อ ....................................................</div>
+                <div>( .................................................... )</div>
+                <div style="font-size: 13.5px; color: #333;">ผู้รับเงิน</div>
+                <div style="font-size: 12px; margin-top: 4px;">วันที่ ......./......./.......</div>
+              </div>
+              <div class="sig-box">
+                <div class="sig-line">ลงชื่อ ....................................................</div>
+                <div>( นางจำเนียร ตรวจบัญชี )</div>
+                <div style="font-size: 13.5px; color: #333;">เหรัญญิก / ผู้จ่ายเงิน</div>
+                <div style="font-size: 12px; margin-top: 4px;">วันที่ ......./......./.......</div>
+              </div>
+              <div class="sig-box">
+                <div class="sig-line">ลงชื่อ ....................................................</div>
+                <div>( นายประธาน บริหารกิจการ )</div>
+                <div style="font-size: 13.5px; color: #333;">ประธานกรรมการ / ผู้อนุมัติ</div>
+                <div style="font-size: 12px; margin-top: 4px;">วันที่ ......./......./.......</div>
+              </div>
+            </div>
+
+            <div class="note">
+              * เอกสารนี้ใช้เป็นหลักฐานการจ่ายเงินตามระเบียบกองทุนระบบประปาหมู่บ้านวังยาง พ.ศ. ๒๕๔๔ (โปรดแนบใบเสร็จรับเงินหรือใบส่งของ ถ้ามี)
+            </div>
+          </div>
+        </body>
+        </html>
+      `);
+      w.document.close();
+    }
+
+    function printSingleVoucher(id) {
+      const v = vouchersList.find(x => Number(x.id) === Number(id));
+      if (!v) return;
+
+      const w = window.open('', '', 'width=880,height=750');
+      w.document.write(`
+        <!DOCTYPE html>
+        <html lang="th">
+        <head>
+          <meta charset="UTF-8">
+          <title>ฎีกาเบิกจ่าย ${v.voucherNo} - การประปาหมู่บ้านวังยาง</title>
+          <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+          <style>
+            @page { size: A4 portrait; margin: 15mm 20mm; }
+            * { box-sizing: border-box; }
+            body { font-family: 'Sarabun', sans-serif; font-size: 15px; line-height: 1.8; color: #000; padding: 20px; }
+            .voucher-doc { border: 2px solid #000; padding: 28px 34px; border-radius: 4px; }
+            .header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 14px; margin-bottom: 20px; }
+            .header h2 { font-size: 20px; font-weight: 700; margin: 0; }
+            .header h3 { font-size: 16px; font-weight: 600; margin: 4px 0 0 0; }
+            .meta-line { display: flex; justify-content: space-between; margin-top: 10px; font-size: 14px; }
+            .box { border: 1px solid #000; background: #fafafa; padding: 14px 18px; margin: 18px 0; }
+            .sig-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 45px; text-align: center; }
+            .sig-box { display: flex; flex-direction: column; align-items: center; }
+            .sig-line { margin-bottom: 8px; }
+            .note { margin-top: 24px; font-size: 13px; color: #444; border-top: 1px dashed #666; padding-top: 8px; text-align: center; }
+            @media print {
+              body { padding: 0; }
+              .no-print { display: none; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="no-print" style="margin-bottom: 16px; text-align: right;">
+            <button onclick="window.print()" style="padding: 8px 18px; font-size: 15px; font-weight: bold; background: #0284c7; color: #fff; border: none; border-radius: 6px; cursor: pointer;">🖨️ สั่งพิมพ์ใบสำคัญรับเงินฉบับนี้</button>
+          </div>
+
+          <div class="voucher-doc">
+            <div class="header">
+              <h2>ใบสำคัญรับเงิน / ฎีกาเบิกจ่ายเงินกองทุนประปาหมู่บ้าน</h2>
+              <h3>กองทุนระบบการประปาหมู่บ้านวังยาง หมู่ที่ 3 ตำบลวังยาง อำเภอวังยาง จังหวัดนครพนม</h3>
+              <div class="meta-line">
+                <div>เลขที่เอกสาร: <strong>${v.voucherNo}</strong></div>
+                <div>ประจำงวดเดือน: <strong>${v.cycleCode}</strong></div>
+                <div>วันที่: <strong>${v.date}</strong></div>
+              </div>
+            </div>
+
+            <div style="margin-bottom: 10px;">
+              ข้าพเจ้า <strong>${v.recipientName}</strong> ตำแหน่ง / สังกัด <strong>${v.recipientPosition}</strong>
+            </div>
+            <div>
+              ได้รับเงินจาก <strong>กองทุนระบบประปาหมู่บ้านวังยาง</strong> สำหรับรายการดังต่อไปนี้:
+            </div>
+
+            <div class="box">
+              <strong>วัตถุประสงค์ / รายการค่าใช้จ่าย:</strong>
+              <div style="margin-top: 6px; font-size: 15.5px;">${v.calculationBasis}</div>
+              ${v.description ? `<div style="font-size: 13.5px; color: #555; margin-top: 4px;">หมายเหตุ: ${v.description}</div>` : ''}
+            </div>
+
+            <div style="margin: 16px 0; font-size: 16.5px;">
+              เป็นจำนวนเงินทั้งสิ้น: <strong style="font-size: 19px;">${Number(v.amount).toLocaleString('th-TH', { minimumFractionDigits: 2 })}</strong> <strong>บาท</strong>
+              <span style="margin-left: 14px;">( ตัวอักษร: <strong>${v.amountTextTh}</strong> )</span>
+            </div>
+
+            <div class="sig-grid">
+              <div class="sig-box">
+                <div class="sig-line">...................................................</div>
+                <div style="font-weight: 600;">( ${v.recipientName} )</div>
+                <div style="font-size: 13px; color: #555;">ผู้รับเงิน</div>
+              </div>
+              <div class="sig-box">
+                <div class="sig-line">...................................................</div>
+                <div style="font-weight: 600;">( นางจำเนียร ตรวจบัญชี )</div>
+                <div style="font-size: 13px; color: #555;">เหรัญญิก / ผู้จ่ายเงิน</div>
+              </div>
+              <div class="sig-box">
+                <div class="sig-line">...................................................</div>
+                <div style="font-weight: 600;">( นายประธาน บริหารกิจการ )</div>
+                <div style="font-size: 13px; color: #555;">ประธานกรรมการ / ผู้อนุมัติ</div>
+              </div>
+            </div>
+
+            <div class="note">
+              * เอกสารนี้ใช้เป็นหลักฐานการจ่ายเงินตามระเบียบกองทุนระบบประปาหมู่บ้านวังยาง พ.ศ. ๒๕๔๔
+            </div>
+          </div>
+          <script>
+            window.onload = function() {
+              window.print();
+            };
+          <\/script>
+        </body>
+        </html>
+      `);
+      w.document.close();
     }
 
     function closeModal(id) {
