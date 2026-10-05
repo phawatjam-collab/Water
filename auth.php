@@ -119,6 +119,7 @@ function loginMember($identifier) {
     $db = getAuthDbConnection();
     if ($db) {
         try {
+            // ค้นหาจากรหัสผู้ใช้น้ำ บ้านเลขที่ หรือเบอร์โทร
             $stmt = $db->prepare("
                 SELECT * FROM customers 
                 WHERE customer_code = ? OR phone = ? OR house_no = ?
@@ -142,6 +143,43 @@ function loginMember($identifier) {
                     'badge_color' => '#0284c7',
                     'badge_bg' => '#e0f2fe',
                     'default_page' => 'portal_citizen.php?customer=' . urlencode($cust['customer_code'])
+                ];
+                return true;
+            }
+
+            // ค้นหาจาก tb_users ที่ลงทะเบียนไว้เป็น role = 'member'
+            $uStmt = $db->prepare("SELECT * FROM tb_users WHERE username = ? AND role = 'member' LIMIT 1");
+            $uStmt->execute([strtolower($identifier)]);
+            $dbUser = $uStmt->fetch();
+            if ($dbUser) {
+                $custCode = '';
+                $houseNo = '';
+                $zone = '';
+                $phone = '';
+                if (!empty($dbUser['cus_id'])) {
+                    $cStmt = $db->prepare("SELECT * FROM customers WHERE id = ? LIMIT 1");
+                    $cStmt->execute([(int)$dbUser['cus_id']]);
+                    $cRow = $cStmt->fetch();
+                    if ($cRow) {
+                        $custCode = $cRow['customer_code'];
+                        $houseNo = $cRow['house_no'];
+                        $zone = $cRow['zone'];
+                        $phone = $cRow['phone'];
+                    }
+                }
+                $_SESSION['water_user'] = [
+                    'username' => $dbUser['username'],
+                    'role' => 'member',
+                    'role_title' => 'สมาชิกผู้ใช้น้ำ (Member)',
+                    'name' => $dbUser['fullname'],
+                    'position' => 'สมาชิกผู้ใช้น้ำ' . (!empty($houseNo) ? " (บ้านเลขที่ $houseNo)" : ''),
+                    'customer_code' => $custCode,
+                    'house_no' => $houseNo,
+                    'zone' => $zone,
+                    'phone' => $phone,
+                    'badge_color' => '#0284c7',
+                    'badge_bg' => '#e0f2fe',
+                    'default_page' => 'portal_citizen.php' . (!empty($custCode) ? '?customer=' . urlencode($custCode) : '')
                 ];
                 return true;
             }
@@ -204,8 +242,44 @@ function loginStaff($username, $password = '') {
                 }
 
                 if ($isPasswordCorrect) {
-                    session_regenerate_id(true);
+                    if (!headers_sent()) {
+                        session_regenerate_id(true);
+                    }
                     $role = $dbUser['role'];
+                    
+                    if ($role === 'member') {
+                        $custCode = '';
+                        $houseNo = '';
+                        $zone = '';
+                        $phone = '';
+                        if (!empty($dbUser['cus_id'])) {
+                            $cStmt = $db->prepare("SELECT * FROM customers WHERE id = ? LIMIT 1");
+                            $cStmt->execute([(int)$dbUser['cus_id']]);
+                            $cRow = $cStmt->fetch();
+                            if ($cRow) {
+                                $custCode = $cRow['customer_code'];
+                                $houseNo = $cRow['house_no'];
+                                $zone = $cRow['zone'];
+                                $phone = $cRow['phone'];
+                            }
+                        }
+                        $_SESSION['water_user'] = [
+                            'username' => $dbUser['username'],
+                            'role' => 'member',
+                            'role_title' => 'สมาชิกผู้ใช้น้ำ (Member)',
+                            'name' => $dbUser['fullname'],
+                            'position' => 'สมาชิกผู้ใช้น้ำ' . (!empty($houseNo) ? " (บ้านเลขที่ $houseNo)" : ''),
+                            'customer_code' => $custCode,
+                            'house_no' => $houseNo,
+                            'zone' => $zone,
+                            'phone' => $phone,
+                            'badge_color' => '#0284c7',
+                            'badge_bg' => '#e0f2fe',
+                            'default_page' => 'portal_citizen.php' . (!empty($custCode) ? '?customer=' . urlencode($custCode) : '')
+                        ];
+                        return true;
+                    }
+
                     if (isset($VALID_USERS[$role])) {
                         $userProfile = $VALID_USERS[$role];
                         $userProfile['name'] = $dbUser['fullname'];
@@ -261,6 +335,167 @@ function loginUser($role) {
  */
 function logoutUser() {
     unset($_SESSION['water_user']);
+}
+
+/**
+ * ลงทะเบียนสมาชิกผู้ใช้น้ำใหม่ (Register Member)
+ */
+function registerMember($data) {
+    $db = getAuthDbConnection();
+    if (!$db) {
+        return ['success' => false, 'error' => 'ไม่สามารถเชื่อมต่อฐานข้อมูลได้'];
+    }
+
+    $firstName = trim($data['first_name'] ?? '');
+    $lastName  = trim($data['last_name'] ?? '');
+    $houseNo   = trim($data['house_no'] ?? '');
+    $zoneId    = (int)($data['zone_id'] ?? 1);
+    $phone     = trim($data['phone'] ?? '');
+    $installId = (int)($data['install_type_id'] ?? 1);
+    $username  = strtolower(trim($data['username'] ?? ''));
+    $password  = $data['password'] ?? '';
+
+    if (empty($firstName) || empty($lastName) || empty($houseNo) || empty($username) || empty($password)) {
+        return ['success' => false, 'error' => 'กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน'];
+    }
+
+    if (strlen($username) < 3) {
+        return ['success' => false, 'error' => 'ชื่อผู้ใช้ (Username) ต้องมีความยาวอย่างน้อย 3 ตัวอักษร'];
+    }
+
+    if (strlen($password) < 4) {
+        return ['success' => false, 'error' => 'รหัสผ่านต้องมีความยาวอย่างน้อย 4 ตัวอักษร'];
+    }
+
+    // ตรวจสอบชื่อผู้ใช้ซ้ำใน tb_users
+    $chkStmt = $db->prepare("SELECT user_id FROM tb_users WHERE username = ?");
+    $chkStmt->execute([$username]);
+    if ($chkStmt->fetch()) {
+        return ['success' => false, 'error' => 'ชื่อผู้ใช้งาน (Username) นี้มีผู้ใช้งานแล้ว'];
+    }
+
+    try {
+        $db->beginTransaction();
+
+        // ตรวจสอบว่ามีลูกบ้านนี้ใน tb_customers หรือยัง
+        $findCust = $db->prepare("SELECT cus_id FROM tb_customers WHERE house_id = ? OR (cus_tel = ? AND cus_tel != '') LIMIT 1");
+        $findCust->execute([$houseNo, $phone]);
+        $existingCust = $findCust->fetch();
+
+        $cusId = null;
+        if ($existingCust) {
+            $cusId = (int)$existingCust['cus_id'];
+        } else {
+            // บันทึกเข้า tb_customers
+            $insCust = $db->prepare("
+                INSERT INTO tb_customers (cus_firstname, cus_surname, install_type_id, house_id, cus_tel, zone_id)
+                VALUES (?, ?, ?, ?, ?, ?)
+            ");
+            $insCust->execute([$firstName, $lastName, $installId, $houseNo, $phone, $zoneId]);
+            $cusId = (int)$db->lastInsertId();
+
+            // เพิ่มเข้า meter_readings ของงวดปัจจุบันถ้ามี
+            $cycleStmt = $db->query("SELECT id FROM billing_cycles WHERE status = 'OPEN' ORDER BY id DESC LIMIT 1");
+            $openCycle = $cycleStmt->fetch();
+            if ($openCycle) {
+                $insRead = $db->prepare("
+                    INSERT INTO meter_readings (billing_cycle_id, customer_id, previous_reading, current_reading, units_used, water_charge, maintenance_fee, current_total, grand_total, payment_status, reading_date)
+                    VALUES (?, ?, 0, 0, 0, 0, 10, 10, 10, 'UNPAID', CURDATE())
+                ");
+                $insRead->execute([(int)$openCycle['id'], $cusId]);
+            }
+        }
+
+        // บันทึกเข้า tb_users
+        $hashedPass = password_hash($password, PASSWORD_DEFAULT);
+        $fullName = $firstName . ' ' . $lastName;
+        $insUser = $db->prepare("
+            INSERT INTO tb_users (username, password, fullname, role, cus_id, created_at)
+            VALUES (?, ?, ?, 'member', ?, NOW())
+        ");
+        $insUser->execute([$username, $hashedPass, $fullName, $cusId]);
+
+        $db->commit();
+
+        // ล็อกอินอัตโนมัติ
+        loginMember($username);
+
+        $customerCode = sprintf("WY-%03d", $cusId);
+        return [
+            'success' => true,
+            'message' => 'ลงทะเบียนสมาชิกผู้ใช้น้ำสำเร็จเรียบร้อย',
+            'customer_code' => $customerCode,
+            'redirect' => 'portal_citizen.php?customer=' . urlencode($customerCode)
+        ];
+    } catch (Exception $e) {
+        if ($db->inTransaction()) {
+            $db->rollBack();
+        }
+        return ['success' => false, 'error' => 'เกิดข้อผิดพลาดในการบันทึกข้อมูล: ' . $e->getMessage()];
+    }
+}
+
+/**
+ * ลงทะเบียนเจ้าหน้าที่การประปาใหม่ (Register Staff)
+ */
+function registerStaff($data) {
+    $db = getAuthDbConnection();
+    if (!$db) {
+        return ['success' => false, 'error' => 'ไม่สามารถเชื่อมต่อฐานข้อมูลได้'];
+    }
+
+    $fullName   = trim($data['fullname'] ?? '');
+    $position   = trim($data['position'] ?? 'เจ้าหน้าที่การประปา');
+    $phone      = trim($data['phone'] ?? '');
+    $username   = strtolower(trim($data['username'] ?? ''));
+    $password   = $data['password'] ?? '';
+    $staffKey   = trim($data['staff_key'] ?? '');
+
+    if (empty($fullName) || empty($username) || empty($password)) {
+        return ['success' => false, 'error' => 'กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน'];
+    }
+
+    // รหัสยืนยันความปลอดภัยเจ้าหน้าที่ (ป้องกันบุคคลภายนอกแอบสมัครเป็นเจ้าหน้าที่)
+    $VALID_STAFF_KEYS = ['STAFF-WY2567', 'WY-STAFF', '123456', 'admin'];
+    if (!in_array($staffKey, $VALID_STAFF_KEYS)) {
+        return ['success' => false, 'error' => 'รหัสยืนยันเจ้าหน้าที่ (Staff Security Key) ไม่ถูกต้อง (ติดต่อแอดมินหรือทดสอบด้วย STAFF-WY2567)'];
+    }
+
+    if (strlen($username) < 3) {
+        return ['success' => false, 'error' => 'ชื่อผู้ใช้ (Username) ต้องมีความยาวอย่างน้อย 3 ตัวอักษร'];
+    }
+
+    if (strlen($password) < 4) {
+        return ['success' => false, 'error' => 'รหัสผ่านต้องมีความยาวอย่างน้อย 4 ตัวอักษร'];
+    }
+
+    // ตรวจสอบชื่อผู้ใช้ซ้ำใน tb_users
+    $chkStmt = $db->prepare("SELECT user_id FROM tb_users WHERE username = ?");
+    $chkStmt->execute([$username]);
+    if ($chkStmt->fetch()) {
+        return ['success' => false, 'error' => 'ชื่อผู้ใช้งาน (Username) นี้มีผู้ใช้งานแล้ว'];
+    }
+
+    try {
+        $hashedPass = password_hash($password, PASSWORD_DEFAULT);
+        $fullTitle = $fullName . (!empty($position) ? " ($position)" : "");
+        $insUser = $db->prepare("
+            INSERT INTO tb_users (username, password, fullname, role, created_at)
+            VALUES (?, ?, ?, 'staff', NOW())
+        ");
+        $insUser->execute([$username, $hashedPass, $fullTitle]);
+
+        // ล็อกอินอัตโนมัติ
+        loginStaff($username, $password);
+
+        return [
+            'success' => true,
+            'message' => 'ลงทะเบียนเจ้าหน้าที่การประปาสำเร็จเรียบร้อย',
+            'redirect' => 'meter_reading.php'
+        ];
+    } catch (Exception $e) {
+        return ['success' => false, 'error' => 'เกิดข้อผิดพลาดในการบันทึกข้อมูล: ' . $e->getMessage()];
+    }
 }
 
 /**

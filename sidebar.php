@@ -52,6 +52,13 @@ function renderAppSidebar($activeRoute = 'home') {
                         'icon' => '🔧',
                         'url' => 'portal_citizen.php#citizen-services',
                         'is_sub' => true
+                    ],
+                    [
+                        'id' => 'register',
+                        'title' => 'ลงทะเบียนสมาชิก / เจ้าหน้าที่',
+                        'icon' => '📝',
+                        'url' => 'register.php',
+                        'is_sub' => false
                     ]
                 ]
             ]
@@ -351,6 +358,9 @@ function renderAppTopBar($title, $subtitle) {
           <span style="font-size: 13.5px; color: #64748b; font-weight: 500; display: inline-flex; align-items: center; gap: 4px;">
             <span>🌐</span> ประชาชนทั่วไป (Public / Guest)
           </span>
+          <a href="register.php" class="btn btn-outline" style="font-size: 13px; padding: 7px 12px; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-family: inherit; text-decoration: none; color: #0284c7; border: 1px solid #0284c7; background: #fff; font-weight: 600;">
+            <span>📝</span> ลงทะเบียน (Register)
+          </a>
           <button type="button" class="btn btn-primary btn-open-login" onclick="openLoginModal()" style="font-size: 13.5px; padding: 8px 16px; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-family: inherit;">
             🔐 เข้าสู่ระบบ (Admin / Staff / Member)
           </button>
@@ -414,8 +424,11 @@ function renderAppTopBar($title, $subtitle) {
               🚀 เข้าสู่ระบบสมาชิกผู้ใช้น้ำ (Member)
             </button>
 
-            <div style="text-align: center; margin-top: 14px; padding-top: 12px; border-top: 1px dashed #e2e8f0;">
-              <a href="portal_citizen.php" style="font-size: 13px; color: #0284c7; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 4px;">
+            <div style="text-align: center; margin-top: 14px; padding-top: 12px; border-top: 1px dashed #e2e8f0; display: flex; flex-direction: column; gap: 8px;">
+              <a href="register.php?tab=member" style="font-size: 13px; color: #0284c7; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
+                <span>📝</span> ยังไม่มีบัญชีผู้ใช้น้ำ? ลงทะเบียนสมาชิกใหม่ที่นี่ &rarr;
+              </a>
+              <a href="portal_citizen.php" style="font-size: 12.5px; color: #64748b; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
                 <span>🌐</span> ประชาชนทั่วไป ค้นหาค่าน้ำหรือแจ้งซ่อมโดยไม่ต้องล็อกอิน &rarr;
               </a>
             </div>
@@ -439,6 +452,12 @@ function renderAppTopBar($title, $subtitle) {
             <button type="submit" class="btn btn-primary" style="width: 100%; padding: 11px; font-size: 14.5px; font-weight: 600; border-radius: 6px; background: #0284c7; color: #fff; border: none; cursor: pointer; font-family: inherit;">
               🚀 เข้าสู่ระบบเจ้าหน้าที่ / แอดมิน
             </button>
+
+            <div style="text-align: center; margin-top: 14px; padding-top: 12px; border-top: 1px dashed #e2e8f0;">
+              <a href="register.php?tab=staff" style="font-size: 13px; color: #0284c7; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
+                <span>📝</span> เจ้าหน้าที่ใหม่? ลงทะเบียนบัญชีเจ้าหน้าที่การประปา &rarr;
+              </a>
+            </div>
           </form>
         </div>
       </div>

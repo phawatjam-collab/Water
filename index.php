@@ -386,6 +386,16 @@ try {
           ยินดีต้อนรับสู่ระบบบริการน้ำประปาหมู่บ้านวังยาง อำนวยความสะดวกแก่สมาชิกผู้ใช้น้ำในการตรวจสอบค่าน้ำออนไลน์ 
           พร้อมระบบบริหารจัดการข้อมูลการประปาชุมชนอย่างเป็นระบบ โปร่งใส และเข้าถึงบริการทั้งหมดได้จากแถบเมนูด้านข้าง (Sidebar)
         </p>
+        <?php if (!$currentUser): ?>
+        <div style="margin-top: 22px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+          <a href="register.php" class="btn" style="background: #38bdf8; color: #0f172a; font-weight: 700; padding: 10px 22px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 14px rgba(0,0,0,0.2); font-size: 14px;">
+            <span>📝</span> ลงทะเบียนสมาชิกผู้ใช้น้ำ / เจ้าหน้าที่
+          </a>
+          <button type="button" onclick="openLoginModal()" class="btn" style="background: rgba(255,255,255,0.18); color: #fff; border: 1px solid rgba(255,255,255,0.4); font-weight: 600; padding: 10px 20px; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 14px;">
+            <span>🔐</span> เข้าสู่ระบบ
+          </button>
+        </div>
+        <?php endif; ?>
       </section>
 
       <!-- Main Portal Container -->
