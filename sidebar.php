@@ -216,14 +216,6 @@ function renderAppSidebar($activeRoute = 'home') {
                         'icon' => '⚙️',
                         'url' => 'executive_reports.php#pane-policy',
                         'is_sub' => true
-                    ],
-                    [
-                        'id' => 'phpmyadmin',
-                        'title' => 'จัดการฐานข้อมูล (phpMyAdmin)',
-                        'icon' => '🗄️',
-                        'url' => 'http://localhost/phpmyadmin/index.php?lang=th',
-                        'target' => '_blank',
-                        'is_sub' => true
                     ]
                 ]
             ],
