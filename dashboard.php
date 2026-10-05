@@ -27,59 +27,59 @@ $currentUser = requireRole(['admin']);
     <!-- Main Content Area -->
     <main class="main-content">
       
-      <!-- Top Bar -->
-      <header class="top-bar no-print">
-        <div class="top-bar-title">
-          <h1 id="page-title">ศูนย์ควบคุมระบบรวม (Master Admin Control)</h1>
-          <span id="page-subtitle">จัดการข้อมูลระบบน้ำประปาหมู่บ้านวังยางแบบครบวงจร</span>
-        </div>
-        <div class="top-bar-actions">
-          <div class="select-cycle-wrap">
-            <label for="cycle-select">เลือกงวดประจำเดือน:</label>
-            <select id="cycle-select" class="form-select">
+      <!-- Unified Global Top Bar -->
+      <?php renderAppTopBar('ศูนย์ควบคุมระบบรวม (Master Admin Control)', 'จัดการข้อมูลระบบน้ำประปาหมู่บ้านวังยางแบบครบวงจร'); ?>
+
+      <!-- Dashboard Admin Actions & Cycle Control Bar -->
+      <div class="card no-print" style="margin-bottom: 20px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-left: 4px solid #0284c7;">
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+          <span style="font-size: 24px;">⚙️</span>
+          <div>
+            <h2 style="font-family: 'Prompt', sans-serif; font-size: 16px; margin: 0; color: #0f172a;">แผงบริหารจัดการงวดบัญชี</h2>
+            <span style="font-size: 13px; color: #64748b;">รอบบิลปัจจุบัน: <strong><span id="dashboard-cycle-display">สิงหาคม 2567 (8-2567)</span></strong></span>
+          </div>
+          <div class="select-cycle-wrap" style="margin-left: 8px;">
+            <label for="cycle-select" style="font-size: 13px; font-weight: 600;">เลือกงวด:</label>
+            <select id="cycle-select" class="form-select" style="font-weight: 600; min-width: 170px;">
               <option value="8-2567" selected>สิงหาคม 2567 (8-2567)</option>
               <option value="7-2567">กรกฎาคม 2567 (7-2567)</option>
               <option value="6-2567">มิถุนายน 2567 (6-2567)</option>
             </select>
           </div>
-          <button class="btn btn-outline" id="btn-open-cycle" title="เปิดรอบบิลเดือนใหม่">➕ เปิดรอบบิลใหม่</button>
-          <button class="btn btn-outline" id="btn-export-excel" title="ส่งออกข้อมูลเป็น Excel">📥 ส่งออก Excel</button>
-          <a href="api/backup.php" class="btn btn-outline" style="text-decoration: none; display: inline-flex; align-items: center; gap: 4px;" title="ดาวน์โหลดไฟล์สำรองฐานข้อมูล SQL">💾 สำรองฐานข้อมูล (.sql)</a>
-          <button class="btn btn-primary" onclick="window.print()">🖨️ สั่งพิมพ์เอกสาร</button>
-
-          <!-- Topbar User Profile Chip -->
-          <div class="user-profile-chip" style="display: flex; align-items: center; gap: 6px; background: #f3e8ff; padding: 6px 12px; border-radius: 6px; font-size: 13px; color: #7c3aed; border: 1px solid #e9d5ff;">
-            <span>👤</span>
-            <strong id="topbar-user-name"><?php echo htmlspecialchars($currentUser['name']); ?> (แอดมิน)</strong>
-            <a href="api/auth.php?action=logout" style="color: #dc2626; font-size: 13px; font-weight: 600; margin-left: 4px; text-decoration: none;">[ ออกจากระบบ ]</a>
-          </div>
         </div>
-      </header>
+
+        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+          <button class="btn btn-outline" id="btn-open-cycle" title="เปิดรอบบิลเดือนใหม่" style="font-size: 13px;">➕ เปิดรอบบิลใหม่</button>
+          <button class="btn btn-outline" id="btn-export-excel" title="ส่งออกข้อมูลเป็น Excel" style="font-size: 13px;">📥 ส่งออก Excel</button>
+          <a href="api/backup.php" class="btn btn-outline" style="text-decoration: none; display: inline-flex; align-items: center; gap: 4px; font-size: 13px;" title="ดาวน์โหลดไฟล์สำรองฐานข้อมูล SQL">💾 สำรอง SQL</a>
+          <button class="btn btn-primary" onclick="window.print()" style="font-size: 13px;">🖨️ สั่งพิมพ์เอกสาร</button>
+        </div>
+      </div>
 
       <!-- Dashboard Internal Tab Bar for Admin Tools -->
-      <div class="dashboard-tabs-bar no-print" style="display: flex; gap: 6px; overflow-x: auto; padding: 10px 14px; background: #fff; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 20px;">
-        <button class="nav-item active" data-tab="tab-readings" style="width: auto; padding: 8px 14px; border-radius: 6px; font-size: 13.5px; border: 1px solid #e2e8f0; color: #475569;">
+      <div class="dashboard-tabs-bar no-print">
+        <button class="nav-item active" data-tab="tab-readings">
           <span class="icon">📝</span> จดมิเตอร์ (ป.17)
         </button>
-        <button class="nav-item" data-tab="tab-receipts" style="width: auto; padding: 8px 14px; border-radius: 6px; font-size: 13.5px; border: 1px solid #e2e8f0; color: #475569;">
+        <button class="nav-item" data-tab="tab-receipts">
           <span class="icon">🧾</span> ใบเสร็จ (ป.31/32)
         </button>
-        <button class="nav-item" data-tab="tab-vouchers" style="width: auto; padding: 8px 14px; border-radius: 6px; font-size: 13.5px; border: 1px solid #e2e8f0; color: #475569;">
+        <button class="nav-item" data-tab="tab-vouchers">
           <span class="icon">📜</span> ฎีกาเบิกจ่าย 10%
         </button>
-        <button class="nav-item" data-tab="tab-financials" style="width: auto; padding: 8px 14px; border-radius: 6px; font-size: 13.5px; border: 1px solid #e2e8f0; color: #475569;">
+        <button class="nav-item" data-tab="tab-financials">
           <span class="icon">📊</span> งบการเงิน & กราฟ (กค.3)
         </button>
-        <button class="nav-item" data-tab="tab-arrears" style="width: auto; padding: 8px 14px; border-radius: 6px; font-size: 13.5px; border: 1px solid #e2e8f0; color: #475569;">
+        <button class="nav-item" data-tab="tab-arrears">
           <span class="icon">⚠️</span> ทะเบียนคุมหนี้ (กค.4)
         </button>
-        <button class="nav-item" data-tab="tab-customers" style="width: auto; padding: 8px 14px; border-radius: 6px; font-size: 13.5px; border: 1px solid #e2e8f0; color: #475569;">
+        <button class="nav-item" data-tab="tab-customers">
           <span class="icon">👥</span> ทะเบียนสมาชิก (ป.12)
         </button>
-        <button class="nav-item" data-tab="tab-settings" style="width: auto; padding: 8px 14px; border-radius: 6px; font-size: 13.5px; border: 1px solid #e2e8f0; color: #475569;">
+        <button class="nav-item" data-tab="tab-settings">
           <span class="icon">⚙️</span> ตั้งค่าอัตราค่าน้ำ
         </button>
-        <button class="nav-item" data-tab="tab-tickets" style="width: auto; padding: 8px 14px; border-radius: 6px; font-size: 13.5px; border: 1px solid #e2e8f0; color: #475569;">
+        <button class="nav-item" data-tab="tab-tickets">
           <span class="icon">🔧</span> แจ้งซ่อม/คำร้อง
         </button>
       </div>

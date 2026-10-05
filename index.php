@@ -352,16 +352,14 @@ try {
     <?php renderAppSidebar('home'); ?>
 
     <!-- Main Content Area -->
-    <main class="main-content" style="padding: 0; min-height: 100vh; background: #f8fafc;">
+    <main class="main-content" style="min-height: 100vh; background: #f8fafc;">
       
       <!-- Top Navigation Bar with Authentication Status -->
-      <div style="padding: 16px 32px 0 32px; background: #fff; border-bottom: 1px solid #e2e8f0;">
-        <?php renderAppTopBar('ระบบบริการและบริหารจัดการน้ำประปา', 'การประปาหมู่บ้านวังยาง หมู่ที่ 3'); ?>
-      </div>
+      <?php renderAppTopBar('ระบบบริการและบริหารจัดการน้ำประปา', 'การประปาหมู่บ้านวังยาง หมู่ที่ 3'); ?>
 
       <?php if ($currentUser && ($currentUser['role'] ?? '') === 'member'): ?>
       <!-- Personalized Member Welcome Banner -->
-      <section style="margin: 20px 32px 0 32px; background: #e0f2fe; border: 2px solid #0284c7; border-radius: 12px; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+      <section style="margin-bottom: 20px; background: #e0f2fe; border: 2px solid #0284c7; border-radius: 12px; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
         <div style="display: flex; align-items: center; gap: 14px;">
           <div style="font-size: 30px; background: #0284c7; color: #fff; width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">👤</div>
           <div>
@@ -379,7 +377,7 @@ try {
       <?php endif; ?>
 
       <!-- Hero Banner -->
-      <section class="portal-hero" id="about-section" style="padding: 40px 32px 50px 32px; background: linear-gradient(135deg, #075985 0%, #0284c7 100%); color: #fff; margin-top: <?php echo ($currentUser && ($currentUser['role'] ?? '') === 'member') ? '20px' : '0'; ?>;">
+      <section class="portal-hero" id="about-section" style="padding: 36px 28px 40px 28px; background: linear-gradient(135deg, #075985 0%, #0284c7 100%); color: #fff; border-radius: 14px; margin-bottom: 24px; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.15);">
         <div class="hero-badge">🏛️ กองทุนน้ำประปาหมู่บ้านวังยาง หมู่ที่ 3</div>
         <h1 style="font-size: 28px; margin-bottom: 8px;">ระบบบริการและบริหารจัดการน้ำประปาชุมชน</h1>
         <p style="font-size: 15px; margin: 0 auto; max-width: 800px; opacity: 0.95; line-height: 1.6;">
@@ -399,7 +397,7 @@ try {
       </section>
 
       <!-- Main Portal Container -->
-      <div class="portal-container" style="max-width: 100%; margin: -25px 32px 40px 32px; padding: 0;">
+      <div class="portal-container" style="max-width: 100%; margin: 0; padding: 0;">
     
     <!-- Live Statistics KPI Grid -->
     <div class="kpi-grid">

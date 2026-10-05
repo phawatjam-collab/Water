@@ -37,6 +37,8 @@ $zones = array_unique(array_filter(array_column($customers, 'zone')));
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
       position: sticky;
       top: 0;
       z-index: 1000;

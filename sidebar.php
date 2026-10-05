@@ -288,6 +288,7 @@ function renderAppSidebar($activeRoute = 'home') {
             <span>ระบบจัดการน้ำประปา</span>
           </a>
         </div>
+        <button type="button" class="btn-sidebar-close no-print" onclick="toggleAppSidebar(false)" aria-label="ปิดเมนู" title="ปิดเมนู">✕</button>
       </div>
 
       <!-- Navigation Menu (Strictly Filtered by Role) -->
@@ -327,6 +328,9 @@ function renderAppSidebar($activeRoute = 'home') {
         </button>
       </div>
     </aside>
+
+    <!-- Mobile Sidebar Backdrop Overlay -->
+    <div class="sidebar-backdrop no-print" onclick="toggleAppSidebar(false)"></div>
     <?php
 }
 
@@ -334,13 +338,18 @@ function renderAppTopBar($title, $subtitle) {
     $currentUser = getCurrentUser();
     ?>
     <header class="top-bar no-print">
-      <div class="top-bar-title">
-        <h1><?php echo htmlspecialchars($title); ?></h1>
-        <span style="font-size: 13.5px;"><?php echo htmlspecialchars($subtitle); ?></span>
+      <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
+        <button type="button" class="btn-sidebar-toggle no-print" onclick="toggleAppSidebar(true)" aria-label="เปิดเมนู" title="เปิดเมนู">
+          <span>☰</span>
+        </button>
+        <div class="top-bar-title">
+          <h1><?php echo htmlspecialchars($title); ?></h1>
+          <span><?php echo htmlspecialchars($subtitle); ?></span>
+        </div>
       </div>
-      <div class="top-bar-actions" style="display: flex; align-items: center; gap: 10px;">
+      <div class="top-bar-actions">
         <?php if ($currentUser): ?>
-          <div class="user-profile-chip" style="display: flex; align-items: center; gap: 8px; background: <?php echo $currentUser['badge_bg'] ?? '#f1f5f9'; ?>; padding: 6px 14px; border-radius: 6px; font-size: 13.5px; color: <?php echo $currentUser['badge_color'] ?? '#0f172a'; ?>; border: 1px solid rgba(0,0,0,0.08);">
+          <div class="user-profile-chip" style="display: flex; align-items: center; gap: 8px; background: <?php echo $currentUser['badge_bg'] ?? '#f1f5f9'; ?>; padding: 6px 14px; border-radius: 9999px; font-size: 13px; color: <?php echo $currentUser['badge_color'] ?? '#0f172a'; ?>; border: 1px solid rgba(0,0,0,0.08);">
             <span>👤</span>
             <?php if (($currentUser['role'] ?? '') === 'member'): ?>
               <strong>สมาชิก: <?php echo htmlspecialchars($currentUser['name']); ?> (รหัส: <?php echo htmlspecialchars($currentUser['customer_code'] ?? ''); ?>)</strong>
@@ -625,6 +634,33 @@ function renderAppTopBar($title, $subtitle) {
           });
         });
       }
+
+      // Mobile Sidebar Drawer Toggle Controller
+      window.toggleAppSidebar = function(forceState) {
+        const sidebar = document.querySelector('.sidebar');
+        const backdrop = document.querySelector('.sidebar-backdrop');
+        if (!sidebar) return;
+        const isOpen = (typeof forceState === 'boolean') ? forceState : !sidebar.classList.contains('sidebar-active');
+        sidebar.classList.toggle('sidebar-active', isOpen);
+        if (backdrop) backdrop.classList.toggle('show', isOpen);
+        document.body.classList.toggle('sidebar-open', isOpen);
+      };
+
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.sidebar .nav-item').forEach(link => {
+          link.addEventListener('click', () => {
+            if (window.innerWidth <= 992) {
+              window.toggleAppSidebar(false);
+            }
+          });
+        });
+
+        window.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') {
+            window.toggleAppSidebar(false);
+          }
+        });
+      });
     </script>
     <?php
 }

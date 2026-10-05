@@ -77,8 +77,19 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
       background: #f1f5f9;
       padding: 4px;
       border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      max-width: 100%;
+      overflow-x: auto;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .fin-status-pills::-webkit-scrollbar {
+      display: none;
     }
     .fin-pill-btn {
+      white-space: nowrap;
+      flex-shrink: 0;
       padding: 6px 14px;
       border-radius: 6px;
       border: none;
@@ -88,14 +99,15 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
       color: #64748b;
       cursor: pointer;
       transition: all 0.15s ease;
+      font-family: inherit;
     }
     .fin-pill-btn:hover {
       color: #0f172a;
     }
     .fin-pill-btn.active {
-      background: #ffffff;
-      color: #0f172a;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      background: #0284c7;
+      color: #ffffff;
+      box-shadow: 0 1px 3px rgba(2, 132, 199, 0.3);
     }
     .toast-container {
       position: fixed;
@@ -133,7 +145,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
       <?php renderAppTopBar('งานรับชำระเงินและจัดทำฎีกาเบิกจ่าย', 'งานการเงิน เหรัญญิก ออกใบเสร็จมาตรฐาน ทะเบียนคุมหนี้ และฎีกา 10%'); ?>
 
     <!-- Top Action / Cycle Bar -->
-    <div class="card no-print" style="margin-bottom: 16px; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+    <div class="card no-print" style="margin-bottom: 20px; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-left: 4px solid #0284c7; border-radius: 12px;">
       <div style="display: flex; align-items: center; gap: 12px;">
         <span style="font-size: 24px;">💼</span>
         <div>
@@ -142,7 +154,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
         </div>
       </div>
 
-      <div style="display: flex; align-items: center; gap: 10px;">
+      <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
         <label for="fin-cycle-select" style="font-size: 13px; font-weight: 600;">เลือกงวดเดือน:</label>
         <select id="fin-cycle-select" class="form-select" style="font-weight: 600;">
           <?php foreach ($cycles as $c): ?>
