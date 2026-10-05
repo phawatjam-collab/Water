@@ -57,6 +57,27 @@ body {
   bottom: 0;
   left: 0;
   z-index: 100;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(56, 189, 248, 0.25) transparent;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 5px;
+}
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(56, 189, 248, 0.2);
+  border-radius: 9999px;
+}
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(56, 189, 248, 0.4);
 }
 
 .brand {
@@ -143,7 +164,7 @@ body {
   font-weight: 500;
   cursor: pointer;
   text-align: left;
-  transition: all 0.15s ease-in-out;
+  transition: background-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
   text-decoration: none;
 }
 
@@ -193,6 +214,7 @@ body {
   flex: 1;
   padding: 24px 32px;
   max-width: 1400px;
+  min-width: 0;
 }
 
 /* Top Bar */

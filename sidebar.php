@@ -253,6 +253,20 @@ function renderAppSidebar($activeRoute = 'home') {
                         'is_sub' => false
                     ],
                     [
+                        'id' => 'arrears',
+                        'title' => 'ทะเบียนหนี้ค้างชำระ',
+                        'icon' => '⚠️',
+                        'url' => 'finance_billing.php#pane-arrears',
+                        'is_sub' => true
+                    ],
+                    [
+                        'id' => 'vouchers',
+                        'title' => 'ฎีกาเบิกจ่ายเงินกองทุน',
+                        'icon' => '📜',
+                        'url' => 'finance_billing.php#pane-vouchers',
+                        'is_sub' => true
+                    ],
+                    [
                         'id' => 'citizen',
                         'title' => 'ตรวจสอบและบริการประชาชน',
                         'icon' => '👥',
