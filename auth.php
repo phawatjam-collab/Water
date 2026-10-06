@@ -119,13 +119,48 @@ function loginMember($identifier) {
     $db = getAuthDbConnection();
     if ($db) {
         try {
-            // ค้นหาจากรหัสผู้ใช้น้ำ บ้านเลขที่ หรือเบอร์โทร
+            $phoneDigits = preg_replace('/\D/', '', $identifier);
+
+            // 1. ตรวจสอบเบอร์โทรศัพท์เป็น Key ลำดับแรก (Phone as Primary Key)
+            if (strlen($phoneDigits) >= 8) {
+                $stmt = $db->prepare("
+                    SELECT * FROM customers 
+                    WHERE REPLACE(REPLACE(phone, '-', ''), ' ', '') = ?
+                       OR phone = ?
+                    LIMIT 1
+                ");
+                $stmt->execute([$phoneDigits, $identifier]);
+                $cust = $stmt->fetch();
+                if ($cust) {
+                    $_SESSION['water_user'] = [
+                        'username' => $cust['customer_code'],
+                        'role' => 'member',
+                        'role_title' => 'สมาชิกผู้ใช้น้ำ (Member)',
+                        'name' => $cust['first_name'] . ' ' . $cust['last_name'],
+                        'position' => 'สมาชิกผู้ใช้น้ำ (บ้านเลขที่ ' . $cust['house_no'] . ')',
+                        'customer_code' => $cust['customer_code'],
+                        'house_no' => $cust['house_no'],
+                        'zone' => $cust['zone'],
+                        'phone' => $cust['phone'],
+                        'meter_serial' => $cust['meter_serial'],
+                        'badge_color' => '#0284c7',
+                        'badge_bg' => '#e0f2fe',
+                        'default_page' => 'portal_citizen.php?phone=' . urlencode($cust['phone']) . '&customer=' . urlencode($cust['customer_code'])
+                    ];
+                    return true;
+                }
+            }
+
+            // 2. ค้นหาจากรหัสผู้ใช้น้ำ, บ้านเลขที่ หรือเบอร์โทร
             $stmt = $db->prepare("
                 SELECT * FROM customers 
-                WHERE customer_code = ? OR phone = ? OR house_no = ?
+                WHERE customer_code = ? 
+                   OR phone = ? 
+                   OR house_no = ? 
+                   OR REPLACE(REPLACE(phone, '-', ''), ' ', '') = ?
                 LIMIT 1
             ");
-            $stmt->execute([$identifier, $identifier, $identifier]);
+            $stmt->execute([$identifier, $identifier, $identifier, $phoneDigits]);
             $cust = $stmt->fetch();
 
             if ($cust) {
@@ -142,12 +177,12 @@ function loginMember($identifier) {
                     'meter_serial' => $cust['meter_serial'],
                     'badge_color' => '#0284c7',
                     'badge_bg' => '#e0f2fe',
-                    'default_page' => 'portal_citizen.php?customer=' . urlencode($cust['customer_code'])
+                    'default_page' => 'portal_citizen.php?phone=' . urlencode($cust['phone']) . '&customer=' . urlencode($cust['customer_code'])
                 ];
                 return true;
             }
 
-            // ค้นหาจาก tb_users ที่ลงทะเบียนไว้เป็น role = 'member'
+            // 3. ค้นหาจาก tb_users ที่ลงทะเบียนไว้เป็น role = 'member'
             $uStmt = $db->prepare("SELECT * FROM tb_users WHERE username = ? AND role = 'member' LIMIT 1");
             $uStmt->execute([strtolower($identifier)]);
             $dbUser = $uStmt->fetch();
@@ -179,7 +214,7 @@ function loginMember($identifier) {
                     'phone' => $phone,
                     'badge_color' => '#0284c7',
                     'badge_bg' => '#e0f2fe',
-                    'default_page' => 'portal_citizen.php' . (!empty($custCode) ? '?customer=' . urlencode($custCode) : '')
+                    'default_page' => 'portal_citizen.php' . (!empty($phone) ? '?phone=' . urlencode($phone) : (!empty($custCode) ? '?customer=' . urlencode($custCode) : ''))
                 ];
                 return true;
             }

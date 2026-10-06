@@ -43,64 +43,203 @@ $currentUser = getCurrentUser();
     }
     .search-card {
       background: #fff;
-      border-radius: 12px;
-      padding: 24px;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
-      max-width: 720px;
+      border-radius: 14px;
+      padding: 26px 28px;
+      box-shadow: 0 10px 25px -3px rgba(0,0,0,0.08);
+      border: 2px solid #0284c7;
+      max-width: 760px;
       margin: -25px auto 30px auto;
       position: relative;
     }
-    .citizen-search-row {
-      display: flex;
-      gap: 10px;
-      position: relative;
+    .citizen-search-bar-clean {
+      width: 100% !important;
+      position: relative !important;
     }
-    .citizen-search-row .search-input-wrapper {
-      flex: 1;
-      position: relative;
+    .search-input-wrapper {
+      position: relative !important;
+      width: 100% !important;
+      display: flex !important;
+      align-items: center !important;
     }
-    .citizen-search-row input {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 14px 18px;
-      border: 2px solid #cbd5e1;
-      border-radius: 8px;
-      font-size: 16px;
-      font-family: 'Sarabun', sans-serif;
-      outline: none;
-      transition: all 0.2s;
+    .search-input-icon {
+      position: absolute !important;
+      left: 18px !important;
+      font-size: 20px !important;
+      color: #0284c7 !important;
+      pointer-events: none !important;
+      z-index: 2 !important;
+      display: flex !important;
+      align-items: center !important;
+      user-select: none !important;
     }
-    .citizen-search-row input:focus {
-      border-color: #0284c7;
-      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    .citizen-search-input {
+      width: 100% !important;
+      box-sizing: border-box !important;
+      padding: 16px 20px 16px 54px !important;
+      font-size: 16px !important;
+      font-family: inherit !important;
+      border: 2px solid #e2e8f0 !important;
+      border-radius: 14px !important;
+      background: #ffffff !important;
+      color: #0f172a !important;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05) !important;
+      outline: none !important;
+      transition: all 0.2s ease !important;
     }
-    @media (max-width: 560px) {
-      .citizen-search-row {
-        flex-direction: column;
-      }
-      .btn-search {
-        width: 100%;
-        padding: 12px !important;
-        justify-content: center;
-      }
+    .citizen-search-input:focus {
+      border-color: #0284c7 !important;
+      box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.18), 0 8px 20px rgba(0, 0, 0, 0.08) !important;
     }
-    .btn-search {
-      background: #0284c7;
-      color: #fff;
-      border: none;
-      padding: 0 24px;
-      border-radius: 8px;
-      font-size: 15px;
-      font-family: 'Prompt', sans-serif;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+    .search-autocomplete-dropdown {
+      position: absolute !important;
+      top: calc(100% + 8px) !important;
+      left: 0 !important;
+      right: 0 !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      background: #ffffff !important;
+      border: 1px solid #cbd5e1 !important;
+      border-radius: 14px !important;
+      box-shadow: 0 20px 45px -8px rgba(15, 23, 42, 0.22), 0 8px 18px -4px rgba(0, 0, 0, 0.08) !important;
+      max-height: 420px !important;
+      overflow-y: auto !important;
+      z-index: 10000 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      padding: 8px !important;
+      gap: 4px !important;
+      animation: dropdownFadeSmooth 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      scrollbar-width: thin !important;
     }
-    .btn-search:hover {
-      background: #0369a1;
+    @keyframes dropdownFadeSmooth {
+      from { opacity: 0; transform: translateY(-8px) scale(0.99); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .search-dropdown-header {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      padding: 9px 14px 7px 14px !important;
+      font-size: 12px !important;
+      font-weight: 700 !important;
+      color: #64748b !important;
+      border-bottom: 1px solid #f1f5f9 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.5px !important;
+    }
+    .search-dropdown-footer {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      padding: 8px 14px !important;
+      font-size: 11.5px !important;
+      color: #94a3b8 !important;
+      border-top: 1px solid #f1f5f9 !important;
+      background: #f8fafc !important;
+      border-radius: 0 0 10px 10px !important;
+      margin-top: 4px !important;
+    }
+    .search-dropdown-item {
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      padding: 10px 14px !important;
+      border-radius: 10px !important;
+      border: 1px solid transparent !important;
+      text-decoration: none !important;
+      color: inherit !important;
+      transition: all 0.15s ease !important;
+      cursor: pointer !important;
+      background: #ffffff !important;
+    }
+    .search-dropdown-item:hover,
+    .search-dropdown-item.active {
+      background: #f0f9ff !important;
+      border-color: #bae6fd !important;
+      transform: translateX(3px) !important;
+    }
+    .search-dropdown-item .item-main {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 3px !important;
+      flex: 1 !important;
+      min-width: 0 !important;
+    }
+    .search-dropdown-item .item-title {
+      display: flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      font-size: 14.5px !important;
+      font-weight: 600 !important;
+      color: #0f172a !important;
+      flex-wrap: wrap !important;
+    }
+    .search-dropdown-item .item-phone-badge {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 4px !important;
+      font-size: 12.5px !important;
+      font-weight: 700 !important;
+      padding: 2px 9px !important;
+      border-radius: 9999px !important;
+      background: #e0f2fe !important;
+      color: #0284c7 !important;
+      border: 1px solid #bae6fd !important;
+    }
+    .search-dropdown-item .item-code-badge {
+      font-size: 11.5px !important;
+      padding: 1px 7px !important;
+      border-radius: 4px !important;
+      background: #f1f5f9 !important;
+      color: #475569 !important;
+      font-family: monospace !important;
+      font-weight: 600 !important;
+    }
+    .search-dropdown-item .item-sub {
+      display: flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      font-size: 12.5px !important;
+      color: #64748b !important;
+      flex-wrap: wrap !important;
+    }
+    .search-dropdown-item .item-meta {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: flex-end !important;
+      gap: 3px !important;
+      margin-left: 12px !important;
+      flex-shrink: 0 !important;
+    }
+    .search-dropdown-item .item-amount {
+      font-size: 14.5px !important;
+      font-weight: 700 !important;
+      color: #0284c7 !important;
+    }
+    .search-dropdown-item .item-action-pill {
+      font-size: 11px !important;
+      padding: 2px 7px !important;
+      border-radius: 4px !important;
+      background: #0284c7 !important;
+      color: #fff !important;
+      font-weight: 600 !important;
+    }
+    .search-dropdown-empty {
+      padding: 24px 16px !important;
+      text-align: center !important;
+      color: #64748b !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      gap: 6px !important;
+    }
+    .search-highlight {
+      background: #fef08a !important;
+      color: #854d0e !important;
+      padding: 0 2px !important;
+      border-radius: 3px !important;
+      font-weight: 700 !important;
     }
     .bill-result-card {
       background: #fff;
@@ -150,16 +289,17 @@ $currentUser = getCurrentUser();
       </p>
     </div>
 
-    <!-- Search Box -->
+    <!-- Search Box (Full Width, Phone-First, No Magnifier Button, Smooth Dropdown) -->
     <div class="search-card">
-      <div class="citizen-search-row">
+      <div class="citizen-search-bar-clean">
         <div class="search-input-wrapper">
-          <input type="text" id="citizen-search-input" autocomplete="off" placeholder="พิมพ์รหัสผู้ใช้น้ำ (เช่น WY-001) หรือบ้านเลขที่ (เช่น 12) หรือชื่อ-สกุล...">
+          <div class="search-input-icon">📞</div>
+          <input type="text" id="citizen-search-input" class="citizen-search-input" autocomplete="off" placeholder="📞 พิมพ์เบอร์โทรศัพท์ (เช่น 081-234-5678) เพื่อดูบิลค่าน้ำทันที...">
           <div id="citizen-search-dropdown" class="search-autocomplete-dropdown" style="display: none;"></div>
         </div>
-        <button type="button" id="btn-search-bill" class="btn-search">
-          <span>🔍</span> ค้นหาบิล
-        </button>
+      </div>
+      <div class="quick-examples" style="text-align: center; margin-top: 12px;">
+        💡 <strong>Key หลักในการค้นหา:</strong> พิมพ์เบอร์โทรศัพท์มือถือ (ระบบจัดอันดับเบอร์โทรสูงสุด) หรือพิมพ์รหัส <a onclick="setSearchDemo('0812345678')">081-234-5678</a>, <a onclick="setSearchDemo('0810001111')">081-000-1111</a>, <a onclick="setSearchDemo('WY-001')">WY-001</a>
       </div>
     </div>
 
@@ -324,6 +464,17 @@ $currentUser = getCurrentUser();
       }
     }
 
+    function formatPhone(phone) {
+      if (!phone) return '-';
+      const clean = String(phone).replace(/\D/g, '');
+      if (clean.length === 10) {
+        return clean.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+      } else if (clean.length === 9) {
+        return clean.replace(/(\d{2})(\d{3})(\d{4})/, '$1-$2-$3');
+      }
+      return phone;
+    }
+
     function escapeHtml(text) {
       if (!text) return '';
       return String(text)
@@ -349,21 +500,55 @@ $currentUser = getCurrentUser();
     }
 
     async function handleSearchInput() {
-      const kw = searchInput.value.trim().toLowerCase();
-      if (!kw) {
+      const kwRaw = searchInput.value.trim();
+      if (!kwRaw) {
         closeSearchDropdown();
         return;
       }
 
+      const kwLower = kwRaw.toLowerCase();
+      const kwDigits = kwRaw.replace(/\D/g, '');
+
       const readings = await getReadings();
-      const matches = readings.filter(r => 
-        (r.customer_code && r.customer_code.toLowerCase().includes(kw)) ||
-        (r.house_no && r.house_no.toLowerCase().includes(kw)) ||
-        (r.first_name && r.first_name.toLowerCase().includes(kw)) ||
-        (r.last_name && r.last_name.toLowerCase().includes(kw)) ||
-        (r.meter_serial && r.meter_serial.toLowerCase().includes(kw)) ||
-        (r.phone && r.phone.includes(kw))
-      ).slice(0, 8);
+
+      // Phone Number is the Primary Key across the entire system
+      const matches = readings.map(r => {
+        let score = 0;
+        const phoneRaw = r.phone || '';
+        const phoneDigits = phoneRaw.replace(/\D/g, '');
+        const phoneFormatted = formatPhone(phoneRaw);
+        const fullName = `${r.first_name || ''} ${r.last_name || ''}`.trim();
+        const custCode = r.customer_code || '';
+        const houseNo = r.house_no || '';
+
+        // 1. Phone number matching has the highest score
+        if (kwDigits && phoneDigits.includes(kwDigits)) {
+          score += (phoneDigits === kwDigits ? 200 : 100);
+        }
+        if (phoneFormatted.toLowerCase().includes(kwLower)) {
+          score += 80;
+        }
+        // 2. Customer code matching
+        if (custCode.toLowerCase().includes(kwLower)) {
+          score += (custCode.toLowerCase() === kwLower ? 90 : 40);
+        }
+        // 3. House number matching
+        if (houseNo.toLowerCase().includes(kwLower)) {
+          score += 30;
+        }
+        // 4. Name matching
+        if (fullName.toLowerCase().includes(kwLower)) {
+          score += 20;
+        }
+        if (r.meter_serial && r.meter_serial.toLowerCase().includes(kwLower)) {
+          score += 15;
+        }
+
+        return { reading: r, score, phoneFormatted, fullName };
+      })
+      .filter(item => item.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 8);
 
       if (!searchDropdown) return;
 
@@ -371,8 +556,8 @@ $currentUser = getCurrentUser();
         searchDropdown.innerHTML = `
           <div class="search-dropdown-empty">
             <span style="font-size: 26px;">🔍</span>
-            <div style="font-weight: 600; color: #475569;">ไม่พบข้อมูลผู้ใช้น้ำที่ตรงกับ "<strong>${escapeHtml(kw)}</strong>"</div>
-            <small style="color: #94a3b8;">ลองค้นหาด้วยรหัส (เช่น WY-001), บ้านเลขที่ หรือชื่อ-สกุล</small>
+            <div style="font-weight: 600; color: #475569;">ไม่พบข้อมูลผู้ใช้น้ำที่ตรงกับ "<strong>${escapeHtml(kwRaw)}</strong>"</div>
+            <small style="color: #94a3b8;">ลองค้นหาด้วยเบอร์โทรศัพท์ (เช่น 081-234-5678), รหัสผู้ใช้น้ำ หรือบ้านเลขที่</small>
           </div>
         `;
         searchDropdown.style.display = 'flex';
@@ -382,27 +567,29 @@ $currentUser = getCurrentUser();
 
       const headerHtml = `
         <div class="search-dropdown-header">
-          <span>📋 ผลการค้นหา (${matches.length} รายการ)</span>
+          <span>📋 ผลการค้นหา (${matches.length} รายการ) — ค้นหาด้วยเบอร์โทรศัพท์</span>
           <span style="font-size: 11px; font-weight: normal; color: #0284c7;">คลิกเพื่อเปิดดูบิล</span>
         </div>
       `;
 
-      const itemsHtml = matches.map((r, idx) => {
+      const itemsHtml = matches.map((item, idx) => {
+        const r = item.reading;
         const isPaid = (r.payment_status === 'PAID');
         const total = parseFloat(r.grand_total || 0).toLocaleString('th-TH', { minimumFractionDigits: 2 });
-        const fullName = `${r.first_name} ${r.last_name}`;
+        const targetUrl = `portal_citizen.php?phone=${encodeURIComponent(r.phone || '')}&customer=${encodeURIComponent(r.customer_code)}`;
         return `
-          <a href="portal_citizen.php?customer=${encodeURIComponent(r.customer_code)}" class="search-dropdown-item" data-code="${escapeHtml(r.customer_code)}" data-index="${idx}">
+          <a href="${targetUrl}" class="search-dropdown-item" data-code="${escapeHtml(r.customer_code)}" data-phone="${escapeHtml(r.phone || '')}" data-index="${idx}">
             <div class="item-main">
               <div class="item-title">
-                <span>👤 ${highlightMatch(fullName, kw)}</span>
-                <span class="item-code-badge">${highlightMatch(r.customer_code, kw)}</span>
+                <span class="item-phone-badge">📞 ${highlightMatch(item.phoneFormatted, kwRaw)}</span>
+                <span class="item-name">${highlightMatch(item.fullName, kwRaw)}</span>
+                <span class="item-code-badge">${highlightMatch(r.customer_code, kwRaw)}</span>
               </div>
               <div class="item-sub">
-                <span>🏠 บ้านเลขที่: <strong>${highlightMatch(r.house_no, kw)}</strong></span>
+                <span>🏠 บ้านเลขที่: <strong>${highlightMatch(r.house_no, kwRaw)}</strong></span>
                 <span>•</span>
                 <span>${escapeHtml(r.zone || '')}</span>
-                ${r.meter_serial ? `<span>• มาตร: ${highlightMatch(r.meter_serial, kw)}</span>` : ''}
+                ${r.meter_serial ? `<span>• มาตร: ${highlightMatch(r.meter_serial, kwRaw)}</span>` : ''}
               </div>
             </div>
             <div class="item-meta">
@@ -433,14 +620,16 @@ $currentUser = getCurrentUser();
         item.addEventListener('click', (e) => {
           e.preventDefault();
           e.stopPropagation();
+          const phone = item.getAttribute('data-phone');
           const code = item.getAttribute('data-code');
-          if (code) {
-            searchInput.value = code;
+          const target = phone || code;
+          if (target) {
+            searchInput.value = target;
             if (window.history && window.history.pushState) {
-              window.history.pushState(null, '', '?customer=' + encodeURIComponent(code));
+              window.history.pushState(null, '', `?phone=${encodeURIComponent(phone || '')}&customer=${encodeURIComponent(code || '')}`);
             }
             closeSearchDropdown();
-            performCitizenSearch();
+            performCitizenSearch(target);
           }
         });
       });
@@ -501,17 +690,20 @@ $currentUser = getCurrentUser();
       }
     });
 
-    document.getElementById('btn-search-bill')?.addEventListener('click', () => {
-      closeSearchDropdown();
-      performCitizenSearch();
-    });
+    window.setSearchDemo = function(term) {
+      if (searchInput) {
+        searchInput.value = term;
+        searchInput.focus();
+        handleSearchInput();
+      }
+    };
 
-    async function performCitizenSearch() {
+    async function performCitizenSearch(exactQuery) {
       closeSearchDropdown();
-      const kw = document.getElementById('citizen-search-input').value.trim().toLowerCase();
+      const kw = (exactQuery !== undefined ? exactQuery : document.getElementById('citizen-search-input').value).trim();
       const container = document.getElementById('bill-result-container');
       if (!kw) {
-        alert('กรุณากรอกรหัสผู้ใช้น้ำ, บ้านเลขที่ หรือชื่อ-สกุล');
+        alert('กรุณากรอกเบอร์โทรศัพท์, รหัสผู้ใช้น้ำ หรือบ้านเลขที่');
         return;
       }
 
@@ -521,20 +713,29 @@ $currentUser = getCurrentUser();
 
       try {
         const readings = await getReadings();
-        const match = readings.find(r => 
-          r.customer_code.toLowerCase().includes(kw) ||
-          r.house_no.toLowerCase().includes(kw) ||
-          r.first_name.toLowerCase().includes(kw) ||
-          r.last_name.toLowerCase().includes(kw) ||
-          (r.meter_serial && r.meter_serial.toLowerCase().includes(kw))
-        );
+        const kwLower = kw.toLowerCase();
+        const kwDigits = kw.replace(/\D/g, '');
+
+        let match = null;
+        if (kwDigits && kwDigits.length >= 4) {
+          match = readings.find(r => r.phone && r.phone.replace(/\D/g, '').includes(kwDigits));
+        }
+        if (!match) {
+          match = readings.find(r => 
+            (r.customer_code && r.customer_code.toLowerCase().includes(kwLower)) ||
+            (r.house_no && r.house_no.toLowerCase().includes(kwLower)) ||
+            (r.first_name && r.first_name.toLowerCase().includes(kwLower)) ||
+            (r.last_name && r.last_name.toLowerCase().includes(kwLower)) ||
+            (r.meter_serial && r.meter_serial.toLowerCase().includes(kwLower))
+          );
+        }
 
         if (!match) {
           container.innerHTML = `
             <div class="bill-result-card" style="text-align: center; border-color: #fee2e2; background: #fff5f5;">
               <span style="font-size: 36px;">❌</span>
               <h4 style="color: #dc2626; margin-top: 8px;">ไม่พบข้อมูลบิลค่าน้ำที่ตรงกับ "${escapeHtml(kw)}"</h4>
-              <p style="color: #64748b; font-size: 13.5px;">กรุณาตรวจสอบรหัสผู้ใช้น้ำหรือบ้านเลขที่ของท่านอีกครั้ง หรือติดต่อคณะกรรมการประปาหมู่บ้าน</p>
+              <p style="color: #64748b; font-size: 13.5px;">กรุณาตรวจสอบเบอร์โทรศัพท์ หรือรหัสผู้ใช้น้ำอีกครั้ง หรือติดต่อคณะกรรมการประปาหมู่บ้าน</p>
             </div>
           `;
           return;
@@ -548,14 +749,19 @@ $currentUser = getCurrentUser();
             
             <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid #e2e8f0; padding-bottom: 16px; margin-bottom: 20px;">
               <div>
-                <span style="background: #e0f2fe; color: #0284c7; font-size: 13px; font-weight: 700; padding: 3px 10px; border-radius: 4px;">
-                  รหัสผู้ใช้น้ำ: ${match.customer_code}
-                </span>
-                <h2 style="font-family: 'Prompt', sans-serif; font-size: 22px; color: #0f172a; margin: 6px 0 2px 0;">
-                  ${match.first_name} ${match.last_name}
+                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px;">
+                  <span style="background: #e0f2fe; color: #0284c7; font-size: 13.5px; font-weight: 700; padding: 4px 12px; border-radius: 6px; border: 1px solid #bae6fd;">
+                    📞 เบอร์โทรศัพท์ (Key หลัก): ${formatPhone(match.phone)}
+                  </span>
+                  <span style="background: #f1f5f9; color: #475569; font-size: 13px; font-weight: 700; padding: 4px 10px; border-radius: 6px;">
+                    รหัสผู้ใช้น้ำ: ${match.customer_code}
+                  </span>
+                </div>
+                <h2 style="font-family: 'Prompt', sans-serif; font-size: 22px; color: #0f172a; margin: 4px 0 2px 0;">
+                  👤 ${match.first_name} ${match.last_name}
                 </h2>
                 <div style="font-size: 14px; color: #64748b;">
-                  🏠 บ้านเลขที่ ${match.house_no} | โซน: <strong>${match.zone}</strong> | 📞 เบอร์โทรศัพท์: <strong style="color: #0284c7;">${match.phone || '-'}</strong> | มาตรเลขที่: <strong>${match.meter_serial || '-'}</strong>
+                  🏠 บ้านเลขที่ ${match.house_no} | โซน: <strong>${match.zone}</strong> | มาตรเลขที่: <strong>${match.meter_serial || '-'}</strong>
                 </div>
               </div>
               <div style="text-align: right;">
@@ -800,15 +1006,15 @@ $currentUser = getCurrentUser();
       }
     }
 
-    // Auto-search if customer param is present in URL or logged-in member
+    // Auto-search if phone or customer param is present in URL or logged-in member
     window.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
-      const custParam = urlParams.get('customer') || '<?php echo ($currentUser && ($currentUser['role'] ?? '') === 'member') ? addslashes($currentUser['customer_code'] ?? '') : ''; ?>';
-      if (custParam) {
+      const searchTarget = urlParams.get('phone') || urlParams.get('customer') || '<?php echo ($currentUser && ($currentUser['role'] ?? '') === 'member') ? addslashes($currentUser['phone'] ?? $currentUser['customer_code'] ?? '') : ''; ?>';
+      if (searchTarget) {
         const input = document.getElementById('citizen-search-input');
         if (input) {
-          input.value = custParam;
-          performCitizenSearch();
+          input.value = searchTarget;
+          performCitizenSearch(searchTarget);
         }
       }
     });

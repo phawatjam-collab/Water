@@ -35,8 +35,8 @@ if ($action === 'login') {
         $codeToFind = !empty($customerCode) ? $customerCode : $username;
         $loginSuccess = loginMember($codeToFind);
     } 
-    // 3. ถ้ากรอก username ที่ขึ้นต้นด้วย WY- หรือเป็นตัวเลข ให้ลองตรวจสอบสมาชิกก่อน
-    elseif (!empty($username) && (preg_match('/^WY-/i', $username) || is_numeric($username))) {
+    // 3. ถ้ากรอก username ที่ขึ้นต้นด้วย WY- หรือเป็นเบอร์โทรศัพท์/ตัวเลข ให้ลองตรวจสอบสมาชิกก่อน
+    elseif (!empty($username) && (preg_match('/^WY-/i', $username) || preg_match('/^[0-9\-\+ ]{9,15}$/', $username) || is_numeric($username))) {
         $loginSuccess = loginMember($username);
     }
     // 4. เข้าสู่ระบบแบบเจ้าหน้าที่ / แอดมิน (Staff / Admin Login ด้วย Username & Password)

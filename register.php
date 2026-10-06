@@ -223,8 +223,9 @@ if (empty($installTypes)) {
 
         <div class="form-row">
           <div class="form-group">
-            <label>เบอร์โทรศัพท์: <span style="color: #dc2626;">*</span></label>
-            <input type="tel" name="phone" class="form-input" required placeholder="08xxxxxxxx" maxlength="10" style="width: 100%;">
+            <label>📞 เบอร์โทรศัพท์ (Key หลักระบุตัวตน): <span style="color: #dc2626;">*</span></label>
+            <input type="tel" name="phone" class="form-input" required placeholder="08xxxxxxxx" maxlength="12" style="width: 100%;">
+            <span class="helper-text">* ใช้เป็น Key หลักในการค้นหาบิลและยืนยันตัวตน (ไม่ซ้ำกัน)</span>
           </div>
           <div class="form-group">
             <label>ขนาดมาตรวัดน้ำ:</label>
@@ -245,8 +246,8 @@ if (empty($installTypes)) {
 
           <div class="form-group">
             <label>ชื่อผู้ใช้งาน (Username): <span style="color: #dc2626;">*</span></label>
-            <input type="text" name="username" class="form-input" required placeholder="เช่น sommai หรือ wy010" minlength="3" style="width: 100%;">
-            <span class="helper-text">* ภาษาอังกฤษหรือตัวเลขอย่างน้อย 3 ตัวอักษร</span>
+            <input type="text" name="username" class="form-input" required placeholder="เช่น sommai หรือใช้เบอร์โทรศัพท์" minlength="3" style="width: 100%;">
+            <span class="helper-text">* ภาษาอังกฤษ ตัวเลข หรือเบอร์โทรศัพท์มือถือ (แนะนำ)</span>
           </div>
 
           <div class="form-row">

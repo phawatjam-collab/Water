@@ -427,9 +427,9 @@ function renderAppTopBar($title, $subtitle) {
             <input type="hidden" name="login_type" value="member">
             
             <div style="margin-bottom: 14px;">
-              <label style="font-weight: 600; font-size: 13.5px; color: #334155; display: block; margin-bottom: 6px;">รหัสสมาชิกผู้ใช้น้ำ หรือบ้านเลขที่:</label>
-              <input type="text" name="customer_code" class="form-input" required placeholder="เช่น WY-001 หรือ 12/3 หรือเบอร์โทรศัพท์" style="width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; font-family: inherit; box-sizing: border-box;">
-              <span style="font-size: 12.5px; color: #64748b; margin-top: 4px; display: block;">* สมาชิกผู้ใช้น้ำ (Member) ใช้รหัส WY-001 หรือบ้านเลขที่</span>
+              <label style="font-weight: 600; font-size: 13.5px; color: #334155; display: block; margin-bottom: 6px;">📞 เบอร์โทรศัพท์ (Key หลัก) หรือรหัสผู้ใช้น้ำ:</label>
+              <input type="text" name="customer_code" class="form-input" required placeholder="เช่น 081-234-5678 หรือ WY-001 หรือ 12/3" style="width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; font-family: inherit; box-sizing: border-box;">
+              <span style="font-size: 12.5px; color: #64748b; margin-top: 4px; display: block;">* สมาชิกผู้ใช้น้ำใช้เบอร์โทรศัพท์มือถือ (Key หลัก) หรือรหัส WY-001</span>
             </div>
 
             <button type="submit" class="btn btn-primary" style="width: 100%; padding: 11px; font-size: 14.5px; font-weight: 600; border-radius: 6px; background: #0284c7; color: #fff; border: none; cursor: pointer; font-family: inherit; margin-top: 8px;">
