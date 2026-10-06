@@ -723,27 +723,6 @@ try {
       </div>
     </div>
 
-    <!-- Citizen Bill Search Widget -->
-    <section id="citizen-section" class="citizen-box" style="margin-bottom: 24px;">
-      <div class="section-title-wrap" style="text-align: center; margin-bottom: 20px;">
-        <span style="font-size: 32px;">🔍</span>
-        <h3 style="font-size: 22px; font-weight: 700; color: #0f172a; margin-top: 6px;">ตรวจสอบยอดค่าน้ำประปาออนไลน์</h3>
-        <p style="font-size: 14.5px; color: #64748b; margin-top: 4px;">ค้นหาด้วยเบอร์โทรศัพท์มือถือ (Key หลัก) หรือรหัสผู้ใช้น้ำ / บ้านเลขที่</p>
-      </div>
-
-      <div class="citizen-search-bar">
-        <div class="search-input-wrapper">
-          <input type="text" id="citizen-input" class="citizen-search-input" autocomplete="off" placeholder="พิมพ์เบอร์โทรศัพท์ (เช่น 081-234-5678) หรือรหัสผู้ใช้น้ำ (เช่น WY-001)...">
-          <div id="index-search-dropdown" class="search-autocomplete-dropdown" style="display: none;"></div>
-        </div>
-        <button type="button" id="btn-citizen-search" class="btn-search-bill">ค้นหายอดค่าน้ำ</button>
-      </div>
-
-      <div id="citizen-result-area" style="margin-top: 20px; display: none;">
-        <!-- Dynamic Result Card -->
-      </div>
-    </section>
-
     </div> <!-- /.portal-container -->
 
       <!-- Footer -->
@@ -753,26 +732,6 @@ try {
       </footer>
     </main>
   </div> <!-- /.app-layout -->
-
-  <!-- Modal: พิมพ์ใบแจ้งยอด / ใบเสร็จรับเงินสำหรับประชาชน -->
-  <div id="citizen-bill-modal" class="modal">
-    <div class="modal-dialog" style="max-width: 600px;">
-      <div class="modal-header" style="background: #0284c7; color: #fff;">
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <span style="font-size: 20px;">🧾</span>
-          <h4 style="margin: 0; font-size: 16px; font-weight: 700; color: #fff;">ใบแจ้งยอดค่าน้ำประปา / ใบเสร็จรับเงิน</h4>
-        </div>
-        <button type="button" class="modal-close" id="btn-close-bill-modal" style="color: #fff;">&times;</button>
-      </div>
-      <div class="modal-body" id="citizen-bill-modal-content" style="padding: 24px; max-height: 80vh; overflow-y: auto;">
-        <!-- Dynamic Content -->
-      </div>
-      <div style="padding: 12px 20px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 10px;">
-        <button type="button" class="btn btn-outline" id="btn-cancel-bill-modal" style="padding: 8px 16px; font-size: 13px; font-family: inherit; cursor: pointer; border: 1px solid #cbd5e1; border-radius: 6px; background: #fff;">ปิดหน้าต่าง</button>
-        <button type="button" class="btn btn-primary" id="btn-print-bill-modal" style="padding: 8px 18px; font-size: 13px; font-family: inherit; cursor: pointer; background: #0284c7; color: #fff; border: none; border-radius: 6px; font-weight: 600;">🖨️ สั่งพิมพ์เอกสาร</button>
-      </div>
-    </div>
-  </div>
 
   <!-- Scripts: Citizen Search & Modals -->
   <script>
@@ -1041,7 +1000,11 @@ try {
     async function submitHeroSearch() {
       const heroInput = document.getElementById('hero-citizen-input');
       const kw = heroInput ? heroInput.value.trim() : '';
-      if (!kw) return;
+      if (!kw) {
+        alert('กรุณากรอกเบอร์โทรศัพท์ หรือรหัสผู้ใช้น้ำเพื่อค้นหา');
+        heroInput?.focus();
+        return;
+      }
       const kwDigits = kw.replace(/\D/g, '');
       const kwLower = kw.toLowerCase();
       const readings = await getIndexReadings();
@@ -1056,224 +1019,13 @@ try {
       });
 
       const target = match ? (match.phone || match.customer_code) : kw;
-      window.location.href = `portal_citizen.php?phone=${encodeURIComponent(target)}&customer=${encodeURIComponent(match ? match.customer_code : kw)}`;
+      const code = match ? match.customer_code : kw;
+      window.location.href = `portal_citizen.php?phone=${encodeURIComponent(target)}&customer=${encodeURIComponent(code)}`;
     }
 
     document.getElementById('btn-hero-citizen-search')?.addEventListener('click', () => {
       submitHeroSearch();
     });
-
-    // Initialize Bottom Citizen Search Bar
-    const citizenInput = document.getElementById('citizen-input');
-    const bottomSearch = setupSearchAutocomplete({
-      inputId: 'citizen-input',
-      dropdownId: 'index-search-dropdown',
-      onSelect: (code, phone, item, e) => {
-        const target = phone || code;
-        window.location.href = `portal_citizen.php?phone=${encodeURIComponent(target)}&customer=${encodeURIComponent(code)}`;
-      },
-      onSubmit: (kw) => {
-        performIndexSearch();
-      }
-    });
-
-    document.getElementById('btn-citizen-search')?.addEventListener('click', () => {
-      bottomSearch?.closeDropdown();
-      performIndexSearch();
-    });
-
-    async function performIndexSearch() {
-      const kw = citizenInput ? citizenInput.value.trim().toLowerCase() : '';
-      const resArea = document.getElementById('citizen-result-area');
-      if (!kw) {
-        alert('กรุณากรอกเบอร์โทรศัพท์, รหัสผู้ใช้น้ำ หรือบ้านเลขที่');
-        return;
-      }
-
-      try {
-        const readings = await getIndexReadings();
-        const kwDigits = kw.replace(/\D/g, '');
-        let match = null;
-        if (kwDigits && kwDigits.length >= 4) {
-          match = readings.find(r => r.phone && r.phone.replace(/\D/g, '').includes(kwDigits));
-        }
-        if (!match) {
-          match = readings.find(r => 
-            (r.customer_code && r.customer_code.toLowerCase().includes(kw)) ||
-            (r.house_no && r.house_no.toLowerCase().includes(kw)) ||
-            (r.first_name && r.first_name.toLowerCase().includes(kw)) ||
-            (r.last_name && r.last_name.toLowerCase().includes(kw)) ||
-            (r.meter_serial && r.meter_serial.toLowerCase().includes(kw))
-          );
-        }
-
-        if (match) {
-          currentMatchedReading = match;
-          resArea.style.display = 'block';
-          resArea.innerHTML = `
-            <div style="background: #f8fafc; border: 2px solid #0284c7; border-radius: 10px; padding: 22px;">
-              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #cbd5e1; padding-bottom: 12px; margin-bottom: 14px;">
-                <div>
-                  <strong style="font-size: 18px; color: #0f172a;">${escapeHtml(match.first_name)} ${escapeHtml(match.last_name)}</strong>
-                  <span style="font-size: 13px; color: #64748b; margin-left: 8px;">(📞 เบอร์: <strong>${escapeHtml(formatPhone(match.phone))}</strong> | รหัส: <strong>${escapeHtml(match.customer_code)}</strong> | บ้านเลขที่: <strong>${escapeHtml(match.house_no)}</strong>)</span>
-                </div>
-                <span class="badge ${match.payment_status === 'PAID' ? 'badge-paid' : 'badge-unpaid'}" style="font-size: 13px; padding: 5px 14px; border-radius: 9999px;">
-                  ${match.payment_status === 'PAID' ? '✅ ชำระเงินเรียบร้อยแล้ว' : '⏳ ยังไม่ได้ชำระเงิน'}
-                </span>
-              </div>
-              <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; font-size: 14px; background: #fff; padding: 14px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                <div><span style="color: #64748b; font-size: 13px; display: block;">เลขมิเตอร์เดือนก่อน:</span> <strong style="font-size: 16px;">${parseFloat(match.previous_reading).toFixed(1)}</strong></div>
-                <div><span style="color: #64748b; font-size: 13px; display: block;">เลขมิเตอร์เดือนนี้:</span> <strong style="font-size: 16px;">${parseFloat(match.current_reading).toFixed(1)}</strong></div>
-                <div><span style="color: #64748b; font-size: 13px; display: block;">ปริมาณการใช้น้ำ:</span> <strong style="font-size: 16px; color: #0284c7;">${parseFloat(match.units_used).toFixed(1)} หน่วย</strong></div>
-                <div><span style="color: #64748b; font-size: 13px; display: block;">ยอดเงินที่ต้องชำระ:</span> <strong style="font-size: 18px; color: #b91c1c;">${parseFloat(match.grand_total).toFixed(2)} บาท</strong></div>
-              </div>
-              <div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-                <span style="font-size: 13px; color: #64748b;">* รวมค่าน้ำตามหน่วยจริง + ค่าบำรุงรักษามิเตอร์ 10.00 บาท${parseFloat(match.previous_arrears) > 0 ? ' + ยอดค้างเก่า ' + parseFloat(match.previous_arrears).toFixed(2) + ' บ.' : ''}</span>
-                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                  <a href="portal_citizen.php?customer=${encodeURIComponent(match.customer_code)}" class="btn" style="background: #0284c7; color: #fff; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; font-size: 13.5px; display: inline-flex; align-items: center; gap: 6px;">
-                    📱 เปิดดูบิลเต็ม & QR พร้อมเพย์ &rarr;
-                  </a>
-                  <button type="button" id="btn-view-citizen-receipt" class="btn btn-outline" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: #fff; color: #334151; border: 1px solid #cbd5e1; border-radius: 6px; cursor: pointer; font-size: 13.5px; font-weight: 600;">
-                    🖨️ พิมพ์ใบแจ้งยอด / ใบเสร็จ
-                  </button>
-                </div>
-              </div>
-            </div>
-          `;
-
-          document.getElementById('btn-view-citizen-receipt')?.addEventListener('click', () => {
-            showCitizenReceiptModal(match);
-          });
-        } else {
-          currentMatchedReading = null;
-          resArea.style.display = 'block';
-          resArea.innerHTML = `<div style="text-align: center; color: #dc2626; padding: 16px; background: #fee2e2; border-radius: 6px; font-size: 14px;">❌ ไม่พบข้อมูลผู้ใช้น้ำที่ตรงกับคำค้นหา "${escapeHtml(kw)}" ในงวดนี้</div>`;
-        }
-      } catch (err) {
-        console.error(err);
-        resArea.style.display = 'block';
-        resArea.innerHTML = `<div style="text-align: center; color: #dc2626; padding: 16px; background: #fee2e2; border-radius: 6px; font-size: 14px;">เกิดข้อผิดพลาดในการโหลดข้อมูล</div>`;
-      }
-    }
-
-    // 4. Citizen Receipt Modal Logic
-    function showCitizenReceiptModal(reading) {
-      const modal = document.getElementById('citizen-bill-modal');
-      const content = document.getElementById('citizen-bill-modal-content');
-      
-      const receiptNo = reading.receipt_no || `WY-${reading.customer_code}`;
-      const isPaid = reading.payment_status === 'PAID';
-
-      content.innerHTML = `
-        <div style="border: 2px solid #0f172a; border-radius: 8px; padding: 20px; font-family: 'Sarabun', sans-serif;">
-          <div style="text-align: center; border-bottom: 2px solid #0f172a; padding-bottom: 12px; margin-bottom: 14px;">
-            <h3 style="font-size: 18px; font-weight: 700; margin: 0; color: #0f172a;">กองทุนระบบน้ำประปาหมู่บ้านวังยาง</h3>
-            <p style="font-size: 13px; color: #475569; margin: 2px 0 0 0;">หมู่ที่ 3 ตำบลวังยาง อำเภอวังยาง จังหวัดนครพนม</p>
-            <div style="display: inline-block; background: #0284c7; color: #fff; font-size: 13.5px; font-weight: 600; padding: 3px 16px; border-radius: 4px; margin-top: 6px;">
-              ${isPaid ? 'ใบเสร็จรับเงินค่าน้ำประปา' : 'ใบแจ้งหนี้ค่าน้ำประปา'}
-            </div>
-          </div>
-
-          <div style="display: flex; justify-content: space-between; font-size: 13.5px; margin-bottom: 12px; background: #f8fafc; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 4px;">
-            <div><strong>เลขที่เอกสาร:</strong> ${receiptNo}</div>
-            <div><strong>ประจำงวดเดือน:</strong> <?php echo $stats['current_cycle']; ?></div>
-            <div><strong>สถานะ:</strong> <span style="font-weight: 700; color: ${isPaid ? '#16a34a' : '#dc2626'};">${isPaid ? 'ชำระแล้ว' : 'ค้างชำระ'}</span></div>
-          </div>
-
-          <div style="font-size: 13.5px; margin-bottom: 14px; line-height: 1.6;">
-            <div><strong>ชื่อผู้ใช้น้ำ:</strong> ${reading.first_name} ${reading.last_name} (รหัส: ${reading.customer_code})</div>
-            <div><strong>ที่อยู่:</strong> บ้านเลขที่ ${reading.house_no} ตำบลวังยาง</div>
-          </div>
-
-          <table style="width: 100%; border-collapse: collapse; font-size: 13.5px; margin-bottom: 14px;">
-            <thead>
-              <tr style="background: #e2e8f0; border: 1px solid #0f172a;">
-                <th style="padding: 6px 8px; border: 1px solid #cbd5e1; text-align: left;">รายการ</th>
-                <th style="padding: 6px 8px; border: 1px solid #cbd5e1; text-align: right;">เลขครั้งก่อน</th>
-                <th style="padding: 6px 8px; border: 1px solid #cbd5e1; text-align: right;">เลขครั้งหลัง</th>
-                <th style="padding: 6px 8px; border: 1px solid #cbd5e1; text-align: right;">หน่วยที่ใช้</th>
-                <th style="padding: 6px 8px; border: 1px solid #cbd5e1; text-align: right;">จำนวนเงิน (บาท)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">ค่าน้ำประปาประจำงวด (@ ${parseFloat(reading.rate_per_unit || 7).toFixed(2)} บ.)</td>
-                <td style="padding: 6px 8px; border: 1px solid #cbd5e1; text-align: right;">${parseFloat(reading.previous_reading).toFixed(1)}</td>
-                <td style="padding: 6px 8px; border: 1px solid #cbd5e1; text-align: right;">${parseFloat(reading.current_reading).toFixed(1)}</td>
-                <td style="padding: 6px 8px; border: 1px solid #cbd5e1; text-align: right; font-weight: 600;">${parseFloat(reading.units_used).toFixed(1)}</td>
-                <td style="padding: 6px 8px; border: 1px solid #cbd5e1; text-align: right;">${parseFloat(reading.water_charge || 0).toFixed(2)}</td>
-              </tr>
-              <tr>
-                <td colspan="4" style="padding: 6px 8px; border: 1px solid #cbd5e1;">ค่าบำรุงรักษามิเตอร์ประจำเดือน</td>
-                <td style="padding: 6px 8px; border: 1px solid #cbd5e1; text-align: right;">10.00</td>
-              </tr>
-              ${parseFloat(reading.previous_arrears) > 0 ? `
-              <tr style="color: #b91c1c;">
-                <td colspan="4" style="padding: 6px 8px; border: 1px solid #cbd5e1;">ยอดค้างชำระยกยอดมา</td>
-                <td style="padding: 6px 8px; border: 1px solid #cbd5e1; text-align: right;">${parseFloat(reading.previous_arrears).toFixed(2)}</td>
-              </tr>` : ''}
-              <tr style="background: #e0f2fe; font-weight: 700; border: 2px solid #0284c7;">
-                <td colspan="4" style="padding: 8px; font-size: 14px;">ยอดรวมสุทธิที่ต้องชำระทั้งสิ้น</td>
-                <td style="padding: 8px; text-align: right; font-size: 16px; color: #b91c1c;">${parseFloat(reading.grand_total).toFixed(2)} บาท</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <!-- PromptPay QR Code for Citizen Bill -->
-          <div style="background: #f0fdf4; border: 1px dashed #22c55e; border-radius: 8px; padding: 12px 16px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; gap: 14px;">
-            <div style="display: flex; align-items: center; gap: 12px;">
-              <img src="https://promptpay.io/0812345678/${parseFloat(reading.grand_total).toFixed(2)}.png" style="width: 85px; height: 85px; border-radius: 6px; border: 1px solid #bbf7d0; background: #fff; padding: 2px;" alt="PromptPay QR">
-              <div style="font-size: 13px; color: #166534; line-height: 1.5;">
-                <div style="font-weight: 700; font-size: 13.5px; margin-bottom: 2px;">📱 สแกนชำระเงินผ่านพร้อมเพย์ (PromptPay)</div>
-                <div>บัญชี: กองทุนระบบประปาหมู่บ้านวังยาง (ธ.ก.ส.)</div>
-                <div>หมายเลข: 081-234-5678 | ยอดชำระ: <strong style="color: #b91c1c; font-size: 14px;">${parseFloat(reading.grand_total).toFixed(2)} บาท</strong></div>
-              </div>
-            </div>
-            <div style="text-align: right; font-size: 13px; color: #15803d; font-weight: 600;">
-              ${isPaid ? '✅ ชำระเรียบร้อยแล้ว' : '⚡ สแกนจ่ายได้ทันที'}
-            </div>
-          </div>
-
-          <div style="font-size: 13px; color: #64748b; margin-top: 10px; display: flex; justify-content: space-between;">
-            <div>* กำหนดชำระภายในวันที่ 10 ของทุกเดือน</div>
-            <div>ผู้รับเงิน: คณะกรรมการการประปาหมู่บ้านวังยาง</div>
-          </div>
-        </div>
-      `;
-
-      modal.classList.add('show');
-    }
-
-    document.getElementById('btn-close-bill-modal')?.addEventListener('click', () => {
-      document.getElementById('citizen-bill-modal').classList.remove('show');
-    });
-    document.getElementById('btn-cancel-bill-modal')?.addEventListener('click', () => {
-      document.getElementById('citizen-bill-modal').classList.remove('show');
-    });
-    document.getElementById('btn-print-bill-modal')?.addEventListener('click', printCitizenReceipt);
-
-    function printCitizenReceipt() {
-      const modalContent = document.getElementById('citizen-bill-modal-content').innerHTML;
-      const printWin = window.open('', '', 'width=800,height=600');
-      printWin.document.write(`
-        <html>
-        <head>
-          <title>พิมพ์ใบแจ้งยอดค่าน้ำ - การประปาหมู่บ้านวังยาง</title>
-          <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;700&display=swap" rel="stylesheet">
-          <style>
-            body { font-family: 'Sarabun', sans-serif; padding: 20px; }
-          </style>
-        </head>
-        <body>
-          ${modalContent}
-          <script>
-            window.onload = function() { window.print(); window.close(); }
-          <\/script>
-        </body>
-        </html>
-      `);
-      printWin.document.close();
-    }
   </script>
 </body>
 </html>

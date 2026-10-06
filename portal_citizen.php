@@ -731,11 +731,11 @@ $currentUser = getCurrentUser();
       }
     };
 
-    async function performCitizenSearch(exactQuery) {
+    async function performCitizenSearch(exactQuery, explicitCustomerCode) {
       closeSearchDropdown();
       const kw = (exactQuery !== undefined ? exactQuery : document.getElementById('citizen-search-input').value).trim();
       const container = document.getElementById('bill-result-container');
-      if (!kw) {
+      if (!kw && !explicitCustomerCode) {
         alert('กรุณากรอกเบอร์โทรศัพท์, รหัสผู้ใช้น้ำ หรือบ้านเลขที่');
         return;
       }
@@ -750,7 +750,10 @@ $currentUser = getCurrentUser();
         const kwDigits = kw.replace(/\D/g, '');
 
         let match = null;
-        if (kwDigits && kwDigits.length >= 4) {
+        if (explicitCustomerCode) {
+          match = readings.find(r => (r.customer_code || '').toLowerCase() === explicitCustomerCode.toLowerCase());
+        }
+        if (!match && kwDigits && kwDigits.length >= 4) {
           match = readings.find(r => r.phone && r.phone.replace(/\D/g, '').includes(kwDigits));
         }
         if (!match) {
@@ -1042,12 +1045,14 @@ $currentUser = getCurrentUser();
     // Auto-search if phone or customer param is present in URL or logged-in member
     window.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
-      const searchTarget = urlParams.get('phone') || urlParams.get('customer') || '<?php echo ($currentUser && ($currentUser['role'] ?? '') === 'member') ? addslashes($currentUser['phone'] ?? $currentUser['customer_code'] ?? '') : ''; ?>';
+      const customerParam = urlParams.get('customer');
+      const phoneParam = urlParams.get('phone');
+      const searchTarget = customerParam || phoneParam || '<?php echo ($currentUser && ($currentUser['role'] ?? '') === 'member') ? addslashes($currentUser['customer_code'] ?? $currentUser['phone'] ?? '') : ''; ?>';
       if (searchTarget) {
         const input = document.getElementById('citizen-search-input');
         if (input) {
-          input.value = searchTarget;
-          performCitizenSearch(searchTarget);
+          input.value = (phoneParam && phoneParam !== customerParam) ? formatPhone(phoneParam) : searchTarget;
+          performCitizenSearch(searchTarget, customerParam);
         }
       }
     });
