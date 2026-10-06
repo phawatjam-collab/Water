@@ -1842,33 +1842,4 @@ body.sidebar-open {
   transform: translateY(-1px);
 }
 
-.hero-search-tags {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 12px;
-  font-size: 13px;
-  color: #e0f2fe;
-  flex-wrap: wrap;
-}
-
-.hero-tag-link {
-  background: rgba(255, 255, 255, 0.2);
-  color: #ffffff !important;
-  padding: 3px 10px;
-  border-radius: 9999px;
-  text-decoration: none;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-
-.hero-tag-link:hover {
-  background: rgba(255, 255, 255, 0.35);
-  transform: translateY(-1px);
-  color: #ffffff !important;
-}
-
 

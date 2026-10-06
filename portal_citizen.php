@@ -161,12 +161,6 @@ $currentUser = getCurrentUser();
           <span>🔍</span> ค้นหาบิล
         </button>
       </div>
-      <div class="quick-examples">
-        ตัวอย่างคลิกค้นหาด่วน: 
-        <a onclick="quickSearch('WY-001')">WY-001 (นายสมชาย)</a> | 
-        <a onclick="quickSearch('WY-003')">WY-003 (มีค้างชำระ)</a> | 
-        <a onclick="quickSearch('12')">บ้านเลขที่ 12</a>
-      </div>
     </div>
 
     <!-- Search Result Area -->
@@ -506,12 +500,6 @@ $currentUser = getCurrentUser();
         closeSearchDropdown();
       }
     });
-
-    async function quickSearch(kw) {
-      closeSearchDropdown();
-      document.getElementById('citizen-search-input').value = kw;
-      await performCitizenSearch();
-    }
 
     document.getElementById('btn-search-bill')?.addEventListener('click', () => {
       closeSearchDropdown();

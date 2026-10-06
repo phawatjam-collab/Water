@@ -411,13 +411,6 @@ try {
               <span>🔎</span> ค้นหาบิล
             </button>
           </div>
-          <div class="hero-search-tags">
-            <span style="opacity: 0.9;">💡 คลิกตัวอย่างค้นหาด่วน:</span>
-            <a class="hero-tag-link" onclick="quickFillHeroSearch('WY-001')">WY-001 (นายสมชาย)</a>
-            <a class="hero-tag-link" onclick="quickFillHeroSearch('WY-002')">WY-002 (นางสมศรี)</a>
-            <a class="hero-tag-link" onclick="quickFillHeroSearch('WY-003')">WY-003 (มีค้างชำระ)</a>
-            <a class="hero-tag-link" onclick="quickFillHeroSearch('12')">บ้านเลขที่ 12</a>
-          </div>
         </div>
 
         <?php if (!$currentUser): ?>
@@ -757,15 +750,6 @@ try {
 
       const targetCode = match ? match.customer_code : kw;
       window.location.href = `portal_citizen.php?customer=${encodeURIComponent(targetCode)}`;
-    }
-
-    function quickFillHeroSearch(kw) {
-      const heroInput = document.getElementById('hero-citizen-input');
-      if (heroInput) {
-        heroInput.value = kw;
-        heroInput.focus();
-        heroInput.dispatchEvent(new Event('input'));
-      }
     }
 
     document.getElementById('btn-hero-citizen-search')?.addEventListener('click', () => {
