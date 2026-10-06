@@ -1593,64 +1593,130 @@ body.sidebar-open {
 }
 
 /* =========================================================
-   Live Search Autocomplete Dropdown
+   Live Search Autocomplete Dropdown & Search Bars
    ========================================================= */
 .search-input-wrapper {
-  position: relative;
-.search-input-wrapper {
   position: relative !important;
-  width: 100% !important;
+  flex: 1 !important;
   display: flex !important;
   align-items: center !important;
 }
 
-.search-input-icon {
-  position: absolute !important;
-  left: 18px !important;
-  font-size: 20px !important;
-  color: #0284c7 !important;
-  pointer-events: none !important;
-  z-index: 2 !important;
-  display: flex !important;
-  align-items: center !important;
-  user-select: none !important;
-}
-
+/* Hero Water Bill Search Section */
 .hero-search-box {
-  max-width: 680px !important;
-  width: 100% !important;
-  margin: 24px auto 10px auto !important;
+  max-width: 720px !important;
+  margin: 22px auto 8px auto !important;
   position: relative !important;
+  text-align: left !important;
 }
 
-.hero-search-input,
+.hero-search-bar {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  background: #ffffff !important;
+  padding: 6px !important;
+  border-radius: 12px !important;
+  box-shadow: 0 12px 28px -4px rgba(0, 0, 0, 0.28), 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  border: 2px solid rgba(255, 255, 255, 0.85) !important;
+}
+
+.hero-search-bar .search-input-wrapper {
+  flex: 1 !important;
+  position: relative !important;
+  display: flex !important;
+}
+
+.hero-search-input {
+  width: 100% !important;
+  border: none !important;
+  outline: none !important;
+  font-size: 15px !important;
+  font-family: inherit !important;
+  padding: 12px 18px !important;
+  color: #0f172a !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.hero-search-btn {
+  background: #0284c7 !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 0 24px !important;
+  height: 46px !important;
+  font-size: 14.5px !important;
+  font-weight: 600 !important;
+  font-family: inherit !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  transition: all 0.15s ease !important;
+}
+
+.hero-search-btn:hover {
+  background: #0369a1 !important;
+  box-shadow: 0 4px 10px rgba(2, 132, 199, 0.35) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Citizen Search Bar in Home & Citizen Portal */
+.citizen-search-bar,
+.citizen-search-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  position: relative !important;
+  width: 100% !important;
+}
+
 .citizen-search-input {
   width: 100% !important;
+  height: 50px !important;
   box-sizing: border-box !important;
-  padding: 16px 20px 16px 54px !important;
-  font-size: 16px !important;
+  padding: 12px 18px !important;
+  font-size: 15px !important;
   font-family: inherit !important;
-  border: 2px solid #e2e8f0 !important;
-  border-radius: 14px !important;
+  border: 2px solid #cbd5e1 !important;
+  border-radius: 8px !important;
   background: #ffffff !important;
   color: #0f172a !important;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.14), 0 4px 10px rgba(0, 0, 0, 0.06) !important;
   outline: none !important;
-  transition: all 0.2s ease !important;
+  transition: border-color 0.2s ease !important;
 }
 
-.hero-search-input:focus,
 .citizen-search-input:focus {
   border-color: #0284c7 !important;
-  box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.18), 0 14px 28px rgba(0, 0, 0, 0.14) !important;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15) !important;
 }
 
-.citizen-search-bar-clean,
-.citizen-search-row-clean {
-  width: 100% !important;
-  max-width: 680px !important;
-  margin: 0 auto !important;
-  position: relative !important;
+.btn-search,
+.btn-search-bill {
+  background: #0284c7 !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 0 24px !important;
+  height: 50px !important;
+  font-size: 15px !important;
+  font-family: inherit !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  transition: background 0.15s ease !important;
+}
+
+.btn-search:hover,
+.btn-search-bill:hover {
+  background: #0369a1 !important;
 }
 
 .search-autocomplete-dropdown {

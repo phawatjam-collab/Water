@@ -248,52 +248,126 @@ try {
     }
     .search-input-wrapper {
       position: relative !important;
-      width: 100% !important;
+      flex: 1 !important;
       display: flex !important;
       align-items: center !important;
-    }
-    .search-input-icon {
-      position: absolute !important;
-      left: 18px !important;
-      font-size: 20px !important;
-      color: #0284c7 !important;
-      pointer-events: none !important;
-      z-index: 2 !important;
-      display: flex !important;
-      align-items: center !important;
-      user-select: none !important;
     }
     .hero-search-box {
-      max-width: 680px !important;
+      max-width: 720px !important;
+      margin: 22px auto 8px auto !important;
+      position: relative !important;
+      text-align: left !important;
+    }
+    .hero-search-bar {
+      display: flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      background: #ffffff !important;
+      padding: 6px !important;
+      border-radius: 12px !important;
+      box-shadow: 0 12px 28px -4px rgba(0, 0, 0, 0.28), 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+      border: 2px solid rgba(255, 255, 255, 0.85) !important;
+    }
+    .hero-search-bar .search-input-wrapper {
+      flex: 1 !important;
+      position: relative !important;
+      display: flex !important;
+    }
+    .hero-search-input {
       width: 100% !important;
-      margin: 22px auto 10px auto !important;
+      border: none !important;
+      outline: none !important;
+      font-size: 15px !important;
+      font-family: inherit !important;
+      padding: 12px 18px !important;
+      color: #0f172a !important;
+      background: transparent !important;
+      box-shadow: none !important;
+    }
+    .hero-search-btn {
+      background: #0284c7 !important;
+      color: #ffffff !important;
+      border: none !important;
+      border-radius: 8px !important;
+      padding: 0 24px !important;
+      height: 46px !important;
+      font-size: 14.5px !important;
+      font-weight: 600 !important;
+      font-family: inherit !important;
+      cursor: pointer !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      white-space: nowrap !important;
+      flex-shrink: 0 !important;
+      transition: all 0.15s ease !important;
+    }
+    .hero-search-btn:hover {
+      background: #0369a1 !important;
+      box-shadow: 0 4px 10px rgba(2, 132, 199, 0.35) !important;
+      transform: translateY(-1px) !important;
+    }
+    .citizen-search-bar {
+      display: flex !important;
+      gap: 12px !important;
+      margin-top: 16px !important;
+      max-width: 650px !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      position: relative !important;
+      align-items: center !important;
+    }
+    .citizen-search-bar .search-input-wrapper {
+      flex: 1 !important;
       position: relative !important;
     }
-    .hero-search-input,
     .citizen-search-input {
       width: 100% !important;
       box-sizing: border-box !important;
-      padding: 16px 20px 16px 54px !important;
-      font-size: 16px !important;
-      font-family: inherit !important;
-      border: 2px solid #e2e8f0 !important;
-      border-radius: 14px !important;
+      padding: 14px 18px !important;
+      border: 2px solid #cbd5e1 !important;
+      border-radius: 8px !important;
+      font-size: 15px !important;
+      font-family: 'Sarabun', sans-serif !important;
+      outline: none !important;
+      height: 50px !important;
       background: #ffffff !important;
       color: #0f172a !important;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.14), 0 4px 10px rgba(0, 0, 0, 0.06) !important;
-      outline: none !important;
-      transition: all 0.2s ease !important;
+      transition: border-color 0.2s ease !important;
     }
-    .hero-search-input:focus,
     .citizen-search-input:focus {
       border-color: #0284c7 !important;
-      box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.18), 0 14px 28px rgba(0, 0, 0, 0.14) !important;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15) !important;
     }
-    .citizen-search-bar-clean {
-      width: 100% !important;
-      max-width: 680px !important;
-      margin: 0 auto !important;
-      position: relative !important;
+    .btn-search-bill {
+      background: #0284c7 !important;
+      color: #ffffff !important;
+      font-size: 15px !important;
+      font-family: 'Prompt', sans-serif !important;
+      font-weight: 600 !important;
+      border: none !important;
+      border-radius: 8px !important;
+      padding: 0 24px !important;
+      height: 50px !important;
+      cursor: pointer !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      white-space: nowrap !important;
+      flex-shrink: 0 !important;
+      transition: background 0.15s ease !important;
+    }
+    .btn-search-bill:hover {
+      background: #0369a1 !important;
+    }
+    @media (max-width: 560px) {
+      .citizen-search-bar {
+        flex-direction: column !important;
+      }
+      .btn-search-bill {
+        width: 100% !important;
+        justify-content: center !important;
+      }
     }
     .search-autocomplete-dropdown {
       position: absolute !important;
@@ -582,12 +656,16 @@ try {
           ยินดีต้อนรับสู่ระบบบริการน้ำประปาหมู่บ้านวังยาง อำนวยความสะดวกแก่สมาชิกผู้ใช้น้ำในการตรวจสอบค่าน้ำออนไลน์ 
           พร้อมระบบบริหารจัดการข้อมูลการประปาชุมชนอย่างเป็นระบบ โปร่งใส และเข้าถึงบริการทั้งหมดได้จากแถบเมนูด้านข้าง (Sidebar)
         </p>
-        <!-- Hero Water Bill Search Bar (No Clunky Buttons) -->
+        <!-- Hero Water Bill Search Widget -->
         <div class="hero-search-box">
-          <div class="search-input-wrapper">
-            <div class="search-input-icon">📞</div>
-            <input type="text" id="hero-citizen-input" class="hero-search-input" autocomplete="off" placeholder="พิมพ์เบอร์โทรศัพท์ (เช่น 081-234-5678) เพื่อดูบิลค่าน้ำทันที...">
-            <div id="hero-search-dropdown" class="search-autocomplete-dropdown" style="display: none;"></div>
+          <div class="hero-search-bar">
+            <div class="search-input-wrapper">
+              <input type="text" id="hero-citizen-input" class="hero-search-input" autocomplete="off" placeholder="พิมพ์เบอร์โทรศัพท์ (เช่น 081-234-5678) หรือรหัสผู้ใช้น้ำ...">
+              <div id="hero-search-dropdown" class="search-autocomplete-dropdown" style="display: none;"></div>
+            </div>
+            <button type="button" id="btn-hero-citizen-search" class="hero-search-btn">
+              <span>🔎</span> ค้นหาบิล
+            </button>
           </div>
         </div>
 
@@ -640,17 +718,18 @@ try {
 
     <!-- Citizen Bill Search Widget -->
     <section id="citizen-section" class="citizen-box" style="margin-bottom: 24px;">
-      <div style="text-align: center; margin-bottom: 20px;">
-        <h3 style="font-size: 22px; font-weight: 700; color: #0f172a; margin-top: 0;">ตรวจสอบยอดค่าน้ำประปาออนไลน์</h3>
+      <div class="section-title-wrap" style="text-align: center; margin-bottom: 20px;">
+        <span style="font-size: 32px;">🔍</span>
+        <h3 style="font-size: 22px; font-weight: 700; color: #0f172a; margin-top: 6px;">ตรวจสอบยอดค่าน้ำประปาออนไลน์</h3>
         <p style="font-size: 14.5px; color: #64748b; margin-top: 4px;">ค้นหาด้วยเบอร์โทรศัพท์มือถือ (Key หลัก) หรือรหัสผู้ใช้น้ำ / บ้านเลขที่</p>
       </div>
 
-      <div class="citizen-search-bar-clean">
+      <div class="citizen-search-bar">
         <div class="search-input-wrapper">
-          <div class="search-input-icon">📞</div>
-          <input type="text" id="citizen-input" class="citizen-search-input" autocomplete="off" placeholder="พิมพ์เบอร์โทรศัพท์ (เช่น 081-234-5678) หรือรหัสผู้ใช้น้ำ / บ้านเลขที่...">
+          <input type="text" id="citizen-input" class="citizen-search-input" autocomplete="off" placeholder="พิมพ์เบอร์โทรศัพท์ (เช่น 081-234-5678) หรือรหัสผู้ใช้น้ำ (เช่น WY-001)...">
           <div id="index-search-dropdown" class="search-autocomplete-dropdown" style="display: none;"></div>
         </div>
+        <button type="button" id="btn-citizen-search" class="btn-search-bill">ค้นหายอดค่าน้ำ</button>
       </div>
 
       <div id="citizen-result-area" style="margin-top: 20px; display: none;">
@@ -973,6 +1052,10 @@ try {
       window.location.href = `portal_citizen.php?phone=${encodeURIComponent(target)}&customer=${encodeURIComponent(match ? match.customer_code : kw)}`;
     }
 
+    document.getElementById('btn-hero-citizen-search')?.addEventListener('click', () => {
+      submitHeroSearch();
+    });
+
     // Initialize Bottom Citizen Search Bar
     const citizenInput = document.getElementById('citizen-input');
     const bottomSearch = setupSearchAutocomplete({
@@ -987,23 +1070,35 @@ try {
       }
     });
 
+    document.getElementById('btn-citizen-search')?.addEventListener('click', () => {
+      bottomSearch?.closeDropdown();
+      performIndexSearch();
+    });
+
     async function performIndexSearch() {
       const kw = citizenInput ? citizenInput.value.trim().toLowerCase() : '';
       const resArea = document.getElementById('citizen-result-area');
       if (!kw) {
-        alert('กรุณากรอกรหัสผู้ใช้น้ำหรือบ้านเลขที่');
+        alert('กรุณากรอกเบอร์โทรศัพท์, รหัสผู้ใช้น้ำ หรือบ้านเลขที่');
         return;
       }
 
       try {
         const readings = await getIndexReadings();
-        const match = readings.find(r => 
-          (r.customer_code && r.customer_code.toLowerCase().includes(kw)) ||
-          (r.house_no && r.house_no.toLowerCase().includes(kw)) ||
-          (r.first_name && r.first_name.toLowerCase().includes(kw)) ||
-          (r.last_name && r.last_name.toLowerCase().includes(kw)) ||
-          (r.meter_serial && r.meter_serial.toLowerCase().includes(kw))
-        );
+        const kwDigits = kw.replace(/\D/g, '');
+        let match = null;
+        if (kwDigits && kwDigits.length >= 4) {
+          match = readings.find(r => r.phone && r.phone.replace(/\D/g, '').includes(kwDigits));
+        }
+        if (!match) {
+          match = readings.find(r => 
+            (r.customer_code && r.customer_code.toLowerCase().includes(kw)) ||
+            (r.house_no && r.house_no.toLowerCase().includes(kw)) ||
+            (r.first_name && r.first_name.toLowerCase().includes(kw)) ||
+            (r.last_name && r.last_name.toLowerCase().includes(kw)) ||
+            (r.meter_serial && r.meter_serial.toLowerCase().includes(kw))
+          );
+        }
 
         if (match) {
           currentMatchedReading = match;
@@ -1013,7 +1108,7 @@ try {
               <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #cbd5e1; padding-bottom: 12px; margin-bottom: 14px;">
                 <div>
                   <strong style="font-size: 18px; color: #0f172a;">${escapeHtml(match.first_name)} ${escapeHtml(match.last_name)}</strong>
-                  <span style="font-size: 13px; color: #64748b; margin-left: 8px;">(รหัส: <strong>${escapeHtml(match.customer_code)}</strong> | บ้านเลขที่: <strong>${escapeHtml(match.house_no)}</strong>)</span>
+                  <span style="font-size: 13px; color: #64748b; margin-left: 8px;">(📞 เบอร์: <strong>${escapeHtml(formatPhone(match.phone))}</strong> | รหัส: <strong>${escapeHtml(match.customer_code)}</strong> | บ้านเลขที่: <strong>${escapeHtml(match.house_no)}</strong>)</span>
                 </div>
                 <span class="badge ${match.payment_status === 'PAID' ? 'badge-paid' : 'badge-unpaid'}" style="font-size: 13px; padding: 5px 14px; border-radius: 9999px;">
                   ${match.payment_status === 'PAID' ? '✅ ชำระเงินเรียบร้อยแล้ว' : '⏳ ยังไม่ได้ชำระเงิน'}

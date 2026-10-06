@@ -43,52 +43,71 @@ $currentUser = getCurrentUser();
     }
     .search-card {
       background: #fff;
-      border-radius: 14px;
-      padding: 26px 28px;
-      box-shadow: 0 10px 25px -3px rgba(0,0,0,0.08);
-      border: 2px solid #0284c7;
-      max-width: 760px;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      max-width: 720px;
       margin: -25px auto 30px auto;
       position: relative;
     }
-    .citizen-search-bar-clean {
-      width: 100% !important;
-      position: relative !important;
+    .citizen-search-row {
+      display: flex;
+      gap: 10px;
+      position: relative;
+      align-items: center;
     }
-    .search-input-wrapper {
-      position: relative !important;
-      width: 100% !important;
-      display: flex !important;
-      align-items: center !important;
+    .citizen-search-row .search-input-wrapper {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
     }
-    .search-input-icon {
-      position: absolute !important;
-      left: 18px !important;
-      font-size: 20px !important;
-      color: #0284c7 !important;
-      pointer-events: none !important;
-      z-index: 2 !important;
-      display: flex !important;
-      align-items: center !important;
-      user-select: none !important;
+    .citizen-search-row input {
+      width: 100%;
+      height: 48px;
+      box-sizing: border-box;
+      padding: 12px 18px;
+      border: 2px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 15px;
+      font-family: 'Sarabun', sans-serif;
+      outline: none;
+      transition: all 0.2s;
     }
-    .citizen-search-input {
-      width: 100% !important;
-      box-sizing: border-box !important;
-      padding: 16px 20px 16px 54px !important;
-      font-size: 16px !important;
-      font-family: inherit !important;
-      border: 2px solid #e2e8f0 !important;
-      border-radius: 14px !important;
-      background: #ffffff !important;
-      color: #0f172a !important;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05) !important;
-      outline: none !important;
-      transition: all 0.2s ease !important;
+    .citizen-search-row input:focus {
+      border-color: #0284c7;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
     }
-    .citizen-search-input:focus {
-      border-color: #0284c7 !important;
-      box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.18), 0 8px 20px rgba(0, 0, 0, 0.08) !important;
+    .btn-search {
+      background: #0284c7;
+      color: #fff;
+      border: none;
+      padding: 0 24px;
+      height: 48px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-family: 'Prompt', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+    .btn-search:hover {
+      background: #0369a1;
+    }
+    @media (max-width: 560px) {
+      .citizen-search-row {
+        flex-direction: column;
+      }
+      .btn-search {
+        width: 100%;
+        justify-content: center;
+      }
     }
     .search-autocomplete-dropdown {
       position: absolute !important;
@@ -289,17 +308,19 @@ $currentUser = getCurrentUser();
       </p>
     </div>
 
-    <!-- Search Box (Full Width, Phone-First, No Magnifier Button, Smooth Dropdown) -->
+    <!-- Search Box -->
     <div class="search-card">
-      <div class="citizen-search-bar-clean">
+      <div class="citizen-search-row">
         <div class="search-input-wrapper">
-          <div class="search-input-icon">📞</div>
-          <input type="text" id="citizen-search-input" class="citizen-search-input" autocomplete="off" placeholder="📞 พิมพ์เบอร์โทรศัพท์ (เช่น 081-234-5678) เพื่อดูบิลค่าน้ำทันที...">
+          <input type="text" id="citizen-search-input" autocomplete="off" placeholder="พิมพ์เบอร์โทรศัพท์ (เช่น 081-234-5678) หรือรหัสผู้ใช้น้ำ (เช่น WY-001)...">
           <div id="citizen-search-dropdown" class="search-autocomplete-dropdown" style="display: none;"></div>
         </div>
+        <button type="button" id="btn-search-bill" class="btn-search">
+          <span>🔍</span> ค้นหาบิล
+        </button>
       </div>
       <div class="quick-examples" style="text-align: center; margin-top: 12px;">
-        💡 <strong>Key หลักในการค้นหา:</strong> พิมพ์เบอร์โทรศัพท์มือถือ (ระบบจัดอันดับเบอร์โทรสูงสุด) หรือพิมพ์รหัส <a onclick="setSearchDemo('0812345678')">081-234-5678</a>, <a onclick="setSearchDemo('0810001111')">081-000-1111</a>, <a onclick="setSearchDemo('WY-001')">WY-001</a>
+        💡 <strong>Key หลัก:</strong> ค้นหาด้วยเบอร์โทรศัพท์มือถือ หรือรหัสผู้ใช้น้ำ เช่น <a onclick="setSearchDemo('0812345678')">081-234-5678</a>, <a onclick="setSearchDemo('0810001111')">081-000-1111</a>, <a onclick="setSearchDemo('WY-001')">WY-001</a>
       </div>
     </div>
 
@@ -688,6 +709,11 @@ $currentUser = getCurrentUser();
       if (!e.target.closest('.search-input-wrapper')) {
         closeSearchDropdown();
       }
+    });
+
+    document.getElementById('btn-search-bill')?.addEventListener('click', () => {
+      closeSearchDropdown();
+      performCitizenSearch();
     });
 
     window.setSearchDemo = function(term) {
