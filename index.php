@@ -253,9 +253,15 @@ try {
       max-width: 650px;
       margin-left: auto;
       margin-right: auto;
+      position: relative;
+    }
+    .citizen-search-bar .search-input-wrapper {
+      flex: 1;
+      position: relative;
     }
     .citizen-search-input {
-      flex: 1;
+      width: 100%;
+      box-sizing: border-box;
       padding: 12px 18px;
       font-size: 16px;
       border: 2px solid #cbd5e1;
@@ -265,6 +271,16 @@ try {
     }
     .citizen-search-input:focus {
       border-color: #0284c7;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+    @media (max-width: 560px) {
+      .citizen-search-bar {
+        flex-direction: column;
+      }
+      .btn-search-bill {
+        width: 100%;
+        padding: 12px !important;
+      }
     }
     .btn-search-bill {
       background: #0284c7;
@@ -440,7 +456,10 @@ try {
       </div>
 
       <div class="citizen-search-bar">
-        <input type="text" id="citizen-input" class="citizen-search-input" placeholder="พิมพ์รหัสผู้ใช้น้ำ (เช่น WY-001) หรือบ้านเลขที่ (เช่น 12)...">
+        <div class="search-input-wrapper">
+          <input type="text" id="citizen-input" class="citizen-search-input" autocomplete="off" placeholder="พิมพ์รหัสผู้ใช้น้ำ (เช่น WY-001) หรือบ้านเลขที่ (เช่น 12)...">
+          <div id="index-search-dropdown" class="search-autocomplete-dropdown" style="display: none;"></div>
+        </div>
         <button type="button" id="btn-citizen-search" class="btn-search-bill">ค้นหายอดค่าน้ำ</button>
       </div>
 
@@ -489,15 +508,182 @@ try {
 
     // 3. Citizen Search Bar & Printable Bill Popup
     let currentMatchedReading = null;
+    let cachedIndexReadings = null;
+    let activeIndexDropdownIdx = -1;
 
-    document.getElementById('citizen-input')?.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        document.getElementById('btn-citizen-search')?.click();
+    const citizenInput = document.getElementById('citizen-input');
+    const indexDropdown = document.getElementById('index-search-dropdown');
+
+    async function getIndexReadings() {
+      if (cachedIndexReadings) return cachedIndexReadings;
+      try {
+        const res = await fetch(`api/readings.php?cycle=<?php echo $stats['current_cycle']; ?>`);
+        if (!res.ok) throw new Error('API Error');
+        const data = await res.json();
+        cachedIndexReadings = data.readings || [];
+        return cachedIndexReadings;
+      } catch (err) {
+        console.error('Failed to load readings cache:', err);
+        return [];
+      }
+    }
+
+    function closeIndexDropdown() {
+      if (indexDropdown) {
+        indexDropdown.style.display = 'none';
+        indexDropdown.innerHTML = '';
+        activeIndexDropdownIdx = -1;
+      }
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    async function handleIndexSearchInput() {
+      const kw = citizenInput.value.trim().toLowerCase();
+      if (!kw) {
+        closeIndexDropdown();
+        return;
+      }
+
+      const readings = await getIndexReadings();
+      const matches = readings.filter(r => 
+        (r.customer_code && r.customer_code.toLowerCase().includes(kw)) ||
+        (r.house_no && r.house_no.toLowerCase().includes(kw)) ||
+        (r.first_name && r.first_name.toLowerCase().includes(kw)) ||
+        (r.last_name && r.last_name.toLowerCase().includes(kw)) ||
+        (r.meter_serial && r.meter_serial.toLowerCase().includes(kw)) ||
+        (r.phone && r.phone.includes(kw))
+      ).slice(0, 8);
+
+      if (!indexDropdown) return;
+
+      if (matches.length === 0) {
+        indexDropdown.innerHTML = `
+          <div class="search-dropdown-empty">
+            <span style="font-size: 20px;">🔍</span>
+            <div style="font-weight: 600; color: #475569;">ไม่พบข้อมูลผู้ใช้น้ำที่ตรงกับ "<strong>${escapeHtml(kw)}</strong>"</div>
+            <small style="color: #94a3b8;">ลองค้นหาด้วยรหัส (เช่น WY-001), บ้านเลขที่ หรือชื่อ-สกุล</small>
+          </div>
+        `;
+        indexDropdown.style.display = 'flex';
+        activeIndexDropdownIdx = -1;
+        return;
+      }
+
+      indexDropdown.innerHTML = matches.map((r, idx) => {
+        const isPaid = (r.payment_status === 'PAID');
+        const total = parseFloat(r.grand_total || 0).toLocaleString('th-TH', { minimumFractionDigits: 2 });
+        return `
+          <div class="search-dropdown-item" data-code="${escapeHtml(r.customer_code)}" data-index="${idx}">
+            <div class="item-main">
+              <div class="item-title">
+                <span>👤 ${escapeHtml(r.first_name)} ${escapeHtml(r.last_name)}</span>
+                <span class="item-code-badge">${escapeHtml(r.customer_code)}</span>
+              </div>
+              <div class="item-sub">
+                <span>🏠 บ้านเลขที่: <strong>${escapeHtml(r.house_no)}</strong></span>
+                <span>•</span>
+                <span>${escapeHtml(r.zone || '')}</span>
+                ${r.meter_serial ? `<span>• มาตร: ${escapeHtml(r.meter_serial)}</span>` : ''}
+              </div>
+            </div>
+            <div class="item-meta">
+              <span class="item-amount">${total} ฿</span>
+              <span class="badge ${isPaid ? 'badge-paid' : 'badge-unpaid'}" style="font-size: 11px; padding: 2px 8px; border-radius: 9999px;">
+                ${isPaid ? '✅ ชำระแล้ว' : '⏳ ค้างชำระ'}
+              </span>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      indexDropdown.style.display = 'flex';
+      activeIndexDropdownIdx = -1;
+
+      indexDropdown.querySelectorAll('.search-dropdown-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const code = item.getAttribute('data-code');
+          if (code) {
+            citizenInput.value = code;
+            closeIndexDropdown();
+            performIndexSearch();
+          }
+        });
+      });
+    }
+
+    function updateActiveIndexDropdown(items) {
+      items.forEach((item, idx) => {
+        if (idx === activeIndexDropdownIdx) {
+          item.classList.add('active');
+          item.scrollIntoView({ block: 'nearest' });
+        } else {
+          item.classList.remove('active');
+        }
+      });
+    }
+
+    citizenInput?.addEventListener('input', handleIndexSearchInput);
+    citizenInput?.addEventListener('focus', () => {
+      if (citizenInput.value.trim().length > 0) {
+        handleIndexSearchInput();
       }
     });
 
-    document.getElementById('btn-citizen-search').addEventListener('click', async () => {
-      const kw = document.getElementById('citizen-input').value.trim().toLowerCase();
+    citizenInput?.addEventListener('keydown', (e) => {
+      const items = indexDropdown?.querySelectorAll('.search-dropdown-item');
+      if (indexDropdown && indexDropdown.style.display !== 'none' && items && items.length > 0) {
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          activeIndexDropdownIdx = (activeIndexDropdownIdx + 1) % items.length;
+          updateActiveIndexDropdown(items);
+          return;
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          activeIndexDropdownIdx = (activeIndexDropdownIdx - 1 + items.length) % items.length;
+          updateActiveIndexDropdown(items);
+          return;
+        } else if (e.key === 'Enter') {
+          if (activeIndexDropdownIdx >= 0 && items[activeIndexDropdownIdx]) {
+            e.preventDefault();
+            items[activeIndexDropdownIdx].click();
+            return;
+          }
+        } else if (e.key === 'Escape') {
+          closeIndexDropdown();
+          return;
+        }
+      }
+
+      if (e.key === 'Enter') {
+        closeIndexDropdown();
+        performIndexSearch();
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.search-input-wrapper')) {
+        closeIndexDropdown();
+      }
+    });
+
+    document.getElementById('btn-citizen-search')?.addEventListener('click', () => {
+      closeIndexDropdown();
+      performIndexSearch();
+    });
+
+    async function performIndexSearch() {
+      closeIndexDropdown();
+      const kw = citizenInput.value.trim().toLowerCase();
       const resArea = document.getElementById('citizen-result-area');
       if (!kw) {
         alert('กรุณากรอกรหัสผู้ใช้น้ำหรือบ้านเลขที่');
@@ -505,15 +691,14 @@ try {
       }
 
       try {
-        const res = await fetch(`api/readings.php?cycle=<?php echo $stats['current_cycle']; ?>`);
-        if (res.ok) {
-          const data = await res.json();
-          const match = data.readings.find(r => 
-            r.customer_code.toLowerCase().includes(kw) ||
-            r.house_no.toLowerCase().includes(kw) ||
-            r.first_name.toLowerCase().includes(kw) ||
-            r.last_name.toLowerCase().includes(kw)
-          );
+        const readings = await getIndexReadings();
+        const match = readings.find(r => 
+          r.customer_code.toLowerCase().includes(kw) ||
+          r.house_no.toLowerCase().includes(kw) ||
+          r.first_name.toLowerCase().includes(kw) ||
+          r.last_name.toLowerCase().includes(kw) ||
+          (r.meter_serial && r.meter_serial.toLowerCase().includes(kw))
+        );
 
           if (match) {
             currentMatchedReading = match;

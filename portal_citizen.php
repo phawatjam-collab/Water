@@ -54,9 +54,15 @@ $currentUser = getCurrentUser();
     .citizen-search-row {
       display: flex;
       gap: 10px;
+      position: relative;
+    }
+    .citizen-search-row .search-input-wrapper {
+      flex: 1;
+      position: relative;
     }
     .citizen-search-row input {
-      flex: 1;
+      width: 100%;
+      box-sizing: border-box;
       padding: 14px 18px;
       border: 2px solid #cbd5e1;
       border-radius: 8px;
@@ -68,6 +74,16 @@ $currentUser = getCurrentUser();
     .citizen-search-row input:focus {
       border-color: #0284c7;
       box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+    @media (max-width: 560px) {
+      .citizen-search-row {
+        flex-direction: column;
+      }
+      .btn-search {
+        width: 100%;
+        padding: 12px !important;
+        justify-content: center;
+      }
     }
     .btn-search {
       background: #0284c7;
@@ -137,7 +153,10 @@ $currentUser = getCurrentUser();
     <!-- Search Box -->
     <div class="search-card">
       <div class="citizen-search-row">
-        <input type="text" id="citizen-search-input" placeholder="พิมพ์รหัสผู้ใช้น้ำ (เช่น WY-001) หรือบ้านเลขที่ (เช่น 12) หรือชื่อ-สกุล...">
+        <div class="search-input-wrapper">
+          <input type="text" id="citizen-search-input" autocomplete="off" placeholder="พิมพ์รหัสผู้ใช้น้ำ (เช่น WY-001) หรือบ้านเลขที่ (เช่น 12) หรือชื่อ-สกุล...">
+          <div id="citizen-search-dropdown" class="search-autocomplete-dropdown" style="display: none;"></div>
+        </div>
         <button type="button" id="btn-search-bill" class="btn-search">
           <span>🔍</span> ค้นหาบิล
         </button>
@@ -283,18 +302,187 @@ $currentUser = getCurrentUser();
   <!-- Scripts -->
   <script>
     const currentCycleCode = '<?php echo $currentCycle['cycle_code']; ?>';
+    let cachedReadings = null;
+    let activeDropdownIndex = -1;
+
+    async function getReadings() {
+      if (cachedReadings) return cachedReadings;
+      try {
+        const res = await fetch(`api/readings.php?cycle=${currentCycleCode}`);
+        if (!res.ok) throw new Error('API Error');
+        const data = await res.json();
+        cachedReadings = data.readings || [];
+        return cachedReadings;
+      } catch (err) {
+        console.error('Failed to load readings cache:', err);
+        return [];
+      }
+    }
+
+    const searchInput = document.getElementById('citizen-search-input');
+    const searchDropdown = document.getElementById('citizen-search-dropdown');
+
+    function closeSearchDropdown() {
+      if (searchDropdown) {
+        searchDropdown.style.display = 'none';
+        searchDropdown.innerHTML = '';
+        activeDropdownIndex = -1;
+      }
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    async function handleSearchInput() {
+      const kw = searchInput.value.trim().toLowerCase();
+      if (!kw) {
+        closeSearchDropdown();
+        return;
+      }
+
+      const readings = await getReadings();
+      const matches = readings.filter(r => 
+        (r.customer_code && r.customer_code.toLowerCase().includes(kw)) ||
+        (r.house_no && r.house_no.toLowerCase().includes(kw)) ||
+        (r.first_name && r.first_name.toLowerCase().includes(kw)) ||
+        (r.last_name && r.last_name.toLowerCase().includes(kw)) ||
+        (r.meter_serial && r.meter_serial.toLowerCase().includes(kw)) ||
+        (r.phone && r.phone.includes(kw))
+      ).slice(0, 8);
+
+      if (!searchDropdown) return;
+
+      if (matches.length === 0) {
+        searchDropdown.innerHTML = `
+          <div class="search-dropdown-empty">
+            <span style="font-size: 20px;">🔍</span>
+            <div style="font-weight: 600; color: #475569;">ไม่พบข้อมูลผู้ใช้น้ำที่ตรงกับ "<strong>${escapeHtml(kw)}</strong>"</div>
+            <small style="color: #94a3b8;">ลองค้นหาด้วยรหัส (เช่น WY-001), บ้านเลขที่ หรือชื่อ-สกุล</small>
+          </div>
+        `;
+        searchDropdown.style.display = 'flex';
+        activeDropdownIndex = -1;
+        return;
+      }
+
+      searchDropdown.innerHTML = matches.map((r, idx) => {
+        const isPaid = (r.payment_status === 'PAID');
+        const total = parseFloat(r.grand_total || 0).toLocaleString('th-TH', { minimumFractionDigits: 2 });
+        return `
+          <div class="search-dropdown-item" data-code="${escapeHtml(r.customer_code)}" data-index="${idx}">
+            <div class="item-main">
+              <div class="item-title">
+                <span>👤 ${escapeHtml(r.first_name)} ${escapeHtml(r.last_name)}</span>
+                <span class="item-code-badge">${escapeHtml(r.customer_code)}</span>
+              </div>
+              <div class="item-sub">
+                <span>🏠 บ้านเลขที่: <strong>${escapeHtml(r.house_no)}</strong></span>
+                <span>•</span>
+                <span>${escapeHtml(r.zone || '')}</span>
+                ${r.meter_serial ? `<span>• มาตร: ${escapeHtml(r.meter_serial)}</span>` : ''}
+              </div>
+            </div>
+            <div class="item-meta">
+              <span class="item-amount">${total} ฿</span>
+              <span class="badge ${isPaid ? 'badge-paid' : 'badge-unpaid'}" style="font-size: 11px; padding: 2px 8px; border-radius: 9999px;">
+                ${isPaid ? '✅ ชำระแล้ว' : '⏳ ค้างชำระ'}
+              </span>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      searchDropdown.style.display = 'flex';
+      activeDropdownIndex = -1;
+
+      searchDropdown.querySelectorAll('.search-dropdown-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const code = item.getAttribute('data-code');
+          if (code) {
+            searchInput.value = code;
+            closeSearchDropdown();
+            performCitizenSearch();
+          }
+        });
+      });
+    }
+
+    function updateActiveDropdownItem(items) {
+      items.forEach((item, idx) => {
+        if (idx === activeDropdownIndex) {
+          item.classList.add('active');
+          item.scrollIntoView({ block: 'nearest' });
+        } else {
+          item.classList.remove('active');
+        }
+      });
+    }
+
+    searchInput?.addEventListener('input', handleSearchInput);
+    searchInput?.addEventListener('focus', () => {
+      if (searchInput.value.trim().length > 0) {
+        handleSearchInput();
+      }
+    });
+
+    searchInput?.addEventListener('keydown', (e) => {
+      const items = searchDropdown?.querySelectorAll('.search-dropdown-item');
+      if (searchDropdown && searchDropdown.style.display !== 'none' && items && items.length > 0) {
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          activeDropdownIndex = (activeDropdownIndex + 1) % items.length;
+          updateActiveDropdownItem(items);
+          return;
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          activeDropdownIndex = (activeDropdownIndex - 1 + items.length) % items.length;
+          updateActiveDropdownItem(items);
+          return;
+        } else if (e.key === 'Enter') {
+          if (activeDropdownIndex >= 0 && items[activeDropdownIndex]) {
+            e.preventDefault();
+            items[activeDropdownIndex].click();
+            return;
+          }
+        } else if (e.key === 'Escape') {
+          closeSearchDropdown();
+          return;
+        }
+      }
+
+      if (e.key === 'Enter') {
+        closeSearchDropdown();
+        performCitizenSearch();
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.search-input-wrapper')) {
+        closeSearchDropdown();
+      }
+    });
 
     async function quickSearch(kw) {
+      closeSearchDropdown();
       document.getElementById('citizen-search-input').value = kw;
       await performCitizenSearch();
     }
 
-    document.getElementById('btn-search-bill')?.addEventListener('click', performCitizenSearch);
-    document.getElementById('citizen-search-input')?.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') performCitizenSearch();
+    document.getElementById('btn-search-bill')?.addEventListener('click', () => {
+      closeSearchDropdown();
+      performCitizenSearch();
     });
 
     async function performCitizenSearch() {
+      closeSearchDropdown();
       const kw = document.getElementById('citizen-search-input').value.trim().toLowerCase();
       const container = document.getElementById('bill-result-container');
       if (!kw) {
@@ -306,21 +494,20 @@ $currentUser = getCurrentUser();
       container.innerHTML = '<div style="text-align: center; padding: 30px; color: #64748b;">⏳ กำลังค้นหาข้อมูลบิลค่าน้ำ...</div>';
 
       try {
-        const res = await fetch(`api/readings.php?cycle=${currentCycleCode}`);
-        if (!res.ok) throw new Error('API Error');
-        const data = await res.json();
-        const match = data.readings.find(r => 
+        const readings = await getReadings();
+        const match = readings.find(r => 
           r.customer_code.toLowerCase().includes(kw) ||
           r.house_no.toLowerCase().includes(kw) ||
           r.first_name.toLowerCase().includes(kw) ||
-          r.last_name.toLowerCase().includes(kw)
+          r.last_name.toLowerCase().includes(kw) ||
+          (r.meter_serial && r.meter_serial.toLowerCase().includes(kw))
         );
 
         if (!match) {
           container.innerHTML = `
             <div class="bill-result-card" style="text-align: center; border-color: #fee2e2; background: #fff5f5;">
               <span style="font-size: 36px;">❌</span>
-              <h4 style="color: #dc2626; margin-top: 8px;">ไม่พบข้อมูลบิลค่าน้ำที่ตรงกับ "${kw}"</h4>
+              <h4 style="color: #dc2626; margin-top: 8px;">ไม่พบข้อมูลบิลค่าน้ำที่ตรงกับ "${escapeHtml(kw)}"</h4>
               <p style="color: #64748b; font-size: 13.5px;">กรุณาตรวจสอบรหัสผู้ใช้น้ำหรือบ้านเลขที่ของท่านอีกครั้ง หรือติดต่อคณะกรรมการประปาหมู่บ้าน</p>
             </div>
           `;
