@@ -340,6 +340,20 @@ $currentUser = getCurrentUser();
         .replace(/'/g, '&#039;');
     }
 
+    function highlightMatch(text, kw) {
+      if (!text) return '';
+      const escapedText = escapeHtml(text);
+      if (!kw) return escapedText;
+      const escapedKw = escapeHtml(kw).trim();
+      if (!escapedKw) return escapedText;
+      try {
+        const regex = new RegExp(`(${escapedKw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+        return escapedText.replace(regex, '<mark class="search-highlight">$1</mark>');
+      } catch (e) {
+        return escapedText;
+      }
+    }
+
     async function handleSearchInput() {
       const kw = searchInput.value.trim().toLowerCase();
       if (!kw) {
@@ -362,7 +376,7 @@ $currentUser = getCurrentUser();
       if (matches.length === 0) {
         searchDropdown.innerHTML = `
           <div class="search-dropdown-empty">
-            <span style="font-size: 20px;">🔍</span>
+            <span style="font-size: 26px;">🔍</span>
             <div style="font-weight: 600; color: #475569;">ไม่พบข้อมูลผู้ใช้น้ำที่ตรงกับ "<strong>${escapeHtml(kw)}</strong>"</div>
             <small style="color: #94a3b8;">ลองค้นหาด้วยรหัส (เช่น WY-001), บ้านเลขที่ หรือชื่อ-สกุล</small>
           </div>
@@ -372,42 +386,65 @@ $currentUser = getCurrentUser();
         return;
       }
 
-      searchDropdown.innerHTML = matches.map((r, idx) => {
+      const headerHtml = `
+        <div class="search-dropdown-header">
+          <span>📋 ผลการค้นหา (${matches.length} รายการ)</span>
+          <span style="font-size: 11px; font-weight: normal; color: #0284c7;">คลิกเพื่อเปิดดูบิล</span>
+        </div>
+      `;
+
+      const itemsHtml = matches.map((r, idx) => {
         const isPaid = (r.payment_status === 'PAID');
         const total = parseFloat(r.grand_total || 0).toLocaleString('th-TH', { minimumFractionDigits: 2 });
+        const fullName = `${r.first_name} ${r.last_name}`;
         return `
-          <div class="search-dropdown-item" data-code="${escapeHtml(r.customer_code)}" data-index="${idx}">
+          <a href="portal_citizen.php?customer=${encodeURIComponent(r.customer_code)}" class="search-dropdown-item" data-code="${escapeHtml(r.customer_code)}" data-index="${idx}">
             <div class="item-main">
               <div class="item-title">
-                <span>👤 ${escapeHtml(r.first_name)} ${escapeHtml(r.last_name)}</span>
-                <span class="item-code-badge">${escapeHtml(r.customer_code)}</span>
+                <span>👤 ${highlightMatch(fullName, kw)}</span>
+                <span class="item-code-badge">${highlightMatch(r.customer_code, kw)}</span>
               </div>
               <div class="item-sub">
-                <span>🏠 บ้านเลขที่: <strong>${escapeHtml(r.house_no)}</strong></span>
+                <span>🏠 บ้านเลขที่: <strong>${highlightMatch(r.house_no, kw)}</strong></span>
                 <span>•</span>
                 <span>${escapeHtml(r.zone || '')}</span>
-                ${r.meter_serial ? `<span>• มาตร: ${escapeHtml(r.meter_serial)}</span>` : ''}
+                ${r.meter_serial ? `<span>• มาตร: ${highlightMatch(r.meter_serial, kw)}</span>` : ''}
               </div>
             </div>
             <div class="item-meta">
               <span class="item-amount">${total} ฿</span>
-              <span class="badge ${isPaid ? 'badge-paid' : 'badge-unpaid'}" style="font-size: 11px; padding: 2px 8px; border-radius: 9999px;">
-                ${isPaid ? '✅ ชำระแล้ว' : '⏳ ค้างชำระ'}
-              </span>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span class="badge ${isPaid ? 'badge-paid' : 'badge-unpaid'}" style="font-size: 11px; padding: 2px 8px; border-radius: 9999px;">
+                  ${isPaid ? '✅ ชำระแล้ว' : '⏳ ค้างชำระ'}
+                </span>
+                <span class="item-action-pill">ดูบิล &rarr;</span>
+              </div>
             </div>
-          </div>
+          </a>
         `;
       }).join('');
 
+      const footerHtml = `
+        <div class="search-dropdown-footer">
+          <span>💡 ใช้ลูกศร <strong>↑ ↓</strong> เพื่อเลือก และกด <strong>Enter</strong> เพื่อเปิดดูบิล</span>
+          <span>⚡ ข้อมูลประจำงวด ${currentCycleCode}</span>
+        </div>
+      `;
+
+      searchDropdown.innerHTML = headerHtml + itemsHtml + footerHtml;
       searchDropdown.style.display = 'flex';
       activeDropdownIndex = -1;
 
       searchDropdown.querySelectorAll('.search-dropdown-item').forEach(item => {
         item.addEventListener('click', (e) => {
+          e.preventDefault();
           e.stopPropagation();
           const code = item.getAttribute('data-code');
           if (code) {
             searchInput.value = code;
+            if (window.history && window.history.pushState) {
+              window.history.pushState(null, '', '?customer=' + encodeURIComponent(code));
+            }
             closeSearchDropdown();
             performCitizenSearch();
           }
@@ -492,6 +529,7 @@ $currentUser = getCurrentUser();
 
       container.style.display = 'block';
       container.innerHTML = '<div style="text-align: center; padding: 30px; color: #64748b;">⏳ กำลังค้นหาข้อมูลบิลค่าน้ำ...</div>';
+      container.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
       try {
         const readings = await getReadings();

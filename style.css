@@ -1615,8 +1615,8 @@ body.sidebar-open {
   background: #ffffff;
   border: 1px solid #cbd5e1;
   border-radius: 12px;
-  box-shadow: 0 12px 28px -4px rgba(15, 23, 42, 0.16), 0 4px 10px rgba(0, 0, 0, 0.06);
-  max-height: 360px;
+  box-shadow: 0 14px 30px -4px rgba(15, 23, 42, 0.18), 0 6px 12px rgba(0, 0, 0, 0.08);
+  max-height: 420px;
   overflow-y: auto;
   z-index: 1060;
   display: flex;
@@ -1639,6 +1639,31 @@ body.sidebar-open {
   border-radius: 9999px;
 }
 
+.search-dropdown-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px 6px 12px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #64748b;
+  border-bottom: 1px solid #f1f5f9;
+  letter-spacing: 0.3px;
+}
+
+.search-dropdown-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 12px;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  border-radius: 0 0 8px 8px;
+  font-size: 11.5px;
+  color: #64748b;
+  margin-top: 4px;
+}
+
 .search-dropdown-item {
   display: flex;
   align-items: center;
@@ -1646,13 +1671,15 @@ body.sidebar-open {
   padding: 10px 14px;
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.12s ease;
+  transition: all 0.14s ease;
   border-bottom: 1px solid #f8fafc;
   gap: 12px;
   text-align: left;
+  text-decoration: none !important;
+  color: inherit !important;
 }
 
-.search-dropdown-item:last-child {
+.search-dropdown-item:last-of-type {
   border-bottom: none;
 }
 
@@ -1660,6 +1687,7 @@ body.sidebar-open {
 .search-dropdown-item.active {
   background: #f0f9ff;
   border-color: #bae6fd;
+  transform: translateX(2px);
 }
 
 .search-dropdown-item .item-main {
@@ -1705,7 +1733,7 @@ body.sidebar-open {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 3px;
+  gap: 4px;
 }
 
 .search-dropdown-item .item-amount {
@@ -1714,8 +1742,39 @@ body.sidebar-open {
   color: #0f172a;
 }
 
+.search-dropdown-item .item-action-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #0284c7;
+  background: #e0f2fe;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  border: 1px solid #bae6fd;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.search-dropdown-item:hover .item-action-pill,
+.search-dropdown-item.active .item-action-pill {
+  background: #0284c7;
+  color: #ffffff;
+  border-color: #0284c7;
+  box-shadow: 0 2px 6px rgba(2, 132, 199, 0.3);
+}
+
+.search-highlight {
+  background-color: #fef08a;
+  color: #854d0e;
+  font-weight: 700;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
 .search-dropdown-empty {
-  padding: 20px 14px;
+  padding: 22px 14px;
   text-align: center;
   color: #64748b;
   font-size: 13.5px;
@@ -1723,6 +1782,93 @@ body.sidebar-open {
   flex-direction: column;
   align-items: center;
   gap: 6px;
+}
+
+/* Hero Water Bill Search Section (Homepage & Citizen Portal) */
+.hero-search-box {
+  max-width: 720px;
+  margin: 22px auto 8px auto;
+  position: relative;
+  text-align: left;
+}
+
+.hero-search-bar {
+  display: flex;
+  gap: 8px;
+  background: #ffffff;
+  padding: 6px;
+  border-radius: 12px;
+  box-shadow: 0 12px 28px -4px rgba(0, 0, 0, 0.28), 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.85);
+}
+
+.hero-search-bar .search-input-wrapper {
+  flex: 1;
+  position: relative;
+  display: flex;
+}
+
+.hero-search-input {
+  width: 100%;
+  border: none !important;
+  outline: none !important;
+  font-size: 15px !important;
+  font-family: inherit !important;
+  padding: 12px 18px !important;
+  color: #0f172a !important;
+  background: transparent !important;
+}
+
+.hero-search-btn {
+  background: #0284c7;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 0 24px;
+  font-size: 14.5px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.hero-search-btn:hover {
+  background: #0369a1;
+  box-shadow: 0 4px 10px rgba(2, 132, 199, 0.35);
+  transform: translateY(-1px);
+}
+
+.hero-search-tags {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+  font-size: 13px;
+  color: #e0f2fe;
+  flex-wrap: wrap;
+}
+
+.hero-tag-link {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff !important;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.hero-tag-link:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
+  color: #ffffff !important;
 }
 
 

@@ -400,6 +400,26 @@ try {
           ยินดีต้อนรับสู่ระบบบริการน้ำประปาหมู่บ้านวังยาง อำนวยความสะดวกแก่สมาชิกผู้ใช้น้ำในการตรวจสอบค่าน้ำออนไลน์ 
           พร้อมระบบบริหารจัดการข้อมูลการประปาชุมชนอย่างเป็นระบบ โปร่งใส และเข้าถึงบริการทั้งหมดได้จากแถบเมนูด้านข้าง (Sidebar)
         </p>
+        <!-- Hero Water Bill Search Widget -->
+        <div class="hero-search-box">
+          <div class="hero-search-bar">
+            <div class="search-input-wrapper">
+              <input type="text" id="hero-citizen-input" class="hero-search-input" autocomplete="off" placeholder="🔍 ค้นหายอดค่าน้ำ... พิมพ์รหัสผู้ใช้น้ำ (เช่น WY-001) หรือบ้านเลขที่ หรือชื่อ-สกุล">
+              <div id="hero-search-dropdown" class="search-autocomplete-dropdown" style="display: none;"></div>
+            </div>
+            <button type="button" id="btn-hero-citizen-search" class="hero-search-btn">
+              <span>🔎</span> ค้นหาบิล
+            </button>
+          </div>
+          <div class="hero-search-tags">
+            <span style="opacity: 0.9;">💡 คลิกตัวอย่างค้นหาด่วน:</span>
+            <a class="hero-tag-link" onclick="quickFillHeroSearch('WY-001')">WY-001 (นายสมชาย)</a>
+            <a class="hero-tag-link" onclick="quickFillHeroSearch('WY-002')">WY-002 (นางสมศรี)</a>
+            <a class="hero-tag-link" onclick="quickFillHeroSearch('WY-003')">WY-003 (มีค้างชำระ)</a>
+            <a class="hero-tag-link" onclick="quickFillHeroSearch('12')">บ้านเลขที่ 12</a>
+          </div>
+        </div>
+
         <?php if (!$currentUser): ?>
         <div style="margin-top: 22px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
           <a href="register.php" class="btn" style="background: #38bdf8; color: #0f172a; font-weight: 700; padding: 10px 22px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 14px rgba(0,0,0,0.2); font-size: 14px;">
@@ -506,13 +526,9 @@ try {
       if (typeof openLoginModal === 'function') openLoginModal();
     }
 
-    // 3. Citizen Search Bar & Printable Bill Popup
+    // 3. Citizen Water Bill Search & Autocomplete
     let currentMatchedReading = null;
     let cachedIndexReadings = null;
-    let activeIndexDropdownIdx = -1;
-
-    const citizenInput = document.getElementById('citizen-input');
-    const indexDropdown = document.getElementById('index-search-dropdown');
 
     async function getIndexReadings() {
       if (cachedIndexReadings) return cachedIndexReadings;
@@ -528,14 +544,6 @@ try {
       }
     }
 
-    function closeIndexDropdown() {
-      if (indexDropdown) {
-        indexDropdown.style.display = 'none';
-        indexDropdown.innerHTML = '';
-        activeIndexDropdownIdx = -1;
-      }
-    }
-
     function escapeHtml(text) {
       if (!text) return '';
       return String(text)
@@ -546,144 +554,244 @@ try {
         .replace(/'/g, '&#039;');
     }
 
-    async function handleIndexSearchInput() {
-      const kw = citizenInput.value.trim().toLowerCase();
-      if (!kw) {
-        closeIndexDropdown();
-        return;
+    function highlightMatch(text, kw) {
+      if (!text) return '';
+      const escapedText = escapeHtml(text);
+      if (!kw) return escapedText;
+      const escapedKw = escapeHtml(kw).trim();
+      if (!escapedKw) return escapedText;
+      try {
+        const regex = new RegExp(`(${escapedKw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+        return escapedText.replace(regex, '<mark class="search-highlight">$1</mark>');
+      } catch (e) {
+        return escapedText;
+      }
+    }
+
+    function setupSearchAutocomplete({ inputId, dropdownId, onSelect, onSubmit }) {
+      const input = document.getElementById(inputId);
+      const dropdown = document.getElementById(dropdownId);
+      if (!input || !dropdown) return null;
+      let activeIdx = -1;
+
+      function closeDropdown() {
+        dropdown.style.display = 'none';
+        dropdown.innerHTML = '';
+        activeIdx = -1;
       }
 
-      const readings = await getIndexReadings();
-      const matches = readings.filter(r => 
-        (r.customer_code && r.customer_code.toLowerCase().includes(kw)) ||
-        (r.house_no && r.house_no.toLowerCase().includes(kw)) ||
-        (r.first_name && r.first_name.toLowerCase().includes(kw)) ||
-        (r.last_name && r.last_name.toLowerCase().includes(kw)) ||
-        (r.meter_serial && r.meter_serial.toLowerCase().includes(kw)) ||
-        (r.phone && r.phone.includes(kw))
-      ).slice(0, 8);
-
-      if (!indexDropdown) return;
-
-      if (matches.length === 0) {
-        indexDropdown.innerHTML = `
-          <div class="search-dropdown-empty">
-            <span style="font-size: 20px;">🔍</span>
-            <div style="font-weight: 600; color: #475569;">ไม่พบข้อมูลผู้ใช้น้ำที่ตรงกับ "<strong>${escapeHtml(kw)}</strong>"</div>
-            <small style="color: #94a3b8;">ลองค้นหาด้วยรหัส (เช่น WY-001), บ้านเลขที่ หรือชื่อ-สกุล</small>
-          </div>
-        `;
-        indexDropdown.style.display = 'flex';
-        activeIndexDropdownIdx = -1;
-        return;
-      }
-
-      indexDropdown.innerHTML = matches.map((r, idx) => {
-        const isPaid = (r.payment_status === 'PAID');
-        const total = parseFloat(r.grand_total || 0).toLocaleString('th-TH', { minimumFractionDigits: 2 });
-        return `
-          <div class="search-dropdown-item" data-code="${escapeHtml(r.customer_code)}" data-index="${idx}">
-            <div class="item-main">
-              <div class="item-title">
-                <span>👤 ${escapeHtml(r.first_name)} ${escapeHtml(r.last_name)}</span>
-                <span class="item-code-badge">${escapeHtml(r.customer_code)}</span>
-              </div>
-              <div class="item-sub">
-                <span>🏠 บ้านเลขที่: <strong>${escapeHtml(r.house_no)}</strong></span>
-                <span>•</span>
-                <span>${escapeHtml(r.zone || '')}</span>
-                ${r.meter_serial ? `<span>• มาตร: ${escapeHtml(r.meter_serial)}</span>` : ''}
-              </div>
-            </div>
-            <div class="item-meta">
-              <span class="item-amount">${total} ฿</span>
-              <span class="badge ${isPaid ? 'badge-paid' : 'badge-unpaid'}" style="font-size: 11px; padding: 2px 8px; border-radius: 9999px;">
-                ${isPaid ? '✅ ชำระแล้ว' : '⏳ ค้างชำระ'}
-              </span>
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      indexDropdown.style.display = 'flex';
-      activeIndexDropdownIdx = -1;
-
-      indexDropdown.querySelectorAll('.search-dropdown-item').forEach(item => {
-        item.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const code = item.getAttribute('data-code');
-          if (code) {
-            citizenInput.value = code;
-            closeIndexDropdown();
-            performIndexSearch();
+      function updateActiveItem(items) {
+        items.forEach((item, idx) => {
+          if (idx === activeIdx) {
+            item.classList.add('active');
+            item.scrollIntoView({ block: 'nearest' });
+          } else {
+            item.classList.remove('active');
           }
         });
-      });
-    }
+      }
 
-    function updateActiveIndexDropdown(items) {
-      items.forEach((item, idx) => {
-        if (idx === activeIndexDropdownIdx) {
-          item.classList.add('active');
-          item.scrollIntoView({ block: 'nearest' });
-        } else {
-          item.classList.remove('active');
+      async function handleInput() {
+        const kw = input.value.trim().toLowerCase();
+        if (!kw) {
+          closeDropdown();
+          return;
+        }
+
+        const readings = await getIndexReadings();
+        const matches = readings.filter(r => 
+          (r.customer_code && r.customer_code.toLowerCase().includes(kw)) ||
+          (r.house_no && r.house_no.toLowerCase().includes(kw)) ||
+          (r.first_name && r.first_name.toLowerCase().includes(kw)) ||
+          (r.last_name && r.last_name.toLowerCase().includes(kw)) ||
+          (r.meter_serial && r.meter_serial.toLowerCase().includes(kw)) ||
+          (r.phone && r.phone.includes(kw))
+        ).slice(0, 8);
+
+        if (matches.length === 0) {
+          dropdown.innerHTML = `
+            <div class="search-dropdown-empty">
+              <span style="font-size: 26px;">🔍</span>
+              <div style="font-weight: 600; color: #475569;">ไม่พบข้อมูลผู้ใช้น้ำที่ตรงกับ "<strong>${escapeHtml(kw)}</strong>"</div>
+              <small style="color: #94a3b8;">ลองค้นหาด้วยรหัส (เช่น WY-001), บ้านเลขที่ หรือชื่อ-สกุล</small>
+            </div>
+          `;
+          dropdown.style.display = 'flex';
+          activeIdx = -1;
+          return;
+        }
+
+        const headerHtml = `
+          <div class="search-dropdown-header">
+            <span>📋 ผลการค้นหา (${matches.length} รายการ)</span>
+            <span style="font-size: 11px; font-weight: normal; color: #0284c7;">คลิกเพื่อเปิดดูบิล</span>
+          </div>
+        `;
+
+        const itemsHtml = matches.map((r, idx) => {
+          const isPaid = (r.payment_status === 'PAID');
+          const total = parseFloat(r.grand_total || 0).toLocaleString('th-TH', { minimumFractionDigits: 2 });
+          const fullName = `${r.first_name} ${r.last_name}`;
+          const targetUrl = `portal_citizen.php?customer=${encodeURIComponent(r.customer_code)}`;
+          return `
+            <a href="${targetUrl}" class="search-dropdown-item" data-code="${escapeHtml(r.customer_code)}" data-index="${idx}">
+              <div class="item-main">
+                <div class="item-title">
+                  <span>👤 ${highlightMatch(fullName, kw)}</span>
+                  <span class="item-code-badge">${highlightMatch(r.customer_code, kw)}</span>
+                </div>
+                <div class="item-sub">
+                  <span>🏠 บ้านเลขที่: <strong>${highlightMatch(r.house_no, kw)}</strong></span>
+                  <span>•</span>
+                  <span>${escapeHtml(r.zone || '')}</span>
+                  ${r.meter_serial ? `<span>• มาตร: ${highlightMatch(r.meter_serial, kw)}</span>` : ''}
+                </div>
+              </div>
+              <div class="item-meta">
+                <span class="item-amount">${total} ฿</span>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span class="badge ${isPaid ? 'badge-paid' : 'badge-unpaid'}" style="font-size: 11px; padding: 2px 8px; border-radius: 9999px;">
+                    ${isPaid ? '✅ ชำระแล้ว' : '⏳ ค้างชำระ'}
+                  </span>
+                  <span class="item-action-pill">ดูบิล &rarr;</span>
+                </div>
+              </div>
+            </a>
+          `;
+        }).join('');
+
+        const footerHtml = `
+          <div class="search-dropdown-footer">
+            <span>💡 ใช้ลูกศร <strong>↑ ↓</strong> เพื่อเลือก และกด <strong>Enter</strong> เพื่อเปิดดูบิล</span>
+            <span>⚡ ข้อมูลประจำงวด <?php echo htmlspecialchars($stats['current_cycle']); ?></span>
+          </div>
+        `;
+
+        dropdown.innerHTML = headerHtml + itemsHtml + footerHtml;
+        dropdown.style.display = 'flex';
+        activeIdx = -1;
+
+        dropdown.querySelectorAll('.search-dropdown-item').forEach(item => {
+          item.addEventListener('click', (e) => {
+            const code = item.getAttribute('data-code');
+            if (onSelect) {
+              onSelect(code, item, e);
+            }
+          });
+        });
+      }
+
+      input.addEventListener('input', handleInput);
+      input.addEventListener('focus', () => {
+        if (input.value.trim().length > 0) handleInput();
+      });
+
+      input.addEventListener('keydown', (e) => {
+        const items = dropdown.querySelectorAll('.search-dropdown-item');
+        if (dropdown.style.display !== 'none' && items.length > 0) {
+          if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            activeIdx = (activeIdx + 1) % items.length;
+            updateActiveItem(items);
+            return;
+          } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            activeIdx = (activeIdx - 1 + items.length) % items.length;
+            updateActiveItem(items);
+            return;
+          } else if (e.key === 'Enter') {
+            if (activeIdx >= 0 && items[activeIdx]) {
+              e.preventDefault();
+              items[activeIdx].click();
+              return;
+            }
+          } else if (e.key === 'Escape') {
+            closeDropdown();
+            return;
+          }
+        }
+
+        if (e.key === 'Enter') {
+          closeDropdown();
+          if (onSubmit) onSubmit(input.value.trim());
         }
       });
+
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest(`#${inputId}`) && !e.target.closest(`#${dropdownId}`)) {
+          closeDropdown();
+        }
+      });
+
+      return { closeDropdown, handleInput };
     }
 
-    citizenInput?.addEventListener('input', handleIndexSearchInput);
-    citizenInput?.addEventListener('focus', () => {
-      if (citizenInput.value.trim().length > 0) {
-        handleIndexSearchInput();
+    // Initialize Hero Search Bar (Homepage Banner)
+    const heroSearch = setupSearchAutocomplete({
+      inputId: 'hero-citizen-input',
+      dropdownId: 'hero-search-dropdown',
+      onSelect: (code, item, e) => {
+        window.location.href = `portal_citizen.php?customer=${encodeURIComponent(code)}`;
+      },
+      onSubmit: (kw) => {
+        submitHeroSearch();
       }
     });
 
-    citizenInput?.addEventListener('keydown', (e) => {
-      const items = indexDropdown?.querySelectorAll('.search-dropdown-item');
-      if (indexDropdown && indexDropdown.style.display !== 'none' && items && items.length > 0) {
-        if (e.key === 'ArrowDown') {
-          e.preventDefault();
-          activeIndexDropdownIdx = (activeIndexDropdownIdx + 1) % items.length;
-          updateActiveIndexDropdown(items);
-          return;
-        } else if (e.key === 'ArrowUp') {
-          e.preventDefault();
-          activeIndexDropdownIdx = (activeIndexDropdownIdx - 1 + items.length) % items.length;
-          updateActiveIndexDropdown(items);
-          return;
-        } else if (e.key === 'Enter') {
-          if (activeIndexDropdownIdx >= 0 && items[activeIndexDropdownIdx]) {
-            e.preventDefault();
-            items[activeIndexDropdownIdx].click();
-            return;
-          }
-        } else if (e.key === 'Escape') {
-          closeIndexDropdown();
-          return;
-        }
+    async function submitHeroSearch() {
+      const heroInput = document.getElementById('hero-citizen-input');
+      const kw = heroInput ? heroInput.value.trim() : '';
+      if (!kw) {
+        alert('กรุณากรอกรหัสผู้ใช้น้ำ หรือบ้านเลขที่');
+        return;
       }
+      const readings = await getIndexReadings();
+      const kwLower = kw.toLowerCase();
+      const match = readings.find(r => 
+        (r.customer_code && r.customer_code.toLowerCase() === kwLower) ||
+        (r.house_no && r.house_no.toLowerCase() === kwLower) ||
+        (r.customer_code && r.customer_code.toLowerCase().includes(kwLower)) ||
+        (r.house_no && r.house_no.toLowerCase().includes(kwLower)) ||
+        ((r.first_name + ' ' + r.last_name).toLowerCase().includes(kwLower))
+      );
 
-      if (e.key === 'Enter') {
-        closeIndexDropdown();
+      const targetCode = match ? match.customer_code : kw;
+      window.location.href = `portal_citizen.php?customer=${encodeURIComponent(targetCode)}`;
+    }
+
+    function quickFillHeroSearch(kw) {
+      const heroInput = document.getElementById('hero-citizen-input');
+      if (heroInput) {
+        heroInput.value = kw;
+        heroInput.focus();
+        heroInput.dispatchEvent(new Event('input'));
+      }
+    }
+
+    document.getElementById('btn-hero-citizen-search')?.addEventListener('click', () => {
+      submitHeroSearch();
+    });
+
+    // Initialize Bottom Citizen Search Bar
+    const citizenInput = document.getElementById('citizen-input');
+    const bottomSearch = setupSearchAutocomplete({
+      inputId: 'citizen-input',
+      dropdownId: 'index-search-dropdown',
+      onSelect: (code, item, e) => {
+        window.location.href = `portal_citizen.php?customer=${encodeURIComponent(code)}`;
+      },
+      onSubmit: (kw) => {
         performIndexSearch();
       }
     });
 
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.search-input-wrapper')) {
-        closeIndexDropdown();
-      }
-    });
-
     document.getElementById('btn-citizen-search')?.addEventListener('click', () => {
-      closeIndexDropdown();
+      bottomSearch?.closeDropdown();
       performIndexSearch();
     });
 
     async function performIndexSearch() {
-      closeIndexDropdown();
-      const kw = citizenInput.value.trim().toLowerCase();
+      const kw = citizenInput ? citizenInput.value.trim().toLowerCase() : '';
       const resArea = document.getElementById('citizen-result-area');
       if (!kw) {
         alert('กรุณากรอกรหัสผู้ใช้น้ำหรือบ้านเลขที่');
@@ -693,55 +801,61 @@ try {
       try {
         const readings = await getIndexReadings();
         const match = readings.find(r => 
-          r.customer_code.toLowerCase().includes(kw) ||
-          r.house_no.toLowerCase().includes(kw) ||
-          r.first_name.toLowerCase().includes(kw) ||
-          r.last_name.toLowerCase().includes(kw) ||
+          (r.customer_code && r.customer_code.toLowerCase().includes(kw)) ||
+          (r.house_no && r.house_no.toLowerCase().includes(kw)) ||
+          (r.first_name && r.first_name.toLowerCase().includes(kw)) ||
+          (r.last_name && r.last_name.toLowerCase().includes(kw)) ||
           (r.meter_serial && r.meter_serial.toLowerCase().includes(kw))
         );
 
-          if (match) {
-            currentMatchedReading = match;
-            resArea.style.display = 'block';
-            resArea.innerHTML = `
-              <div style="background: #f8fafc; border: 2px solid #0284c7; border-radius: 10px; padding: 22px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #cbd5e1; padding-bottom: 12px; margin-bottom: 14px;">
-                  <div>
-                    <strong style="font-size: 18px; color: #0f172a;">${match.first_name} ${match.last_name}</strong>
-                    <span style="font-size: 13px; color: #64748b; margin-left: 8px;">(รหัส: <strong>${match.customer_code}</strong> | บ้านเลขที่: <strong>${match.house_no}</strong>)</span>
-                  </div>
-                  <span class="badge ${match.payment_status === 'PAID' ? 'badge-paid' : 'badge-unpaid'}" style="font-size: 13px; padding: 5px 14px; border-radius: 9999px;">
-                    ${match.payment_status === 'PAID' ? '✅ ชำระเงินเรียบร้อยแล้ว' : '⏳ ยังไม่ได้ชำระเงิน'}
-                  </span>
+        if (match) {
+          currentMatchedReading = match;
+          resArea.style.display = 'block';
+          resArea.innerHTML = `
+            <div style="background: #f8fafc; border: 2px solid #0284c7; border-radius: 10px; padding: 22px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #cbd5e1; padding-bottom: 12px; margin-bottom: 14px;">
+                <div>
+                  <strong style="font-size: 18px; color: #0f172a;">${escapeHtml(match.first_name)} ${escapeHtml(match.last_name)}</strong>
+                  <span style="font-size: 13px; color: #64748b; margin-left: 8px;">(รหัส: <strong>${escapeHtml(match.customer_code)}</strong> | บ้านเลขที่: <strong>${escapeHtml(match.house_no)}</strong>)</span>
                 </div>
-                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; font-size: 14px; background: #fff; padding: 14px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                  <div><span style="color: #64748b; font-size: 13px; display: block;">เลขมิเตอร์เดือนก่อน:</span> <strong style="font-size: 16px;">${parseFloat(match.previous_reading).toFixed(1)}</strong></div>
-                  <div><span style="color: #64748b; font-size: 13px; display: block;">เลขมิเตอร์เดือนนี้:</span> <strong style="font-size: 16px;">${parseFloat(match.current_reading).toFixed(1)}</strong></div>
-                  <div><span style="color: #64748b; font-size: 13px; display: block;">ปริมาณการใช้น้ำ:</span> <strong style="font-size: 16px; color: #0284c7;">${parseFloat(match.units_used).toFixed(1)} หน่วย</strong></div>
-                  <div><span style="color: #64748b; font-size: 13px; display: block;">ยอดเงินที่ต้องชำระ:</span> <strong style="font-size: 18px; color: #b91c1c;">${parseFloat(match.grand_total).toFixed(2)} บาท</strong></div>
-                </div>
-                <div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-                  <span style="font-size: 13px; color: #64748b;">* รวมค่าน้ำตามหน่วยจริง + ค่าบำรุงรักษามิเตอร์ 10.00 บาท${parseFloat(match.previous_arrears) > 0 ? ' + ยอดค้างเก่า ' + parseFloat(match.previous_arrears).toFixed(2) + ' บ.' : ''}</span>
-                  <button type="button" id="btn-view-citizen-receipt" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: #0284c7; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 13.5px; font-weight: 600;">
-                    🖨️ ดูและพิมพ์ใบแจ้งยอด / ใบเสร็จ
+                <span class="badge ${match.payment_status === 'PAID' ? 'badge-paid' : 'badge-unpaid'}" style="font-size: 13px; padding: 5px 14px; border-radius: 9999px;">
+                  ${match.payment_status === 'PAID' ? '✅ ชำระเงินเรียบร้อยแล้ว' : '⏳ ยังไม่ได้ชำระเงิน'}
+                </span>
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; font-size: 14px; background: #fff; padding: 14px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                <div><span style="color: #64748b; font-size: 13px; display: block;">เลขมิเตอร์เดือนก่อน:</span> <strong style="font-size: 16px;">${parseFloat(match.previous_reading).toFixed(1)}</strong></div>
+                <div><span style="color: #64748b; font-size: 13px; display: block;">เลขมิเตอร์เดือนนี้:</span> <strong style="font-size: 16px;">${parseFloat(match.current_reading).toFixed(1)}</strong></div>
+                <div><span style="color: #64748b; font-size: 13px; display: block;">ปริมาณการใช้น้ำ:</span> <strong style="font-size: 16px; color: #0284c7;">${parseFloat(match.units_used).toFixed(1)} หน่วย</strong></div>
+                <div><span style="color: #64748b; font-size: 13px; display: block;">ยอดเงินที่ต้องชำระ:</span> <strong style="font-size: 18px; color: #b91c1c;">${parseFloat(match.grand_total).toFixed(2)} บาท</strong></div>
+              </div>
+              <div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <span style="font-size: 13px; color: #64748b;">* รวมค่าน้ำตามหน่วยจริง + ค่าบำรุงรักษามิเตอร์ 10.00 บาท${parseFloat(match.previous_arrears) > 0 ? ' + ยอดค้างเก่า ' + parseFloat(match.previous_arrears).toFixed(2) + ' บ.' : ''}</span>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                  <a href="portal_citizen.php?customer=${encodeURIComponent(match.customer_code)}" class="btn" style="background: #0284c7; color: #fff; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; font-size: 13.5px; display: inline-flex; align-items: center; gap: 6px;">
+                    📱 เปิดดูบิลเต็ม & QR พร้อมเพย์ &rarr;
+                  </a>
+                  <button type="button" id="btn-view-citizen-receipt" class="btn btn-outline" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: #fff; color: #334151; border: 1px solid #cbd5e1; border-radius: 6px; cursor: pointer; font-size: 13.5px; font-weight: 600;">
+                    🖨️ พิมพ์ใบแจ้งยอด / ใบเสร็จ
                   </button>
                 </div>
               </div>
-            `;
+            </div>
+          `;
 
-            document.getElementById('btn-view-citizen-receipt')?.addEventListener('click', () => {
-              showCitizenReceiptModal(match);
-            });
-          } else {
-            currentMatchedReading = null;
-            resArea.style.display = 'block';
-            resArea.innerHTML = `<div style="text-align: center; color: #dc2626; padding: 16px; background: #fee2e2; border-radius: 6px; font-size: 14px;">❌ ไม่พบข้อมูลผู้ใช้น้ำที่ตรงกับคำค้นหา "${kw}" ในงวดนี้</div>`;
-          }
+          document.getElementById('btn-view-citizen-receipt')?.addEventListener('click', () => {
+            showCitizenReceiptModal(match);
+          });
+        } else {
+          currentMatchedReading = null;
+          resArea.style.display = 'block';
+          resArea.innerHTML = `<div style="text-align: center; color: #dc2626; padding: 16px; background: #fee2e2; border-radius: 6px; font-size: 14px;">❌ ไม่พบข้อมูลผู้ใช้น้ำที่ตรงกับคำค้นหา "${escapeHtml(kw)}" ในงวดนี้</div>`;
         }
       } catch (err) {
         console.error(err);
+        resArea.style.display = 'block';
+        resArea.innerHTML = `<div style="text-align: center; color: #dc2626; padding: 16px; background: #fee2e2; border-radius: 6px; font-size: 14px;">เกิดข้อผิดพลาดในการโหลดข้อมูล</div>`;
       }
-    });
+    }
 
     // 4. Citizen Receipt Modal Logic
     function showCitizenReceiptModal(reading) {
