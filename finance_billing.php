@@ -38,7 +38,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
     .fin-tab-btn {
       padding: 9px 18px;
       border-radius: 8px;
-      border: 1px solid transparent;
+      border: 1px solid #e2e8f0;
       background: #f8fafc;
       font-family: 'Prompt', sans-serif;
       font-size: 13.5px;
@@ -53,12 +53,46 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
     .fin-tab-btn:hover {
       background: #f1f5f9;
       color: #0f172a;
+      border-color: #cbd5e1;
     }
     .fin-tab-btn.active {
       background: #0284c7;
       color: #fff;
       border-color: #0284c7;
       box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
+    }
+    .fin-tab-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 9999px;
+      background: #e2e8f0;
+      color: #475569;
+      line-height: 1.2;
+      transition: all 0.15s ease;
+    }
+    .fin-tab-btn.active .fin-tab-badge {
+      background: rgba(255, 255, 255, 0.28);
+      color: #ffffff;
+    }
+    .btn-toast-link {
+      background: #0284c7;
+      color: #ffffff !important;
+      border: none;
+      padding: 3px 9px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-left: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      text-decoration: none;
+    }
+    .btn-toast-link:hover {
+      background: #0369a1;
     }
     .fin-pane {
       display: none;
@@ -144,43 +178,63 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
     <main class="main-content">
       <?php renderAppTopBar('งานรับชำระเงินและจัดทำฎีกาเบิกจ่าย', 'งานการเงิน เหรัญญิก ออกใบเสร็จมาตรฐาน ทะเบียนคุมหนี้ และฎีกา 10%'); ?>
 
-    <!-- Top Action / Cycle Bar -->
-    <div class="card no-print" style="margin-bottom: 20px; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-left: 4px solid #0284c7; border-radius: 12px;">
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <span style="font-size: 24px;">💼</span>
-        <div>
-          <h2 style="font-family: 'Prompt', sans-serif; font-size: 18px; margin: 0; color: #0f172a;">ระบบงานการเงินและบัญชีกองทุนประปา</h2>
-          <span style="font-size: 13.5px; color: #64748b;">งวดบัญชีประจำเดือน: <strong><span id="current-cycle-display"><?php echo $currentCycleCode; ?></span></strong></span>
+    <!-- Unified Finance Control Header -->
+    <div class="card no-print" style="margin-bottom: 20px; padding: 18px 22px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
+      <!-- Top Level: Cycle Selector & Quick Actions -->
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; padding-bottom: 14px; border-bottom: 1px solid #e2e8f0;">
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <div style="width: 44px; height: 44px; border-radius: 10px; background: #e0f2fe; color: #0284c7; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;">
+            💼
+          </div>
+          <div>
+            <h2 style="font-family: 'Prompt', sans-serif; font-size: 18px; font-weight: 700; margin: 0; color: #0f172a;">
+              ระบบงานการเงินและบัญชีกองทุนประปา
+            </h2>
+            <div style="font-size: 13px; color: #64748b; margin-top: 2px;">
+              งวดบัญชี: <strong style="color: #0284c7;"><span id="current-cycle-display"><?php echo $currentCycleCode; ?></span></strong>
+              <span style="margin: 0 6px; color: #cbd5e1;">|</span>
+              <span id="header-quick-stat" style="color: #475569;">กำลังโหลดสรุปยอด...</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 6px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 4px 10px;">
+            <label for="fin-cycle-select" style="font-size: 13px; font-weight: 600; color: #475569; white-space: nowrap;">📅 งวดเดือน:</label>
+            <select id="fin-cycle-select" class="form-select" style="border: none; background: transparent; font-weight: 700; font-size: 13.5px; padding: 4px 6px; cursor: pointer; color: #0f172a;">
+              <?php foreach ($cycles as $c): ?>
+                <option value="<?php echo htmlspecialchars($c['cycle_code']); ?>" <?php echo $c['cycle_code'] === $currentCycleCode ? 'selected' : ''; ?>>
+                  <?php echo $c['month'] . '/' . $c['year_be'] . ' (' . $c['cycle_code'] . ')'; ?>
+                </option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+          <button type="button" class="btn btn-outline" id="btn-export-excel" style="font-size: 13px; padding: 7px 14px; background: #fff; display: inline-flex; align-items: center; gap: 6px;">
+            <span>📥</span> ส่งออก Excel
+          </button>
+          <button type="button" class="btn btn-outline" id="btn-reload-fin-top" onclick="reloadAllFinanceData()" style="font-size: 13px; padding: 7px 12px; background: #fff;" title="รีเฟรชข้อมูลทั้งหมด">
+            <span>🔄</span>
+          </button>
         </div>
       </div>
 
-      <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-        <label for="fin-cycle-select" style="font-size: 13px; font-weight: 600;">เลือกงวดเดือน:</label>
-        <select id="fin-cycle-select" class="form-select" style="font-weight: 600;">
-          <?php foreach ($cycles as $c): ?>
-            <option value="<?php echo htmlspecialchars($c['cycle_code']); ?>" <?php echo $c['cycle_code'] === $currentCycleCode ? 'selected' : ''; ?>>
-              งวดเดือน <?php echo $c['month'] . '/' . $c['year_be'] . ' (' . $c['cycle_code'] . ')'; ?>
-            </option>
-          <?php endforeach; ?>
-        </select>
-        <button type="button" class="btn btn-outline" id="btn-export-excel">📥 ส่งออก Excel</button>
+      <!-- Navigation Tabs Layer -->
+      <div class="finance-subnav" style="margin-top: 14px; margin-bottom: 0; padding: 0; border: none; box-shadow: none; background: transparent; display: flex; gap: 8px; flex-wrap: wrap;">
+        <button class="fin-tab-btn active" data-target="pane-collection">
+          <span>✅</span> 1. ตัดรับชำระเงินประจำงวด
+          <span class="fin-tab-badge" id="tab-badge-unpaid">-</span>
+        </button>
+        <button class="fin-tab-btn" data-target="pane-receipt">
+          <span>🧾</span> 2. พิมพ์ใบเสร็จรับเงิน (ป.31/32)
+        </button>
+        <button class="fin-tab-btn" data-target="pane-arrears">
+          <span>⚠️</span> 3. ทะเบียนคุมหนี้ค้างชำระ (กค.4)
+          <span class="fin-tab-badge" id="tab-badge-debtors">-</span>
+        </button>
+        <button class="fin-tab-btn" data-target="pane-vouchers">
+          <span>📜</span> 4. ฎีกาเบิกจ่าย & ใบสำคัญรับเงิน
+        </button>
       </div>
-    </div>
-
-    <!-- Finance Sub-navigation Tabs -->
-    <div class="finance-subnav no-print">
-      <button class="fin-tab-btn active" data-target="pane-collection">
-        <span>✅</span> 1. ตัดรับชำระเงินประจำงวด
-      </button>
-      <button class="fin-tab-btn" data-target="pane-receipt">
-        <span>🧾</span> 2. พิมพ์ใบเสร็จรับเงิน (ป.31/32)
-      </button>
-      <button class="fin-tab-btn" data-target="pane-arrears">
-        <span>⚠️</span> 3. ทะเบียนคุมหนี้ค้างชำระ (กค.4)
-      </button>
-      <button class="fin-tab-btn" data-target="pane-vouchers">
-        <span>📜</span> 4. ฎีกาเบิกจ่าย & ใบสำคัญรับเงิน
-      </button>
     </div>
 
     <!-- ========================================================= -->
@@ -236,8 +290,8 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
 
           <!-- Search input & Action buttons -->
           <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-            <input type="text" id="col-search-input" oninput="renderCollectionRows()" class="form-input" placeholder="🔍 ค้นหาบ้านเลขที่, รหัส หรือชื่อ..." style="font-size: 13.5px; padding: 7px 14px; min-width: 230px;">
-            <button type="button" class="btn btn-outline" id="btn-reload-fin" style="font-size: 13px; padding: 7px 12px;">🔄 รีเฟรช</button>
+            <input type="text" id="col-search-input" oninput="renderCollectionRows()" class="form-input" placeholder="🔍 ค้นหาเบอร์โทร, ชื่อ, รหัส หรือบ้านเลขที่..." style="font-size: 13.5px; padding: 7px 14px; min-width: 240px;">
+            <button type="button" class="btn btn-outline" id="btn-reload-fin" style="font-size: 13px; padding: 7px 12px; background: #fff;">🔄 รีเฟรช</button>
             <button type="button" class="btn btn-secondary" id="btn-pay-all-fin" style="font-size: 13px; padding: 7px 16px;">✅ ตัดรับชำระทั้งหมด</button>
           </div>
         </div>
@@ -255,7 +309,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
                 <th class="text-right">ยอดรวมสุทธิ</th>
                 <th class="text-center" width="120">สถานะ</th>
                 <th class="text-center" width="130">เลขที่ใบเสร็จ</th>
-                <th class="text-center no-print" width="160">การดำเนินการ</th>
+                <th class="text-center no-print" width="180">การดำเนินการ</th>
               </tr>
             </thead>
             <tbody id="collection-table-body">
@@ -270,14 +324,26 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
     <!-- PANE 2: พิมพ์ใบเสร็จรับเงิน (แบบ ป.31/32) -->
     <!-- ========================================================= -->
     <div id="pane-receipt" class="fin-pane">
-      <div class="card no-print receipt-toolbar" style="margin-bottom: 20px; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <label for="rcpt-cust-select" style="font-weight: 600;">เลือกสมาชิกผู้ใช้น้ำ:</label>
-          <select id="rcpt-cust-select" class="form-select" style="min-width: 280px; font-weight: 600;"></select>
-          <button type="button" class="btn btn-outline" id="btn-rcpt-prev">&larr; คนก่อนหน้า</button>
-          <button type="button" class="btn btn-outline" id="btn-rcpt-next">คนถัดไป &rarr;</button>
+      <div class="card no-print receipt-toolbar" style="margin-bottom: 20px; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-left: 4px solid #0284c7; border-radius: 12px;">
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+          <button type="button" class="btn btn-outline" onclick="switchFinanceTab('pane-collection', true)" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 600; background: #fff; padding: 7px 14px;">
+            <span>&larr;</span> กลับไปหน้ารายการตัดรับชำระ
+          </button>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <label for="rcpt-cust-select" style="font-weight: 600; font-size: 13.5px; white-space: nowrap;">สมาชิกผู้ใช้น้ำ:</label>
+            <select id="rcpt-cust-select" class="form-select" onchange="onSelectReceiptCustomer(this.value)" style="min-width: 270px; font-weight: 600; font-size: 13.5px;"></select>
+            <button type="button" class="btn btn-outline btn-sm" id="btn-rcpt-prev" style="padding: 6px 10px; background: #fff;" title="คนก่อนหน้า">&larr; ก่อนหน้า</button>
+            <button type="button" class="btn btn-outline btn-sm" id="btn-rcpt-next" style="padding: 6px 10px; background: #fff;" title="คนถัดไป">ถัดไป &rarr;</button>
+          </div>
         </div>
-        <button type="button" class="btn btn-primary" onclick="window.print()">🖨️ สั่งพิมพ์ใบเสร็จนี้</button>
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+          <div id="rcpt-status-badge-area">
+            <!-- Dynamic: Paid status badge & Quick Pay button -->
+          </div>
+          <button type="button" class="btn btn-primary" onclick="window.print()" style="padding: 8px 18px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+            <span>🖨️</span> สั่งพิมพ์ใบเสร็จนี้
+          </button>
+        </div>
       </div>
 
       <!-- Printable Receipt Document -->
@@ -524,10 +590,40 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
       <div id="fin-vouchers-container" class="voucher-list-container">
         <!-- Dynamically populated payment vouchers -->
       </div>
-    </div>
-
     </main>
   </div> <!-- /.app-layout -->
+
+  <!-- Modal for Quick Receipt Preview & Printing (ใบเสร็จรับเงินมาตรฐาน ป.31/32) -->
+  <div class="modal" id="fin-receipt-modal">
+    <div class="modal-dialog" style="max-width: 820px;">
+      <div class="modal-content">
+        <div class="modal-header" style="background: #0284c7; color: #fff;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 20px;">🧾</span>
+            <h3 style="color: #fff; margin: 0; font-size: 16px; font-weight: 700;" id="m-rcpt-title">ใบเสร็จรับเงินค่าน้ำประปา (แบบ ป.31/32)</h3>
+          </div>
+          <button type="button" class="modal-close" onclick="closeModal('fin-receipt-modal')" style="color: #fff;">&times;</button>
+        </div>
+        <div class="modal-body" id="fin-receipt-modal-body" style="padding: 22px; max-height: 75vh; overflow-y: auto;">
+          <!-- Dynamically populated receipt content -->
+        </div>
+        <div class="form-actions" style="padding: 14px 20px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+          <div id="m-rcpt-status-area">
+            <!-- Payment status badge & toggle button -->
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" class="btn btn-outline" onclick="closeModal('fin-receipt-modal')" style="background: #fff;">ปิดหน้าต่าง</button>
+            <button type="button" class="btn btn-outline" id="btn-m-rcpt-fullpage" style="background: #fff; color: #0284c7; border-color: #0284c7; font-weight: 600;">
+              🖥️ เปิดหน้าเต็ม (ป.31/32)
+            </button>
+            <button type="button" class="btn btn-primary" id="btn-m-rcpt-print" style="font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+              <span>🖨️</span> สั่งพิมพ์ใบเสร็จนี้
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Modal for Warning Notice Letter (หนังสือเตือนระงับการจ่ายน้ำ) -->
   <div class="modal" id="fin-notice-modal">
@@ -940,6 +1036,30 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
       const pPaid = document.getElementById('col-pill-paid');
       if (pPaid) pPaid.textContent = paidCount;
 
+      // Update Nav Tab Badge & Header Stats
+      const bUnpaid = document.getElementById('tab-badge-unpaid');
+      if (bUnpaid) {
+        if (unpaidCount > 0) {
+          bUnpaid.textContent = `${unpaidCount} รอรับชำระ`;
+          bUnpaid.style.display = 'inline-block';
+          bUnpaid.style.background = '#0284c7';
+        } else {
+          bUnpaid.textContent = '✓ ชำระครบแล้ว';
+          bUnpaid.style.background = '#16a34a';
+          bUnpaid.style.display = 'inline-block';
+        }
+      }
+      const hStat = document.getElementById('header-quick-stat');
+      if (hStat) {
+        hStat.innerHTML = `
+          <span style="display: inline-flex; align-items: center; gap: 6px;">
+            <span>ชำระแล้ว: <strong style="color: #16a34a;">${paidCount}</strong></span>
+            <span style="color: #cbd5e1;">|</span>
+            <span>รอรับชำระ: <strong style="color: #dc2626;">${unpaidCount}</strong> ราย</span>
+          </span>
+        `;
+      }
+
       if (filtered.length === 0) {
         tbody.innerHTML = `
           <tr>
@@ -981,11 +1101,11 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
             </td>
             <td class="text-center no-print">
               <div style="display: inline-flex; gap: 6px; align-items: center; justify-content: center;">
-                <button type="button" class="btn btn-sm ${isPaid ? 'btn-outline' : 'btn-secondary'} btn-toggle-pay" data-id="${r.customer_id}" onclick="togglePayment(${r.customer_id}, this)">
-                  ${isPaid ? 'ยกเลิกจ่าย' : '✅ รับชำระ'}
+                <button type="button" class="btn btn-sm ${isPaid ? 'btn-outline' : 'btn-secondary'} btn-toggle-pay" data-id="${r.customer_id}" onclick="togglePayment(${r.customer_id}, this)" style="font-weight: 600;">
+                  ${isPaid ? '↩️ ยกเลิกจ่าย' : '✅ รับชำระ'}
                 </button>
-                <button type="button" class="btn btn-sm btn-outline" style="padding: 4px 8px; font-size: 12px;" onclick="viewCustomerReceipt(${r.customer_id})" title="เปิดดูใบเสร็จรับเงิน">
-                  🧾
+                <button type="button" class="btn btn-sm btn-outline" style="padding: 5px 10px; font-size: 12.5px; display: inline-flex; align-items: center; gap: 4px; background: #fff;" onclick="openQuickReceiptModal(${r.customer_id})" title="ดูและพิมพ์ใบเสร็จ">
+                  <span>🧾</span> ใบเสร็จ
                 </button>
               </div>
             </td>
@@ -1012,7 +1132,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
       }
       renderCollectionRows();
 
-      showToast(willBePaid ? `✅ รับชำระเงินสำหรับ ${item.first_name} เรียบร้อยแล้ว` : `ℹ️ ยกเลิกสถานะชำระเงินของ ${item.first_name}`, willBePaid ? 'success' : 'info');
+      showToast(willBePaid ? `✅ รับชำระเงินสำหรับ ${item.first_name} เรียบร้อยแล้ว <button type="button" class="btn-toast-link" onclick="openQuickReceiptModal(${custId})">🖨️ พิมพ์ใบเสร็จ</button>` : `ℹ️ ยกเลิกสถานะชำระเงินของ ${item.first_name}`, willBePaid ? 'success' : 'info');
 
       try {
         const res = await fetch(`${API_BASE}/readings.php?cycle=${encodeURIComponent(currentCycle)}&action=toggle-paid&customerId=${custId}`, { method: 'POST' });
@@ -1032,19 +1152,255 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
       }
     }
 
-    // Shortcut to view customer receipt in Pane 2
-    function viewCustomerReceipt(custId) {
+    // Quick Receipt Modal State & Helpers
+    let currentModalReceiptData = null;
+    let currentModalCustId = null;
+
+    function generateReceiptHtml(d) {
+      const qrAmt = parseFloat(d.breakdown?.grandTotal || 0).toFixed(2);
+      const qrSrc = `https://promptpay.io/0812345678/${qrAmt}.png`;
+
+      return `
+        <div class="receipt-document" style="background: #fff; padding: 24px; border-radius: 8px; border: 1px solid #cbd5e1; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+          <div class="receipt-header" style="text-align: center; border-bottom: 2px solid #0f172a; padding-bottom: 12px; margin-bottom: 16px;">
+            <h2 style="font-family: 'Prompt', sans-serif; font-size: 19px; margin: 0; color: #0f172a;">${d.organizationName || 'การประปาหมู่บ้านวังยาง หมู่ที่ 3'}</h2>
+            <h3 style="font-size: 14.5px; margin: 3px 0; color: #334151;">ใบเสร็จรับเงินค่าน้ำประปาหมู่บ้าน</h3>
+            <span style="display: inline-block; background: #0f172a; color: #fff; font-size: 12px; font-weight: 700; padding: 2px 12px; border-radius: 4px; margin-top: 4px;">
+              แบบ ป.31/32 (ต้นฉบับสำหรับผู้ใช้น้ำ)
+            </span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); font-size: 13px; margin-bottom: 14px; background: #f8fafc; padding: 12px; border: 1px solid #e2e8f0; border-radius: 6px; line-height: 1.6;">
+            <div>
+              <strong>เลขที่ใบเสร็จ:</strong> <span style="color: #4338ca; font-weight: 700;">${d.receiptNo || '-'}</span><br>
+              <strong>วันที่ออกเอกสาร:</strong> <span>${d.issueDateText || '-'}</span><br>
+              <strong>ประจำงวดเดือน:</strong> <span>${d.billingCycleText || '-'}</span>
+            </div>
+            <div>
+              <strong>ชื่อผู้ใช้น้ำ:</strong> <span style="font-weight: 600;">${d.customer?.name || '-'}</span><br>
+              <strong>รหัสผู้ใช้น้ำ:</strong> <span>${d.customer?.code || '-'}</span> | <strong>บ้านเลขที่:</strong> <span>${d.customer?.houseNo || '-'}</span><br>
+              <strong>หมายเลขมิเตอร์:</strong> <span>${d.customer?.meterSerial || '-'}</span> | <strong>เบอร์โทร:</strong> <span>${d.customer?.phone || '-'}</span>
+            </div>
+          </div>
+
+          <table class="table" style="margin-bottom: 14px; font-size: 13px;">
+            <thead>
+              <tr style="background: #f1f5f9;">
+                <th>รายการเรียกเก็บ</th>
+                <th class="text-right">เลขครั้งก่อน</th>
+                <th class="text-right">เลขครั้งหลัง</th>
+                <th class="text-right">หน่วยที่ใช้</th>
+                <th class="text-right">อัตรา/หน่วย</th>
+                <th class="text-right">จำนวนเงิน (บาท)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>ค่าน้ำประปาประจำงวด</td>
+                <td class="text-right">${Number(d.meter?.previous || 0).toFixed(2)}</td>
+                <td class="text-right">${Number(d.meter?.current || 0).toFixed(2)}</td>
+                <td class="text-right">${Number(d.meter?.unitsUsed || 0).toFixed(2)}</td>
+                <td class="text-right">${Number(d.meter?.ratePerUnit || 0).toFixed(2)}</td>
+                <td class="text-right font-bold">${Number(d.breakdown?.waterCharge || 0).toFixed(2)}</td>
+              </tr>
+              <tr>
+                <td colspan="5">ค่าบำรุงรักษามิเตอร์ประจำเดือน</td>
+                <td class="text-right font-bold">${Number(d.breakdown?.maintenanceFee || 0).toFixed(2)}</td>
+              </tr>
+              <tr style="color: #b91c1c;">
+                <td colspan="5">ยอดค้างชำระยกยอดมาจากเดือนก่อน</td>
+                <td class="text-right font-bold">${Number(d.breakdown?.previousArrears || 0).toFixed(2)}</td>
+              </tr>
+              <tr class="row-grand-total" style="background: #f8fafc;">
+                <td colspan="3" style="font-size: 12.5px;">
+                  (ตัวอักษร): <strong>${d.totalAmountTextTh || '-'}</strong>
+                </td>
+                <td colspan="2" class="text-right font-bold">ยอดรวมสุทธิที่ต้องชำระ:</td>
+                <td class="text-right"><strong class="grand-amount text-danger" style="font-size: 17px;">${Number(d.breakdown?.grandTotal || 0).toFixed(2)} ฿</strong></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- PromptPay Block -->
+          <div style="background: #f0fdf4; border: 1px dashed #22c55e; border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <img src="${qrSrc}" onerror="this.src='data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'80\\' height=\\'80\\' viewBox=\\'0 0 80 80\\'%3E%3Crect width=\\'80\\' height=\\'80\\' fill=\\'%23f1f5f9\\' rx=\\'4\\'/%3E%3Ctext x=\\'40\\' y=\\'44\\' font-family=\\'sans-serif\\' font-size=\\'10\\' fill=\\'%2364748b\\' text-anchor=\\'middle\\'%3EPromptPay%3C/text%3E%3C/svg%3E'" alt="PromptPay QR" style="width: 75px; height: 75px; background: #fff; border: 1px solid #bbf7d0; border-radius: 6px; padding: 2px;">
+              <div>
+                <span style="background: #15803d; color: #fff; font-size: 11.5px; font-weight: 700; padding: 2px 7px; border-radius: 4px;">พร้อมเพย์ (PromptPay)</span>
+                <div style="font-size: 13px; font-weight: 700; color: #166534; margin: 2px 0;">กองทุนประปาหมู่บ้านวังยาง (ธ.ก.ส.)</div>
+                <div style="font-size: 12.5px; color: #374151;">หมายเลข: <strong>081-234-5678</strong> | ยอด: <strong style="color: #b91c1c;">${Number(d.breakdown?.grandTotal || 0).toFixed(2)} บาท</strong></div>
+              </div>
+            </div>
+            <div class="no-print" style="text-align: right; font-size: 12px; color: #15803d; font-weight: 600;">
+              ⚡ สแกนจ่ายผ่าน Mobile Banking
+            </div>
+          </div>
+
+          <div class="receipt-signatures" style="display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; margin-top: 24px; font-size: 12.5px;">
+            <div>
+              <div>...................................................</div>
+              <div style="margin-top: 3px;">( ${d.customer?.name || '-'} )</div>
+              <div style="color: #64748b;">ผู้ชำระเงิน</div>
+            </div>
+            <div>
+              <div>...................................................</div>
+              <div style="margin-top: 3px;">( นางจำเนียร ตรวจบัญชี )</div>
+              <div style="color: #64748b;">เจ้าหน้าที่การเงิน / เหรัญญิก</div>
+            </div>
+            <div>
+              <div>...................................................</div>
+              <div style="margin-top: 3px;">( นายประธาน บริหารกิจการ )</div>
+              <div style="color: #64748b;">ประธานกรรมการประปา</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    async function openQuickReceiptModal(custId) {
+      currentModalCustId = custId;
+      const modal = document.getElementById('fin-receipt-modal');
+      const body = document.getElementById('fin-receipt-modal-body');
+      const statusArea = document.getElementById('m-rcpt-status-area');
+      const fullpageBtn = document.getElementById('btn-m-rcpt-fullpage');
+      const printBtn = document.getElementById('btn-m-rcpt-print');
+
+      if (!modal || !body) return;
+
+      body.innerHTML = `
+        <div style="text-align: center; padding: 40px; color: #64748b;">
+          <div style="font-size: 32px; margin-bottom: 8px;">⏳</div>
+          <div style="font-size: 15px; font-weight: 600;">กำลังโหลดข้อมูลใบเสร็จรับเงิน...</div>
+        </div>
+      `;
+      if (statusArea) statusArea.innerHTML = '';
+      modal.classList.add('show');
+
+      try {
+        const res = await fetch(`${API_BASE}/receipts.php?cycle=${encodeURIComponent(currentCycle)}&customerId=${custId}`);
+        if (!res.ok) throw new Error('Failed to load receipt');
+        const d = await res.json();
+        currentModalReceiptData = d;
+
+        const readingItem = readingsList.find(r => Number(r.customer_id) === Number(custId));
+        const isPaid = (readingItem && readingItem.payment_status === 'PAID') || (d.paymentStatus === 'PAID');
+
+        const titleEl = document.getElementById('m-rcpt-title');
+        if (titleEl) {
+          titleEl.textContent = `ใบเสร็จรับเงินค่าน้ำประปา - ${d.customer?.name || ''} (บ้านเลขที่ ${d.customer?.houseNo || ''})`;
+        }
+        body.innerHTML = generateReceiptHtml(d);
+
+        updateModalStatusArea(custId, isPaid);
+
+        if (fullpageBtn) {
+          fullpageBtn.onclick = () => openFullPageReceipt(custId);
+        }
+        if (printBtn) {
+          printBtn.onclick = () => printModalReceipt();
+        }
+      } catch (err) {
+        console.error(err);
+        body.innerHTML = `
+          <div style="text-align: center; padding: 30px; color: #dc2626;">
+            <div style="font-size: 32px; margin-bottom: 8px;">❌</div>
+            <div style="font-size: 15px; font-weight: 600;">ไม่สามารถโหลดข้อมูลใบเสร็จได้</div>
+            <div style="font-size: 13px; color: #64748b; margin-top: 4px;">กรุณาลองใหม่อีกครั้ง</div>
+          </div>
+        `;
+      }
+    }
+
+    function updateModalStatusArea(custId, isPaid) {
+      const statusArea = document.getElementById('m-rcpt-status-area');
+      if (!statusArea) return;
+
+      statusArea.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span class="badge ${isPaid ? 'badge-paid' : 'badge-unpaid'}" style="font-size: 13px; padding: 6px 14px;">
+            ${isPaid ? '✓ ชำระเงินแล้ว' : '⏳ รอรับชำระเงิน'}
+          </span>
+          <button type="button" class="btn btn-sm ${isPaid ? 'btn-outline' : 'btn-secondary'}" onclick="togglePaymentFromModal(${custId})" style="font-size: 13px; padding: 6px 14px; font-weight: 600; ${isPaid ? 'background: #fff; color: #dc2626; border-color: #fca5a5;' : ''}">
+            ${isPaid ? '↩️ ยกเลิกจ่าย' : '✅ ตัดรับชำระเดี๋ยวนี้'}
+          </button>
+        </div>
+      `;
+    }
+
+    async function togglePaymentFromModal(custId) {
+      await togglePayment(custId);
+      const readingItem = readingsList.find(r => Number(r.customer_id) === Number(custId));
+      const isPaid = readingItem && readingItem.payment_status === 'PAID';
+      updateModalStatusArea(custId, isPaid);
+      if (currentModalReceiptData) {
+        currentModalReceiptData.paymentStatus = isPaid ? 'PAID' : 'UNPAID';
+      }
+    }
+
+    function printModalReceipt() {
+      const content = document.getElementById('fin-receipt-modal-body')?.innerHTML || '';
+      const w = window.open('', '', 'width=880,height=750');
+      w.document.write(`
+        <!DOCTYPE html>
+        <html lang="th">
+        <head>
+          <meta charset="UTF-8">
+          <title>พิมพ์ใบเสร็จรับเงิน ป.31/32 - การประปาหมู่บ้านวังยาง</title>
+          <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700&family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+          <style>
+            @page { size: A4 portrait; margin: 15mm; }
+            * { box-sizing: border-box; }
+            body { font-family: 'Sarabun', sans-serif; font-size: 14px; line-height: 1.6; color: #000; padding: 20px; }
+            table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+            th, td { border: 1px solid #cbd5e1; padding: 8px 10px; font-size: 13.5px; }
+            th { background: #f8fafc; font-weight: 600; }
+            .text-right { text-align: right; }
+            .text-center { text-align: center; }
+            .font-bold { font-weight: 700; }
+            .no-print { display: none !important; }
+            @media print {
+              body { padding: 0; }
+              .no-print { display: none !important; }
+            }
+          </style>
+        </head>
+        <body>
+          ${content}
+          <script>
+            window.onload = function() { window.print(); };
+          <\/script>
+        </body>
+        </html>
+      `);
+      w.document.close();
+    }
+
+    function openFullPageReceipt(custId) {
+      closeModal('fin-receipt-modal');
       const idx = customersList.findIndex(c => Number(c.id) === Number(custId));
       if (idx !== -1) {
         selectedCustIdx = idx;
         const sel = document.getElementById('rcpt-cust-select');
         if (sel) sel.value = idx;
         renderSingleReceipt();
-        switchFinanceTab('pane-receipt', true);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
-        switchFinanceTab('pane-receipt', true);
       }
+      switchFinanceTab('pane-receipt', true);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Shortcut to view customer receipt (seamless preview)
+    function viewCustomerReceipt(custId) {
+      openQuickReceiptModal(custId);
+    }
+
+    function onSelectReceiptCustomer(idx) {
+      selectedCustIdx = parseInt(idx, 10);
+      renderSingleReceipt();
+    }
+
+    async function togglePaymentFromReceipt(custId) {
+      await togglePayment(custId);
+      await renderSingleReceipt();
     }
 
     async function loadReceiptCustomers() {
@@ -1106,6 +1462,23 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
           }
           const qrAmtText = document.getElementById('r-qr-amt');
           if (qrAmtText) qrAmtText.textContent = `${qrAmt} บาท`;
+
+          // Status badge and toggle pay button in Tab 2 toolbar
+          const readingItem = readingsList.find(r => Number(r.customer_id) === Number(cust.id));
+          const isPaid = (readingItem && readingItem.payment_status === 'PAID') || (d.paymentStatus === 'PAID');
+          const badgeArea = document.getElementById('rcpt-status-badge-area');
+          if (badgeArea) {
+            badgeArea.innerHTML = `
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="badge ${isPaid ? 'badge-paid' : 'badge-unpaid'}" style="font-size: 13px; padding: 6px 12px;">
+                  ${isPaid ? '✓ ชำระเงินแล้ว' : '⏳ รอรับชำระเงิน'}
+                </span>
+                <button type="button" class="btn btn-sm ${isPaid ? 'btn-outline' : 'btn-secondary'}" onclick="togglePaymentFromReceipt(${cust.id})" style="font-size: 13px; padding: 6px 12px; font-weight: 600; ${isPaid ? 'background: #fff; color: #dc2626; border-color: #fca5a5;' : ''}">
+                  ${isPaid ? '↩️ ยกเลิกจ่าย' : '✅ ตัดรับชำระเดี๋ยวนี้'}
+                </button>
+              </div>
+            `;
+          }
         }
       } catch (err) {
         console.error('Error rendering receipt:', err);
@@ -1134,6 +1507,17 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
         document.getElementById('arr-pill-1').textContent = data.summary.count1M;
         document.getElementById('arr-pill-2').textContent = data.summary.count2M;
         document.getElementById('arr-pill-3').textContent = data.summary.count3M;
+
+        // Nav tab debtors badge
+        const bDebtors = document.getElementById('tab-badge-debtors');
+        if (bDebtors) {
+          if (data.summary.totalDebtors > 0) {
+            bDebtors.textContent = `${data.summary.totalDebtors} ราย`;
+            bDebtors.style.display = 'inline-block';
+          } else {
+            bDebtors.style.display = 'none';
+          }
+        }
 
         renderArrearsRows();
       } catch (err) {
@@ -1192,12 +1576,28 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
           <td class="text-right font-bold text-danger" style="font-size: 14px;">${d.totalDebt.toFixed(2)} ฿</td>
           <td class="text-center"><span class="${d.badgeClass}" style="font-size: 12px;">${d.urgencyText}</span></td>
           <td class="text-center no-print">
-            <button type="button" class="btn btn-outline btn-sm" onclick="openFinNotice('${d.customerCode}')" style="font-size: 12.5px; padding: 4px 10px;">
-              ✉️ หนังสือเตือน
-            </button>
+            <div style="display: inline-flex; gap: 6px; justify-content: center; align-items: center;">
+              <button type="button" class="btn btn-secondary btn-sm" onclick="payDebtorFromArrears('${d.customerCode}')" style="font-size: 12px; padding: 4px 8px; font-weight: 600;" title="ไปยังรายการเพื่อตัดรับชำระ">
+                💳 ตัดชำระ
+              </button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="openFinNotice('${d.customerCode}')" style="font-size: 12px; padding: 4px 8px; background: #fff;" title="ออกหนังสือเตือน">
+                ✉️ เตือน
+              </button>
+            </div>
           </td>
         </tr>
       `).join('');
+    }
+
+    function payDebtorFromArrears(code) {
+      switchFinanceTab('pane-collection', true);
+      const searchInput = document.getElementById('col-search-input');
+      if (searchInput) {
+        searchInput.value = code;
+        renderCollectionRows();
+        searchInput.focus();
+      }
+      showToast(`🔍 ค้นหา ${code} ในรายการตัดรับชำระแล้ว`, 'info');
     }
 
     function openFinNotice(code) {

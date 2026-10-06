@@ -43,6 +43,7 @@ $month_name = $thai_months[$month_num] ?? "เดือน {$month_num}";
 $receipt = [
     'organizationName' => 'การประปาหมู่บ้านวังยาง หมู่ที่ 3',
     'receiptNo' => $receipt_no,
+    'paymentStatus' => $reading['payment_status'] ?? 'UNPAID',
     'billingCycleText' => "งวดประจำเดือน {$month_name} {$cycle['year_be']}",
     'issueDateText' => date('j') . ' ' . ($thai_months[(int)date('n')] ?? '') . ' ' . (date('Y') + 543),
     'customer' => [
