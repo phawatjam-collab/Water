@@ -1733,12 +1733,20 @@ body.sidebar-open {
   max-height: 420px !important;
   overflow-y: auto !important;
   z-index: 10000 !important;
-  display: flex !important;
+  display: none;
   flex-direction: column !important;
   padding: 8px !important;
   gap: 4px !important;
   animation: dropdownFadeSmooth 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
   scrollbar-width: thin !important;
+}
+
+.search-autocomplete-dropdown:empty {
+  display: none !important;
+  border: none !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
 }
 
 @keyframes dropdownFadeSmooth {
