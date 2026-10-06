@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เอกสารนำเสนอและคู่มือโครงสร้างระบบบริหารจัดการน้ำประปาหมู่บ้านวังยาง</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 14mm 16mm;
+    }
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    body {
+      font-family: 'Sarabun', sans-serif;
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: #1e293b;
+      background: #f8fafc;
+      margin: 0;
+      padding: 0;
+    }
+    h1, h2, h3, h4, h5 {
+      font-family: 'Prompt', sans-serif;
+      color: #0f172a;
+      margin-top: 0;
+    }
+    .page {
+      background: #fff;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      border-radius: 8px;
+    }
+    @media print {
+      body { background: #fff; }
+      .page {
+        box-shadow: none;
+        padding: 0;
+        margin: 0;
+        page-break-after: always;
+      }
+      .no-print { display: none !important; }
+    }
+    .cover-page {
+      min-height: 940px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 3px solid #0284c7;
+      padding: 48px 36px;
+      border-radius: 12px;
+      background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 40%, #ffffff 100%);
+      position: relative;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      font-size: 11.5px;
+      font-weight: 600;
+    }
+    .badge-blue { background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd; }
+    .badge-green { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+    .badge-purple { background: #f3e8ff; color: #7c3aed; border: 1px solid #e9d5ff; }
+    .badge-red { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
+    .badge-amber { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+    
+    .card {
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 16px 18px;
+      margin-bottom: 14px;
+      background: #fff;
+    }
+    .card-header-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0;
+      font-size: 12.5px;
+    }
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 7px 10px;
+      vertical-align: top;
+    }
+    th {
+      background: #0f172a;
+      color: #fff;
+      font-family: 'Prompt', sans-serif;
+      font-weight: 600;
+      text-align: left;
+    }
+    .table-striped tr:nth-child(even) {
+      background: #f8fafc;
+    }
+    code {
+      font-family: 'Fira Code', monospace;
+      font-size: 11.5px;
+      background: #f1f5f9;
+      color: #0369a1;
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid #e2e8f0;
+    }
+    .flow-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 12px;
+      border-left: 3px solid #0284c7;
+      background: #f8fafc;
+      margin-bottom: 10px;
+      border-radius: 0 8px 8px 0;
+    }
+    .step-number {
+      width: 28px;
+      height: 28px;
+      background: #0284c7;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+    .header-bar {
+      border-bottom: 2px solid #0284c7;
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header-bar h2 {
+      font-size: 18px;
+      margin: 0;
+      color: #0f172a;
+    }
+    .header-bar span {
+      font-size: 12px;
+      color: #64748b;
+    }
+    .diagram-box {
+      border: 2px dashed #94a3b8;
+      border-radius: 8px;
+      padding: 14px;
+      background: #f8fafc;
+      margin: 12px 0;
+    }
+    .highlight-box {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: #166534;
+      font-size: 12.5px;
+    }
+    .script-box {
+      background: #fffbeb;
+      border-left: 4px solid #f59e0b;
+      padding: 10px 14px;
+      border-radius: 0 6px 6px 0;
+      margin-bottom: 12px;
+      font-size: 12.5px;
+      color: #78350f;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======================================================== -->
+  <!-- หน้าที่ 1: หน้าปกเอกสาร (Cover Slide) -->
+  <!-- ======================================================== -->
+  <div class="page">
+    <div class="cover-page">
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="badge badge-blue" style="font-size: 13px; padding: 6px 14px;">💧 โครงการนวัตกรรมดิจิทัลเพื่อการพัฒนาท้องถิ่น</span>
+          <span style="font-size: 12px; color: #64748b;">เอกสารเผยแพร่และนำเสนอฉบับทางการ พ.ศ. 2567</span>
+        </div>
+
+        <div style="text-align: center; margin-top: 60px; margin-bottom: 40px;">
+          <div style="font-size: 64px; margin-bottom: 16px;">🚰</div>
+          <h1 style="font-size: 32px; font-weight: 700; color: #0f172a; margin-bottom: 12px; line-height: 1.3;">
+            ระบบบริหารจัดการน้ำประปาหมู่บ้านอัจฉริยะ<br>
+            <span style="color: #0284c7; font-size: 26px;">(Smart Village Waterworks ERP System)</span>
+          </h1>
+          <p style="font-size: 17px; color: #475569; max-width: 600px; margin: 0 auto; line-height: 1.6;">
+            การประปาหมู่บ้านวังยาง หมู่ที่ 3 ตำบลวังยาง อำเภอวังยาง จังหวัดนครพนม
+          </p>
+          <div style="display: flex; justify-content: center; gap: 8px; margin-top: 20px;">
+            <span class="badge badge-green">✓ จดมิเตอร์อัตโนมัติ</span>
+            <span class="badge badge-blue">✓ พร้อมเพย์ QR Code</span>
+            <span class="badge badge-purple">✓ ใบเสร็จ ป.31/32</span>
+            <span class="badge badge-amber">✓ คุมหนี้ กค.4</span>
+            <span class="badge badge-red">✓ ฎีกาเบิกจ่าย 10%</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card" style="background: #ffffff; border: 1px solid #cbd5e1; padding: 20px;">
+          <div class="grid-2">
+            <div>
+              <div style="font-size: 12px; color: #64748b; font-weight: 600;">หน่วยงานกำกับดูแล / ผู้ใช้งาน:</div>
+              <div style="font-size: 14.5px; font-weight: 700; color: #0f172a; margin-top: 2px;">คณะกรรมการบริหารกิจการประปาหมู่บ้านวังยาง</div>
+              <div style="font-size: 12.5px; color: #475569;">ตำบลวังยาง อำเภอวังยาง จังหวัดนครพนม</div>
+            </div>
+            <div>
+              <div style="font-size: 12px; color: #64748b; font-weight: 600;">โครงสร้างสถาปัตยกรรมระบบ:</div>
+              <div style="font-size: 13.5px; font-weight: 600; color: #0284c7; margin-top: 2px;">PHP 8 + MySQL (db_city_water_supply)</div>
+              <div style="font-size: 12px; color: #64748b;">Vanilla JS • PWA Offline • Restful API</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 14px; margin-top: 16px;">
+          <div>เอกสารโครงสร้างไฟล์ จุดกรอกข้อมูล ผังความเชื่อมโยง และคู่มือนำเสนอ (Presentation Guide)</div>
+          <div>ปรับปรุงล่าสุด: ตุลาคม 2567 (Version 2.4.0)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- หน้าที่ 2: สรุปภาพรวมและสถาปัตยกรรมระบบ (Executive Overview) -->
+  <!-- ======================================================== -->
+  <div class="page">
+    <div class="header-bar">
+      <h2>1. สรุปภาพรวมและสถาปัตยกรรมระบบ (System Architecture)</h2>
+      <span>เอกสารแนะนำเพื่อการนำเสนอ • สไลด์ที่ 1</span>
+    </div>
+
+    <div class="card" style="background: linear-gradient(90deg, #f0fdf4 0%, #ffffff 100%); border-left: 4px solid #16a34a;">
+      <h3 style="margin: 0 0 6px 0; font-size: 15px; color: #15803d;">🎯 วัตถุประสงค์หลักของระบบ (Core Objectives)</h3>
+      <p style="margin: 0; font-size: 13px; color: #334155;">
+        แก้ปัญหาคลาสสิกของประปาชนบท: การจดมิเตอร์ตกหล่น, ตัวเลขมิเตอร์ย้อนกลับ, การออกบิลล่าช้า, การค้างชำระสะสมเรื้อรัง และความไม่โปร่งใสในการหักค่าตอบแทนผู้จัดเก็บ 10% โดยบูรณาการทุกขั้นตอนเข้าด้วยกัน ตั้งแต่เดินจดมิเตอร์ ออกบิล รับเงิน จนถึงสรุปงบดุลบัญชีกองทุน
+      </p>
+    </div>
+
+    <h3 style="font-size: 14.5px; margin-top: 16px; margin-bottom: 10px;">🌟 5 เสาหลักของระบบงาน (System Core Pillars)</h3>
+    <div class="grid-2">
+      <div class="card" style="border-top: 3px solid #0284c7;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+          <span style="font-size: 18px;">📱</span>
+          <strong style="color: #0f172a; font-size: 14px;">1. Smart Meter Recording & PWA</strong>
+        </div>
+        <p style="font-size: 12.5px; color: #475569; margin: 0;">
+          จดเลขมิเตอร์ผ่านมือถือ จัดลำดับตามเส้นทางเดินจริง (<code>seq_no</code>) ตรวจจับความผิดปกติอัตโนมัติ (มิเตอร์ติดลบ/ใช้น้ำกระโดด) พร้อมโหมดบันทึกออฟไลน์
+        </p>
+      </div>
+
+      <div class="card" style="border-top: 3px solid #16a34a;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+          <span style="font-size: 18px;">💳</span>
+          <strong style="color: #0f172a; font-size: 14px;">2. Unified Finance & Instant Modal</strong>
+        </div>
+        <p style="font-size: 12.5px; color: #475569; margin: 0;">
+          ตัดรับชำระเงินและดูใบเสร็จ ป.31/32 ได้ในคลิกเดียวผ่านหน้าต่างพรีวิว ไม่ต้องสลับหน้า พร้อมสร้าง QR PromptPay ตรงตามยอดสตางค์อัตโนมัติ
+        </p>
+      </div>
+
+      <div class="card" style="border-top: 3px solid #dc2626;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+          <span style="font-size: 18px;">⚠️</span>
+          <strong style="color: #0f172a; font-size: 14px;">3. Arrears Tracking (แบบ กค.4)</strong>
+        </div>
+        <p style="font-size: 12.5px; color: #475569; margin: 0;">
+          ทะเบียนคุมหนี้ค้างชำระ จัดกลุ่มความเร่งด่วน 1, 2 และ 3+ เดือน ออกหนังสือเตือนตัดมิเตอร์อัตโนมัติ และกดสลับไปตัดชำระได้ทันที
+        </p>
+      </div>
+
+      <div class="card" style="border-top: 3px solid #7c3aed;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+          <span style="font-size: 18px;">📜</span>
+          <strong style="color: #0f172a; font-size: 14px;">4. 10% Commission & Vouchers</strong>
+        </div>
+        <p style="font-size: 12.5px; color: #475569; margin: 0;">
+          ระบบคำนวณและออกฎีกาเบิกจ่ายค่าตอบแทนผู้จัดเก็บ 10% จากยอดรับชำระจริง พร้อมฎีกาซ่อมบำรุงและค่าไฟฟ้าเครื่องสูบน้ำ 8 หมวด
+        </p>
+      </div>
+    </div>
+
+    <h3 style="font-size: 14.5px; margin-top: 16px; margin-bottom: 10px;">👥 การจัดบทบาทและสิทธิ์ผู้ใช้งาน (4 Access Roles)</h3>
+    <table class="table-striped">
+      <thead>
+        <tr>
+          <th width="15%">บทบาท (Role)</th>
+          <th width="20%">ชื่อบัญชีทดสอบ</th>
+          <th width="35%">สิทธิ์การเข้าถึงและการทำงานหลัก</th>
+          <th width="30%">หน้าเริ่มต้น (Landing Page)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-purple">Admin</span></td>
+          <td><code>admin</code></td>
+          <td>ผู้ดูแลระบบ/ประธานกองทุน: เข้าถึงได้ทุกฟังก์ชัน อนุมัติฎีกา ดูแดชบอร์ด</td>
+          <td><code>dashboard.php</code></td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-blue">Staff</span></td>
+          <td><code>staff</code> / <code>finance</code></td>
+          <td>เจ้าหน้าที่จดมิเตอร์/การเงิน: จดเลข ตัดเงิน ออกใบเสร็จ พิมพ์สติกเกอร์</td>
+          <td><code>meter_reading.php</code></td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-green">Member</span></td>
+          <td><code>member</code> (WY-002)</td>
+          <td>สมาชิกผู้ใช้น้ำ: ดูยอดค่าน้ำตนเอง กราฟย้อนหลัง สแกนจ่าย แจ้งท่อแตก</td>
+          <td><code>portal_citizen.php</code></td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-amber">User</span></td>
+          <td><code>user</code> (สาธารณะ)</td>
+          <td>ประชาชนทั่วไป: ตรวจสอบยอดค่าน้ำด้วยเบอร์โทร/บ้านเลขที่ แจ้งเหตุ</td>
+          <td><code>index.php</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- หน้าที่ 3: ผังความเชื่อมโยงระบบ (System Linking & Data Flow) -->
+  <!-- ======================================================== -->
+  <div class="page">
+    <div class="header-bar">
+      <h2>2. ผังความเชื่อมโยงของระบบ (End-to-End Workflow)</h2>
+      <span>ผังเชื่อมต่อข้อมูลตั้งแต่ต้นน้ำสู่ปลายน้ำ • สไลด์ที่ 2</span>
+    </div>
+
+    <div class="diagram-box">
+      <div style="text-align: center; font-weight: 700; color: #0f172a; margin-bottom: 12px; font-size: 14px;">
+        🔄 แผนผังวงจรข้อมูล (Data Life Cycle: จากลงทะเบียน สู่จดมิเตอร์ สู่ตัดเงิน และสรุปบัญชี)
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; text-align: center; font-size: 12px;">
+        <div style="background: #fff; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1; border-top: 4px solid #0284c7;">
+          <div style="font-size: 20px;">1️⃣</div>
+          <strong style="color: #0284c7; display: block; margin: 4px 0;">ลงทะเบียน & ติด QR</strong>
+          <div style="color: #64748b;"><code>register.php</code><br><code>print_qr_labels.php</code></div>
+          <div style="font-size: 11px; color: #059669; margin-top: 4px;">บันทึกตาราง <code>customers</code></div>
+        </div>
+
+        <div style="background: #fff; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1; border-top: 4px solid #059669;">
+          <div style="font-size: 20px;">2️⃣</div>
+          <strong style="color: #059669; display: block; margin: 4px 0;">เดินจดมิเตอร์ประจำงวด</strong>
+          <div style="color: #64748b;"><code>meter_reading.php</code><br>คำนวณค่าน้ำ 7 บ. + ค่าบำรุง 10 บ.</div>
+          <div style="font-size: 11px; color: #059669; margin-top: 4px;">บันทึก <code>meter_readings</code></div>
+        </div>
+
+        <div style="background: #fff; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1; border-top: 4px solid #d97706;">
+          <div style="font-size: 20px;">3️⃣</div>
+          <strong style="color: #d97706; display: block; margin: 4px 0;">ตรวจสอบ & ตัดรับเงิน</strong>
+          <div style="color: #64748b;"><code>index.php</code> (ออนไลน์)<br><code>finance_billing.php</code></div>
+          <div style="font-size: 11px; color: #059669; margin-top: 4px;">อัปเดต <code>PAID</code> & <code>receipt_no</code></div>
+        </div>
+
+        <div style="background: #fff; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1; border-top: 4px solid #7c3aed;">
+          <div style="font-size: 20px;">4️⃣</div>
+          <strong style="color: #7c3aed; display: block; margin: 4px 0;">ออกใบเสร็จ & ฎีกา 10%</strong>
+          <div style="color: #64748b;">แบบ ป.31/32 + กค.4<br><code>api/vouchers.php</code></div>
+          <div style="font-size: 11px; color: #059669; margin-top: 4px;">งบดุล <code>financial_reports</code></div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-size: 14.5px; margin-top: 16px; margin-bottom: 10px;">🔗 การเชื่อมโยงระหว่างหน้าจอ (Navigation & Cross-linking Details)</h3>
+    <div class="grid-2">
+      <div class="card">
+        <h4 style="margin: 0 0 8px 0; color: #0284c7; font-size: 13.5px;">จากหน้าตัดรับชำระเงิน (Tab 1) เชื่อมโยงไปที่:</h4>
+        <ul style="margin: 0; padding-left: 18px; font-size: 12.5px; color: #334151;">
+          <li><strong>กดปุ่ม <code>[🧾 ใบเสร็จ]</code>:</strong> เปิด Modal ป๊อปอัปพรีวิวใบเสร็จ ป.31/32 ขึ้นมาทันที พร้อมสั่งพิมพ์ได้โดยไม่เปลี่ยนหน้า</li>
+          <li><strong>กดปุ่ม <code>[🖥️ เปิดหน้าเต็ม]</code> ใน Modal:</strong> สลับไป <code>#pane-receipt</code> (Tab 2) พร้อมเลือกผู้ใช้น้ำคนนั้นให้ทันที</li>
+          <li><strong>กดปุ่ม <code>[✅ รับชำระ]</code>:</strong> แสดง Toast แจ้งเตือนพร้อมปุ่ม <code>[🖨️ พิมพ์ใบเสร็จ]</code> 1 คลิกเปิดหน้าต่างพิมพ์ทันที</li>
+          <li><strong>กดปุ่ม <code>[📥 ส่งออก Excel]</code>:</strong> ดาวน์โหลดไฟล์บัญชีงวดนั้นผ่าน <code>api/export_excel.php</code></li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h4 style="margin: 0 0 8px 0; color: #dc2626; font-size: 13.5px;">จากทะเบียนคุมหนี้ กค.4 (Tab 3) เชื่อมโยงไปที่:</h4>
+        <ul style="margin: 0; padding-left: 18px; font-size: 12.5px; color: #334151;">
+          <li><strong>กดปุ่ม <code>[💳 ตัดชำระ]</code>:</strong> สลับมายัง <code>#pane-collection</code> (Tab 1) พร้อมกรอกรหัสลูกหนี้ลงช่องค้นหาให้อัตโนมัติ</li>
+          <li><strong>กดปุ่ม <code>[✉️ เตือน]</code>:</strong> เปิด Modal หนังสือเตือนระงับการจ่ายน้ำ (ฉบับที่ 1 หรือ 2) ดึงยอดหนี้รวมและกำหนด 7 วัน พร้อมสั่งพิมพ์</li>
+          <li><strong>จากหน้าพิมพ์ใบเสร็จ (Tab 2):</strong> มีปุ่ม <code>[← กลับไปหน้ารายการตัดรับชำระ]</code> ให้คลิกกลับมายังตารางคุมยอดได้ตลอดเวลา</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="highlight-box" style="margin-top: 10px;">
+      💡 <strong>หัวใจสำคัญ:</strong> ข้อมูลทุกแท็บใน <code>finance_billing.php</code> เชื่อมโยงกับงวดบัญชีเดียวกัน (<code>currentCycle</code>) เมื่อเปลี่ยนงวดที่แถบด้านบน ข้อมูลทั้ง 4 แท็บจะรีโหลดซิงค์ตรงกันทันทีแบบ Reactive
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- หน้าที่ 4: ตารางเจาะลึกไฟล์ PHP และฐานข้อมูล (File Matrix) -->
+  <!-- ======================================================== -->
+  <div class="page">
+    <div class="header-bar">
+      <h2>3. ตารางเจาะลึกไฟล์ PHP, API และฐานข้อมูล (File Matrix)</h2>
+      <span>รายละเอียดชื่อไฟล์ เส้นทาง URL และตารางข้อมูล • สไลด์ที่ 3</span>
+    </div>
+
+    <table class="table-striped">
+      <thead>
+        <tr>
+          <th width="20%">ชื่อไฟล์ (PHP)</th>
+          <th width="25%">หน้าที่และฟังก์ชันการทำงาน</th>
+          <th width="25%">ไฟล์/API ที่เชื่อมโยงไปหา</th>
+          <th width="30%">ตารางฐานข้อมูลที่เกี่ยวข้อง</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>index.php</code></td>
+          <td>หน้าแรกประชาชน เช็คยอดค่าน้ำ แจ้งท่อแตก เปลี่ยนบัญชี</td>
+          <td>
+            <code>api/customers.php</code><br>
+            <code>api/readings.php</code><br>
+            <code>api/tickets.php</code>
+          </td>
+          <td>
+            <code>customers</code>, <code>meter_readings</code>, <code>billing_cycles</code>, <code>service_tickets</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>portal_citizen.php</code></td>
+          <td>พอร์ทัลสมาชิก ดูกราฟย้อนหลัง ชำระเงินด้วย QR Code</td>
+          <td>
+            <code>api/customers.php</code><br>
+            <code>api/receipts.php</code>
+          </td>
+          <td>
+            <code>customers</code>, <code>meter_readings</code>, <code>tariff_rates</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>meter_reading.php</code></td>
+          <td>จดบันทึกเลขอ่านมาตรวัดน้ำประจำงวด (Staff)</td>
+          <td>
+            <code>api/cycles.php</code><br>
+            <code>api/readings.php</code><br>
+            <code>print_qr_labels.php</code>
+          </td>
+          <td>
+            <code>meter_readings</code> (INSERT/UPDATE), <code>customers</code>, <code>billing_cycles</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>finance_billing.php</code></td>
+          <td>ระบบการเงิน: ตัดรับเงิน, ใบเสร็จ ป.31/32, หนี้ กค.4, ฎีกา 10%</td>
+          <td>
+            <code>api/readings.php</code> (toggle-paid)<br>
+            <code>api/receipts.php</code><br>
+            <code>api/arrears.php</code><br>
+            <code>api/vouchers.php</code>
+          </td>
+          <td>
+            <code>meter_readings</code>, <code>customers</code>, <code>payment_vouchers</code>, <code>billing_cycles</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>dashboard.php</code></td>
+          <td>แผงควบคุมสถิติผู้บริหาร KPI การจัดเก็บ แผนผังโซน</td>
+          <td>
+            <code>api/financials.php</code><br>
+            <code>api/tickets.php</code>
+          </td>
+          <td>
+            <code>meter_readings</code>, <code>service_tickets</code>, <code>monthly_financial_reports</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>executive_reports.php</code></td>
+          <td>รายงานสรุปสำหรับคณะกรรมการ การใช้น้ำและงบการเงิน</td>
+          <td>
+            <code>api/financials.php</code><br>
+            <code>api/export_excel.php</code>
+          </td>
+          <td>
+            <code>monthly_financial_reports</code>, <code>billing_cycles</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>print_qr_labels.php</code></td>
+          <td>พิมพ์สติกเกอร์ QR Code ติดมิเตอร์น้ำตามบ้าน 4 รูปแบบ</td>
+          <td>
+            <code>api/customers.php</code>
+          </td>
+          <td>
+            <code>customers</code> (seq_no, customer_code, meter_serial)
+          </td>
+        </tr>
+        <tr>
+          <td><code>register.php</code></td>
+          <td>ลงทะเบียนผู้ใช้น้ำใหม่ / ขอติดตั้งมิเตอร์ใหม่</td>
+          <td>
+            <code>api/register.php</code>
+          </td>
+          <td>
+            <code>customers</code> (INSERT)
+          </td>
+        </tr>
+        <tr>
+          <td><code>auth.php</code> & <code>sidebar.php</code></td>
+          <td>ตรวจสอบ Session, RBAC 4 บทบาท, สลับ User, เมนูข้าง</td>
+          <td>
+            ทุกหน้าในระบบ
+          </td>
+          <td>
+            Session Storage (<code>$_SESSION['user']</code>)
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-size: 14.5px; margin-top: 14px; margin-bottom: 8px;">📡 API Endpoints ภายในโฟลเดอร์ <code>api/</code></h3>
+    <div class="grid-2" style="font-size: 12px;">
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 8px 12px; border-radius: 6px;">
+        <code>api/readings.php?action=toggle-paid</code> : สลับสถานะ PAID / UNPAID<br>
+        <code>api/receipts.php?customerId={id}</code> : สร้างโครงสร้างใบเสร็จ ป.31/32<br>
+        <code>api/arrears.php?cycle={cycle}</code> : คัดกรองลูกหนี้ 1, 2, 3+ งวด
+      </div>
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 8px 12px; border-radius: 6px;">
+        <code>api/vouchers.php?action=sync_commission</code> : คำนวณ 10% อัตโนมัติ<br>
+        <code>api/tickets.php</code> : รับแจ้งและอัปเดตสถานะท่อแตก<br>
+        <code>api/export_excel.php</code> : ส่งออกตารางเรียกเก็บค่าน้ำเป็น Excel
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- หน้าที่ 5: คู่มือจุดกรอกข้อมูลทีละขั้นตอน (Step-by-Step Guide) -->
+  <!-- ======================================================== -->
+  <div class="page">
+    <div class="header-bar">
+      <h2>4. คู่มือจุดกรอกข้อมูลทีละขั้นตอน (Data Input Guide)</h2>
+      <span>ตำแหน่งฟิลด์กรอกข้อมูลและผลลัพธ์ในฐานข้อมูล • สไลด์ที่ 4</span>
+    </div>
+
+    <div class="flow-step">
+      <div class="step-number">1</div>
+      <div>
+        <strong style="color: #0284c7; font-size: 13.5px;">จุดที่ 1: การลงทะเบียนผู้ใช้น้ำใหม่ (New Customer Registration)</strong>
+        <div style="font-size: 12.5px; color: #475569; margin-top: 3px;">
+          <strong>ไฟล์:</strong> <code>register.php</code> • <strong>สิทธิ์:</strong> Staff / Admin<br>
+          <strong>ช่องที่ต้องกรอก:</strong> คำนำหน้า, ชื่อ, สกุล, บ้านเลขที่ (เช่น 45/1), โซน (เช่น โซน 1 วังยางเหนือ), เบอร์โทรศัพท์, เลขซีเรียลมิเตอร์, ลำดับเส้นทางจด (<code>seq_no</code>)<br>
+          <strong>ผลลัพธ์:</strong> ข้อมูลจะถูกบันทึกลงตาราง <code>customers</code> และสร้างรหัส <code>WY-xxx</code> อัตโนมัติ
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="step-number">2</div>
+      <div>
+        <strong style="color: #059669; font-size: 13.5px;">จุดที่ 2: การจดบันทึกเลขอ่านมิเตอร์ประจำเดือน (Monthly Meter Recording)</strong>
+        <div style="font-size: 12.5px; color: #475569; margin-top: 3px;">
+          <strong>ไฟล์:</strong> <code>meter_reading.php</code> • <strong>สิทธิ์:</strong> Staff (เจ้าหน้าที่จดมิเตอร์)<br>
+          <strong>ช่องที่ต้องกรอก:</strong> เลือกงวดเดือน (เช่น <code>8-2567</code>) &rarr; กรอกตัวเลขในช่อง <strong>"เลขครั้งนี้"</strong> (Current Reading)<br>
+          <strong>ระบบทำงานอัตโนมัติ:</strong> คำนวณหน่วยที่ใช้ &rarr; คูณอัตรา 7 บาท &rarr; บวกค่าบำรุง 10 บาท &rarr; บวกหนี้ค้างเก่า &rarr; แสดงยอดรวมสุทธิทันที หากกรอกตัวเลขน้อยกว่าครั้งก่อน ระบบจะแจ้งเตือนแถบสีแดงทันที
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="step-number">3</div>
+      <div>
+        <strong style="color: #d97706; font-size: 13.5px;">จุดที่ 3: การตัดรับชำระเงินและออกใบเสร็จ (Payment Collection & Receipt)</strong>
+        <div style="font-size: 12.5px; color: #475569; margin-top: 3px;">
+          <strong>ไฟล์:</strong> <code>finance_billing.php</code> (แท็บ 1: <code>#pane-collection</code>) • <strong>สิทธิ์:</strong> Staff / Finance<br>
+          <strong>การทำงาน:</strong> ค้นหาด้วยเบอร์โทร/ชื่อ &rarr; กดปุ่ม <code>[✅ รับชำระ]</code> (สลับสถานะเป็น PAID ในตาราง <code>meter_readings</code> ทันที และออกเลขที่ใบเสร็จ <code>RC-...</code>)<br>
+          <strong>พิมพ์ใบเสร็จ:</strong> กดปุ่ม <code>[🧾 ใบเสร็จ]</code> เพื่อเปิดพรีวิวแบบ ป.31/32 และสั่งพิมพ์ได้ทันที 1 คลิก
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="step-number">4</div>
+      <div>
+        <strong style="color: #dc2626; font-size: 13.5px;">จุดที่ 4: การติดตามหนี้ค้างชำระ (Arrears & Warning Notice)</strong>
+        <div style="font-size: 12.5px; color: #475569; margin-top: 3px;">
+          <strong>ไฟล์:</strong> <code>finance_billing.php</code> (แท็บ 3: <code>#pane-arrears</code>)<br>
+          <strong>การทำงาน:</strong> เลือกระดับความเร่งด่วน (1 เดือน, 2 เดือน, 3 เดือน) &rarr; กดปุ่ม <code>[✉️ เตือน]</code> เพื่อสร้างและพิมพ์หนังสือเตือนระงับการจ่ายน้ำ &rarr; หรือกดปุ่ม <code>[💳 ตัดชำระ]</code> เพื่อกระโดดไปรับเงิน
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="step-number">5</div>
+      <div>
+        <strong style="color: #7c3aed; font-size: 13.5px;">จุดที่ 5: การออกฎีกาเบิกจ่ายเงินกองทุนและค่าตอบแทน 10% (Payment Vouchers)</strong>
+        <div style="font-size: 12.5px; color: #475569; margin-top: 3px;">
+          <strong>ไฟล์:</strong> <code>finance_billing.php</code> (แท็บ 4: <code>#pane-vouchers</code>)<br>
+          <strong>การทำงาน:</strong> กดปุ่ม <code>[🔄 ซิงค์ค่าตอบแทน 10%]</code> ระบบจะคำนวณจากยอดที่จ่ายแล้วงวดนั้นอัตโนมัติ &rarr; หรือกดปุ่ม <code>[➕ ออกฎีกาเบิกจ่ายรายการใหม่]</code> เลือกประเภท (ซ่อมท่อ/ค่าไฟ/สารส้ม/เบี้ยประชุม) &rarr; กรอกจำนวนเงิน &rarr; ระบบแปลงเป็นตัวอักษรบาทไทยและสร้างฎีกาพร้อมพิมพ์
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- หน้าที่ 6: บทพูดนำเสนอและสคริปต์บรรยาย (Speaker Presentation Script) -->
+  <!-- ======================================================== -->
+  <div class="page">
+    <div class="header-bar">
+      <h2>5. สคริปต์บทพูดสำหรับการนำเสนอ (Presentation Script)</h2>
+      <span>แนวทางการนำเสนอผลงานต่อคณะกรรมการและผู้ประเมิน • สไลด์ที่ 5</span>
+    </div>
+
+    <div class="script-box">
+      <strong>🎙️ สไลด์ที่ 1: แนะนำตัวและที่มาของโครงการ (Opening)</strong><br>
+      <em>"กราบเรียนคณะกรรมการและท่านผู้มีเกียรติทุกท่านครับ วันนี้กระผมขอนำเสนอ <strong>ระบบบริหารจัดการน้ำประปาหมู่บ้านอัจฉริยะ การประปาหมู่บ้านวังยาง</strong> ซึ่งพัฒนาขึ้นเพื่อแก้ปัญหาความล่าช้า ความคลาดเคลื่อนในการจดตัวเลขมิเตอร์ และระบบการเงินแบบดั้งเดิมที่ใช้กระดาษ โดยเราได้เปลี่ยนผ่านกระบวนการทำงานทั้งหมดให้เป็นดิจิทัล 100% ตั้งแต่หน้าบ้านจนถึงการทำบัญชีงบดุลของกองทุนครับ"</em>
+    </div>
+
+    <div class="script-box">
+      <strong>🎙️ สไลด์ที่ 2: จุดเด่นด้านการจดมิเตอร์และบริการประชาชน (Field & Citizen Service)</strong><br>
+      <em>"ในส่วนหน้างาน เจ้าหน้าที่สามารถใช้มือถือสแกนสติกเกอร์ QR Code ที่ติดบนมิเตอร์น้ำตามบ้านผ่านหน้า <code>meter_reading.php</code> ระบบจะจัดลำดับตามเส้นทางเดินจริง คำนวณค่าน้ำ 7 บาท และค่าบำรุง 10 บาทให้อัตโนมัติ พร้อมตรวจจับความผิดปกติทันที และในฝั่งประชาชน สามารถเช็คยอดผ่านหน้า <code>index.php</code> ได้ง่ายๆ เพียงพิมพ์เบอร์โทรศัพท์ พร้อมสแกนจ่ายผ่าน QR PromptPay ได้ทันทีครับ"</em>
+    </div>
+
+    <div class="script-box">
+      <strong>🎙️ สไลด์ที่ 3: ระบบการเงินแบบบูรณาการ ไร้รอยต่อ (Unified Finance & Receipt)</strong><br>
+      <em>"หัวใจสำคัญอยู่ที่หน้า <code>finance_billing.php</code> ครับ เราออกแบบให้เป็น Unified Control Header ที่รวม 4 ระบบงานสำคัญไว้ในหน้าจอเดียว เมื่อชาวบ้านมาชำระเงิน เหรัญญิกกดปุ่ม [รับชำระ] ระบบจะตัดยอดแบบ Optimistic UI ทันที และมีปุ่ม [ใบเสร็จ] ให้กดพรีวิวและพิมพ์ใบเสร็จรับเงินมาตรฐานแบบ ป.31/32 ขึ้นมาได้ในเสี้ยววินาทีโดยหน้าจอไม่กระตุกหรือเสียตำแหน่งครับ"</em>
+    </div>
+
+    <div class="script-box">
+      <strong>🎙️ สไลด์ที่ 4: ความโปร่งใส บัญชีคุมหนี้ และฎีกาเบิกจ่าย 10% (Accountability & Governance)</strong><br>
+      <em>"สำหรับความโปร่งใส ระบบมีทะเบียนคุมหนี้ค้างชำระตามแบบ กค.4 คัดกรองหนี้ 1, 2, 3 เดือน พร้อมพิมพ์หนังสือเตือนระงับการใช้น้ำได้ทันที และในส่วนเงินรายได้ ระบบสามารถซิงค์และออกฎีกาเบิกจ่ายค่าตอบแทนผู้จัดเก็บ 10% จากยอดจัดเก็บจริงได้อัตโนมัติ ทำให้การเบิกจ่ายทุกบาททุกสตางค์มีหลักฐานใบสำคัญรับเงินที่ตรวจสอบย้อนหลังได้ 100% ครับ"</em>
+    </div>
+
+    <div class="card" style="background: #f8fafc; border-top: 3px solid #0f172a; margin-top: 14px;">
+      <h4 style="margin: 0 0 6px 0; color: #0f172a; font-size: 13.5px;">📌 สรุปข้อดีทางเทคนิคที่พร้อมตอบคำถาม (Technical Highlights):</h4>
+      <div class="grid-2" style="font-size: 12px; color: #475569;">
+        <div>
+          • <strong>สถาปัตยกรรม:</strong> PHP 8 Native + PDO MySQL ไม่พึ่งพาเฟรมเวิร์กหนักๆ โหลดไวใน 0.2 วินาที<br>
+          • <strong>ความเข้ากันได้:</strong> ทำงานบน XAMPP / Apache / Docker รองรับหน้าจอคอมพิวเตอร์และมือถือ Responsive
+        </div>
+        <div>
+          • <strong>ความปลอดภัย:</strong> แยก Role ด้วย RBAC ป้องกัน SQL Injection ด้วย PDO Prepared Statements<br>
+          • <strong>การเชื่อมโยง:</strong> โค้ดทั้งหมดถูก Commit และ Push ขึ้น GitHub <code>phawatjam-collab/Water</code> เรียบร้อยแล้ว
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
