@@ -249,19 +249,19 @@
         </div>
 
         <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 14px; margin-top: 16px;">
-          <div>เอกสารโครงสร้างไฟล์ จุดกรอกข้อมูล ผังความเชื่อมโยง และคู่มือนำเสนอ (Presentation Guide)</div>
-          <div>ปรับปรุงล่าสุด: ตุลาคม 2567 (Version 2.4.0)</div>
+          <div>เอกสารสถาปัตยกรรมระบบ โครงสร้างไฟล์ ผังความเชื่อมโยง และคู่มือนำเสนอ (Presentation Guide)</div>
+          <div>ปรับปรุงล่าสุด: ตุลาคม 2567 (Version 2.5.0)</div>
         </div>
       </div>
     </div>
   </div>
 
   <!-- ======================================================== -->
-  <!-- หน้าที่ 2: สรุปภาพรวมและสถาปัตยกรรมระบบ (Executive Overview) -->
+  <!-- หน้าที่ 2: สรุปภาพรวมและเสาหลักระบบ (Executive Overview) -->
   <!-- ======================================================== -->
   <div class="page">
     <div class="header-bar">
-      <h2>1. สรุปภาพรวมและสถาปัตยกรรมระบบ (System Architecture)</h2>
+      <h2>1. สรุปภาพรวมโครงการและเสาหลักระบบ (Executive Overview)</h2>
       <span>เอกสารแนะนำเพื่อการนำเสนอ • สไลด์ที่ 1</span>
     </div>
 
@@ -355,12 +355,119 @@
   </div>
 
   <!-- ======================================================== -->
-  <!-- หน้าที่ 3: ผังความเชื่อมโยงระบบ (System Linking & Data Flow) -->
+  <!-- หน้าที่ 3: สถาปัตยกรรมระบบและการนำไปใช้งานจริง (System Architecture & Production Deployment) -->
   <!-- ======================================================== -->
   <div class="page">
     <div class="header-bar">
-      <h2>2. ผังความเชื่อมโยงของระบบ (End-to-End Workflow)</h2>
-      <span>ผังเชื่อมต่อข้อมูลตั้งแต่ต้นน้ำสู่ปลายน้ำ • สไลด์ที่ 2</span>
+      <h2>2. สถาปัตยกรรมระบบและการติดตั้งใช้งานจริง (System Architecture)</h2>
+      <span>โครงสร้างซอฟต์แวร์ 4 ระดับและโมเดลสำหรับชุมชน • สไลด์ที่ 2</span>
+    </div>
+
+    <!-- 4-Tier Software Architecture -->
+    <div class="diagram-box" style="margin-top: 0; padding: 12px 14px;">
+      <div style="font-weight: 700; color: #0f172a; margin-bottom: 10px; font-size: 13.5px; display: flex; justify-content: space-between;">
+        <span>🏗️ สถาปัตยกรรมซอฟต์แวร์ 4 ระดับ (4-Tier Enterprise Architecture)</span>
+        <span class="badge badge-blue">Production-Ready Spec</span>
+      </div>
+      <div class="grid-4" style="gap: 8px;">
+        <div style="background: #fff; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1; border-top: 3px solid #0284c7;">
+          <div style="font-size: 11px; font-weight: 700; color: #0284c7;">TIER 1: PRESENTATION</div>
+          <div style="font-size: 12px; font-weight: 600; color: #0f172a; margin: 2px 0;">Responsive Web UI</div>
+          <div style="font-size: 11px; color: #64748b; line-height: 1.4;">
+            HTML5, Modern CSS, Vanilla JS, QR Scanner, Phone Fast Search, Print Templates
+          </div>
+        </div>
+        <div style="background: #fff; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1; border-top: 3px solid #16a34a;">
+          <div style="font-size: 11px; font-weight: 700; color: #16a34a;">TIER 2: APPLICATION</div>
+          <div style="font-size: 12px; font-weight: 600; color: #0f172a; margin: 2px 0;">Business Logic Engine</div>
+          <div style="font-size: 11px; color: #64748b; line-height: 1.4;">
+            PHP 8 Core, RBAC Session Guard, Tariff Calculation, Arrears Aging, 10% Voucher Sync
+          </div>
+        </div>
+        <div style="background: #fff; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1; border-top: 3px solid #d97706;">
+          <div style="font-size: 11px; font-weight: 700; color: #d97706;">TIER 3: DATA STORAGE</div>
+          <div style="font-size: 12px; font-weight: 600; color: #0f172a; margin: 2px 0;">MariaDB / MySQL (InnoDB)</div>
+          <div style="font-size: 11px; color: #64748b; line-height: 1.4;">
+            ACID Transactions, Foreign Keys, Zero-Config DB Auto-Setup, 1-Click Backup API
+          </div>
+        </div>
+        <div style="background: #fff; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1; border-top: 3px solid #7c3aed;">
+          <div style="font-size: 11px; font-weight: 700; color: #7c3aed;">TIER 4: INTEGRATION</div>
+          <div style="font-size: 12px; font-weight: 600; color: #0f172a; margin: 2px 0;">External Services</div>
+          <div style="font-size: 11px; color: #64748b; line-height: 1.4;">
+            PromptPay EMVCo QR Payload, Excel/CSV Export Engine, HTML5 Camera Scanner
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Deployment Models -->
+    <h3 style="font-size: 14.5px; margin-top: 14px; margin-bottom: 8px;">🌐 2 รูปแบบการติดตั้งใช้งานจริงในชุมชน (Village Deployment Topology)</h3>
+    <div class="grid-2">
+      <div class="card" style="border-left: 4px solid #0284c7;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <strong style="color: #0284c7; font-size: 13.5px;">โมเดลที่ 1: Local On-Premise LAN</strong>
+          <span class="badge badge-blue">เหมาะกับ สนง. ประปาหมู่บ้าน</span>
+        </div>
+        <p style="font-size: 12px; color: #475569; margin: 0 0 6px 0;">
+          <strong>โครงสร้าง:</strong> ติดตั้ง XAMPP บน PC ประจำที่ทำการกองทุน &rarr; ปล่อยสัญญาณผ่าน Wi-Fi Router ในพื้นที่ (เช่น <code>192.168.1.100</code>)
+        </p>
+        <ul style="font-size: 11.5px; color: #334151; margin: 0; padding-left: 18px; line-height: 1.5;">
+          <li>✓ <strong>จุดเด่น:</strong> ค่าใช้จ่าย 0 บาท, ทำงานได้แม้เน็ตหมู่บ้านดับ (Offline 100%)</li>
+          <li>✓ <strong>การใช้งาน:</strong> เจ้าหน้าที่เดินจดมิเตอร์หรือเหรัญญิกตัดเงินผ่านเครือข่ายภายใน</li>
+          <li>✓ <strong>การสำรองข้อมูล:</strong> กดสำรองฐานข้อมูลผ่าน <code>api/backup.php</code> ลง Flash Drive ประจำวัน</li>
+        </ul>
+      </div>
+
+      <div class="card" style="border-left: 4px solid #16a34a;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <strong style="color: #16a34a; font-size: 13.5px;">โมเดลที่ 2: Cloud VPS Hosting</strong>
+          <span class="badge badge-green">แนะนำสำหรับบริการประชาชน 24 ชม.</span>
+        </div>
+        <p style="font-size: 12px; color: #475569; margin: 0 0 6px 0;">
+          <strong>โครงสร้าง:</strong> นำระบบขึ้น Cloud VPS (เช่น DigitalOcean / HostAtom ~200 บ./ด.) พร้อมจด Domain และเปิดใช้งาน SSL HTTPS
+        </p>
+        <ul style="font-size: 11.5px; color: #334151; margin: 0; padding-left: 18px; line-height: 1.5;">
+          <li>✓ <strong>จุดเด่น:</strong> ชาวบ้านเช็คยอดค่าน้ำและแจ้งท่อแตกผ่านมือถือได้จากทุกที่ทุกเวลา</li>
+          <li>✓ <strong>การใช้งาน:</strong> เจ้าหน้าที่จดมิเตอร์บันทึกตัวเลขผ่านมือถือ 4G/5G ซิงค์เข้าเซิร์ฟเวอร์สดทันที</li>
+          <li>✓ <strong>ความน่าเชื่อถือ:</strong> มี Uptime 99.9% พร้อม Auto Daily Snapshot จากระบบ Cloud</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Production Readiness Highlights -->
+    <h3 style="font-size: 14.5px; margin-top: 14px; margin-bottom: 8px;">🛡️ กลไกความพร้อมใช้งานจริงและการรักษาความปลอดภัย (Production Reliability)</h3>
+    <div class="grid-3">
+      <div class="card" style="padding: 10px 12px;">
+        <div style="font-size: 13px; font-weight: 700; color: #0f172a; margin-bottom: 4px;">⚡ Zero-Config Auto-Setup</div>
+        <p style="font-size: 11.5px; color: #475569; margin: 0; line-height: 1.4;">
+          เมื่อเปิดหน้าเว็บครั้งแรก ไฟล์ <code>api/db.php</code> จะตรวจสอบและสร้างฐานข้อมูลพร้อมนำเข้า <code>database.sql</code> ให้อัตโนมัติ ไม่ต้องมี Database Admin
+        </p>
+      </div>
+
+      <div class="card" style="padding: 10px 12px;">
+        <div style="font-size: 13px; font-weight: 700; color: #0f172a; margin-bottom: 4px;">🔒 OWASP Security Guard</div>
+        <p style="font-size: 11.5px; color: #475569; margin: 0; line-height: 1.4;">
+          ใช้ PDO Prepared Statements 100% ป้องกัน SQL Injection, รหัสผ่านแฮชด้วย BCRYPT, และ Session-based RBAC แบ่งสิทธิ์ 4 ระดับ ป้องกันการแอบแก้ข้อมูล
+        </p>
+      </div>
+
+      <div class="card" style="padding: 10px 12px;">
+        <div style="font-size: 13px; font-weight: 700; color: #0f172a; margin-bottom: 4px;">💾 Disaster Recovery (1-Click)</div>
+        <p style="font-size: 11.5px; color: #475569; margin: 0; line-height: 1.4;">
+          มีเอนจิน <code>api/backup.php</code> สำรองตารางและข้อมูลทั้งระบบออกมาเป็นไฟล์ .sql แบบฉุกเฉินได้ในคลิกเดียว ป้องกันข้อมูลสูญหายจากไฟดับหรือเหตุสุดวิสัย
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- หน้าที่ 4: ผังความเชื่อมโยงระบบ (System Linking & Data Flow) -->
+  <!-- ======================================================== -->
+  <div class="page">
+    <div class="header-bar">
+      <h2>3. ผังความเชื่อมโยงของระบบ (End-to-End Workflow)</h2>
+      <span>ผังเชื่อมต่อข้อมูลตั้งแต่ต้นน้ำสู่ปลายน้ำ • สไลด์ที่ 3</span>
     </div>
 
     <div class="diagram-box">
@@ -427,12 +534,12 @@
   </div>
 
   <!-- ======================================================== -->
-  <!-- หน้าที่ 4: ตารางเจาะลึกไฟล์ PHP และฐานข้อมูล (File Matrix) -->
+  <!-- หน้าที่ 5: ตารางเจาะลึกไฟล์ PHP และฐานข้อมูล (File Matrix) -->
   <!-- ======================================================== -->
   <div class="page">
     <div class="header-bar">
-      <h2>3. ตารางเจาะลึกไฟล์ PHP, API และฐานข้อมูล (File Matrix)</h2>
-      <span>รายละเอียดชื่อไฟล์ เส้นทาง URL และตารางข้อมูล • สไลด์ที่ 3</span>
+      <h2>4. ตารางเจาะลึกไฟล์ PHP, API และฐานข้อมูล (File Matrix)</h2>
+      <span>รายละเอียดชื่อไฟล์ เส้นทาง URL และตารางข้อมูล • สไลด์ที่ 4</span>
     </div>
 
     <table class="table-striped">
@@ -564,12 +671,12 @@
   </div>
 
   <!-- ======================================================== -->
-  <!-- หน้าที่ 5: คู่มือจุดกรอกข้อมูลทีละขั้นตอน (Step-by-Step Guide) -->
+  <!-- หน้าที่ 6: คู่มือจุดกรอกข้อมูลทีละขั้นตอน (Step-by-Step Guide) -->
   <!-- ======================================================== -->
   <div class="page">
     <div class="header-bar">
-      <h2>4. คู่มือจุดกรอกข้อมูลทีละขั้นตอน (Data Input Guide)</h2>
-      <span>ตำแหน่งฟิลด์กรอกข้อมูลและผลลัพธ์ในฐานข้อมูล • สไลด์ที่ 4</span>
+      <h2>5. คู่มือจุดกรอกข้อมูลทีละขั้นตอน (Data Input Guide)</h2>
+      <span>ตำแหน่งฟิลด์กรอกข้อมูลและผลลัพธ์ในฐานข้อมูล • สไลด์ที่ 5</span>
     </div>
 
     <div class="flow-step">
@@ -632,12 +739,12 @@
   </div>
 
   <!-- ======================================================== -->
-  <!-- หน้าที่ 6: บทพูดนำเสนอและสคริปต์บรรยาย (Speaker Presentation Script) -->
+  <!-- หน้าที่ 7: บทพูดนำเสนอและสคริปต์บรรยาย (Speaker Presentation Script) -->
   <!-- ======================================================== -->
   <div class="page">
     <div class="header-bar">
-      <h2>5. สคริปต์บทพูดสำหรับการนำเสนอ (Presentation Script)</h2>
-      <span>แนวทางการนำเสนอผลงานต่อคณะกรรมการและผู้ประเมิน • สไลด์ที่ 5</span>
+      <h2>6. สคริปต์บทพูดสำหรับการนำเสนอ (Presentation Script)</h2>
+      <span>แนวทางการนำเสนอผลงานต่อคณะกรรมการและผู้ประเมิน • สไลด์ที่ 6</span>
     </div>
 
     <div class="script-box">
@@ -646,18 +753,28 @@
     </div>
 
     <div class="script-box">
-      <strong>🎙️ สไลด์ที่ 2: จุดเด่นด้านการจดมิเตอร์และบริการประชาชน (Field & Citizen Service)</strong><br>
-      <em>"ในส่วนหน้างาน เจ้าหน้าที่สามารถใช้มือถือสแกนสติกเกอร์ QR Code ที่ติดบนมิเตอร์น้ำตามบ้านผ่านหน้า <code>meter_reading.php</code> ระบบจะจัดลำดับตามเส้นทางเดินจริง คำนวณค่าน้ำ 7 บาท และค่าบำรุง 10 บาทให้อัตโนมัติ พร้อมตรวจจับความผิดปกติทันที และในฝั่งประชาชน สามารถเช็คยอดผ่านหน้า <code>index.php</code> ได้ง่ายๆ เพียงพิมพ์เบอร์โทรศัพท์ พร้อมสแกนจ่ายผ่าน QR PromptPay ได้ทันทีครับ"</em>
+      <strong>🎙️ สไลด์ที่ 2: สถาปัตยกรรมระบบและการใช้งานจริง (System Architecture & Village Deployment)</strong><br>
+      <em>"ในส่วนของสถาปัตยกรรม ระบบนี้ถูกออกแบบเป็น <strong>4-Tier Architecture</strong> ตามมาตรฐานระบบสารสนเทศระดับองค์กร และออกแบบมาให้รองรับสภาพแวดล้อมจริงของชุมชนได้ 2 รูปแบบครับ คือทั้งแบบ <strong>Local On-Premise LAN</strong> ติดตั้งบนเครื่องสำนักงานประปาหมู่บ้าน ใช้งานได้ทันทีแม้ไม่มีอินเทอร์เน็ต และแบบ <strong>Cloud VPS Hosting</strong> เพื่อให้ประชาชนตรวจสอบค่าน้ำผ่านมือถือได้ 24 ชั่วโมง พร้อมระบบ Zero-Config Auto-Setup และ 1-Click Backup ที่คนในชุมชนดูแลได้ด้วยตนเองครับ"</em>
     </div>
 
     <div class="script-box">
-      <strong>🎙️ สไลด์ที่ 3: ระบบการเงินแบบบูรณาการ ไร้รอยต่อ (Unified Finance & Receipt)</strong><br>
-      <em>"หัวใจสำคัญอยู่ที่หน้า <code>finance_billing.php</code> ครับ เราออกแบบให้เป็น Unified Control Header ที่รวม 4 ระบบงานสำคัญไว้ในหน้าจอเดียว เมื่อชาวบ้านมาชำระเงิน เหรัญญิกกดปุ่ม [รับชำระ] ระบบจะตัดยอดแบบ Optimistic UI ทันที และมีปุ่ม [ใบเสร็จ] ให้กดพรีวิวและพิมพ์ใบเสร็จรับเงินมาตรฐานแบบ ป.31/32 ขึ้นมาได้ในเสี้ยววินาทีโดยหน้าจอไม่กระตุกหรือเสียตำแหน่งครับ"</em>
+      <strong>🎙️ สไลด์ที่ 3: ผังการเชื่อมโยงระบบและข้อมูลต้นน้ำสู่ปลายน้ำ (End-to-End Workflow)</strong><br>
+      <em>"ในส่วนวงจรข้อมูล ข้อมูลจะไหลเวียนเชื่อมโยงกันอย่างไร้รอยต่อครับ ตั้งแต่ขั้นตอนการลงทะเบียนและพิมพ์สติกเกอร์ QR Code ติดหน้าบ้าน สู่ขั้นตอนการเดินจดมิเตอร์ สู่การตรวจสอบและตัดรับชำระเงิน จนกระทั่งการปิดงวดบัญชีและออกงบดุล โดยทุกขั้นตอนมีการตรวจสอบความถูกต้องทางบัญชีอย่างครบถ้วนครับ"</em>
     </div>
 
     <div class="script-box">
-      <strong>🎙️ สไลด์ที่ 4: ความโปร่งใส บัญชีคุมหนี้ และฎีกาเบิกจ่าย 10% (Accountability & Governance)</strong><br>
-      <em>"สำหรับความโปร่งใส ระบบมีทะเบียนคุมหนี้ค้างชำระตามแบบ กค.4 คัดกรองหนี้ 1, 2, 3 เดือน พร้อมพิมพ์หนังสือเตือนระงับการใช้น้ำได้ทันที และในส่วนเงินรายได้ ระบบสามารถซิงค์และออกฎีกาเบิกจ่ายค่าตอบแทนผู้จัดเก็บ 10% จากยอดจัดเก็บจริงได้อัตโนมัติ ทำให้การเบิกจ่ายทุกบาททุกสตางค์มีหลักฐานใบสำคัญรับเงินที่ตรวจสอบย้อนหลังได้ 100% ครับ"</em>
+      <strong>🎙️ สไลด์ที่ 4: การทำงานหน้างานและบริการประชาชน (Field & Citizen Service)</strong><br>
+      <em>"ในส่วนหน้างาน เจ้าหน้าที่ใช้สมาร์ตโฟนเปิดหน้า <code>meter_reading.php</code> สแกน QR Code หน้าบ้าน ระบบจะเรียงลำดับตามเส้นทางเดินจริง คำนวณค่าน้ำ 7 บาท และค่าบำรุง 10 บาทให้อัตโนมัติ พร้อมแจ้งเตือนหากกรอกตัวเลขผิดพลาด และในฝั่งประชาชน สามารถเช็คยอดผ่านหน้า <code>index.php</code> ได้สะดวกรวดเร็วเพียงพิมพ์เบอร์โทรศัพท์ พร้อมสแกนจ่ายผ่าน QR PromptPay ได้ทันทีครับ"</em>
+    </div>
+
+    <div class="script-box">
+      <strong>🎙️ สไลด์ที่ 5: ระบบการเงินแบบบูรณาการ ไร้รอยต่อ (Unified Finance & Receipt)</strong><br>
+      <em>"หัวใจสำคัญอยู่ที่หน้า <code>finance_billing.php</code> ครับ เราออกแบบเป็น Unified Control Header รวม 4 แท็บงานไว้ในหน้าจอเดียว เมื่อตัดรับชำระเงิน ระบบจะสลับสถานะเป็น PAID แบบ Optimistic UI ทันที และมีปุ่ม [ใบเสร็จ] ให้เปิดพรีวิวและสั่งพิมพ์ใบเสร็จรับเงินมาตรฐาน ป.31/32 ได้ในเสี้ยววินาทีโดยไม่ต้องสลับหน้าไปมาครับ"</em>
+    </div>
+
+    <div class="script-box">
+      <strong>🎙️ สไลด์ที่ 6: ความโปร่งใส บัญชีคุมหนี้ กค.4 และฎีกาเบิกจ่าย 10% (Accountability & Vouchers)</strong><br>
+      <em>"สำหรับความโปร่งใส ระบบมีทะเบียนคุมหนี้ กค.4 จัดกลุ่ม 1, 2, 3 เดือน พร้อมพิมพ์หนังสือเตือนระงับการใช้น้ำได้ทันที และในส่วนเงินรายได้ ระบบสามารถซิงค์และออกฎีกาเบิกจ่ายค่าตอบแทนผู้จัดเก็บ 10% จากยอดรับชำระจริงได้อัตโนมัติ ทำให้การเบิกจ่ายทุกบาททุกสตางค์มีใบสำคัญรับเงินที่ตรวจสอบย้อนหลังได้ 100% ครับ"</em>
     </div>
 
     <div class="card" style="background: #f8fafc; border-top: 3px solid #0f172a; margin-top: 14px;">
