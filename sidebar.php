@@ -6,17 +6,9 @@
 require_once __DIR__ . '/auth.php';
 
 function renderPwaHead() {
-    ?>
-    <!-- PWA & Mobile Web App Meta Tags -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0284c7">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="ประปาวังยาง">
-    <link rel="apple-touch-icon" href="assets/icon-192.png">
-    <?php
+    // PWA functionality disabled
 }
+
 
 function renderAppSidebar($activeRoute = 'home') {
     $currentUser = getCurrentUser();
@@ -311,22 +303,6 @@ function renderAppSidebar($activeRoute = 'home') {
           <?php endforeach; ?>
         <?php endforeach; ?>
       </nav>
-
-      <!-- PWA Mobile Install Banner / Quick Box -->
-      <div id="pwa-install-sidebar-box" style="margin: auto 12px 14px 12px; padding: 12px; background: rgba(2, 132, 199, 0.12); border: 1px dashed rgba(56, 189, 248, 0.4); border-radius: 8px;">
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-          <span style="font-size: 13px; font-weight: 700; color: #38bdf8; display: inline-flex; align-items: center; gap: 6px;">
-            <span>📱</span> ประปาวังยาง PWA
-          </span>
-          <span id="pwa-online-status" style="font-size: 11px; background: #059669; color: #fff; padding: 2px 6px; border-radius: 9999px;">● ออนไลน์</span>
-        </div>
-        <div style="font-size: 11.5px; color: #94a3b8; margin-bottom: 8px; line-height: 1.35;">
-          ติดตั้งบนมือถือได้ ไม่ต้องจำ URL ทำงานลื่นไหล
-        </div>
-        <button type="button" id="btn-pwa-install-sidebar" class="btn btn-primary" onclick="triggerPWAInstall()" style="width: 100%; font-size: 12px; padding: 7px 8px; border-radius: 6px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 5px;">
-          📲 ติดตั้งแอปบนมือถือ / PC
-        </button>
-      </div>
     </aside>
 
     <!-- Mobile Sidebar Backdrop Overlay -->
@@ -357,9 +333,6 @@ function renderAppTopBar($title, $subtitle) {
               <strong><?php echo htmlspecialchars($currentUser['name']); ?> (<?php echo htmlspecialchars($currentUser['role_title']); ?>)</strong>
             <?php endif; ?>
           </div>
-          <button type="button" id="btn-pwa-install-top" onclick="triggerPWAInstall()" class="btn btn-outline" style="font-size: 12.5px; padding: 6px 12px; border-radius: 6px; cursor: pointer; color: #0284c7; border: 1px solid #bae6fd; background: #f0f9ff; display: inline-flex; align-items: center; gap: 6px;" title="ติดตั้งแอปลงเครื่อง">
-            <span>📲</span> ติดตั้งแอป
-          </button>
           <button type="button" class="btn btn-outline btn-open-login" onclick="openLoginModal()" style="font-size: 12.5px; padding: 6px 10px; border-radius: 6px; cursor: pointer; color: #475569; border: 1px solid #cbd5e1; background: #fff;" title="สลับบทบาท">
             🔄 สลับบทบาท
           </button>
@@ -367,9 +340,6 @@ function renderAppTopBar($title, $subtitle) {
             <span>🚪</span> ออกจากระบบ
           </a>
         <?php else: ?>
-          <button type="button" id="btn-pwa-install-top" onclick="triggerPWAInstall()" class="btn btn-outline" style="font-size: 12.5px; padding: 6px 12px; border-radius: 6px; cursor: pointer; color: #0284c7; border: 1px solid #bae6fd; background: #f0f9ff; display: inline-flex; align-items: center; gap: 6px;" title="ติดตั้งแอปลงเครื่อง">
-            <span>📲</span> ติดตั้งแอป
-          </button>
           <span style="font-size: 13.5px; color: #64748b; font-weight: 500; display: inline-flex; align-items: center; gap: 4px;">
             <span>🌐</span> ประชาชนทั่วไป (Public / Guest)
           </span>
@@ -559,79 +529,21 @@ function renderAppTopBar($title, $subtitle) {
           openLoginModal();
         }
 
-        // Dynamically add PWA manifest & theme meta if not present
-        if (!document.querySelector('link[rel="manifest"]')) {
-          const mLink = document.createElement('link');
-          mLink.rel = 'manifest';
-          mLink.href = 'manifest.json';
-          document.head.appendChild(mLink);
-        }
-        if (!document.querySelector('meta[name="theme-color"]')) {
-          const tMeta = document.createElement('meta');
-          tMeta.name = 'theme-color';
-          tMeta.content = '#0284c7';
-          document.head.appendChild(tMeta);
-        }
-
-        // Update Online/Offline status
-        const updateNetStatus = () => {
-          const el = document.getElementById('pwa-online-status');
-          if (el) {
-            if (navigator.onLine) {
-              el.textContent = '● ออนไลน์';
-              el.style.background = '#059669';
-            } else {
-              el.textContent = '○ ออฟไลน์';
-              el.style.background = '#dc2626';
-            }
-          }
-        };
-        window.addEventListener('online', updateNetStatus);
-        window.addEventListener('offline', updateNetStatus);
-        updateNetStatus();
       });
 
-      // PWA Installation Prompt Manager
-      let pwaInstallPrompt = null;
-      window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        pwaInstallPrompt = e;
-        const sideBox = document.getElementById('pwa-install-sidebar-box');
-        const topBtn = document.getElementById('btn-pwa-install-top');
-        if (sideBox) sideBox.style.display = 'block';
-        if (topBtn) topBtn.style.display = 'inline-flex';
-      });
-
-      window.addEventListener('appinstalled', () => {
-        pwaInstallPrompt = null;
-        const sideBox = document.getElementById('pwa-install-sidebar-box');
-        const topBtn = document.getElementById('btn-pwa-install-top');
-        if (sideBox) {
-          sideBox.innerHTML = '<div style="font-size: 12px; color: #4ade80; text-align: center; font-weight: 600; padding: 4px 0;">✓ ติดตั้งลงบนอุปกรณ์แล้ว</div>';
-        }
-        if (topBtn) topBtn.style.display = 'none';
-      });
-
-      async function triggerPWAInstall() {
-        if (pwaInstallPrompt) {
-          pwaInstallPrompt.prompt();
-          const { outcome } = await pwaInstallPrompt.userChoice;
-          if (outcome === 'accepted') {
-            pwaInstallPrompt = null;
-          }
-        } else {
-          alert("💡 คำแนะนำการติดตั้งแอป 'ประปาวังยาง':\n\n1. แอนดรอยด์ / Chrome: แตะเมนูจุดสามจุด (⋮) มุมขวาบน แล้วเลือก 'ติดตั้งแอป' หรือ 'เพิ่มลงในหน้าจอหลัก'\n2. ไอโฟน / Safari: แตะปุ่มแชร์ (Share Icon) แล้วเลือก 'เพิ่มไปยังหน้าจอโฮม (Add to Home Screen)'\n3. คอมพิวเตอร์: คลิกไอคอน 'ติดตั้ง' รูปคอมพิวเตอร์ขนาดเล็กที่แถบ URL บาร์ด้านบน");
-        }
-      }
-
-      // Register Service Worker
+      // Ensure any legacy Service Workers or PWA caches are completely unregistered
       if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('sw.js').then((reg) => {
-            console.log('Wang Yang PWA ServiceWorker active:', reg.scope);
-          }).catch((err) => {
-            console.log('SW registration note:', err);
-          });
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+          for (let reg of registrations) {
+            reg.unregister();
+          }
+        });
+      }
+      if (window.caches) {
+        caches.keys().then(function(names) {
+          for (let name of names) {
+            caches.delete(name);
+          }
         });
       }
 

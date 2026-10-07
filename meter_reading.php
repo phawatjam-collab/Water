@@ -18,16 +18,6 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>งานจดบันทึกมาตรวัดน้ำภาคสนาม (แบบ ป.17) - การประปาหมู่บ้านวังยาง</title>
-  
-  <!-- PWA & Mobile Meta Tags -->
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#0284c7">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="ประปาวังยาง">
-  <link rel="apple-touch-icon" href="assets/icon-192.png">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
