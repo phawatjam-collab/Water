@@ -16,11 +16,12 @@
 ## 🗄️ การติดตั้งฐานข้อมูลผ่าน phpMyAdmin
 
 หากต้องการนำเข้าฐานข้อมูลบนเครื่องใหม่ หรือตั้งค่าบน phpMyAdmin:
-1. เปิดเบราว์เซอร์ไปที่ [http://localhost/phpmyadmin/](http://localhost/phpmyadmin/)
-2. สร้างฐานข้อมูลใหม่ชื่อ **`db_city_water_supply`** (การเปรียบเทียบ: `utf8mb4_general_ci` หรือ `utf8mb4_unicode_ci`)
-3. คลิกแท็บ **Import (นำเข้า)**
-4. เลือกไฟล์ **`database.sql`** จากโฟลเดอร์โปรเจกต์ (รวมทั้งตาราง `tb_customers`, `tb_installation`, `tb_zone`, `tb_users` และตารางส่วนต่อขยายไว้ครบวงจร)
-5. กดปุ่ม **Import (ดำเนินการ)** ด้านล่าง ฐานข้อมูลจะถูกสร้างและนำเข้าข้อมูลพร้อมใช้งานทันที
+1. **ระบบอัตโนมัติ (Zero-Config):** เพียง Start Apache + MySQL แล้วเปิดเข้าเว็บ ระบบจะสร้างฐานข้อมูล `db_city_water_supply` และนำเข้า `database.sql` ให้อัตโนมัติทันที
+2. **หรือนำเข้าผ่าน phpMyAdmin ด้วยตนเอง:**
+   - เปิด [http://localhost/phpmyadmin/](http://localhost/phpmyadmin/)
+   - สร้างฐานข้อมูลชื่อ **`db_city_water_supply`**
+   - ไปที่แท็บ **Import (นำเข้า)** เลือกไฟล์ **`database.sql`** แล้วกดปุ่ม Import ดำเนินการ
+
 
 ---
 
@@ -77,7 +78,7 @@ D:\Games\Plumber\
 │   └── schema_mysql.sql      # สคริปต์โครงสร้างตาราง DDL และข้อมูลตั้งต้น
 ├── api/
 │   ├── auth.php              # API Authentication & Session Login/Logout
-│   ├── db.php                # การเชื่อมต่อ MySQL (db_wangyang_water)
+│   ├── db.php                # การเชื่อมต่อ MySQL (db_city_water_supply พร้อมระบบ Auto-Setup)
 │   ├── bahtText.php          # แปลงตัวเลขเป็นตัวหนังสือภาษาไทย
 │   ├── customers.php         # API ทะเบียนสมาชิกผู้ใช้น้ำ
 │   ├── cycles.php            # API จัดการรอบบิลประจำเดือน

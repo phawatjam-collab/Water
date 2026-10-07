@@ -4,12 +4,8 @@
  * โครงการพัฒนาระบบสารสนเทศและฐานข้อมูล (งานกลุ่ม)
  */
 require_once __DIR__ . '/sidebar.php';
+require_once __DIR__ . '/api/db.php';
 $currentUser = getCurrentUser();
-
-$host = 'localhost';
-$db_name = 'db_city_water_supply';
-$username = 'root';
-$password = '';
 
 $stats = [
     'total_customers' => 0,
@@ -22,10 +18,6 @@ $stats = [
 ];
 
 try {
-    $pdo = new PDO("mysql:host={$host};dbname={$db_name};charset=utf8mb4", $username, $password, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-    ]);
 
     // ดึงจำนวนผู้ใช้น้ำทั้งหมด
     $cStmt = $pdo->query("SELECT COUNT(*) as cnt FROM customers WHERE status = 'ACTIVE'");

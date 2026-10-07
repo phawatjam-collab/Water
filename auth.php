@@ -91,6 +91,12 @@ function getAuthDbConnection() {
     if (isset($pdo) && $pdo instanceof PDO) {
         return $pdo;
     }
+    if (file_exists(__DIR__ . '/api/db.php')) {
+        require_once __DIR__ . '/api/db.php';
+        if (isset($pdo) && $pdo instanceof PDO) {
+            return $pdo;
+        }
+    }
     try {
         $pdo = new PDO("mysql:host=localhost;dbname=db_city_water_supply;charset=utf8mb4", 'root', '', [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
