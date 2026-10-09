@@ -10,7 +10,7 @@
   <style>
     @page {
       size: A4 portrait;
-      margin: 18mm 18mm 18mm 24mm;
+      margin: 18mm 18mm 18mm 22mm;
     }
     * {
       box-sizing: border-box;
@@ -19,9 +19,9 @@
     }
     body {
       font-family: 'Sarabun', 'TH Sarabun New', Tahoma, sans-serif;
-      font-size: 13px;
-      line-height: 1.36;
-      color: #000000;
+      font-size: 14px;
+      line-height: 1.48;
+      color: #111111;
       background: #ffffff;
       margin: 0;
       padding: 0;
@@ -34,7 +34,7 @@
     }
     .page {
       background: #ffffff;
-      padding: 20mm 18mm 18mm 24mm;
+      padding: 18mm 18mm 18mm 22mm;
       margin: 0 auto 15px auto;
       max-width: 210mm;
       min-height: 297mm;
@@ -56,30 +56,30 @@
       position: absolute;
       top: 12mm;
       right: 18mm;
-      font-size: 11.5px;
+      font-size: 12px;
       color: #333333;
     }
     .doc-running-head {
       position: absolute;
       top: 12mm;
-      left: 24mm;
-      font-size: 11px;
+      left: 22mm;
+      font-size: 11.5px;
       color: #555555;
     }
     .running-footer {
       position: absolute;
       bottom: 12mm;
-      left: 24mm;
+      left: 22mm;
       right: 18mm;
       border-top: 0.5pt solid #666666;
       padding-top: 4px;
       display: flex;
       justify-content: space-between;
-      font-size: 10.5px;
+      font-size: 11px;
       color: #555555;
     }
     p {
-      margin: 3.5px 0;
+      margin: 4px 0;
       text-indent: 1.25cm;
       text-align: justify;
       text-justify: inter-cluster;
@@ -89,64 +89,58 @@
     }
     .chapter-heading {
       text-align: center;
-      font-size: 15.5px;
+      font-size: 16.5px;
       font-weight: 700;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
+      line-height: 1.35;
     }
     .section-heading {
-      font-size: 14px;
+      font-size: 14.5px;
+      font-weight: 700;
+      margin-top: 10px;
+      margin-bottom: 4px;
+    }
+    .caption-title {
+      font-size: 13px;
       font-weight: 700;
       margin-top: 8px;
       margin-bottom: 3px;
-    }
-    .sub-section-heading {
-      font-size: 13px;
-      font-weight: 700;
-      margin-top: 5px;
-      margin-bottom: 2px;
-      text-indent: 0.75cm;
-    }
-    .caption-title {
-      font-size: 12.5px;
-      font-weight: 700;
-      margin-top: 6px;
-      margin-bottom: 2px;
       text-align: left;
     }
     .figure-caption {
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 700;
       text-align: center;
-      margin-top: 3px;
-      margin-bottom: 5px;
+      margin-top: 4px;
+      margin-bottom: 6px;
     }
     table.academic-table {
       width: 100%;
       border-collapse: collapse;
-      margin: 5px 0 8px 0;
-      font-size: 12px;
+      margin: 6px 0 10px 0;
+      font-size: 13px;
       page-break-inside: avoid;
     }
     table.academic-table th {
       border-top: 1.5pt solid #000000;
       border-bottom: 1pt solid #000000;
-      padding: 4px 5px;
-      background: #f9f9f9;
+      padding: 6px 7px;
+      background: #f8f8f8;
       font-weight: 700;
       text-align: left;
     }
     table.academic-table td {
-      border-bottom: 0.5pt solid #dddddd;
-      padding: 4px 5px;
+      border-bottom: 0.5pt solid #cccccc;
+      padding: 6px 7px;
       vertical-align: top;
+      line-height: 1.4;
     }
     table.academic-table tr:last-child td {
       border-bottom: 1.5pt solid #000000;
     }
     .text-center { text-align: center; }
-    .text-right { text-align: right; }
     .figure-frame {
-      border: 0.75pt solid #555555;
+      border: 0.75pt solid #666666;
       padding: 3px;
       background: #ffffff;
       text-align: center;
@@ -154,69 +148,63 @@
     }
     .figure-frame img {
       width: 100%;
-      height: 115px;
+      height: 125px;
       object-fit: contain;
-      background: #fafafa;
+      background: #fbfbfb;
     }
     .grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      gap: 12px;
     }
-    .sign-section {
-      margin-top: 22px;
-      border: 0.75pt solid #777777;
-      padding: 14px 12px 10px 12px;
-    }
-    .sign-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      text-align: center;
-      font-size: 11.5px;
-    }
-    .sign-line {
-      margin-bottom: 34px;
+    .content-box {
+      border: 0.75pt solid #cccccc;
+      background: #fafafa;
+      padding: 10px 14px;
+      margin: 8px 0;
+      font-size: 13px;
+      line-height: 1.5;
     }
   </style>
 </head>
 <body>
 
-  <!-- ================= หน้าที่ 1: ปกคู่มือ ================= -->
+  <!-- ================= หน้าที่ 1: ปกคู่มือ XAMPP ================= -->
   <div class="page">
-    <div style="border: 1pt solid #000000; padding: 25px 20px; min-height: 250mm; display: flex; flex-direction: column; justify-content: space-between; text-align: center;">
+    <div style="border: 1pt solid #000000; padding: 26px 22px; min-height: 252mm; display: flex; flex-direction: column; justify-content: space-between; text-align: center;">
       <div>
-        <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.5px;">
+        <div style="font-size: 12.5px; font-weight: 700; letter-spacing: 0.5px;">
           คู่มือการปฏิบัติงานสำหรับเจ้าหน้าที่และผู้ดูแลระบบ (Operations & Admin Manual)
         </div>
-        <div style="font-size: 11px; color: #555555; margin-top: 2px;">
+        <div style="font-size: 11.5px; color: #555555; margin-top: 2px;">
           รหัสเอกสาร: MN-2567-WTR-XAMPP
         </div>
 
-        <div style="margin-top: 60px; margin-bottom: 30px;">
-          <div style="font-size: 14px; font-weight: 700; margin-bottom: 12px;">
+        <div style="margin-top: 55px; margin-bottom: 30px;">
+          <div style="font-size: 14.5px; font-weight: 700; margin-bottom: 12px;">
             คู่มือการติดตั้งและการใช้งานระบบจริงบนสภาพแวดล้อม XAMPP<br>
             (Production User & Operations Manual)
           </div>
-          <h1 style="font-size: 21px; font-weight: 700; line-height: 1.4; margin-bottom: 6px;">
+          <h1 style="font-size: 22px; font-weight: 700; line-height: 1.4; margin-bottom: 6px;">
             ระบบบริหารจัดการน้ำประปาหมู่บ้านวังยาง
           </h1>
-          <h2 style="font-size: 15px; font-weight: 600; color: #222222;">
+          <h2 style="font-size: 15.5px; font-weight: 600; color: #222222;">
             SMART VILLAGE WATERWORKS MANAGEMENT SYSTEM
           </h2>
-          <div style="font-size: 13px; margin-top: 14px; color: #333333;">
+          <div style="font-size: 13.5px; margin-top: 14px; color: #333333;">
             โครงการพัฒนาระบบสารสนเทศเพื่อการบริหารจัดการกิจการประปาชุมชนชนบท
           </div>
         </div>
 
-        <div style="max-width: 140mm; margin: 40px auto 0 auto; text-align: justify; font-size: 12.5px; line-height: 1.5; border-top: 0.5pt solid #888888; border-bottom: 0.5pt solid #888888; padding: 12px 6px;">
-          <p class="no-indent" style="text-align: center; font-weight: 700; margin-bottom: 4px;">
+        <div style="max-width: 142mm; margin: 35px auto 0 auto; text-align: justify; font-size: 13px; line-height: 1.55; border-top: 0.5pt solid #777777; border-bottom: 0.5pt solid #777777; padding: 14px 8px;">
+          <p class="no-indent" style="text-align: center; font-weight: 700; margin-bottom: 5px;">
             คำนำ (Preface)
           </p>
           คู่มือฉบับนี้จัดทำขึ้นเพื่อแนะนำขั้นตอนการติดตั้ง การกำหนดค่าสภาพแวดล้อม และวิธีการใช้งานระบบบริหารจัดการน้ำประปาหมู่บ้านวังยางบนสภาพแวดล้อม XAMPP สำหรับผู้ดูแลระบบ เจ้าหน้าที่จดบันทึกมาตรวัดน้ำ และเหรัญญิกกองทุน เนื้อหาครอบคลุมตั้งแต่การเริ่มต้นเซิร์ฟเวอร์ Apache/MySQL การเปิดใช้งานระบบฐานข้อมูลอัตโนมัติ ขั้นตอนการเดินจดบันทึกมาตรวัดน้ำภาคสนามตามเส้นทางจริง (แบบ ป.17) การค้นหาค่าน้ำด้วยเบอร์โทรศัพท์ การตัดรับชำระเงินและออกใบเสร็จรับเงิน (แบบ ป.31/32) การควบคุมบัญชีลูกหนี้ค้างชำระ (แบบ กค.4) การคำนวณและออกใบสำคัญเบิกจ่ายค่าตอบแทนผู้จัดเก็บร้อยละ 10 และรายงานสรุปงบดุลประจำเดือน
         </div>
       </div>
 
-      <div style="font-size: 12px; line-height: 1.6; margin-bottom: 10px;">
+      <div style="font-size: 12.5px; line-height: 1.6; margin-bottom: 10px;">
         <strong>หน่วยงานกำกับดูแลและผู้ใช้งาน:</strong><br>
         กองทุนระบบการประปาหมู่บ้านวังยาง หมู่ที่ 3 ตำบลวังยาง อำเภอวังยาง จังหวัดนครพนม<br>
         <strong>เทคโนโลยีที่ใช้:</strong> PHP 8, MariaDB/MySQL 10.4, Apache 2.4, XAMPP Environment<br>
@@ -236,21 +224,21 @@
     <p>
       เพื่อให้ระบบสามารถทำงานได้อย่างมีประสิทธิภาพและเสถียรภาพสูงสุด อุปกรณ์คอมพิวเตอร์และเซิร์ฟเวอร์ควรมีคุณสมบัติขั้นต่ำดังนี้:
     </p>
-    <p class="no-indent" style="margin-left: 0.75cm; font-size: 12.5px; line-height: 1.45;">
+    <p class="no-indent" style="margin-left: 0.75cm; font-size: 13.5px; line-height: 1.5;">
       • <strong>เครื่องแม่ข่าย (Server Requirements):</strong> ระบบปฏิบัติการ Windows 10/11 (64-bit) หรือ Linux Ubuntu LTS, หน่วยประมวลผล Intel Core i3 หรือ AMD Ryzen 3 ขึ้นไป, หน่วยความจำ RAM 4 GB ขึ้นไป (แนะนำ 8 GB), พื้นที่จัดเก็บข้อมูลว่างอย่างน้อย 500 MB และติดตั้งแพ็กเกจ XAMPP (Apache 2.4, PHP 8.0-8.2, MariaDB 10.4)<br>
       • <strong>เครื่องลูกข่าย (Client Devices):</strong> คอมพิวเตอร์สำนักงานหรืออุปกรณ์สมาร์ตโฟน (Android/iOS) พร้อมเว็บเบราว์เซอร์ Google Chrome, Microsoft Edge, Mozilla Firefox รุ่นปัจจุบัน และกล้องสำหรับสแกน QR Code หน้าบ้าน
     </p>
 
     <div class="section-heading">1.2 ขั้นตอนการติดตั้งและเริ่มต้นระบบ (Installation Steps)</div>
-    <p>
-      1. นำโฟลเดอร์โครงการไปวางไว้ในไดเรกทอรีเว็บเซิร์ฟเวอร์ของ XAMPP ที่ <code>C:\xampp\htdocs\plumber</code> หรือ <code>D:\Games\xamppp\htdocs\plumber</code> ตามเส้นทางการติดตั้งในเครื่องคอมพิวเตอร์ของท่าน<br>
+    <p class="no-indent" style="margin-left: 0.75cm; font-size: 13.5px; line-height: 1.5;">
+      1. นำโฟลเดอร์โครงการไปวางไว้ในไดเรกทอรีเว็บเซิร์ฟเวอร์ของ XAMPP ที่ <code>C:\xampp\htdocs\plumber</code> หรือ <code>D:\Games\xamppp\htdocs\plumber</code> ตามตำแหน่งที่ติดตั้งในเครื่องของท่าน<br>
       2. เปิดโปรแกรม <strong>XAMPP Control Panel</strong> จากนั้นคลิกปุ่ม <code>[Start]</code> ที่โมดูล <strong>Apache</strong> และ <strong>MySQL</strong> ให้แถบสถานะเปลี่ยนเป็นสีเขียว<br>
       3. เปิดโปรแกรมเว็บเบราว์เซอร์ แล้วพิมพ์ที่อยู่ <code>http://localhost/plumber/</code> เพื่อเข้าสู่หน้าจอแรกของระบบ
     </p>
 
     <div class="section-heading">1.3 ระบบติดตั้งฐานข้อมูลอัตโนมัติ (Zero-Configuration Database)</div>
     <p>
-      ไฟล์ <code>api/db.php</code> มีฟังก์ชันตรวจสอบความมีอยู่ของฐานข้อมูล <code>db_city_water_supply</code> โดยอัตโนมัติ หากยังไม่มีฐานข้อมูล ระบบจะสร้างฐานข้อมูลและนำเข้าโครงสร้างตารางพร้อมข้อมูลเริ่มต้น 400 ครัวเรือนจากไฟล์ <code>database.sql</code> ให้ทันทีโดยที่ผู้ใช้ไม่ต้องเข้าไปดำเนินการผ่าน phpMyAdmin
+      ไฟล์ <code>api/db.php</code> มีฟังก์ชันตรวจสอบความมีอยู่ของฐานข้อมูล <code>db_city_water_supply</code> โดยอัตโนมัติ หากยังไม่มีฐานข้อมูล ระบบจะสร้างฐานข้อมูลและนำเข้าโครงสร้างตารางพร้อมข้อมูลจำลอง 400 ครัวเรือนจากไฟล์ <code>database.sql</code> ให้ทันทีโดยที่ผู้ใช้ไม่ต้องเข้าไปนำเข้าเองผ่าน phpMyAdmin
     </p>
 
     <div class="section-heading">1.4 บัญชีผู้ใช้งานเริ่มต้นสำหรับการทดสอบระบบ (Default User Accounts)</div>
@@ -258,11 +246,11 @@
     <table class="academic-table">
       <thead>
         <tr>
-          <th width="16%">บทบาท (Role)</th>
-          <th width="18%">ชื่อผู้ใช้ (Username)</th>
-          <th width="16%">รหัสผ่าน (Password)</th>
-          <th width="32%">หน้าที่และความรับผิดชอบหลัก</th>
-          <th width="18%">หน้าจอเริ่มต้น</th>
+          <th width="18%">บทบาท (Role)</th>
+          <th width="18%">ชื่อผู้ใช้</th>
+          <th width="18%">รหัสผ่าน</th>
+          <th width="30%">หน้าที่และความรับผิดชอบหลัก</th>
+          <th width="16%">หน้าจอเริ่มต้น</th>
         </tr>
       </thead>
       <tbody>
@@ -307,18 +295,15 @@
     <p>
       ก่อนเริ่มรอบการจัดเก็บค่าน้ำ เจ้าหน้าที่สามารถจัดทำแผ่นสติกเกอร์ QR Code ประจำตัวมาตรวัดน้ำของแต่ละครัวเรือนเพื่อนำไปติดที่ฝาครอบมาตรวัดน้ำหน้าบ้านได้ดังนี้:
     </p>
-    <p class="no-indent" style="margin-left: 0.75cm; font-size: 12.5px; line-height: 1.45;">
+    <p class="no-indent" style="margin-left: 0.75cm; font-size: 13.5px; line-height: 1.5;">
       1. เข้าสู่หน้าจอ <code>print_qr_labels.php</code> ผ่านแถบเมนูด้านข้าง<br>
       2. เลือกรอบบิลและโซนจ่ายน้ำที่ต้องการพิมพ์ ระบบจะจัดวางแบบฟอร์มสติกเกอร์ขนาดมาตรฐาน A4 (มีรูปแบบ 12 ป้าย/แผ่น และ 24 ป้าย/แผ่น)<br>
       3. สั่งพิมพ์ลงบนกระดาษสติกเกอร์กันน้ำเพื่อนำไปปิดผนึกที่ฝาครอบมิเตอร์น้ำของแต่ละครัวเรือน
     </p>
 
     <div class="section-heading">2.2 การเดินจดบันทึกมาตรวัดน้ำภาคสนาม (meter_reading.php)</div>
-    <p>
-      ช่างจดบันทึกมาตรวัดน้ำสามารถเปิดใช้งานระบบผ่านสมาร์ตโฟนเพื่อบันทึกตัวเลขตามเส้นทางจริงได้ดังขั้นตอนต่อไปนี้:
-    </p>
-    <p class="no-indent" style="margin-left: 0.75cm; font-size: 12.5px; line-height: 1.45;">
-      1. เปิดสมาร์ตโฟนเชื่อมต่อเครือข่าย แล้วเปิดหน้า <code>meter_reading.php</code><br>
+    <p class="no-indent" style="margin-left: 0.75cm; font-size: 13.5px; line-height: 1.5;">
+      1. เปิดสมาร์ตโฟนเชื่อมต่อระบบ แล้วเปิดหน้า <code>meter_reading.php</code><br>
       2. เลือกรอบเดือนที่กำลังจด (เช่น 8-2567) ระบบจะดึงรายชื่อผู้ใช้น้ำเรียงลำดับตามเส้นทางเดินจริง (<code>seq_no</code>) ตั้งแต่คุ้มเหนือจรดคุ้มใต้<br>
       3. การระบุตัวตนครัวเรือนทำได้ 2 วิธี คือ: (ก) กดปุ่ม <code>[📷 สแกน QR]</code> เพื่อส่องกล้องมือถือไปที่สติกเกอร์หน้าบ้าน หรือ (ข) พิมพ์ค้นหาด้วยบ้านเลขที่ในช่องค้นหาด่วน
     </p>
@@ -327,13 +312,13 @@
     <p>
       เมื่อป้อนตัวเลขอ่านครั้งนี้ (Current Reading) ระบบจะคำนวณจำนวนหน่วยใช้น้ำสดทันทีตามสูตร: <code>หน่วย = เลขครั้งนี้ - เลขครั้งก่อน</code>
     </p>
-    <p class="no-indent" style="margin-left: 0.75cm; font-size: 12.5px; line-height: 1.45;">
+    <p class="no-indent" style="margin-left: 0.75cm; font-size: 13.5px; line-height: 1.5;">
       • <strong>กรณีเลขถอยหลัง (Current < Previous):</strong> ระบบจะแจ้งเตือนแถบสีแดงและไม่อนุญาตให้บันทึก เพื่อป้องกันการจดสลับหลัก<br>
       • <strong>กรณีใช้น้ำพุ่งสูงเกิน 3 เท่า:</strong> ระบบจะแสดงข้อความเตือนให้ตรวจสอบจุดรั่วซึมภายในบ้าน<br>
       • กดปุ่ม <code>[บันทึก]</code> ข้อมูลจะถูกจัดเก็บเข้าตาราง <code>meter_readings</code> ทันที และแถบ Progress Bar ด้านบนจะปรับปรุงความคืบหน้างวด
     </p>
 
-    <div class="grid-2" style="margin-top: 8px;">
+    <div class="grid-2" style="margin-top: 10px;">
       <div>
         <div class="figure-frame">
           <img src="assets/wireframe_meter_reading.jpg" alt="Meter Reading">
@@ -363,9 +348,9 @@
 
     <div class="section-heading">3.1 การค้นหาข้อมูลค่าน้ำสำหรับประชาชน (index.php)</div>
     <p>
-      ประชาชนสามารถตรวจสอบยอดค่าน้ำของครัวเรือนตนเองได้อย่างสะดวก รวดเร็ว และแม่นยำ:
+      ประชาชนสามารถตรวจสอบยอดค่าน้ำของครัวเรือนตนเองได้อย่างสะดวกรวดเร็ว โดยมีขั้นตอนดังนี้:
     </p>
-    <p class="no-indent" style="margin-left: 0.75cm; font-size: 12.5px; line-height: 1.45;">
+    <p class="no-indent" style="margin-left: 0.75cm; font-size: 13.5px; line-height: 1.5;">
       1. เข้าสู่หน้าแรกของระบบที่ <code>http://localhost/plumber/</code><br>
       2. พิมพ์หมายเลขโทรศัพท์ 10 หลัก หรือบ้านเลขที่ ระบบค้นหาและแสดงผลในเวลาไม่เกิน 0.05 วินาที<br>
       3. หน้าจอแสดงรายละเอียด: ชื่อผู้ใช้น้ำ, บ้านเลขที่, งวดเดือน, เลขอ่านเดิม-ใหม่, จำนวนหน่วย, ยอดสุทธิ และปุ่มเปิดภาพ QR Code ชำระเงินผ่านพร้อมเพย์ตามยอดเงินจริง
@@ -375,20 +360,20 @@
     <p>
       เมื่อสมาชิกนำเงินมาชำระที่ทำการกองทุน เหรัญญิกดำเนินการบันทึกในหน้า <code>finance_billing.php</code> (แท็บ 1: บันทึกรับเงิน) ดังนี้:
     </p>
-    <p class="no-indent" style="margin-left: 0.75cm; font-size: 12.5px; line-height: 1.45;">
+    <p class="no-indent" style="margin-left: 0.75cm; font-size: 13.5px; line-height: 1.5;">
       1. ค้นหาชื่อหรือบ้านเลขที่ของสมาชิกผู้มาชำระเงิน<br>
       2. กดปุ่ม <code>[✅ รับชำระ]</code> สถานะบิลจะเปลี่ยนเป็น <strong>PAID</strong> ทันที พร้อมบันทึกวันที่และชื่อผู้รับเงินลงฐานข้อมูล<br>
       3. กดปุ่ม <code>[🧾 ใบเสร็จ]</code> หน้าต่างป๊อปอัปใบเสร็จ ป.31/32 จะแสดงขึ้นพร้อมตัวอักษรบาทไทยถูกต้องตามระเบียบ จากนั้นสั่งพิมพ์ลงกระดาษส่งมอบให้ชาวบ้านได้ทันที
     </p>
 
     <div class="section-heading">3.3 การควบคุมบัญชีลูกหนี้ค้างชำระ (แบบ กค.4 ในแท็บ 3)</div>
-    <p class="no-indent" style="margin-left: 0.75cm; font-size: 12.5px; line-height: 1.45;">
+    <p class="no-indent" style="margin-left: 0.75cm; font-size: 13.5px; line-height: 1.5;">
       1. เลือกแท็บ <strong>"ทะเบียนคุมหนี้ กค.4"</strong> เพื่อดูรายชื่อผู้ค้างชำระ โดยสามารถกรองตามอายุหนี้: ค้าง 1 เดือน, 2 เดือน, หรือ 3 เดือนขึ้นไป<br>
       2. กดปุ่ม <code>[✉️ พิมพ์เตือน]</code> เพื่อพิมพ์หนังสือแจ้งเตือนระงับการใช้น้ำกำหนดชำระภายใน 7 วัน<br>
       3. หากลูกหนี้นำเงินมาชำระ ให้กดปุ่ม <code>[💳 ตัดชำระ]</code> ระบบจะสลับไปยังแท็บรับเงินพร้อมกรอกข้อมูลลูกหนี้ให้อัตโนมัติทันที
     </p>
 
-    <div class="grid-2" style="margin-top: 8px;">
+    <div class="grid-2" style="margin-top: 10px;">
       <div>
         <div class="figure-frame">
           <img src="assets/wireframe_home_search.jpg" alt="Citizen Search">
@@ -420,7 +405,7 @@
     <p>
       ตามมติที่ประชุมกองทุนประปาหมู่บ้านวังยาง ผู้จัดเก็บค่าน้ำมีสิทธิ์ได้รับเงินค่าตอบแทนในอัตราร้อยละ 10 ของยอดเงินที่รับชำระได้จริง โดยดำเนินการดังนี้:
     </p>
-    <p class="no-indent" style="margin-left: 0.75cm; font-size: 12.5px; line-height: 1.45;">
+    <p class="no-indent" style="margin-left: 0.75cm; font-size: 13.5px; line-height: 1.5;">
       1. ในหน้า <code>finance_billing.php</code> เลือกแท็บ <strong>"ใบสำคัญ/ฎีกาเบิกจ่าย" (Vouchers Pane)</strong><br>
       2. เลือกรอบบิลที่ปิดการจัดเก็บแล้ว จากนั้นกดปุ่ม <code>[🔄 ซิงค์ค่าตอบแทน 10%]</code><br>
       3. ระบบจะคำนวณยอดเงินที่รับชำระได้จริงทั้งหมดในงวดคูณร้อยละ 10 และสร้างเอกสารใบสำคัญรับเงินสำหรับผู้จัดเก็บโดยอัตโนมัติ<br>
@@ -428,14 +413,14 @@
     </p>
 
     <div class="section-heading">4.2 การตรวจสอบรายงานงบดุลประจำเดือนและส่งออกข้อมูล (executive_reports.php)</div>
-    <p class="no-indent" style="margin-left: 0.75cm; font-size: 12.5px; line-height: 1.45;">
+    <p class="no-indent" style="margin-left: 0.75cm; font-size: 13.5px; line-height: 1.5;">
       1. ประธานกองทุนหรือเหรัญญิกเปิดหน้า <code>executive_reports.php</code> หรือดูสรุปบน <code>dashboard.php</code><br>
       2. ระบบประมวลผลรายงานงบดุลประจำเดือน แสดงรายได้จริงจากการใช้น้ำ ค่าบำรุงรักษา หนี้ค้างรับ รายจ่ายจริง ยอดคงเหลือเงินสดในมือ และยอดเงินฝากธนาคาร<br>
       3. <strong>การส่งออกไฟล์ Excel:</strong> กดปุ่ม <code>[📥 ส่งออก Excel]</code> เพื่อดาวน์โหลดข้อมูลการใช้น้ำและบัญชีกองทุนไปจัดเก็บเป็นเอกสารสำรอง<br>
       4. กดปุ่มพิมพ์รายงานงบดุลเพื่อนำเข้าเสนอต่อที่ประชุมคณะกรรมการหมู่บ้านประจำเดือน
     </p>
 
-    <div class="grid-2" style="margin-top: 8px;">
+    <div class="grid-2" style="margin-top: 10px;">
       <div>
         <div class="figure-frame">
           <img src="assets/wireframe_voucher_10pct.jpg" alt="Voucher 10%">
@@ -456,20 +441,20 @@
     </div>
   </div>
 
-  <!-- ================= หน้าที่ 6: บทที่ 5 การแก้ปัญหาและลงนาม ================= -->
+  <!-- ================= หน้าที่ 6: บทที่ 5 การแก้ปัญหาและการบำรุงรักษา (ไม่มีกล่องลายเซ็น) ================= -->
   <div class="page">
-    <div class="doc-running-head">คู่มือการติดตั้งและใช้งานระบบจริง (XAMPP Manual) • บทที่ 5 การสำรองข้อมูลและการแก้ปัญหา</div>
+    <div class="doc-running-head">คู่มือการติดตั้งและใช้งานระบบจริง (XAMPP Manual) • บทที่ 5 การบำรุงรักษาและการแก้ปัญหา</div>
     <div class="page-number">หน้า 6 จาก 6</div>
 
-    <div class="chapter-heading">บทที่ 5<br>การสำรองข้อมูล การแก้ปัญหาเบื้องต้น และการรับรองคู่มือ</div>
+    <div class="chapter-heading">บทที่ 5<br>การสำรองข้อมูล การแก้ปัญหาเบื้องต้น และข้อแนะนำการใช้งาน</div>
 
     <div class="section-heading">5.1 การสำรองฐานข้อมูลฉุกเฉิน (1-Click Database Backup)</div>
     <p>
-      ผู้ดูแลระบบสามารถเข้าสู่ระบบแล้วกดลิงก์ <code>http://localhost/plumber/api/backup.php</code> ระบบจะส่งออกไฟล์สำรองฐานข้อมูลโครงสร้างและข้อมูลทั้งหมดในรูปแบบ <code>.sql</code> ให้ดาวน์โหลดทันที ควรกดสำรองข้อมูลอย่างน้อยสัปดาห์ละ 1 ครั้ง และคัดลอกไฟล์เก็บไว้ในแฟลชไดรฟ์ภายนอก
+      ผู้ดูแลระบบสามารถเข้าสู่ระบบแล้วกดลิงก์ <code>http://localhost/plumber/api/backup.php</code> ระบบจะส่งออกไฟล์สำรองฐานข้อมูลโครงสร้างและข้อมูลทั้งหมดในรูปแบบไฟล์ <code>.sql</code> ให้ดาวน์โหลดทันที ควรกดสำรองข้อมูลอย่างน้อยสัปดาห์ละ 1 ครั้ง และคัดลอกไฟล์เก็บไว้ในแฟลชไดรฟ์ภายนอกหรือ Google Drive เพื่อป้องกันความเสียหายกรณีเครื่องคอมพิวเตอร์เกิดปัญหา
     </p>
 
     <div class="section-heading">5.2 ตารางการแก้ไขปัญหาที่พบบ่อย (Troubleshooting Guide)</div>
-    <div class="caption-title">ตารางที่ 5.1 ปัญหาที่พบบ่อยและแนวทางการแก้ไข</div>
+    <div class="caption-title">ตารางที่ 5.1 ปัญหาการใช้งานที่พบบ่อยและแนวทางการแก้ไข</div>
     <table class="academic-table">
       <thead>
         <tr>
@@ -502,31 +487,12 @@
       </tbody>
     </table>
 
-    <div class="sign-section">
-      <div style="text-align: center; font-weight: 700; font-size: 13px; margin-bottom: 22px;">
-        การลงนามรับรองคู่มือการใช้งานระบบจริง (Operations Acceptance)
-      </div>
-      <div class="sign-grid">
-        <div>
-          <div class="sign-line">ลงชื่อ ...........................................................</div>
-          <strong>(นายสมบูรณ์ มั่นคง)</strong><br>
-          เหรัญญิกกองทุนประปาหมู่บ้านวังยาง<br>
-          วันที่ ........ / ........ / ................
-        </div>
-        <div>
-          <div class="sign-line">ลงชื่อ ...........................................................</div>
-          <strong>(นายวิชัย เจริญสุข)</strong><br>
-          ประธานกรรมการบริหารกิจการประปา<br>
-          วันที่ ........ / ........ / ................
-        </div>
-        <div>
-          <div class="sign-line">ลงชื่อ ...........................................................</div>
-          <strong>(อาจารย์ที่ปรึกษาโครงงาน)</strong><br>
-          คณะกรรมการตรวจประเมินผลงาน<br>
-          วันที่ ........ / ........ / ................
-        </div>
-      </div>
-    </div>
+    <div class="section-heading">5.3 ข้อแนะนำในการบำรุงรักษาระบบประจำงวด</div>
+    <p class="no-indent" style="margin-left: 0.75cm; font-size: 13px; line-height: 1.55;">
+      1. <strong>ก่อนเริ่มรอบการจดมิเตอร์:</strong> ควรตรวจสอบว่ารอบบิลใหม่ในตาราง <code>billing_cycles</code> ถูกเปิดเรียบร้อยแล้ว และพิมพ์สติกเกอร์สำรองเตรียมไว้ล่วงหน้า<br>
+      2. <strong>หลังเสร็จสิ้นการจัดเก็บประจำเดือน:</strong> เหรัญญิกควรตรวจสอบยอดเงินในบัญชีธนาคารและเงินสดในมือให้ตรงกับงบดุลในหน้า <code>executive_reports.php</code> ก่อนปิดงวดบัญชี<br>
+      3. <strong>การตรวจสอบความปลอดภัย:</strong> ควรทำการเปลี่ยนรหัสผ่านของผู้ดูแลระบบและเจ้าหน้าที่ทุกๆ 3-6 เดือน เพื่อป้องกันการเข้าถึงข้อมูลโดยมิชอบ
+    </p>
 
     <div class="running-footer">
       <span>คู่มือการติดตั้งและใช้งานระบบจริง (XAMPP Manual) • กองทุนประปาหมู่บ้านวังยาง</span>
