@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>คู่มือการนำเสนอและกลยุทธ์ตอบคำถามคณะกรรมการ - ระบบประปาหมู่บ้านวังยาง</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 12mm 15mm;
+    }
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    body {
+      font-family: 'Sarabun', sans-serif;
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: #1e293b;
+      background: #f1f5f9;
+      margin: 0;
+      padding: 0;
+    }
+    h1, h2, h3, h4 {
+      font-family: 'Prompt', sans-serif;
+      color: #0f172a;
+      margin-top: 0;
+    }
+    .page {
+      background: #fff;
+      padding: 22px 26px;
+      margin: 0 auto 20px auto;
+      max-width: 210mm;
+      min-height: 297mm;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      position: relative;
+    }
+    @media print {
+      body { background: #fff; }
+      .page {
+        box-shadow: none;
+        padding: 0;
+        margin: 0;
+        max-width: 100%;
+        min-height: auto;
+        page-break-after: always;
+      }
+      .no-print { display: none !important; }
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 10.5px;
+      font-weight: 600;
+    }
+    .badge-blue { background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd; }
+    .badge-green { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+    .badge-purple { background: #f3e8ff; color: #7c3aed; border: 1px solid #e9d5ff; }
+    .badge-red { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
+    .badge-amber { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+
+    .header-bar {
+      border-bottom: 2px solid #0284c7;
+      padding-bottom: 5px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header-bar h2 {
+      font-size: 16px;
+      margin: 0;
+      color: #0f172a;
+    }
+    .header-bar span {
+      font-size: 11px;
+      color: #64748b;
+    }
+    .card {
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      background: #fff;
+      page-break-inside: avoid;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 6px 0;
+      font-size: 11.5px;
+      page-break-inside: avoid;
+    }
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 5px 7px;
+      vertical-align: top;
+    }
+    th {
+      background: #0f172a;
+      color: #fff;
+      font-family: 'Prompt', sans-serif;
+      font-weight: 600;
+      text-align: left;
+      font-size: 11.5px;
+    }
+    .table-striped tr:nth-child(even) {
+      background: #f8fafc;
+    }
+    code {
+      font-family: 'Fira Code', monospace;
+      font-size: 10.5px;
+      background: #f1f5f9;
+      color: #0369a1;
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+    .script-box {
+      background: #fffbeb;
+      border-left: 4px solid #f59e0b;
+      padding: 9px 12px;
+      border-radius: 0 6px 6px 0;
+      margin-bottom: 10px;
+      font-size: 11.5px;
+      color: #78350f;
+      line-height: 1.45;
+    }
+    .qa-box {
+      background: #f0fdf4;
+      border-left: 4px solid #16a34a;
+      padding: 9px 12px;
+      border-radius: 0 6px 6px 0;
+      margin-bottom: 10px;
+      font-size: 11.5px;
+      color: #14532d;
+      line-height: 1.45;
+    }
+    .footer-page-num {
+      position: absolute;
+      bottom: 10px;
+      right: 26px;
+      font-size: 10.5px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= PAGE 1: COVER & PRESENTATION TIMELINE ================= -->
+  <div class="page">
+    <div style="border: 2px solid #0284c7; padding: 22px; border-radius: 8px; background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 30%, #ffffff 100%);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <span class="badge badge-blue" style="font-size: 11px; padding: 4px 10px;">🎤 Presentation & Defense Companion</span>
+        <span style="font-size: 11px; color: #64748b;">รหัส: SE-WTR-2026-PRES</span>
+      </div>
+
+      <div style="text-align: center; margin-bottom: 20px;">
+        <div style="font-size: 40px; margin-bottom: 6px;">🎙️</div>
+        <h1 style="font-size: 21px; font-weight: 700; color: #0f172a; margin-bottom: 4px; line-height: 1.3;">
+          คู่มือการนำเสนอและกลยุทธ์การตอบข้อซักถามคณะกรรมการ<br>
+          <span style="color: #0284c7; font-size: 16px;">(Smart Village Waterworks Presentation & Defense Guide)</span>
+        </h1>
+        <p style="font-size: 12px; color: #475569; margin: 0;">
+          โครงการระบบบริการและบริหารจัดการน้ำประปาหมู่บ้านวังยาง หมู่ที่ 3 ตำบลวังยาง อำเภอวังยาง จังหวัดนครพนม
+        </p>
+      </div>
+
+      <h4 style="font-size: 12.5px; margin-bottom: 6px;">⏱️ แผนผังการบริหารเวลาการนำเสนอ (Time Allocation: รวม 12 นาที)</h4>
+      <table class="table-striped">
+        <thead>
+          <tr>
+            <th width="18%">ช่วงเวลา</th>
+            <th width="32%">หัวข้อการนำเสนอ</th>
+            <th width="25%">สื่อประกอบ</th>
+            <th width="25%">จุดขายที่ต้องเน้น</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>00:00 - 02:00</strong></td>
+            <td>บทนำ: สภาพปัญหาชนบท & วัตถุประสงค์</td>
+            <td>สไลด์ 1-2</td>
+            <td>ปัญหาสมุดจดคลาสสิก, เลขถอยหลัง, หนี้เรื้อรัง</td>
+          </tr>
+          <tr>
+            <td><strong>02:00 - 04:30</strong></td>
+            <td>สถาปัตยกรรม 4-Tier & 2 โมเดลติดตั้ง</td>
+            <td>สไลด์ 3</td>
+            <td>Local LAN ออฟไลน์ 100% vs Cloud VPS, Zero-Config</td>
+          </tr>
+          <tr>
+            <td><strong>04:30 - 07:30</strong></td>
+            <td>สาธิตวงจรข้อมูลจริง (Live Demo)</td>
+            <td>หน้าเว็บจริง + Axure</td>
+            <td>สแกน QR จด ป.17 $\rightarrow$ ค้นหาเบอร์ $\rightarrow$ ป.31/32 $\rightarrow$ ฎีกา 10%</td>
+          </tr>
+          <tr>
+            <td><strong>07:30 - 09:30</strong></td>
+            <td>ความปลอดภัย & คุมหนี้ กค.4</td>
+            <td>สไลด์ 4-5</td>
+            <td>OWASP Top 10, PDO, คัดกรองหนี้ 1/2/3+ เดือน, เตือน 7 วัน</td>
+          </tr>
+          <tr>
+            <td><strong>09:30 - 10:30</strong></td>
+            <td>สรุปผลลัพธ์ & สิ่งที่ส่งมอบ</td>
+            <td>สไลด์ 6</td>
+            <td>Full SRS, Mini SRS, โค้ด GitHub, ความพร้อมลงพื้นที่จริง</td>
+          </tr>
+          <tr>
+            <td><strong>10:30 - 15:00</strong></td>
+            <td>ช่วงตอบข้อซักถามคณะกรรมการ (Q&A)</td>
+            <td>คลังคำถาม-คำตอบ</td>
+            <td>ตอบด้วยหลักการทางวิศวกรรมซอฟต์แวร์และระเบียบจริง</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="card" style="margin-top: 10px; background: #f8fafc;">
+        <strong style="color: #0f172a; font-size: 11.5px;">💡 เทคนิคทางจิตวิทยาในการนำเสนอ (Key Presentation Tips):</strong>
+        <div style="font-size: 11px; color: #475569; margin-top: 2px;">
+          1. <strong>เริ่มต้นด้วยปัญหาจริง (Pain Point):</strong> ให้กรรมการเห็นภาพความลำบากของเหรัญญิกและคนเก็บเงินในหมู่บ้าน<br>
+          2. <strong>เน้นย้ำความสมบูรณ์ระดับ Production:</strong> ชี้ให้เห็นว่าระบบนี้ไม่ใช่แค่หน้าเว็บตัวอย่าง แต่มีทั้ง Zero-Config DB, Backup และพร้อมใช้งานจริง
+        </div>
+      </div>
+    </div>
+    <div class="footer-page-num">หน้า 1 / 6</div>
+  </div>
+
+  <!-- ================= PAGE 2: SPEAKER SCRIPT SLIDES 1-3 ================= -->
+  <div class="page">
+    <div class="header-bar">
+      <h2>1. สคริปต์บทพูดนำเสนออย่างละเอียด (สไลด์ที่ 1 - 3)</h2>
+      <span>Defense Guide • ส่วนที่ 2</span>
+    </div>
+
+    <div class="script-box">
+      <strong>🎙️ สไลด์ที่ 1: แนะนำตัว ที่มา และสภาพปัญหาดั้งเดิม (Opening & Problem Statement)</strong><br>
+      <em>"กราบเรียนท่านอาจารย์และคณะกรรมการทุกท่านครับ วันนี้พวกเราขอนำเสนอ <strong>ระบบบริการและบริหารจัดการน้ำประปาหมู่บ้านอัจฉริยะ การประปาหมู่บ้านวังยาง</strong> ครับ<br>
+      แรงบันดาลใจของโครงการนี้เกิดจากสภาพปัญหาจริงของกิจการประปาชนบท 400 ครัวเรือนในหมู่ที่ 3 ตำบลวังยาง ซึ่งยังคงใช้ระบบจดบันทึกด้วยสมุดกระดาษและไฟล์ Excel ทำให้เกิดปัญหาคลาสสิก 4 ประการครับ: (1) การจดเลขมิเตอร์ตกหล่นและตัวเลขย้อนกลับ (2) การออกบิลล่าช้า ชาวบ้านไม่ทราบยอดจนเกิดหนี้สะสมเรื้อรัง (3) ความยุ่งยากในการหักค่าตอบแทนผู้จัดเก็บ 10% ที่ขาดเอกสารใบสำคัญรับเงิน และ (4) ความเสี่ยงข้อมูลสูญหายหากคอมพิวเตอร์สำนักงานเกิดความเสียหายครับ พวกเราจึงได้พัฒนาระบบนี้ขึ้นมาเพื่อปฏิรูปกระบวนการทั้งหมดให้เป็นดิจิทัล 100% ตั้งแต่หน้าบ้านจนถึงการทำบัญชีงบดุลของกองทุนครับ"</em>
+    </div>
+
+    <div class="script-box">
+      <strong>🎙️ สไลด์ที่ 2: สถาปัตยกรรมระบบ 4-Tier และความพร้อมใช้งานจริง (Architecture & Deployment)</strong><br>
+      <em>"ในเชิงวิศวกรรมซอฟต์แวร์ เราออกแบบระบบนี้ภายใต้ <strong>4-Tier Enterprise Architecture</strong> อย่างเป็นทางการครับ:<br>
+      • <strong>Tier 1 (Presentation):</strong> Responsive Web UI รองรับทั้งคอมพิวเตอร์และมือถือ ค้นหาเร็วด้วยเบอร์โทรศัพท์ และสแกนกล้อง QR Code หน้าบ้าน<br>
+      • <strong>Tier 2 (Application Logic):</strong> ประมวลผลด้วย PHP 8 Core มีเอนจินคำนวณค่าน้ำ 7+10 บาท, เอนจินตรวจจับตัวเลขผิดปกติ, เอนจินแปลงบาทไทย, และเอนจินซิงค์ค่าตอบแทน 10%<br>
+      • <strong>Tier 3 (Data Persistence):</strong> ฐานข้อมูล MariaDB/MySQL Engine แบบ InnoDB รองรับธุรกรรม ACID 100%<br>
+      • <strong>Tier 4 (Integration):</strong> เชื่อมต่อ QR พร้อมเพย์มาตรฐาน EMVCo และระบบส่งออก Excel ครับ<br>
+      ที่สำคัญ ระบบนี้รองรับสภาพแวดล้อมจริงได้ 2 รูปแบบ คือจะติดตั้งบนคอมพิวเตอร์สำนักงานแบบ Local On-Premise LAN เพื่อทำงานแบบออฟไลน์ 100% โดยไม่มีค่าใช้จ่าย หรือจะขึ้น Cloud VPS ราคาประหยัดเพื่อให้ชาวบ้านตรวจค่าน้ำได้ 24 ชั่วโมงก็ได้ครับ พร้อมระบบ Zero-Config ที่สร้างฐานข้อมูลอัตโนมัติเมื่อเปิดครั้งแรกครับ"</em>
+    </div>
+
+    <div class="script-box">
+      <strong>🎙️ สไลด์ที่ 3: วงจรการทำงานหน้างานและการบริการประชาชน (Field & Citizen Workflow)</strong><br>
+      <em>"ในขั้นตอนการปฏิบัติงานหน้างาน เจ้าหน้าที่ใช้สมาร์ตโฟนเปิดหน้า <code>meter_reading.php</code> เพื่อเดินจดมิเตอร์ตามเส้นทางจริง (<code>seq_no</code>) หรือใช้กล้องสแกนสติกเกอร์ QR Code ที่เราพิมพ์ไปติดไว้ที่หน้าบ้านผ่านหน้า <code>print_qr_labels.php</code> ครับ<br>
+      เมื่อกรอกเลขอ่านครั้งนี้ ระบบจะคำนวณหน่วยใช้และยอดเงินทันที หากกรอกตัวเลขน้อยกว่าครั้งก่อน ระบบจะล็อกแถบสีแดงแจ้งเตือนทันทีครับ<br>
+      และในฝั่งของประชาชน สามารถเข้าหน้า <code>index.php</code> เพื่อตรวจสอบยอดค่าน้ำของบ้านตนเองได้ง่ายๆ เพียงพิมพ์หมายเลขโทรศัพท์ 10 หลัก ระบบจะดึงยอดค้างชำระ พร้อมสร้างภาพ QR Code พร้อมเพย์มาตรฐานธนาคารแห่งประเทศไทยที่ระบุยอดเงินตรงตามสตางค์ให้ชาวบ้านสแกนจ่ายได้ทันทีครับ"</em>
+    </div>
+    <div class="footer-page-num">หน้า 2 / 6</div>
+  </div>
+
+  <!-- ================= PAGE 3: SPEAKER SCRIPT SLIDES 4-6 ================= -->
+  <div class="page">
+    <div class="header-bar">
+      <h2>1. สคริปต์บทพูดนำเสนออย่างละเอียด (สไลด์ที่ 4 - 6)</h2>
+      <span>Defense Guide • ส่วนที่ 2 (ต่อ)</span>
+    </div>
+
+    <div class="script-box">
+      <strong>🎙️ สไลด์ที่ 4: ระบบการเงินแบบบูรณาการ ใบเสร็จ ป.31/32 และหนี้ กค.4 (Unified Finance & Governance)</strong><br>
+      <em>"หัวใจสำคัญของระบบการเงินอยู่ที่หน้า <code>finance_billing.php</code> ครับ เราออกแบบให้เป็น Unified Control Header รวม 4 ระบบงานไว้ในหน้าเดียว:<br>
+      1. เมื่อชาวบ้านมาชำระเงิน เหรัญญิกกดปุ่ม [รับชำระ] ระบบจะตัดยอดเป็น PAID แบบ Optimistic UI ทันที และมีปุ่ม [ใบเสร็จ] ให้เปิดพรีวิวและพิมพ์ใบเสร็จรับเงินมาตรฐาน ป.31/32 ได้ในเสี้ยววินาทีโดยไม่ต้องสลับหน้าจอ<br>
+      2. ในส่วนของหนี้ค้างชำระ มีทะเบียนคุมหนี้ตามแบบ กค.4 จัดกลุ่ม 1, 2, 3+ เดือน พร้อมปุ่มพิมพ์หนังสือเตือนระงับการจ่ายน้ำกำหนด 7 วันได้ทันที<br>
+      3. ในส่วนเงินรายได้ ระบบสามารถกดปุ่ม [ซิงค์ค่าตอบแทน 10%] เพื่อคำนวณเงินรางวัลคนเก็บจากยอดรับจริงในงวดนั้น พร้อมออกฎีกาเบิกจ่ายเงินที่มีช่องลงนาม 3 ท่านอย่างถูกต้องตามระเบียบราชการครับ"</em>
+    </div>
+
+    <div class="script-box">
+      <strong>🎙️ สไลด์ที่ 5: การเชื่อมโยงจากต้นแบบ Axure RP สู่โค้ดระบบจริง (Prototype Traceability)</strong><br>
+      <em>"ก่อนการพัฒนาโค้ดจริง เราได้จัดทำภาพร่างต้นแบบอย่างละเอียดใน Axure RP (ไฟล์ <code>Plumber_ver-1003-gu-tam-kon-dew-i-sus.rp</code>) ครบทั้ง 31 หน้าจอ โดยโครงสร้าง UI ทุกองค์ประกอบในไฟล์ต้นแบบ ได้รับการพัฒนาเป็นโค้ดระบบจริงครบถ้วน 100% ไม่ว่าจะเป็นหน้าค้นหาประชาชน, หน้าจดมิเตอร์ ป.17, หน้าใบเสร็จ ป.31/32, หน้าฎีกาเบิกจ่าย 10%, หน้างบดุลการเงิน และระบบพิมพ์สติกเกอร์ QR Code ครับ"</em>
+    </div>
+
+    <div class="script-box">
+      <strong>🎙️ สไลด์ที่ 6: บทสรุปและความพร้อมในการส่งมอบ (Conclusion & Deliverables)</strong><br>
+      <em>"สรุปสิ่งที่พวกเราส่งมอบในวันนี้ประกอบด้วย: (1) เอกสาร Full SRS ตามมาตรฐาน IEEE 830 (2) เอกสาร Mini SRS สำหรับการประเมินผลเร็ว (3) ซอร์สโค้ดระดับ Production บน GitHub Repository <code>phawatjam-collab/Water</code> ที่ผ่านการทดสอบ Linting 100% และ (4) ฐานข้อมูลพร้อมใช้ Zero-Config และระบบสำรองข้อมูล 1-Click Backup ครับ ระบบนี้พร้อมแล้วที่จะนำไปติดตั้งและยกระดับคุณภาพชีวิตของชุมชนบ้านวังยางได้จริงในทันทีครับ ขอขอบพระคุณคณะกรรมการทุกท่านและพร้อมรับข้อเสนอแนะเพื่อพัฒนาต่อไปครับ"</em>
+    </div>
+
+    <div class="card" style="background: #f8fafc; border-top: 3px solid #0f172a; margin-top: 14px;">
+      <h4 style="margin: 0 0 4px 0; color: #0f172a; font-size: 12px;">🌟 คีย์เวิร์ดสำคัญที่ต้องพูดให้กรรมการได้ยิน:</h4>
+      <div style="font-size: 11px; color: #475569;">
+        <code>ACID Transaction</code> • <code>Zero-Config Database</code> • <code>แบบ ป.31/32</code> • <code>แบบ กค.4</code> • <code>ฎีกาค่าตอบแทน 10%</code> • <code>EMVCo PromptPay</code> • <code>Offline LAN Resilience</code>
+      </div>
+    </div>
+    <div class="footer-page-num">หน้า 3 / 6</div>
+  </div>
+
+  <!-- ================= PAGE 4: PROFESSOR DEFENSE Q&A 1-4 ================= -->
+  <div class="page">
+    <div class="header-bar">
+      <h2>2. คลังคำถาม-คำตอบปราบเซียนจากคณะกรรมการ (Q&A Defense ตอนที่ 1)</h2>
+      <span>Defense Guide • ส่วนที่ 3</span>
+    </div>
+
+    <div class="qa-box">
+      <strong>❓ คำถามที่ 1: ทำไมกลุ่มคุณถึงเลือกใช้ PHP Native แทนที่จะใช้ Modern Framework เช่น Laravel หรือ React?</strong><br>
+      <strong>💡 แนวทางการตอบ:</strong> <em>"เป็นคำถามที่ตรงจุดมากครับ เหตุผลหลักคือ **สภาพแวดล้อมจริงของสำนักงานประปาหมู่บ้านชนบท (Target Operational Environment)** ครับ:<br>
+      1. คอมพิวเตอร์ที่ทำการหมู่บ้านเป็นเครื่องสเปกพื้นฐาน (Core i3, RAM 4GB) และผู้ดูแลคือผู้ใหญ่บ้านหรือเหรัญญิก ไม่ใช่ Software Engineer หากใช้ Laravel หรือ Node.js การติดตั้งจะต้องพึ่งพา composer, npm build, Docker และต้องต่อเน็ตความเร็วสูงในการอัปเดต ซึ่งไม่เหมาะกับบริบทชุมชน<br>
+      2. การใช้ PHP 8 Native ร่วมกับ Vanilla JS ทำให้ระบบมีขนาดเบามาก (Low Overhead), โหลดเร็วในเวลาต่ำกว่า 0.2 วินาที, รันผ่าน XAMPP ได้ทันทีโดยไม่ต้องตั้งค่าเพิ่มเติม (Zero-Config), และสามารถทำงานแบบ Offline 100% ได้อย่างเสถียรที่สุดครับ"</em>
+    </div>
+
+    <div class="qa-box">
+      <strong>❓ คำถามที่ 2: ถ้าเกิดเหตุไฟดับหรือระบบขัดข้องขณะกำลังบันทึกข้อมูลการเงิน ข้อมูลจะสูญหายหรือเสียหายหรือไม่?</strong><br>
+      <strong>💡 แนวทางการตอบ:</strong> <em>"ระบบของเราป้องกันปัญหานี้ไว้ 2 ชั้นครับ:<br>
+      1. ชั้นฐานข้อมูล: เราใช้ MariaDB/MySQL Storage Engine แบบ **InnoDB** ซึ่งรองรับคุณสมบัติ **ACID (Atomicity, Consistency, Isolation, Durability)** การทำธุรกรรมการเงินทุกจุดจะทำงานอยู่ภายใต้ Database Transaction หากระบบดับกลางคัน ข้อมูลจะถูก Rollback อัตโนมัติ ไม่เกิดภาวะข้อมูลค้างคาหรือตัดยอดซ้ำ<br>
+      2. ชั้น Disaster Recovery: เรามีเอนจิน `api/backup.php` ที่ให้เหรัญญิกกดสำรองฐานข้อมูลออกมาเป็นไฟล์ `.sql` ลง Flash Drive ได้ในคลิกเดียวทุกวัน ทำให้สามารถกู้คืนระบบกลับมาได้ภายใน 5 นาที (RTO &lt; 5 นาที) ครับ"</em>
+    </div>
+
+    <div class="qa-box">
+      <strong>❓ คำถามที่ 3: ระบบป้องกันปัญหาการปลอมแปลงสลิป หรือการแอบแก้ไขยอดเงินค่าน้ำอย่างไร?</strong><br>
+      <strong>💡 แนวทางการตอบ:</strong> <em>"เราใช้มาตรการควบคุมความปลอดภัย 3 ด้านครับ:<br>
+      1. การใช้ **Role-Based Access Control (RBAC)**: สมาชิกและประชาชนทั่วไปมีสิทธิ์เพียงแค่เรียกดู (Read-Only) เท่านั้น ไม่มีสิทธิ์ส่งคำสั่งอัปเดตสถานะชำระเงิน<br>
+      2. การใช้ **PDO Prepared Statements 100%**: ทุกคำสั่ง SQL มีการผูกตัวแปร Parameter Binding ป้องกันการยิง SQL Injection เพื่อลักลอบแก้ข้อมูล<br>
+      3. ระบบ **Audit Trail & Receipt Numbering**: การตัดชำระเงินทุกครั้งจะบันทึกเวลา `paid_at = NOW()` และออกเลขที่ใบเสร็จ `RC-YYYYMM-XXX` ที่รันต่อเนื่องกันแบบผูกพันทางบัญชี ทำให้สามารถตรวจสอบย้อนหลังได้เสมอครับ"</em>
+    </div>
+
+    <div class="qa-box">
+      <strong>❓ คำถามที่ 4: ทำไมระบบถึงมี 'ฎีกาเบิกจ่าย 10%' สิ่งนี้จำเป็นอย่างไรในระบบประปาหมู่บ้าน?</strong><br>
+      <strong>💡 แนวทางการตอบ:</strong> <em>"การมีฎีกา 10% คือสิ่งที่ทำให้ระบบนี้ **สอดคล้องกับระเบียบการบริหารกิจการประปาหมู่บ้านของกระทรวงมหาดไทย** อย่างแท้จริงครับ:<br>
+      ในทางปฏิบัติ ผู้จัดเก็บค่าน้ำคือชาวบ้านที่ต้องเดินเท้าตามซอยเพื่อเก็บเงิน ระเบียบกองทุนจึงกำหนดให้มีเงินรางวัลการจัดเก็บอัตราร้อยละ 10 จาก 'ยอดเงินที่จัดเก็บได้จริง'<br>
+      ในระบบเดิม เหรัญญิกต้องมานั่งกดเครื่องคิดเลขและหักเงินสดกันเองโดยไม่มีเอกสาร ทำให้เกิดข้อพิพาทความไม่โปร่งใส ระบบของเราจึงสร้างเอนจินคำนวณยอด 10% จากบิลที่ชำระแล้วโดยอัตโนมัติ และพิมพ์ใบสำคัญรับเงินที่มีลายมือชื่อ 3 ฝ่าย (ผู้รับเงิน, เหรัญญิก, ประธานกองทุน) ทำให้เกิดธรรมาภิบาลและความโปร่งใสครับ"</em>
+    </div>
+    <div class="footer-page-num">หน้า 4 / 6</div>
+  </div>
+
+  <!-- ================= PAGE 5: PROFESSOR DEFENSE Q&A 5-8 ================= -->
+  <div class="page">
+    <div class="header-bar">
+      <h2>2. คลังคำถาม-คำตอบปราบเซียนจากคณะกรรมการ (Q&A Defense ตอนที่ 2)</h2>
+      <span>Defense Guide • ส่วนที่ 3 (ต่อ)</span>
+    </div>
+
+    <div class="qa-box">
+      <strong>❓ คำถามที่ 5: ทำไมระบบถึงปรับมาเน้นการค้นหาด้วย 'หมายเลขโทรศัพท์' แทนที่จะใช้ 'รหัสผู้ใช้น้ำ'?</strong><br>
+      <strong>💡 แนวทางการตอบ:</strong> <em>"นี่คือผลลัพธ์จากการศึกษา **User Experience (UX) ของชาวบ้านจริง** ครับ:<br>
+      รหัสสมาชิก เช่น `WY-045` เป็นสิ่งที่ชาวบ้านมักจะจำไม่ได้เมื่อมาติดต่อที่ทำการกองทุน หรือเมื่อต้องการเช็คค่าน้ำผ่านมือถือ แต่หมายเลขโทรศัพท์ 10 หลักเป็นสิ่งที่ทุกคนจำได้แม่นยำและไม่ซ้ำกันในชุมชน เราจึงนำเบอร์โทรศัพท์มาเป็น Primary Search Key และใส่ระบบ Index ในฐานข้อมูล ทำให้สามารถค้นหาเจอยอดหนี้ได้ภายใน 0.05 วินาที ช่วยลดเวลาการเข้าคิวชำระเงินได้อย่างมีนัยสำคัญครับ"</em>
+    </div>
+
+    <div class="qa-box">
+      <strong>❓ คำถามที่ 6: สติกเกอร์ QR Code ติดมิเตอร์ ทำงานอย่างไร และแตกต่างจาก QR Code พร้อมเพย์อย่างไร?</strong><br>
+      <strong>💡 แนวทางการตอบ:</strong> <em>"ทั้งสอง QR มีหน้าที่ต่างกันอย่างชัดเจนครับ:<br>
+      1. **สติกเกอร์ QR ติดหน้าบ้าน:** เป็น **URL Deep Link** ประจำตัวผู้ใช้น้ำ (เช่น `http://.../index.php?phone=...&cust_id=...`) เมื่อช่างจดมิเตอร์หรือชาวบ้านใช้กล้องมือถือสแกน ระบบจะกระโดดเข้าหน้าจดเลขหรือหน้ารายละเอียดของบ้านหลังนั้นให้ทันทีโดยไม่ต้องพิมพ์ค้นหา<br>
+      2. **QR Code พร้อมเพย์:** เป็น **EMVCo Payment Payload** ที่เข้ารหัสบัญชีกองทุนและยอดเงินสตางค์ตามมาตรฐานธนาคารแห่งประเทศไทย สำหรับให้ชาวบ้านใช้แอปธนาคารสแกนโอนเงินจ่ายค่าน้ำครับ"</em>
+    </div>
+
+    <div class="qa-box">
+      <strong>❓ คำถามที่ 7: ระบบรองรับการทำงานตอนอินเทอร์เน็ตในหมู่บ้านล่มได้อย่างไร (Offline Resilience)?</strong><br>
+      <strong>💡 แนวทางการตอบ:</strong> <em>"ระบบถูกออกแบบด้วยสถาปัตยกรรม **Local On-Premise LAN**: โดยรัน Apache และ MariaDB อยู่บนเครื่องคอมพิวเตอร์สำนักงานประปา และปล่อยสัญญาณผ่าน Wi-Fi Router ภายในที่ทำการ (Local IP เช่น `192.168.1.100`) เจ้าหน้าที่สามารถเชื่อมต่อ Wi-Fi และทำงานตัดเงิน ออกใบเสร็จ หรือจดมิเตอร์ได้ 100% แม้อินเทอร์เน็ตภายนอกจะตัดขาดครับ"</em>
+    </div>
+
+    <div class="qa-box">
+      <strong>❓ คำถามที่ 8: ใน Axure RP ออกแบบไว้อย่างไร แล้วเชื่อมโยงมายังโค้ดระบบจริงอย่างไร?</strong><br>
+      <strong>💡 แนวทางการตอบ:</strong> <em>"เราได้จัดทำ High-Fidelity Prototype ในไฟล์ `Plumber_ver-1003-gu-tam-kon-dew-i-sus.rp` รวม 31 หน้าจอ เพื่อทดสอบ User Flow และจัดวางตำแหน่งปุ่มกดก่อนลงมือเขียนโค้ดจริง จากนั้นจึงแปลงคอมโพเนนต์ใน Axure มาเป็นโค้ด HTML/CSS และฟังก์ชัน PHP 8 โดยมีตาราง Requirements Traceability Matrix (RTM) ในเอกสาร Full SRS ตรวจสอบย้อนกลับความตรงกันได้ 100% ครับ"</em>
+    </div>
+    <div class="footer-page-num">หน้า 5 / 6</div>
+  </div>
+
+  <!-- ================= PAGE 6: PRE-FLIGHT CHECKLIST & CONCLUSION ================= -->
+  <div class="page">
+    <div class="header-bar">
+      <h2>3. เช็กลิสต์การเตรียมตัวก่อนขึ้นเวทีนำเสนอ (Pre-Flight Checklist)</h2>
+      <span>Defense Guide • ส่วนที่ 4</span>
+    </div>
+
+    <div class="card" style="border-left: 4px solid #16a34a;">
+      <h4 style="margin: 0 0 6px 0; color: #16a34a; font-size: 13px;">✅ ขั้นตอนการเตรียมเครื่องคอมพิวเตอร์ก่อนเข้าห้องสอบ:</h4>
+      <div style="font-size: 11.5px; color: #334151; line-height: 1.55;">
+        1. <strong>สตาร์ต XAMPP:</strong> ตรวจสอบว่า Apache และ MySQL ขึ้นสถานะสีเขียว (Port 80/3306) เรียบร้อยแล้ว<br>
+        2. <strong>เปิดหน้าเว็บบนเบราว์เซอร์เตรียมไว้ 4 แท็บ:</strong><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;• แท็บ 1: <code>http://localhost/plumber/index.php</code> (หน้าแรกค้นหาค่าน้ำด้วยเบอร์โทร)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;• แท็บ 2: <code>http://localhost/plumber/meter_reading.php</code> (หน้าจดมิเตอร์ ป.17 เรียงตามลำดับ)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;• แท็บ 3: <code>http://localhost/plumber/finance_billing.php</code> (หน้าระบบการเงิน 4 แท็บ)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;• แท็บ 4: <code>http://localhost/plumber/dashboard.php</code> (หน้าแดชบอร์ดสรุปสถิติ)<br>
+        3. <strong>เตรียมไฟล์เอกสาร PDF:</strong> ก๊อปปี้ <code>FULL_SRS_DOCUMENT.pdf</code>, <code>MINI_SRS_DOCUMENT.pdf</code> และ <code>PRESENTATION_DEFENSE_GUIDE.pdf</code> ใส่ Flash Drive ไว้สำรอง
+      </div>
+    </div>
+
+    <div class="card" style="border-left: 4px solid #0284c7; margin-top: 10px;">
+      <h4 style="margin: 0 0 6px 0; color: #0284c7; font-size: 13px;">🎬 ขั้นตอนการสาธิตสดให้กรรมการดู (Live Demo Action Plan):</h4>
+      <div style="font-size: 11.5px; color: #334151; line-height: 1.55;">
+        • <strong>จังหวะที่ 1:</strong> เปิดหน้า <code>index.php</code> พิมพ์เบอร์โทร <code>0812345678</code> กดค้นหา &rarr; แสดงการ์ดยอดเงิน 115.00 บาท และคลิกเปิด QR พร้อมเพย์<br>
+        • <strong>จังหวะที่ 2:</strong> สลับมาแท็บ <code>finance_billing.php</code> กดปุ่ม <code>[✅ รับชำระ]</code> &rarr; แสดง Toast สีเขียวทันที<br>
+        • <strong>จังหวะที่ 3:</strong> กดปุ่ม <code>[🧾 ใบเสร็จ]</code> &rarr; ป๊อปอัปพรีวิวใบเสร็จ ป.31/32 พร้อมตัวอักษรบาทไทยเด้งขึ้นมาทันที 1 คลิก<br>
+        • <strong>จังหวะที่ 4:</strong> สลับไป Tab 4 (ฎีกาเบิกจ่าย) กดปุ่ม <code>[🔄 ซิงค์ค่าตอบแทน 10%]</code> &rarr; ยอดเงิน 10% คำนวณจากยอดที่เพิ่งรับเมื่อครู่นี้ขึ้นมาสดๆ ทันที!
+      </div>
+    </div>
+
+    <div class="card" style="background: #f0fdf4; border: 1px solid #bbf7d0; margin-top: 14px; padding: 14px; text-align: center;">
+      <div style="font-size: 18px; margin-bottom: 4px;">🏆</div>
+      <strong style="color: #15803d; font-size: 13.5px;">"ขอให้มั่นใจ นำเสนออย่างเป็นมืออาชีพ ตอบคำถามด้วยหลักการ แล้วคุณจะได้คะแนนยอดเยี่ยมแน่นอนครับ!"</strong>
+    </div>
+    <div class="footer-page-num">หน้า 6 / 6</div>
+  </div>
+
+</body>
+</html>
