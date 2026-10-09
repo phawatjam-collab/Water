@@ -52,32 +52,9 @@
         page-break-after: always;
       }
     }
-    .page-number {
-      position: absolute;
-      top: 12mm;
-      right: 20mm;
-      font-size: 12px;
-      color: #333333;
-    }
-    .doc-running-head {
-      position: absolute;
-      top: 12mm;
-      left: 24mm;
-      font-size: 11.5px;
-      color: #555555;
-    }
-    .running-footer {
-      position: absolute;
-      bottom: 12mm;
-      left: 24mm;
-      right: 20mm;
-      border-top: 0.5pt solid #666666;
-      padding-top: 4px;
-      display: flex;
-      justify-content: space-between;
-      font-size: 11px;
-      color: #555555;
-    }
+    
+    
+    
     p {
       margin: 4px 0;
       text-indent: 1.25cm;
@@ -163,29 +140,12 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
     }
-    .sign-section {
-      margin-top: 24px;
-      border: 0.75pt solid #777777;
-      padding: 16px 12px 10px 12px;
-    }
-    .sign-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      text-align: center;
-      font-size: 12px;
-    }
-    .sign-line {
-      margin-bottom: 35px;
-    }
   </style>
 </head>
 <body>
 
   <!-- ================= หน้าที่ 1 ================= -->
   <div class="page">
-    <div class="doc-running-head">เอกสารข้อกำหนดความต้องการซอฟต์แวร์ฉบับสรุป (Mini SRS)</div>
-    <div class="page-number">หน้า 1 จาก 4</div>
-
     <div style="text-align: center; margin-top: 8px; margin-bottom: 16px;">
       <h1 style="font-size: 17px; font-weight: 700; line-height: 1.4;">
         เอกสารข้อกำหนดความต้องการซอฟต์แวร์ฉบับสรุป (Mini SRS)<br>
@@ -249,17 +209,10 @@
       <em>หมายเหตุ:</em> อ้างอิงไฟล์ต้นแบบหน้าจอจำลอง <code>Plumber_ver-1003-gu-tam-kon-dew-i-sus.rp</code> (31 หน้าจอ) และซอร์สโค้ดระบบจริงบนคลัง GitHub: <code>https://github.com/phawatjam-collab/Water</code> (สาขา main)
     </p>
 
-    <div class="running-footer">
-      <span>เอกสารข้อกำหนดความต้องการซอฟต์แวร์ฉบับสรุป • กองทุนประปาหมู่บ้านวังยาง</span>
-      <span>รหัส: SE-2567-WTR-MINI</span>
     </div>
-  </div>
 
   <!-- ================= หน้าที่ 2 ================= -->
   <div class="page">
-    <div class="doc-running-head">เอกสารข้อกำหนดความต้องการซอฟต์แวร์ฉบับสรุป (Mini SRS)</div>
-    <div class="page-number">หน้า 2 จาก 4</div>
-
     <div class="section-heading">3. ข้อกำหนดความต้องการเชิงหน้าที่ของระบบ (Functional Requirements Matrix)</div>
     <p>
       ระบบประกอบด้วย 10 ฟังก์ชันงานหลักที่ครอบคลุมกระบวนการตั้งแต่การจดบันทึกข้อมูลจนถึงการปิดงบดุลประจำเดือน:
@@ -354,17 +307,10 @@
       <strong>การบูรณาการระบบการเงิน (Unified Interface):</strong> ฟังก์ชัน FR-05, FR-07 และ FR-08 รวมศูนย์อยู่ในหน้าจอ <code>finance_billing.php</code> ภายใต้แถบควบคุมรอบบิลเดียวกัน เมื่อสลับแท็บข้อมูลจะซิงค์ตรงกันทันที และมีหน้าต่างป๊อปอัปช่วยให้บันทึกเสร็จสิ้นโดยไม่ต้องโหลดสลับหน้าเว็บไปมา
     </p>
 
-    <div class="running-footer">
-      <span>เอกสารข้อกำหนดความต้องการซอฟต์แวร์ฉบับสรุป • กองทุนประปาหมู่บ้านวังยาง</span>
-      <span>รหัส: SE-2567-WTR-MINI</span>
     </div>
-  </div>
 
   <!-- ================= หน้าที่ 3 ================= -->
   <div class="page">
-    <div class="doc-running-head">เอกสารข้อกำหนดความต้องการซอฟต์แวร์ฉบับสรุป (Mini SRS)</div>
-    <div class="page-number">หน้า 3 จาก 4</div>
-
     <div class="section-heading">4. สถาปัตยกรรมระบบและภาพหน้าจอต้นแบบ (Architecture & Prototypes)</div>
     <p>
       ระบบถูกออกแบบตามสถาปัตยกรรมซอฟต์แวร์ 4 ระดับ (4-Tier Software Architecture) ประกอบด้วย:
@@ -419,18 +365,11 @@
       </div>
     </div>
 
-    <div class="running-footer">
-      <span>เอกสารข้อกำหนดความต้องการซอฟต์แวร์ฉบับสรุป • กองทุนประปาหมู่บ้านวังยาง</span>
-      <span>รหัส: SE-2567-WTR-MINI</span>
     </div>
-  </div>
 
   <!-- ================= หน้าที่ 4 ================= -->
   <div class="page">
-    <div class="doc-running-head">เอกสารข้อกำหนดความต้องการซอฟต์แวร์ฉบับสรุป (Mini SRS)</div>
-    <div class="page-number">หน้า 4 จาก 4</div>
-
-    <div class="section-heading">5. การตรวจสอบความถูกต้องและการรับรองโครงงาน (Verification & Sign-Off)</div>
+    <div class="section-heading">5. การตรวจสอบความถูกต้องและการตรวจรับโครงงาน (Verification & Acceptance)</div>
     <p>
       ระบบได้รับการตรวจสอบความถูกต้องและความพร้อมในการนำไปใช้งานจริงตามเกณฑ์มาตรฐานทางวิศวกรรมซอฟต์แวร์:
     </p>
@@ -483,36 +422,16 @@
       6. คู่มือการทดสอบต้นแบบส่วนติดต่อผู้ใช้: USER_MANUAL_AXURE.pdf (6 หน้า)
     </p>
 
-    <div class="sign-section">
-      <div style="text-align: center; font-weight: 700; font-size: 13px; margin-bottom: 22px;">
-        การลงนามรับรองผลงานโครงงาน (Project Acceptance & Sign-Off)
-      </div>
-      <div class="sign-grid">
-        <div>
-          <div class="sign-line">ลงชื่อ ...........................................................</div>
-          <strong>(นายสมบูรณ์ มั่นคง)</strong><br>
-          เหรัญญิกกองทุนประปาหมู่บ้านวังยาง<br>
-          วันที่ ........ / ........ / ................
-        </div>
-        <div>
-          <div class="sign-line">ลงชื่อ ...........................................................</div>
-          <strong>(นายวิชัย เจริญสุข)</strong><br>
-          ประธานกรรมการบริหารกิจการประปา<br>
-          วันที่ ........ / ........ / ................
-        </div>
-        <div>
-          <div class="sign-line">ลงชื่อ ...........................................................</div>
-          <strong>(อาจารย์ที่ปรึกษาโครงงาน)</strong><br>
-          คณะกรรมการตรวจประเมินผลงาน<br>
-          วันที่ ........ / ........ / ................
-        </div>
-      </div>
-    </div>
-
-    <div class="running-footer">
-      <span>เอกสารข้อกำหนดความต้องการซอฟต์แวร์ฉบับสรุป • กองทุนประปาหมู่บ้านวังยาง</span>
-      <span>รหัส: SE-2567-WTR-MINI</span>
-    </div>
+    <div class="section-heading">6. สรุปรายการสิ่งส่งมอบและการถ่ายทอดเทคโนโลยี (Project Deliverables & Handover)</div>
+    <p>
+      ระบบบริหารจัดการน้ำประปาหมู่บ้านวังยางได้รับการพัฒนาและทดสอบความถูกต้องครบถ้วนตามข้อกำหนด โดยมีรายการสิ่งส่งมอบเพื่อการนำไปใช้งานจริงและการบำรุงรักษาในระยะยาวดังต่อไปนี้:
+    </p>
+    <p class="no-indent" style="font-size: 13.5px; line-height: 1.55; margin-left: 0.75cm;">
+      1. <strong>ซอร์สโค้ดและระบบฐานข้อมูล:</strong> ซอร์สโค้ดฉบับสมบูรณ์บนคลัง phawatjam-collab/Water บน GitHub (สาขา main) พร้อมโครงสร้างฐานข้อมูลมาตรฐานและชุดข้อมูลจำลอง 400 ครัวเรือนในไฟล์ <code>database.sql</code><br>
+      2. <strong>เอกสารทางวิชาการและคู่มือการปฏิบัติงาน:</strong> เอกสารข้อกำหนดความต้องการฉบับสมบูรณ์ (Full SRS 8 หน้า), ฉบับสรุป (Mini SRS 4 หน้า), คู่มือการติดตั้งและใช้งานระบบจริง (XAMPP Manual 6 หน้า) และคู่มือทดสอบต้นแบบ (Axure Manual 6 หน้า)<br>
+      3. <strong>การถ่ายทอดองค์ความรู้และฝึกอบรม:</strong> จัดทำคู่มือแนะนำขั้นตอนการปฏิบัติงานสำหรับเจ้าหน้าที่จดมาตรวัดน้ำภาคสนาม ช่างซ่อมบำรุง และเหรัญญิกกองทุน เพื่อให้สามารถดูแลระบบได้ด้วยตนเองอย่างต่อเนื่อง<br>
+      4. <strong>การรับประกันและดูแลระบบ:</strong> กำหนดแนวทางการสำรองข้อมูลรายสัปดาห์ผ่านระบบ 1-Click Backup และแนวทางการแก้ไขปัญหาเบื้องต้นตามคู่มือปฏิบัติงานประจำสถานีประปา
+    </p>
   </div>
 
 </body>

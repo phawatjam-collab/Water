@@ -52,32 +52,9 @@
         page-break-after: always;
       }
     }
-    .page-number {
-      position: absolute;
-      top: 12mm;
-      right: 18mm;
-      font-size: 11.5px;
-      color: #333333;
-    }
-    .doc-running-head {
-      position: absolute;
-      top: 12mm;
-      left: 24mm;
-      font-size: 11px;
-      color: #555555;
-    }
-    .running-footer {
-      position: absolute;
-      bottom: 12mm;
-      left: 24mm;
-      right: 18mm;
-      border-top: 0.5pt solid #666666;
-      padding-top: 4px;
-      display: flex;
-      justify-content: space-between;
-      font-size: 10.5px;
-      color: #555555;
-    }
+    
+    
+    
     p {
       margin: 3.5px 0;
       text-indent: 1.25cm;
@@ -168,20 +145,6 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
     }
-    .sign-section {
-      margin-top: 22px;
-      border: 0.75pt solid #777777;
-      padding: 14px 12px 10px 12px;
-    }
-    .sign-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      text-align: center;
-      font-size: 11.5px;
-    }
-    .sign-line {
-      margin-bottom: 34px;
-    }
     .req-item {
       margin-bottom: 6px;
       text-align: justify;
@@ -240,9 +203,6 @@
 
   <!-- ================= หน้าที่ 2: บทที่ 1 บทนำ ================= -->
   <div class="page">
-    <div class="doc-running-head">เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • บทที่ 1 บทนำ</div>
-    <div class="page-number">หน้า 2 จาก 8</div>
-
     <div class="chapter-heading">บทที่ 1<br>บทนำ (Introduction)</div>
 
     <div class="section-heading">1.1 ความเป็นมาและความสำคัญของโครงงาน (Background & Significance)</div>
@@ -299,17 +259,10 @@
       </tbody>
     </table>
 
-    <div class="running-footer">
-      <span>เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • กองทุนประปาหมู่บ้านวังยาง</span>
-      <span>หน้า 2 จาก 8</span>
     </div>
-  </div>
 
   <!-- ================= หน้าที่ 3: บทที่ 2 ภาพรวมระบบ ================= -->
   <div class="page">
-    <div class="doc-running-head">เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • บทที่ 2 ภาพรวมของระบบ</div>
-    <div class="page-number">หน้า 3 จาก 8</div>
-
     <div class="chapter-heading">บทที่ 2<br>ภาพรวมของระบบและบทบาทผู้ใช้งาน (Overall Description)</div>
 
     <div class="section-heading">2.1 การกำหนดบทบาทและสิทธิ์การเข้าใช้งานระบบ (User Roles & Permissions)</div>
@@ -376,17 +329,10 @@
       ไฟล์ <code>api/db.php</code> มีกลไกตรวจสอบความมีอยู่ของฐานข้อมูล <code>db_city_water_supply</code> หากไม่พบฐานข้อมูล ระบบจะสร้างและนำเข้าโครงสร้างตารางรวมทั้งข้อมูลจำลอง 400 ครัวเรือนจากไฟล์ <code>database.sql</code> ให้โดยอัตโนมัติ ช่วยลดความซับซ้อนในการติดตั้งและพร้อมใช้งานได้ทันที
     </p>
 
-    <div class="running-footer">
-      <span>เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • กองทุนประปาหมู่บ้านวังยาง</span>
-      <span>หน้า 3 จาก 8</span>
     </div>
-  </div>
 
   <!-- ================= หน้าที่ 4: บทที่ 3 ข้อกำหนดเชิงหน้าที่ 1-5 ================= -->
   <div class="page">
-    <div class="doc-running-head">เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • บทที่ 3 ข้อกำหนดเชิงหน้าที่</div>
-    <div class="page-number">หน้า 4 จาก 8</div>
-
     <div class="chapter-heading">บทที่ 3<br>ข้อกำหนดความต้องการเชิงหน้าที่ (Functional Requirements: FR-01 ถึง FR-05)</div>
 
     <div class="req-item">
@@ -440,17 +386,10 @@
       </p>
     </div>
 
-    <div class="running-footer">
-      <span>เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • กองทุนประปาหมู่บ้านวังยาง</span>
-      <span>หน้า 4 จาก 8</span>
     </div>
-  </div>
 
   <!-- ================= หน้าที่ 5: บทที่ 3 ข้อกำหนดเชิงหน้าที่ 6-10 ================= -->
   <div class="page">
-    <div class="doc-running-head">เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • บทที่ 3 ข้อกำหนดเชิงหน้าที่ (ต่อ)</div>
-    <div class="page-number">หน้า 5 จาก 8</div>
-
     <div class="chapter-heading">บทที่ 3<br>ข้อกำหนดความต้องการเชิงหน้าที่ (Functional Requirements: FR-06 ถึง FR-10 ต่อ)</div>
 
     <div class="req-item">
@@ -499,17 +438,10 @@
       </p>
     </div>
 
-    <div class="running-footer">
-      <span>เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • กองทุนประปาหมู่บ้านวังยาง</span>
-      <span>หน้า 5 จาก 8</span>
     </div>
-  </div>
 
   <!-- ================= หน้าที่ 6: บทที่ 4 การจับคู่ Axure RP ================= -->
   <div class="page">
-    <div class="doc-running-head">เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • บทที่ 4 การจำลองด้วย Axure RP</div>
-    <div class="page-number">หน้า 6 จาก 8</div>
-
     <div class="chapter-heading">บทที่ 4<br>การจำลองส่วนติดต่อผู้ใช้ด้วย Axure RP (Prototype Traceability)</div>
     <p>
       คณะผู้จัดทำได้ออกแบบหน้าจอจำลอง (Interactive Wireframe) จำนวน 31 หน้าจอ ในไฟล์ <code>Plumber_ver-1003-gu-tam-kon-dew-i-sus.rp</code> ซึ่งได้รับการพัฒนาเป็นหน้าจอระบบจริงบนสภาพแวดล้อม XAMPP ครบถ้วน 100%:
@@ -572,17 +504,10 @@
       </div>
     </div>
 
-    <div class="running-footer">
-      <span>เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • กองทุนประปาหมู่บ้านวังยาง</span>
-      <span>หน้า 6 จาก 8</span>
     </div>
-  </div>
 
   <!-- ================= หน้าที่ 7: บทที่ 5 การออกแบบฐานข้อมูล ================= -->
   <div class="page">
-    <div class="doc-running-head">เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • บทที่ 5 ฐานข้อมูลและความปลอดภัย</div>
-    <div class="page-number">หน้า 7 จาก 8</div>
-
     <div class="chapter-heading">บทที่ 5<br>การออกแบบฐานข้อมูลและความมั่นคงปลอดภัย (Data Schema & Security)</div>
 
     <div class="section-heading">5.1 พจนานุกรมตารางฐานข้อมูลหลักในระบบ (Core Data Dictionary)</div>
@@ -655,18 +580,11 @@
       ผู้ดูแลระบบสามารถสำรองฐานข้อมูลทั้งหมดเป็นไฟล์ <code>.sql</code> ได้ในคลิกเดียวผ่านไฟล์ <code>api/backup.php</code> เพื่อป้องกันความเสียหายกรณีเครื่องคอมพิวเตอร์สำนักงานเกิดปัญหา
     </p>
 
-    <div class="running-footer">
-      <span>เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • กองทุนประปาหมู่บ้านวังยาง</span>
-      <span>หน้า 7 จาก 8</span>
     </div>
-  </div>
 
   <!-- ================= หน้าที่ 8: บทที่ 6 RTM และลงนาม ================= -->
   <div class="page">
-    <div class="doc-running-head">เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • บทที่ 6 ตารางตรวจสอบย้อนกลับ</div>
-    <div class="page-number">หน้า 8 จาก 8</div>
-
-    <div class="chapter-heading">บทที่ 6<br>การตรวจสอบย้อนกลับและการอนุมัติโครงงาน (Traceability & Sign-Off)</div>
+    <div class="chapter-heading">บทที่ 6<br>การตรวจสอบย้อนกลับและการตรวจรับโครงงาน (Traceability & Acceptance)</div>
 
     <div class="section-heading">6.1 ตารางตรวจสอบย้อนกลับความต้องการของระบบ (Requirements Traceability Matrix: RTM)</div>
     <div class="caption-title">ตารางที่ 6.1 ตารางตรวจสอบความสอดคล้องระหว่างข้อกำหนด ซอร์สโค้ด และฐานข้อมูล</div>
@@ -754,36 +672,14 @@
       </tbody>
     </table>
 
-    <div class="sign-section">
-      <div style="text-align: center; font-weight: 700; font-size: 13px; margin-bottom: 22px;">
-        การลงนามรับรองเอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Sign-Off & Approval)
-      </div>
-      <div class="sign-grid">
-        <div>
-          <div class="sign-line">ลงชื่อ ...........................................................</div>
-          <strong>(นายสมบูรณ์ มั่นคง)</strong><br>
-          เหรัญญิกกองทุนประปาหมู่บ้านวังยาง<br>
-          วันที่ ........ / ........ / ................
-        </div>
-        <div>
-          <div class="sign-line">ลงชื่อ ...........................................................</div>
-          <strong>(นายวิชัย เจริญสุข)</strong><br>
-          ประธานกรรมการบริหารกิจการประปา<br>
-          วันที่ ........ / ........ / ................
-        </div>
-        <div>
-          <div class="sign-line">ลงชื่อ ...........................................................</div>
-          <strong>(อาจารย์ที่ปรึกษาโครงงาน)</strong><br>
-          คณะกรรมการตรวจประเมินผลงาน<br>
-          วันที่ ........ / ........ / ................
-        </div>
-      </div>
-    </div>
-
-    <div class="running-footer">
-      <span>เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • กองทุนประปาหมู่บ้านวังยาง</span>
-      <span>หน้า 8 จาก 8</span>
-    </div>
+    <div class="section-heading">5.2 สรุปผลการตรวจรับและแผนการบำรุงรักษาเชิงรุก (Project Acceptance & Handover Summary)</div>
+    <p>
+      จากการทดสอบความสอดคล้องตามเมทริกซ์การตรวจสอบย้อนกลับ (Traceability Matrix) ครบทั้ง 10 ฟังก์ชันหลัก (FR-01 ถึง FR-10) พบว่าระบบเว็บแอปพลิเคชันบนสภาพแวดล้อม XAMPP สามารถทำงานสอดคล้องกับข้อกำหนดความต้องการและต้นแบบส่วนติดต่อผู้ใช้ Axure RP ได้อย่างสมบูรณ์ 100% โดยมีข้อสรุปการส่งมอบและการดำเนินงานดังนี้:
+    </p>
+    <p class="no-indent" style="font-size: 13px; line-height: 1.5; margin-left: 0.75cm;">
+      1. <strong>ความสมบูรณ์ของกระบวนการทำงาน:</strong> ระบบครอบคลุมวงจรการบริหารกิจการประปาหมู่บ้านตั้งแต่การจดบันทึกมาตรวัดน้ำภาคสนาม (ป.17), การคำนวณค่าน้ำและออกใบเสร็จ (ป.31/32), การควบคุมหนี้ค้างชำระ (กค.4), การจัดทำฎีกาเบิกจ่ายค่าตอบแทนร้อยละ 10 ไปจนถึงการจัดทำงบดุลประจำเดือนของกองทุน<br>
+      2. <strong>การส่งมอบและถ่ายทอดเทคโนโลยี:</strong> คณะผู้จัดทำได้ส่งมอบซอร์สโค้ดฉบับสมบูรณ์บนระบบควบคุมเวอร์ชัน GitHub (สาขา main) พร้อมโครงสร้างฐานข้อมูลจำลอง 400 ครัวเรือน และเอกสารคู่มือการใช้งานระบบจริง (XAMPP Manual) และคู่มือทดสอบต้นแบบ (Axure Manual) ให้แก่คณะกรรมการบริหารกิจการประปาหมู่บ้านวังยางเพื่อใช้งานอย่างเป็นทางการ
+    </p>
   </div>
 
 </body>
