@@ -190,7 +190,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
 
           <!-- 1. QR Code Camera Scanner Button -->
           <button type="button" class="btn btn-qr-scan" onclick="openQrScannerModal()">
-            📷 สแกน QR หน้าบ้าน (โหมดขนส่ง)
+            📷 สแกน QR สติกเกอร์มิเตอร์
           </button>
 
           <!-- 2. Excel/CSV Batch Import -->
@@ -268,59 +268,118 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
        Modal 1: QR Code Camera Scanner
        ========================================================= -->
   <div id="modal-qr-scanner" class="modal" style="display: none; align-items: center; justify-content: center;">
-    <div class="modal-dialog" style="max-width: 520px; width: 95%;">
-      <div class="modal-header" style="background: #0f172a; color: #fff; padding: 16px 20px;">
+    <div class="modal-dialog" style="max-width: 480px; width: 95%;">
+      <div class="modal-header" style="background: #0f172a; color: #fff; padding: 14px 20px;">
         <div style="display: flex; align-items: center; gap: 10px;">
           <div style="background: #059669; font-size: 20px; width: 38px; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">📷</div>
           <div>
             <h4 style="margin: 0; font-size: 16px; font-weight: 700; color: #34d399;">สแกน QR Code ติดมิเตอร์น้ำ</h4>
-            <span style="font-size: 12.5px; color: #94a3b8;">ส่องกล้องไปที่สติกเกอร์มิเตอร์เพื่อกระโดดไปยังช่องกรอกทันที</span>
+            <span style="font-size: 12px; color: #94a3b8;">ระบบค้นหาและไฮไลต์ช่องกรอกเลขมิเตอร์อัตโนมัติ</span>
           </div>
         </div>
         <button type="button" class="modal-close" onclick="closeQrScannerModal()" style="color: #94a3b8; font-size: 24px; background: none; border: none; cursor: pointer;">&times;</button>
       </div>
 
       <div class="modal-body" style="padding: 16px 20px; text-align: center;">
-        <!-- Scanner Viewfinder Box -->
-        <div id="qr-scanner-viewfinder">
-          <div id="qr-reader" style="width: 100%;"></div>
-        </div>
-
-        <div style="margin-top: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 13px;">
-          <label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; color: #475569;">
-            <input type="checkbox" id="chk-continuous-scan">
-            <span>สแกนต่อเนื่อง (ไม่ปิดกล้องอัตโนมัติ)</span>
-          </label>
-
-          <span id="qr-scanner-status" style="font-weight: 600; color: #0284c7;">
-            กำลังเปิดกล้อง...
-          </span>
-        </div>
-
-        <!-- Permission Help Alert (shown when live video stream is blocked on mobile) -->
-        <div id="qr-permission-alert" style="display: none; background: #fffbeb; border: 1px solid #fef3c7; border-radius: 8px; padding: 12px; margin-top: 12px; text-align: left; font-size: 13px; color: #92400e;">
-          <strong>⚠️ เบราว์เซอร์ไม่อนุญาตวิดีโอสด:</strong>
-          <p style="margin: 4px 0 8px 0; line-height: 1.5;">เนื่องจากเข้าผ่าน IP (HTTP) หรือยังไม่ได้กดอนุญาตสิทธิ์กล้องในเบราว์เซอร์ สามารถแตะปุ่ม <strong>"📸 ถ่ายรูปสแกนด้วยกล้องมือถือ"</strong> ด้านล่างเพื่อใช้กล้องถ่ายรูปสแกนได้ทันที 100%</p>
-        </div>
-
-        <!-- Quick Capture Buttons (Guaranteed 100% on all mobile devices over HTTP) -->
-        <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 8px;">
-          <input type="file" id="qr-camera-capture" accept="image/*" capture="environment" style="display: none;" onchange="handleQrCameraFile(this)">
-          <input type="file" id="qr-file-upload" accept="image/*" style="display: none;" onchange="handleQrCameraFile(this)">
-
-          <button type="button" class="btn btn-primary" onclick="document.getElementById('qr-camera-capture').click()" style="width: 100%; padding: 11px 16px; font-size: 14.5px; font-weight: 700; background: #059669; border: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 2px 6px rgba(5, 150, 105, 0.25);">
-            📸 ถ่ายรูปสแกน QR ด้วยกล้องมือถือ (แนะนำ)
+        
+        <!-- Mode Tabs -->
+        <div class="qr-mode-tabs">
+          <button type="button" class="qr-mode-tab active" id="tab-btn-snapshot" onclick="switchQrScannerMode('snapshot')">
+            📸 ถ่ายรูปสแกนด่วน (แนะนำบนมือถือ)
           </button>
-          
-          <div style="display: flex; gap: 8px;">
-            <button type="button" class="btn btn-outline" onclick="document.getElementById('qr-file-upload').click()" style="flex: 1; font-size: 13px; padding: 8px; background: #fff;">
-              📁 เลือกภาพจากคลัง
+          <button type="button" class="qr-mode-tab" id="tab-btn-live" onclick="switchQrScannerMode('live')">
+            📹 ส่องกล้องสด (Live Video)
+          </button>
+        </div>
+
+        <!-- 1. SNAPSHOT MODE VIEW (Default on Mobile - 100% Works, No Black Screen) -->
+        <div id="qr-snapshot-panel">
+          <div class="qr-target-box" onclick="triggerQrCameraCapture()">
+            <div class="qr-target-corners">
+              <span class="corner tl"></span>
+              <span class="corner tr"></span>
+              <span class="corner bl"></span>
+              <span class="corner br"></span>
+            </div>
+
+            <div id="qr-snapshot-preview" style="display: none; position: relative;">
+              <img id="qr-preview-img" src="" alt="ภาพถ่ายมิเตอร์" style="max-height: 190px; max-width: 100%; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+              <div class="qr-scan-line"></div>
+            </div>
+
+            <div id="qr-target-prompt">
+              <div style="font-size: 46px; margin-bottom: 6px;">📷</div>
+              <strong style="font-size: 16px; color: #0284c7; display: block;">แตะเพื่อถ่ายรูปสแกนสติกเกอร์มิเตอร์</strong>
+              <span style="font-size: 13px; color: #64748b; margin-top: 4px; display: block;">
+                เปิดกล้องมือถือถ่ายภาพสติกเกอร์ QR หน้าบ้าน<br>ระบบจะอ่านรหัสและกระโดดไปช่องกรอกทันที
+              </span>
+            </div>
+          </div>
+
+          <!-- Status badge -->
+          <div id="qr-snapshot-status" style="margin-top: 12px; font-size: 13.5px; font-weight: 600; min-height: 22px; color: #0369a1;">
+            💡 ใช้กล้องมือถือถ่ายภาพสติกเกอร์มิเตอร์ หรือเลือกจากอัลบั้ม
+          </div>
+
+          <!-- Actions -->
+          <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 8px;">
+            <input type="file" id="qr-camera-capture" accept="image/*" capture="environment" style="display: none;" onchange="handleQrCameraFile(this)">
+            <input type="file" id="qr-file-upload" accept="image/*" style="display: none;" onchange="handleQrCameraFile(this)">
+
+            <button type="button" class="btn btn-primary" onclick="triggerQrCameraCapture()" style="width: 100%; height: 48px; font-size: 15px; font-weight: 700; background: #059669; border: none; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25); cursor: pointer;">
+              📸 แตะถ่ายรูปสแกนมิเตอร์ทันที
             </button>
-            <button type="button" class="btn btn-outline" onclick="retryLiveCamera()" style="flex: 1; font-size: 13px; padding: 8px; background: #fff;">
-              🔄 ลองเปิดกล้องสดอีกครั้ง
+            <button type="button" class="btn btn-outline" onclick="document.getElementById('qr-file-upload').click()" style="width: 100%; height: 42px; font-size: 13.5px; background: #fff; border-radius: 8px; cursor: pointer;">
+              📁 หรือเลือกภาพสติกเกอร์จากอัลบั้มในเครื่อง
             </button>
           </div>
         </div>
+
+        <!-- 2. LIVE VIDEO MODE VIEW -->
+        <div id="qr-live-panel" style="display: none;">
+          <div id="qr-scanner-viewfinder">
+            <div id="qr-reader" style="width: 100%;"></div>
+            <div class="qr-scan-line"></div>
+          </div>
+
+          <div style="margin-top: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 13px;">
+            <label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; color: #475569;">
+              <input type="checkbox" id="chk-continuous-scan">
+              <span>สแกนต่อเนื่อง (ไม่ปิดกล้อง)</span>
+            </label>
+
+            <span id="qr-scanner-status" style="font-weight: 600; color: #0284c7;">
+              กำลังเตรียมพร้อมกล้อง...
+            </span>
+          </div>
+
+          <!-- Permission Help Alert -->
+          <div id="qr-permission-alert" style="display: none; background: #fffbeb; border: 1px solid #fef3c7; border-radius: 8px; padding: 12px; margin-top: 12px; text-align: left; font-size: 13px; color: #92400e;">
+            <strong>⚠️ เบราว์เซอร์ไม่อนุญาตวิดีโอสด:</strong>
+            <p style="margin: 4px 0 8px 0; line-height: 1.5;">เนื่องจากเข้าผ่าน IP (HTTP) หรือยังไม่ได้กดอนุญาตสิทธิ์กล้องในเบราว์เซอร์ แนะนำให้กดสลับไปที่แท็บ <strong>"ถ่ายรูปสแกนด่วน"</strong> ด้านบน ซึ่งใช้งานได้ทันที 100%</p>
+            <button type="button" class="btn btn-primary" onclick="switchQrScannerMode('snapshot')" style="padding: 6px 14px; font-size: 12.5px; background: #0284c7; border: none; border-radius: 6px; cursor: pointer;">
+              👈 สลับไปใช้โหมดถ่ายรูปสแกนด่วน
+            </button>
+          </div>
+
+          <div style="margin-top: 12px; display: flex; gap: 8px;">
+            <button type="button" class="btn btn-outline" onclick="retryLiveCamera()" style="flex: 1; font-size: 13px; padding: 8px; background: #fff; cursor: pointer;">
+              🔄 รีสตาร์ทกล้องสด
+            </button>
+            <button type="button" class="btn btn-outline" onclick="switchQrScannerMode('snapshot')" style="flex: 1; font-size: 13px; padding: 8px; background: #fff; cursor: pointer;">
+              📸 สลับไปถ่ายรูป
+            </button>
+          </div>
+        </div>
+
+        <!-- Success overlay card (shown briefly when QR code is found) -->
+        <div id="qr-scan-success-card" style="display: none; background: #ecfdf5; border: 2px solid #22c55e; border-radius: 12px; padding: 18px; margin-top: 14px; animation: modalFadeIn 0.2s ease;">
+          <div style="font-size: 32px; margin-bottom: 4px;">✅</div>
+          <h4 style="margin: 0; color: #15803d; font-size: 16px; font-weight: 700;">พบรหัสผู้ใช้น้ำในระบบ!</h4>
+          <div id="qr-success-details" style="font-size: 14px; color: #166534; margin: 8px 0; font-weight: 600;"></div>
+          <span style="font-size: 12px; color: #047857;">กำลังเลื่อนไปยังช่องกรอกเลขมิเตอร์...</span>
+        </div>
+
       </div>
 
       <div class="modal-footer" style="padding: 12px 20px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end;">
@@ -882,14 +941,30 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
     }
 
     // =========================================================
-    // QR Code Camera Scanner Logic
+    // QR Code Camera Scanner Logic (Robust Dual-Mode: Snapshot & Live)
     // =========================================================
+    let currentQrMode = 'snapshot';
+
     function openQrScannerModal() {
       const modal = document.getElementById('modal-qr-scanner');
-      if (modal) {
-        modal.style.display = 'flex';
-        startQrScanner();
-      }
+      if (!modal) return;
+      modal.style.display = 'flex';
+
+      // Reset state & clear previous previews
+      const successCard = document.getElementById('qr-scan-success-card');
+      if (successCard) successCard.style.display = 'none';
+
+      const previewBox = document.getElementById('qr-snapshot-preview');
+      if (previewBox) previewBox.style.display = 'none';
+
+      const promptBox = document.getElementById('qr-target-prompt');
+      if (promptBox) promptBox.style.display = 'block';
+
+      const snapStatus = document.getElementById('qr-snapshot-status');
+      if (snapStatus) snapStatus.innerHTML = '💡 ใช้กล้องมือถือถ่ายภาพสติกเกอร์มิเตอร์ หรือเลือกจากอัลบั้ม';
+
+      // Always start in Snapshot mode (guaranteed 100% on all mobile devices over HTTP, no black screen!)
+      switchQrScannerMode('snapshot');
     }
 
     function closeQrScannerModal() {
@@ -897,6 +972,78 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
       if (modal) {
         modal.style.display = 'none';
         stopQrScanner();
+      }
+    }
+
+    function switchQrScannerMode(mode) {
+      currentQrMode = mode;
+      const tabSnap = document.getElementById('tab-btn-snapshot');
+      const tabLive = document.getElementById('tab-btn-live');
+      const panelSnap = document.getElementById('qr-snapshot-panel');
+      const panelLive = document.getElementById('qr-live-panel');
+
+      if (tabSnap) tabSnap.classList.toggle('active', mode === 'snapshot');
+      if (tabLive) tabLive.classList.toggle('active', mode === 'live');
+      if (panelSnap) panelSnap.style.display = (mode === 'snapshot') ? 'block' : 'none';
+      if (panelLive) panelLive.style.display = (mode === 'live') ? 'block' : 'none';
+
+      if (mode === 'live') {
+        const isSecure = (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1');
+        const hasMedia = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+        const permAlert = document.getElementById('qr-permission-alert');
+
+        if (!isSecure && !hasMedia) {
+          if (permAlert) permAlert.style.display = 'block';
+          const statusEl = document.getElementById('qr-scanner-status');
+          if (statusEl) statusEl.innerHTML = '<span style="color: #ea580c;">⚠️ ต้องใช้ HTTPS สำหรับวิดีโอสด แนะนำใช้โหมดถ่ายรูป</span>';
+        } else {
+          startQrScanner();
+        }
+      } else {
+        stopQrScanner();
+      }
+    }
+
+    function triggerQrCameraCapture() {
+      const input = document.getElementById('qr-camera-capture');
+      if (input) input.click();
+    }
+
+    async function handleQrCameraFile(input) {
+      if (!input.files || input.files.length === 0) return;
+      const file = input.files[0];
+      const snapStatus = document.getElementById('qr-snapshot-status');
+      const previewBox = document.getElementById('qr-snapshot-preview');
+      const promptBox = document.getElementById('qr-target-prompt');
+      const previewImg = document.getElementById('qr-preview-img');
+
+      // Display preview thumbnail immediately so the user sees the photo they just took
+      if (previewImg && file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          previewImg.src = e.target.result;
+          if (previewBox) previewBox.style.display = 'block';
+          if (promptBox) promptBox.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+      }
+
+      if (snapStatus) snapStatus.innerHTML = '<span style="color: #0284c7;">⚡ กำลังประมวลผลและอ่านรหัส QR Code จากภาพ...</span>';
+
+      if (!html5QrScanner) {
+        html5QrScanner = new Html5Qrcode("qr-reader");
+      }
+
+      try {
+        const decodedText = await html5QrScanner.scanFile(file, true);
+        if (snapStatus) snapStatus.innerHTML = '<span style="color: #16a34a;">✅ สแกนสำเร็จ!</span>';
+        handleQrScanSuccess(decodedText);
+      } catch (err) {
+        console.error('File scan error:', err);
+        if (snapStatus) snapStatus.innerHTML = '<span style="color: #dc2626;">⚠️ ไม่พบ QR Code ในภาพ กรุณาถ่ายใหม่อีกครั้ง</span>';
+        showToast('⚠️ ไม่พบ QR Code ในภาพ กรุณาเล็งให้ตรงและชัดเจนแล้วถ่ายใหม่อีกครั้ง', 'warning');
+      } finally {
+        input.value = '';
       }
     }
 
@@ -939,31 +1086,8 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
         } catch (err2) {
           console.error('Camera error:', err2);
           if (permAlert) permAlert.style.display = 'block';
-          if (statusEl) statusEl.innerHTML = '<span style="color: #dc2626;">⚠️ บราวเซอร์ไม่อนุญาตวิดีโอสด (ใช้ปุ่มถ่ายรูปด้านล่างแทน)</span>';
+          if (statusEl) statusEl.innerHTML = '<span style="color: #dc2626;">⚠️ บราวเซอร์ไม่อนุญาตวิดีโอสด (ใช้แท็บถ่ายรูปแทน)</span>';
         }
-      }
-    }
-
-    async function handleQrCameraFile(input) {
-      if (!input.files || input.files.length === 0) return;
-      const file = input.files[0];
-      const statusEl = document.getElementById('qr-scanner-status');
-      if (statusEl) statusEl.textContent = '⏳ กำลังประมวลผลภาพถ่าย QR Code...';
-
-      if (!html5QrScanner) {
-        html5QrScanner = new Html5Qrcode("qr-reader");
-      }
-
-      try {
-        const decodedText = await html5QrScanner.scanFile(file, true);
-        if (statusEl) statusEl.textContent = '✅ สแกนสำเร็จ!';
-        handleQrScanSuccess(decodedText);
-      } catch (err) {
-        console.error('File scan error:', err);
-        if (statusEl) statusEl.textContent = '⚠️ ไม่พบ QR Code ในภาพ กรุณาถ่ายใหม่อีกครั้ง';
-        showToast('⚠️ ไม่พบ QR Code ในภาพ กรุณาเล็งให้ชัดเจนแล้วถ่ายใหม่อีกครั้ง', 'warning');
-      } finally {
-        input.value = '';
       }
     }
 
@@ -997,23 +1121,34 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
         custCode = codeMatch[0].toUpperCase();
       }
 
-      // Check if continuous scan is unchecked -> close modal
-      const isContinuous = document.getElementById('chk-continuous-scan')?.checked;
-      if (!isContinuous) {
-        closeQrScannerModal();
-      }
-
       // Find corresponding customer
       const targetCustomer = fieldCustomers.find(c => 
         c.customer_code.toUpperCase() === custCode.toUpperCase() ||
         c.house_no === custCode ||
-        c.meter_serial === custCode
+        c.meter_serial === custCode ||
+        (c.phone && c.phone.replace(/\D/g, '') === custCode.replace(/\D/g, ''))
       );
 
       if (!targetCustomer) {
-        showToast(`⚠️ สแกนพบ "${decodedText}" แต่ไม่พบรหัสผู้ใช้ในระบบ`, 'warning');
+        showToast(`⚠️ สแกนพบ "${decodedText}" แต่ไม่พบรหัสผู้ใช้น้ำในระบบ`, 'warning');
         return;
       }
+
+      // Show success feedback card inside the modal
+      const successCard = document.getElementById('qr-scan-success-card');
+      const detailsEl = document.getElementById('qr-success-details');
+      const panelSnap = document.getElementById('qr-snapshot-panel');
+      const panelLive = document.getElementById('qr-live-panel');
+
+      if (panelSnap) panelSnap.style.display = 'none';
+      if (panelLive) panelLive.style.display = 'none';
+      if (detailsEl) {
+        detailsEl.innerHTML = `
+          <strong>${targetCustomer.customer_code}</strong>: ${targetCustomer.first_name} ${targetCustomer.last_name}<br>
+          <span style="font-size: 13px; color: #475569;">บ้านเลขที่ ${targetCustomer.house_no} | โซน: ${targetCustomer.zone}</span>
+        `;
+      }
+      if (successCard) successCard.style.display = 'block';
 
       // Reset filters so customer row is guaranteed to be rendered
       if (document.getElementById('field-search-input').value) {
@@ -1024,24 +1159,31 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
       }
       renderFieldRows();
 
-      // Find table row
-      const targetRow = document.querySelector(`tr[data-customer-id="${targetCustomer.id}"]`);
-      if (targetRow) {
-        targetRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        targetRow.classList.remove('qr-highlight-row');
-        void targetRow.offsetWidth; // Trigger reflow
-        targetRow.classList.add('qr-highlight-row');
+      const isContinuous = document.getElementById('chk-continuous-scan')?.checked;
 
-        const inputCell = targetRow.querySelector('.meter-input-cell');
-        if (inputCell) {
-          setTimeout(() => {
-            inputCell.focus();
-            inputCell.select();
-          }, 400);
+      setTimeout(() => {
+        if (!isContinuous) {
+          closeQrScannerModal();
         }
 
+        // Find table row
+        const targetRow = document.querySelector(`tr[data-customer-id="${targetCustomer.id}"]`);
+        if (targetRow) {
+          targetRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          targetRow.classList.remove('qr-highlight-row');
+          void targetRow.offsetWidth; // Trigger reflow
+          targetRow.classList.add('qr-highlight-row');
+
+          const inputCell = targetRow.querySelector('.meter-input-cell');
+          if (inputCell) {
+            setTimeout(() => {
+              inputCell.focus();
+              inputCell.select();
+            }, 300);
+          }
+        }
         showToast(`📷 สแกนพบ: <strong>${targetCustomer.customer_code}</strong> ${targetCustomer.first_name} (บ้านเลขที่ ${targetCustomer.house_no})`, 'success');
-      }
+      }, isContinuous ? 1500 : 700);
     }
 
     // =========================================================
