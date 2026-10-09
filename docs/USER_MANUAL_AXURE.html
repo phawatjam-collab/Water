@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>คู่มือการใช้งานและทดสอบต้นแบบส่วนติดต่อผู้ใช้บน Axure RP - โครงการระบบบริหารจัดการน้ำประปาหมู่บ้านวังยาง</title>
+  <title>คู่มือการใช้งานและทดสอบต้นแบบส่วนติดต่อผู้ใช้บนโปรแกรม Axure RP - โครงการระบบบริหารจัดการน้ำประปาหมู่บ้านวังยาง</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Prompt:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
   <style>
     @page {
       size: A4 portrait;
-      margin: 12mm 15mm;
+      margin: 18mm 18mm 18mm 24mm;
     }
     * {
       box-sizing: border-box;
@@ -19,27 +19,27 @@
     }
     body {
       font-family: 'Sarabun', 'TH Sarabun New', Tahoma, sans-serif;
-      font-size: 12.5px;
-      line-height: 1.5;
-      color: #1f2937;
-      background: #e2e8f0;
+      font-size: 13px;
+      line-height: 1.36;
+      color: #000000;
+      background: #ffffff;
       margin: 0;
       padding: 0;
     }
     h1, h2, h3, h4, h5 {
-      font-family: 'Prompt', 'Sarabun', sans-serif;
-      color: #0f172a;
-      margin-top: 0;
-      font-weight: 600;
+      font-family: 'Sarabun', 'TH Sarabun New', Tahoma, sans-serif;
+      color: #000000;
+      margin: 0;
+      font-weight: 700;
     }
     .page {
       background: #ffffff;
-      padding: 24px 28px;
-      margin: 0 auto 20px auto;
+      padding: 20mm 18mm 18mm 24mm;
+      margin: 0 auto 15px auto;
       max-width: 210mm;
       min-height: 297mm;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
       position: relative;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
     }
     @media print {
       body { background: #ffffff; }
@@ -51,119 +51,112 @@
         min-height: auto;
         page-break-after: always;
       }
-      .no-print { display: none !important; }
     }
-    .doc-header {
-      border-bottom: 2px solid #1e3a8a;
-      padding-bottom: 5px;
-      margin-bottom: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-    }
-    .doc-header .doc-title {
-      font-size: 11px;
-      color: #475569;
-      font-weight: 500;
-    }
-    .doc-header .doc-id {
-      font-size: 11px;
-      color: #1e3a8a;
-      font-weight: 600;
-    }
-    .footer-bar {
+    .page-number {
       position: absolute;
-      bottom: 12px;
-      left: 28px;
-      right: 28px;
-      border-top: 1px solid #cbd5e1;
-      padding-top: 5px;
-      display: flex;
-      justify-content: space-between;
+      top: 12mm;
+      right: 18mm;
+      font-size: 11.5px;
+      color: #333333;
+    }
+    .doc-running-head {
+      position: absolute;
+      top: 12mm;
+      left: 24mm;
       font-size: 11px;
-      color: #64748b;
+      color: #555555;
     }
-    .cover-border {
-      border: 1.5px solid #1e3a8a;
-      padding: 30px 24px;
-      min-height: 268mm;
+    .running-footer {
+      position: absolute;
+      bottom: 12mm;
+      left: 24mm;
+      right: 18mm;
+      border-top: 0.5pt solid #666666;
+      padding-top: 4px;
       display: flex;
-      flex-direction: column;
       justify-content: space-between;
+      font-size: 10.5px;
+      color: #555555;
     }
-    .section-title {
-      font-size: 13.5px;
+    p {
+      margin: 3.5px 0;
+      text-indent: 1.25cm;
+      text-align: justify;
+      text-justify: inter-cluster;
+    }
+    .no-indent {
+      text-indent: 0 !important;
+    }
+    .chapter-heading {
+      text-align: center;
+      font-size: 15.5px;
       font-weight: 700;
-      color: #1e3a8a;
-      border-left: 4px solid #1e3a8a;
-      padding-left: 8px;
-      margin: 10px 0 6px 0;
+      margin-bottom: 8px;
     }
-    table {
+    .section-heading {
+      font-size: 14px;
+      font-weight: 700;
+      margin-top: 8px;
+      margin-bottom: 3px;
+    }
+    .sub-section-heading {
+      font-size: 13px;
+      font-weight: 700;
+      margin-top: 5px;
+      margin-bottom: 2px;
+      text-indent: 0.75cm;
+    }
+    .caption-title {
+      font-size: 12.5px;
+      font-weight: 700;
+      margin-top: 6px;
+      margin-bottom: 2px;
+      text-align: left;
+    }
+    .figure-caption {
+      font-size: 11.5px;
+      font-weight: 700;
+      text-align: center;
+      margin-top: 3px;
+      margin-bottom: 5px;
+    }
+    table.academic-table {
       width: 100%;
       border-collapse: collapse;
-      margin: 6px 0;
-      font-size: 11.5px;
+      margin: 5px 0 8px 0;
+      font-size: 12px;
       page-break-inside: avoid;
     }
-    th, td {
-      border: 1px solid #cbd5e1;
-      padding: 5px 7px;
+    table.academic-table th {
+      border-top: 1.5pt solid #000000;
+      border-bottom: 1pt solid #000000;
+      padding: 4px 5px;
+      background: #f9f9f9;
+      font-weight: 700;
+      text-align: left;
+    }
+    table.academic-table td {
+      border-bottom: 0.5pt solid #dddddd;
+      padding: 4px 5px;
       vertical-align: top;
     }
-    th {
-      background: #f1f5f9;
-      color: #0f172a;
-      font-weight: 600;
-      text-align: left;
-      font-size: 11.5px;
-      border-bottom: 2px solid #94a3b8;
+    table.academic-table tr:last-child td {
+      border-bottom: 1.5pt solid #000000;
     }
     .text-center { text-align: center; }
-    .bg-zebra:nth-child(even) { background: #f8fafc; }
-    .box-info {
-      border: 1px solid #cbd5e1;
-      background: #f8fafc;
-      padding: 9px 12px;
-      margin-bottom: 8px;
-      border-radius: 2px;
-    }
-    .step-box {
-      border-left: 3px solid #1e3a8a;
-      background: #f8fafc;
-      padding: 8px 12px;
-      margin-bottom: 8px;
-      border-radius: 0 4px 4px 0;
-    }
-    .tag {
-      display: inline-block;
-      padding: 1px 5px;
-      border: 1px solid #cbd5e1;
-      border-radius: 2px;
-      font-size: 10.5px;
-      background: #ffffff;
-      color: #1e293b;
-      font-family: 'Fira Code', monospace;
-    }
-    .figure-box {
-      border: 1px solid #cbd5e1;
-      padding: 6px;
+    .text-right { text-align: right; }
+    .figure-frame {
+      border: 0.75pt solid #555555;
+      padding: 3px;
       background: #ffffff;
       text-align: center;
-      margin-bottom: 6px;
+      margin-bottom: 2px;
     }
-    .figure-box img {
+    .figure-frame img {
       width: 100%;
       height: 115px;
       object-fit: contain;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-    }
-    .figure-caption {
-      font-size: 11px;
-      color: #475569;
-      margin-top: 4px;
-      font-weight: 500;
+      background: #fafafa;
     }
     .grid-2 {
       display: grid;
@@ -175,359 +168,326 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
     }
+    .sign-section {
+      margin-top: 22px;
+      border: 0.75pt solid #777777;
+      padding: 14px 12px 10px 12px;
+    }
+    .sign-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      text-align: center;
+      font-size: 11.5px;
+    }
+    .sign-line {
+      margin-bottom: 34px;
+    }
   </style>
 </head>
 <body>
 
-  <!-- ================= หน้าที่ 1: ปกและข้อมูลไฟล์ต้นแบบ ================= -->
+  <!-- ================= หน้าที่ 1: ปกคู่มือ Axure ================= -->
   <div class="page">
-    <div class="cover-border">
+    <div style="border: 1pt solid #000000; padding: 25px 20px; min-height: 250mm; display: flex; flex-direction: column; justify-content: space-between; text-align: center;">
       <div>
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #cbd5e1; padding-bottom: 8px;">
-          <div style="font-size: 11.5px; font-weight: 600; color: #1e3a8a;">คู่มือการทดสอบต้นแบบส่วนติดต่อผู้ใช้ (Interactive Prototype Guide)</div>
-          <div style="font-size: 11px; color: #64748b;">รหัสเอกสาร: MN-2567-WTR-AXURE</div>
+        <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.5px;">
+          คู่มือการทดสอบต้นแบบส่วนติดต่อผู้ใช้ (Interactive Prototype Test Guide)
+        </div>
+        <div style="font-size: 11px; color: #555555; margin-top: 2px;">
+          รหัสเอกสาร: MN-2567-WTR-AXURE
         </div>
 
-        <div style="text-align: center; margin: 35px 0 25px 0;">
-          <div style="font-size: 13px; font-weight: 600; color: #475569; letter-spacing: 0.5px; margin-bottom: 8px;">
-            คู่มือการทดสอบและสาธิตต้นแบบหน้าจอ (Interactive Prototype User Guide)
+        <div style="margin-top: 60px; margin-bottom: 30px;">
+          <div style="font-size: 14px; font-weight: 700; margin-bottom: 12px;">
+            คู่มือการทดสอบและสาธิตต้นแบบหน้าจอส่วนติดต่อผู้ใช้บนโปรแกรม Axure RP<br>
+            (Axure RP Interactive Prototype Manual)
           </div>
-          <h1 style="font-size: 22px; font-weight: 700; color: #0f172a; margin-bottom: 6px; line-height: 1.35;">
-            ระบบบริหารจัดการน้ำประปาหมู่บ้านวังยาง<br>
-            <span style="font-size: 16px; font-weight: 500; color: #1e3a8a;">(Smart Village Waterworks Management System)</span>
+          <h1 style="font-size: 21px; font-weight: 700; line-height: 1.4; margin-bottom: 6px;">
+            ระบบบริหารจัดการน้ำประปาหมู่บ้านวังยาง
           </h1>
-          <div style="font-size: 13px; color: #334151; margin-top: 6px;">
+          <h2 style="font-size: 15px; font-weight: 600; color: #222222;">
+            SMART VILLAGE WATERWORKS MANAGEMENT SYSTEM
+          </h2>
+          <div style="font-size: 13px; margin-top: 14px; color: #333333;">
             ไฟล์ต้นแบบจำลองสถาปัตยกรรม UI/UX 31 หน้าจอ: <strong>Plumber_ver-1003-gu-tam-kon-dew-i-sus.rp</strong>
           </div>
         </div>
 
-        <div class="section-title">1. ข้อมูลทั่วไปของไฟล์ต้นแบบและเครื่องมือที่ใช้ (Prototype Profile)</div>
-        <div class="grid-2">
-          <div class="box-info">
-            <div style="font-weight: 600; color: #1e3a8a; font-size: 12px; margin-bottom: 4px;">รายละเอียดไฟล์ต้นแบบ (File Metadata):</div>
-            <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
-              • <strong>ชื่อไฟล์:</strong> <code>Plumber_ver-1003-gu-tam-kon-dew-i-sus.rp</code><br>
-              • <strong>โปรแกรมที่ใช้พัฒนา:</strong> Axure RP Pro / Team Edition (เวอร์ชัน 9 หรือ 10)<br>
-              • <strong>จำนวนหน้าจอทั้งหมด:</strong> 31 หน้าจอ (ครอบคลุมครบทุกบทบาทผู้ใช้งาน)<br>
-              • <strong>ประเภทการจำลอง:</strong> Interactive Wireframe with Dynamic Panels and Interactions
-            </div>
-          </div>
-          <div class="box-info">
-            <div style="font-weight: 600; color: #1e3a8a; font-size: 12px; margin-bottom: 4px;">ความต้องการด้านระบบสำหรับการเปิดทดสอบ (Environment):</div>
-            <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
-              • <strong>ระบบปฏิบัติการ:</strong> Windows 10/11 หรือ macOS 10.15 ขึ้นไป<br>
-              • <strong>โปรแกรมเปิดไฟล์ .rp:</strong> Axure RP 9 หรือ Axure RP 10<br>
-              • <strong>การเปิดผ่านเว็บเบราว์เซอร์:</strong> สามารถสร้างไฟล์ HTML ผ่านฟังก์ชัน Generate HTML เพื่อเปิดคลิกทดสอบบน Google Chrome, Edge หรือ Safari ได้ทันทีโดยไม่ต้องติดตั้งโปรแกรม Axure
-            </div>
-          </div>
+        <div style="max-width: 140mm; margin: 40px auto 0 auto; text-align: justify; font-size: 12.5px; line-height: 1.5; border-top: 0.5pt solid #888888; border-bottom: 0.5pt solid #888888; padding: 12px 6px;">
+          <p class="no-indent" style="text-align: center; font-weight: 700; margin-bottom: 4px;">
+            คำนำ (Preface)
+          </p>
+          คู่มือฉบับนี้จัดทำขึ้นเพื่อแนะนำขั้นตอนการเปิดใช้งานและแนวทางการทดสอบการจำลองการทำงาน (Simulation & Testing) ของต้นแบบหน้าจอส่วนติดต่อผู้ใช้ (User Interface Prototype) จำนวน 31 หน้าจอ ในไฟล์ <code>Plumber_ver-1003-gu-tam-kon-dew-i-sus.rp</code> ซึ่งพัฒนาขึ้นด้วยโปรแกรม Axure RP เพื่อให้คณะกรรมการตรวจประเมินผลงานและอาจารย์ที่ปรึกษาสามารถคลิกทดสอบปฏิสัมพันธ์ (Interactive Flows) ได้เสมือนการใช้งานระบบจริง ครอบคลุมเส้นทางการทำงาน 3 กลุ่มหลัก ได้แก่ เส้นทางประชาชนผู้ใช้น้ำ เส้นทางช่างจดบันทึกมาตรวัดน้ำภาคสนาม และเส้นทางเหรัญญิกการเงินกองทุน
         </div>
-
-        <div class="section-title" style="margin-top: 10px;">2. โครงสร้างการจัดหมวดหมู่หน้าจอในไฟล์ต้นแบบ (Page Structure)</div>
-        <table>
-          <thead>
-            <tr>
-              <th width="32%">กลุ่มหน้าจอ (Category)</th>
-              <th width="18%">ช่วงหน้าจอ (Screens)</th>
-              <th width="50%">ขอบเขตการทำงานที่จำลองในต้นแบบ</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="bg-zebra">
-              <td><strong>บริการประชาชน (Public Citizen)</strong></td>
-              <td>Screen 1 – 4</td>
-              <td>หน้าแรก ค้นหาค่าน้ำด้วยเบอร์โทร สแกน QR พร้อมเพย์ แจ้งท่อแตก</td>
-            </tr>
-            <tr class="bg-zebra">
-              <td><strong>จดบันทึกมาตรวัดน้ำ (Meter Reader)</strong></td>
-              <td>Screen 5 – 8</td>
-              <td>เดินจดมิเตอร์ตามเส้นทาง ป.17 จำลองสแกนกล้อง ตรวจจับค่าผิดปกติ</td>
-            </tr>
-            <tr class="bg-zebra">
-              <td><strong>การเงินและใบเสร็จ (Finance & Treasury)</strong></td>
-              <td>Screen 9 – 17</td>
-              <td>บันทึกรับเงิน ใบเสร็จ ป.31/32 คุมหนี้ กค.4 ฎีกาเบิกจ่ายค่าตอบแทน 10%</td>
-            </tr>
-            <tr class="bg-zebra">
-              <td><strong>ผู้บริหารและรายงาน (Executive & Admin)</strong></td>
-              <td>Screen 18 – 31</td>
-              <td>งบดุลประจำเดือน อัตราน้ำสูญเสีย NRW ตั้งค่าอัตราค่าน้ำ สติกเกอร์ QR</td>
-            </tr>
-          </tbody>
-        </table>
       </div>
 
-      <div style="border-top: 1px solid #cbd5e1; padding-top: 8px; font-size: 11px; color: #64748b; display: flex; justify-content: space-between;">
-        <div>คู่มือการทดสอบต้นแบบส่วนติดต่อผู้ใช้ Axure RP</div>
-        <div>ฉบับปรับปรุง: ตุลาคม 2567 (เวอร์ชัน 1.0)</div>
+      <div style="font-size: 12px; line-height: 1.6; margin-bottom: 10px;">
+        <strong>หน่วยงานกำกับดูแลและผู้ใช้งาน:</strong><br>
+        กองทุนระบบการประปาหมู่บ้านวังยาง หมู่ที่ 3 ตำบลวังยาง อำเภอวังยาง จังหวัดนครพนม<br>
+        <strong>เครื่องมือที่ใช้:</strong> Axure RP 9 / 10, HTML Browser Simulation<br>
+        <strong>จัดทำโดย:</strong> คณะผู้จัดทำโครงงานระบบสารสนเทศประปาหมู่บ้าน (ตุลาคม 2567)
       </div>
-    </div>
-    <div class="footer-bar">
-      <span>คู่มือการทดสอบต้นแบบส่วนติดต่อผู้ใช้ (Axure RP Manual) • โครงการระบบประปาหมู่บ้านวังยาง</span>
-      <span>หน้า 1 จาก 6</span>
     </div>
   </div>
 
-  <!-- ================= หน้าที่ 2: การเริ่มต้นทดสอบและการพรีวิว ================= -->
+  <!-- ================= หน้าที่ 2: บทที่ 1 การเปิดใช้งานและหมวดหมู่ ================= -->
   <div class="page">
-    <div class="doc-header">
-      <div class="doc-title">คู่มือการทดสอบต้นแบบส่วนติดต่อผู้ใช้ (Axure RP Manual) • ส่วนที่ 1 การเปิดทดสอบ</div>
-      <div class="doc-id">รหัส: MN-2567-WTR-AXURE</div>
-    </div>
+    <div class="doc-running-head">คู่มือการทดสอบต้นแบบส่วนติดต่อผู้ใช้ (Axure RP Manual) • บทที่ 1 การเริ่มต้นทดสอบ</div>
+    <div class="page-number">หน้า 2 จาก 6</div>
 
-    <div class="section-title">3. ขั้นตอนการเปิดใช้งานและพรีวิวต้นแบบ (How to Run & Preview)</div>
+    <div class="chapter-heading">บทที่ 1<br>การเปิดใช้งานต้นแบบและโครงสร้างหน้าจอ 31 หน้าจอ</div>
 
-    <div class="step-box">
-      <div style="font-weight: 600; color: #1e3a8a; font-size: 12px; margin-bottom: 2px;">วิธีที่ 1: การเปิดและพรีวิวผ่านโปรแกรม Axure RP (สำหรับผู้มีโปรแกรม)</div>
-      <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
-        1. ดับเบิลคลิกเปิดไฟล์ <code>Plumber_ver-1003-gu-tam-kon-dew-i-sus.rp</code> บนโปรแกรม Axure RP 9 หรือ 10<br>
-        2. กดปุ่มลัด <strong>[Ctrl + F5]</strong> หรือคลิกเมนู <strong>Publish $\rightarrow$ Preview</strong> ที่แถบเครื่องมือด้านบน<br>
-        3. โปรแกรมจะเปิดหน้าต่างเว็บเบราว์เซอร์อัตโนมัติ โดยมีแถบ Sitemap ทางด้านซ้ายให้เลือกสลับหน้าจอ และพื้นที่แสดงผลการจำลองที่สามารถคลิกพิมพ์โต้ตอบได้จริง
-      </div>
-    </div>
+    <div class="section-heading">1.1 คุณสมบัติและความต้องการของระบบสำหรับการเปิดทดสอบ (Environment)</div>
+    <p>
+      ไฟล์ต้นแบบ <code>Plumber_ver-1003-gu-tam-kon-dew-i-sus.rp</code> สามารถเปิดทดสอบได้ 2 วิธีการหลัก:
+    </p>
+    <p class="no-indent" style="margin-left: 0.75cm; font-size: 12.5px; line-height: 1.45;">
+      • <strong>วิธีที่ 1 (เปิดผ่านโปรแกรม Axure RP):</strong> เครื่องคอมพิวเตอร์ติดตั้งโปรแกรม Axure RP 9 หรือ Axure RP 10 เปิดไฟล์แล้วกดปุ่มลัด <strong>[Ctrl + F5]</strong> หรือคลิกเมนู <strong>Publish $\rightarrow$ Preview</strong> เพื่อเปิดหน้าต่างจำลองบนเว็บเบราว์เซอร์พร้อมแถบ Sitemap ด้านซ้าย<br>
+      • <strong>วิธีที่ 2 (เปิดผ่านเว็บเบราว์เซอร์โดยตรง):</strong> สร้างไฟล์เว็บจำลองผ่านคำสั่ง <strong>Publish $\rightarrow$ Generate HTML Files...</strong> (หรือกด F8) แล้วเปิดไฟล์ <code>index.html</code> บนเบราว์เซอร์ Google Chrome, Microsoft Edge หรือ Safari โดยไม่ต้องติดตั้งโปรแกรม Axure
+    </p>
 
-    <div class="step-box">
-      <div style="font-weight: 600; color: #1e3a8a; font-size: 12px; margin-bottom: 2px;">วิธีที่ 2: การส่งออกเป็นไฟล์ HTML เพื่อเปิดทดสอบบนเบราว์เซอร์ (สำหรับกรรมการและอาจารย์)</div>
-      <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
-        1. ภายในโปรแกรม Axure RP เลือกเมนู <strong>Publish $\rightarrow$ Generate HTML Files...</strong> (หรือกด F8)<br>
-        2. กำหนดโฟลเดอร์ปลายทางที่ต้องการจัดเก็บไฟล์ HTML แล้วกดปุ่ม <code>[Generate]</code><br>
-        3. ดับเบิลคลิกที่ไฟล์ <code>start.html</code> หรือ <code>index.html</code> เพื่อเปิดทดสอบบนเว็บเบราว์เซอร์เครื่องใดก็ได้โดยไม่ต้องมีโปรแกรม Axure
-      </div>
-    </div>
+    <div class="section-heading">1.2 โครงสร้างการจัดหมวดหมู่หน้าจอทั้ง 31 หน้าจอ (Page Hierarchy)</div>
+    <div class="caption-title">ตารางที่ 1.1 การจัดหมวดหมู่หน้าจอในไฟล์ต้นแบบ Axure RP</div>
+    <table class="academic-table">
+      <thead>
+        <tr>
+          <th width="32%">กลุ่มหน้าจอ (Category)</th>
+          <th width="18%">ช่วงหน้าจอ (Screens)</th>
+          <th width="50%">ขอบเขตหน้าที่และฟังก์ชันที่จำลองในต้นแบบ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>บริการประชาชน (Public Citizen)</strong></td>
+          <td>Screen 1 – 4</td>
+          <td>หน้าแรก ค้นหาค่าน้ำด้วยเบอร์โทร สแกน QR พร้อมเพย์ และแจ้งท่อแตก</td>
+        </tr>
+        <tr>
+          <td><strong>จดบันทึกมาตรวัดน้ำ (Meter Reader)</strong></td>
+          <td>Screen 5 – 8</td>
+          <td>เดินจดมิเตอร์ตามเส้นทาง ป.17 จำลองสแกนกล้อง ตรวจจับค่าผิดปกติ</td>
+        </tr>
+        <tr>
+          <td><strong>การเงินและใบเสร็จ (Finance & Treasury)</strong></td>
+          <td>Screen 9 – 17</td>
+          <td>บันทึกรับเงิน ใบเสร็จ ป.31/32 คุมหนี้ กค.4 ฎีกาเบิกจ่ายค่าตอบแทน 10%</td>
+        </tr>
+        <tr>
+          <td><strong>ผู้บริหารและรายงาน (Executive & Admin)</strong></td>
+          <td>Screen 18 – 31</td>
+          <td>งบดุลประจำเดือน อัตราน้ำสูญเสีย NRW ตั้งค่าอัตราค่าน้ำ สติกเกอร์ QR</td>
+        </tr>
+      </tbody>
+    </table>
 
-    <div class="section-title" style="margin-top: 12px;">4. แผนผังเส้นทางการทดสอบ 3 กลุ่มผู้ใช้งานหลัก (Test Journeys Overview)</div>
-    <div class="grid-3">
-      <div class="box-info">
-        <div style="font-weight: 600; color: #1e3a8a; font-size: 11.5px; margin-bottom: 2px;">เส้นทางที่ 1: ประชาชน</div>
-        <div style="font-size: 11px; color: #475569;">
-          หน้าแรก $\rightarrow$ ค้นหาเบอร์โทร 10 หลัก $\rightarrow$ แสดงบิลค้างชำระ $\rightarrow$ เปิด QR พร้อมเพย์ $\rightarrow$ แจ้งเหตุน้ำรั่ว
-        </div>
-      </div>
-      <div class="box-info">
-        <div style="font-weight: 600; color: #1e3a8a; font-size: 11.5px; margin-bottom: 2px;">เส้นทางที่ 2: ช่างจดมิเตอร์</div>
-        <div style="font-size: 11px; color: #475569;">
-          เข้าสู่ระบบ $\rightarrow$ เดินจดเรียงตามเส้นทาง $\rightarrow$ จำลองสแกนกล้อง $\rightarrow$ คำนวณหน่วยใช้สด $\rightarrow$ ความคืบหน้างวด
-        </div>
-      </div>
-      <div class="box-info">
-        <div style="font-weight: 600; color: #1e3a8a; font-size: 11.5px; margin-bottom: 2px;">เส้นทางที่ 3: เหรัญญิก</div>
-        <div style="font-size: 11px; color: #475569;">
-          ตัดรับเงิน PAID $\rightarrow$ พิมพ์ใบเสร็จ ป.31/32 $\rightarrow$ กรองหนี้ กค.4 $\rightarrow$ ซิงค์ค่าตอบแทน 10% $\rightarrow$ งบดุล
-        </div>
-      </div>
-    </div>
+    <div class="section-heading">1.3 สรุปแผนผังเส้นทางการทดสอบ 3 กลุ่มผู้ใช้งานหลัก (Test Journeys Overview)</div>
+    <p class="no-indent" style="margin-left: 0.75cm; font-size: 12.5px; line-height: 1.45;">
+      1. <strong>เส้นทางประชาชน:</strong> หน้าแรก $\rightarrow$ ค้นหาเบอร์โทร 10 หลัก $\rightarrow$ แสดงบิล $\rightarrow$ QR พร้อมเพย์ $\rightarrow$ แจ้งน้ำรั่ว<br>
+      2. <strong>เส้นทางช่างจดมิเตอร์:</strong> เข้าสู่ระบบ $\rightarrow$ เดินจดตามเส้นทาง $\rightarrow$ จำลองสแกนกล้อง $\rightarrow$ คำนวณหน่วยใช้สด $\rightarrow$ บาร์ 88%<br>
+      3. <strong>เส้นทางเหรัญญิก:</strong> บันทึกรับเงิน PAID $\rightarrow$ พิมพ์ใบเสร็จ ป.31/32 $\rightarrow$ คุมหนี้ กค.4 $\rightarrow$ ซิงค์ 10% $\rightarrow$ งบดุล
+    </p>
 
-    <div class="footer-bar">
-      <span>คู่มือการทดสอบต้นแบบส่วนติดต่อผู้ใช้ (Axure RP Manual) • โครงการระบบประปาหมู่บ้านวังยาง</span>
+    <div class="running-footer">
+      <span>คู่มือการทดสอบต้นแบบส่วนติดต่อผู้ใช้ (Axure RP Manual) • กองทุนประปาหมู่บ้านวังยาง</span>
       <span>หน้า 2 จาก 6</span>
     </div>
   </div>
 
-  <!-- ================= หน้าที่ 3: เส้นทางการทดสอบประชาชน ================= -->
+  <!-- ================= หน้าที่ 3: บทที่ 2 เส้นทางประชาชน ================= -->
   <div class="page">
-    <div class="doc-header">
-      <div class="doc-title">คู่มือการทดสอบต้นแบบส่วนติดต่อผู้ใช้ (Axure RP Manual) • ส่วนที่ 2 เส้นทางการทดสอบประชาชน</div>
-      <div class="doc-id">รหัส: MN-2567-WTR-AXURE</div>
+    <div class="doc-running-head">คู่มือการทดสอบต้นแบบส่วนติดต่อผู้ใช้ (Axure RP Manual) • บทที่ 2 เส้นทางประชาชน</div>
+    <div class="page-number">หน้า 3 จาก 6</div>
+
+    <div class="chapter-heading">บทที่ 2<br>ขั้นตอนการทดสอบเส้นทางที่ 1: บริการประชาชนผู้ใช้น้ำ</div>
+
+    <div class="section-heading">2.1 การค้นหาข้อมูลค่าน้ำด้วยหมายเลขโทรศัพท์ (Screen 1)</div>
+    <p>
+      ประชาชนสามารถตรวจสอบค่าน้ำของครัวเรือนตนเองได้อย่างสะดวกรวดเร็ว โดยมีขั้นตอนการทดสอบปฏิสัมพันธ์ดังนี้:
+    </p>
+    <p class="no-indent" style="margin-left: 0.75cm; font-size: 12.5px; line-height: 1.45;">
+      1. ในหน้า Screen 1 คลิกที่ช่องป้อนข้อมูลค้นหา พิมพ์หมายเลขโทรศัพท์ตัวอย่าง <code>0812345678</code> หรือพิมพ์บ้านเลขที่ <code>45/1</code> จากนั้นกดปุ่ม <code>[ค้นหา]</code><br>
+      2. <strong>ผลลัพธ์ที่ปรากฏ:</strong> ส่วนแสดงผลด้านล่างจะเลื่อนแสดงข้อมูลบิลค่าน้ำของนายสมชาย ทันที แสดงเลขมิเตอร์เดิม-ใหม่ จำนวนหน่วยใช้น้ำ 15 ลบ.ม. และยอดรวมสุทธิ 115.00 บาท
+    </p>
+
+    <div class="section-heading">2.2 การเปิดแสดงภาพ QR Code ชำระเงินผ่านพร้อมเพย์ (Screen 3)</div>
+    <p class="no-indent" style="margin-left: 0.75cm; font-size: 12.5px; line-height: 1.45;">
+      1. คลิกปุ่ม <code>[📱 ชำระผ่าน QR PromptPay]</code> บนการ์ดยอดค่าน้ำ<br>
+      2. <strong>ผลลัพธ์ที่ปรากฏ:</strong> หน้าต่างป๊อปอัปจะแสดงภาพ QR Code ตามมาตรฐาน EMVCo ระบุชื่อกองทุนประปาหมู่บ้านวังยางและยอดเงินตรงสตางค์จริง (115.00 บาท) จำลองการเปิดเพื่อให้ประชาชนนำแอปธนาคารมาสแกนจ่าย
+    </p>
+
+    <div class="section-heading">2.3 การส่งเรื่องแจ้งเหตุน้ำประปาไม่ไหลหรือท่อแตกรั่ว (Screen 4)</div>
+    <p class="no-indent" style="margin-left: 0.75cm; font-size: 12.5px; line-height: 1.45;">
+      1. เลื่อนลงมาที่แบบฟอร์มแจ้งเหตุฉุกเฉิน กรอกชื่อผู้แจ้ง หมายเลขโทรศัพท์ และรายละเอียดจุดเกิดเหตุ<br>
+      2. กดปุ่ม <code>[ส่งเรื่องแจ้งเหตุ]</code> ระบบจำลองจะบันทึกข้อมูลและแสดงหมายเลขติดตามงานซ่อม (เช่น TK-256708-001)
+    </p>
+
+    <div class="grid-2" style="margin-top: 8px;">
+      <div>
+        <div class="figure-frame">
+          <img src="assets/wireframe_home_search.jpg" alt="Screen 1">
+        </div>
+        <div class="figure-caption">รูปที่ 2.1 หน้าแรกค้นหาค่าน้ำเบอร์โทร (Screen 1)</div>
+      </div>
+      <div>
+        <div class="figure-frame">
+          <img src="assets/wireframe_receipt_p31.jpg" alt="Screen 3">
+        </div>
+        <div class="figure-caption">รูปที่ 2.2 หน้าต่างแสดงบิลและใบเสร็จ (Screen 3)</div>
+      </div>
     </div>
 
-    <div class="section-title">5. ขั้นตอนการทดสอบเส้นทางที่ 1: บริการประชาชนผู้ใช้น้ำ (Citizen Journey Flow)</div>
-
-    <div class="grid-2" style="margin-bottom: 8px;">
-      <div class="figure-box">
-        <img src="assets/wireframe_home_search.jpg" alt="Screen 1">
-        <div class="figure-caption">รูปที่ 1: หน้าแรกค้นหาค่าน้ำด้วยเบอร์โทร (Screen 1)</div>
-      </div>
-      <div class="figure-box">
-        <img src="assets/wireframe_receipt_p31.jpg" alt="Screen 3">
-        <div class="figure-caption">รูปที่ 2: หน้าจอแสดงรายละเอียดบิลและใบเสร็จ (Screen 3)</div>
-      </div>
-    </div>
-
-    <div class="step-box">
-      <div style="font-weight: 600; color: #1e3a8a; font-size: 12px; margin-bottom: 2px;">จุดทดสอบที่ 1: การค้นหายอดค่าน้ำด้วยหมายเลขโทรศัพท์ 10 หลัก (Screen 1)</div>
-      <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
-        • <strong>การทดสอบ:</strong> คลิกที่ช่องค้นหาในหน้าแรก พิมพ์หมายเลขโทรศัพท์ตัวอย่าง <code>0812345678</code> หรือพิมพ์บ้านเลขที่ <code>45/1</code> แล้วกดปุ่ม <code>[ค้นหา]</code><br>
-        • <strong>ผลลัพธ์ที่คาดหวัง:</strong> กล่องผลลัพธ์จะเลื่อนแสดงข้อมูลของนายสมชาย ทันที แสดงเลขมิเตอร์เดิม-ใหม่ จำนวนหน่วยที่ใช้ และยอดเงินสุทธิที่ต้องชำระ (115.00 บาท)
-      </div>
-    </div>
-
-    <div class="step-box">
-      <div style="font-weight: 600; color: #1e3a8a; font-size: 12px; margin-bottom: 2px;">จุดทดสอบที่ 2: การเปิดภาพ QR Code ชำระเงินผ่านพร้อมเพย์ (Screen 2)</div>
-      <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
-        • <strong>การทดสอบ:</strong> กดปุ่ม <code>[📱 ชำระผ่าน QR PromptPay]</code> บนการ์ดยอดค่าน้ำ<br>
-        • <strong>ผลลัพธ์ที่คาดหวัง:</strong> หน้าต่างป๊อปอัปจะแสดงภาพ QR Code พร้อมเพย์ตามมาตรฐาน EMVCo ระบุชื่อกองทุนประปาหมู่บ้านวังยางและยอดเงินตรงสตางค์จริง
-      </div>
-    </div>
-
-    <div class="step-box">
-      <div style="font-weight: 600; color: #1e3a8a; font-size: 12px; margin-bottom: 2px;">จุดทดสอบที่ 3: การแจ้งเหตุน้ำไม่ไหลหรือท่อแตกรั่ว (Screen 4)</div>
-      <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
-        • <strong>การทดสอบ:</strong> เลื่อนลงมาที่ส่วนล่างของหน้าแรก กรอกชื่อผู้แจ้ง เบอร์โทร และรายละเอียดจุดเกิดเหตุ แล้วกด <code>[ส่งเรื่องแจ้งเหตุ]</code><br>
-        • <strong>ผลลัพธ์ที่คาดหวัง:</strong> ระบบจำลองการบันทึกข้อมูลและแสดงรหัสติดตามงานซ่อม (เช่น TK-256708-001)
-      </div>
-    </div>
-
-    <div class="footer-bar">
-      <span>คู่มือการทดสอบต้นแบบส่วนติดต่อผู้ใช้ (Axure RP Manual) • โครงการระบบประปาหมู่บ้านวังยาง</span>
+    <div class="running-footer">
+      <span>คู่มือการทดสอบต้นแบบส่วนติดต่อผู้ใช้ (Axure RP Manual) • กองทุนประปาหมู่บ้านวังยาง</span>
       <span>หน้า 3 จาก 6</span>
     </div>
   </div>
 
-  <!-- ================= หน้าที่ 4: เส้นทางการทดสอบช่างจดมิเตอร์ ================= -->
+  <!-- ================= หน้าที่ 4: บทที่ 3 เส้นทางช่างจดมิเตอร์ ================= -->
   <div class="page">
-    <div class="doc-header">
-      <div class="doc-title">คู่มือการทดสอบต้นแบบส่วนติดต่อผู้ใช้ (Axure RP Manual) • ส่วนที่ 3 เส้นทางการทดสอบช่างจดมิเตอร์</div>
-      <div class="doc-id">รหัส: MN-2567-WTR-AXURE</div>
-    </div>
+    <div class="doc-running-head">คู่มือการทดสอบต้นแบบส่วนติดต่อผู้ใช้ (Axure RP Manual) • บทที่ 3 เส้นทางช่างจดมิเตอร์</div>
+    <div class="page-number">หน้า 4 จาก 6</div>
 
-    <div class="section-title">6. ขั้นตอนการทดสอบเส้นทางที่ 2: ช่างจดบันทึกมาตรวัดน้ำภาคสนาม (Field Reader Flow)</div>
+    <div class="chapter-heading">บทที่ 3<br>ขั้นตอนการทดสอบเส้นทางที่ 2: ช่างจดบันทึกมาตรวัดน้ำภาคสนาม</div>
 
-    <div class="grid-2" style="margin-bottom: 8px;">
-      <div class="figure-box">
-        <img src="assets/wireframe_meter_reading.jpg" alt="Screen 5">
-        <div class="figure-caption">รูปที่ 3: ตารางเดินจดมิเตอร์เรียงตามลำดับเส้นทาง (Screen 5)</div>
+    <div class="section-heading">3.1 ตารางเดินจดมิเตอร์ตามเส้นทางจริง (แบบ ป.17 ใน Screen 5)</div>
+    <p>
+      การทดสอบการทำงานของช่างจดมิเตอร์ภาคสนามในงวดประจำเดือน มีขั้นตอนดังนี้:
+    </p>
+    <p class="no-indent" style="margin-left: 0.75cm; font-size: 12.5px; line-height: 1.45;">
+      1. เปิดหน้า Screen 5 เลือกรอบเดือน 8-2567 รายชื่อครัวเรือนจะถูกจัดเรียงตามลำดับเส้นทางเดินจริง (<code>seq_no</code>) ตั้งแต่บ้านหลังแรกของหมู่บ้านจรดหลังสุดท้าย ด้านบนแสดงแถบ Progress Bar ความคืบหน้าการจดที่ 88%<br>
+      2. <strong>จำลองการสแกนกล้อง:</strong> คลิกปุ่ม <code>[📷 สแกน QR]</code> ระบบจำลองจะแสดงหน้าต่างกล้องและกระโดดไปยังแถวข้อมูลของบ้านเลขที่นั้นทันทีโดยไม่ต้องเลื่อนค้นหา
+    </p>
+
+    <div class="section-heading">3.2 การทดสอบระบบตรวจจับค่าผิดปกติ (Anomaly Detection ใน Screen 6)</div>
+    <p class="no-indent" style="margin-left: 0.75cm; font-size: 12.5px; line-height: 1.45;">
+      • <strong>ทดสอบกรณีที่ 1 (เลขถอยหลัง):</strong> ป้อนเลขครั้งนี้ <code>110</code> ในขณะที่เลขครั้งก่อนคือ <code>120</code> ระบบจำลองจะแสดงแถบเตือนสีแดงว่า "เลขอ่านครั้งนี้ต่ำกว่าครั้งก่อน" เพื่อป้องกันความผิดพลาด<br>
+      • <strong>ทดสอบกรณีที่ 2 (ปกติ):</strong> ป้อนเลขครั้งนี้ <code>135</code> ระบบจำลองจะคำนวณหน่วยใช้ <code>15</code> และแสดงยอดค่าน้ำ <code>115.00 บาท</code> อัตโนมัติ<br>
+      • คลิกปุ่ม <code>[บันทึก]</code> แถวข้อมูลจะเปลี่ยนสถานะเป็นจดแล้วเสร็จ
+    </p>
+
+    <div class="grid-2" style="margin-top: 8px;">
+      <div>
+        <div class="figure-frame">
+          <img src="assets/wireframe_meter_reading.jpg" alt="Screen 5">
+        </div>
+        <div class="figure-caption">รูปที่ 3.1 ตารางจดมิเตอร์ตามเส้นทางจริง (Screen 5)</div>
       </div>
-      <div class="figure-box">
-        <img src="assets/wireframe_settings.jpg" alt="Screen 6">
-        <div class="figure-caption">รูปที่ 4: หน้าต่างป้อนเลขอ่านและการตรวจสอบค่าผิดปกติ (Screen 6)</div>
-      </div>
-    </div>
-
-    <div class="step-box">
-      <div style="font-weight: 600; color: #1e3a8a; font-size: 12px; margin-bottom: 2px;">จุดทดสอบที่ 1: การเปิดดูตารางเดินจดตามเส้นทางจริง (แบบ ป.17 ใน Screen 5)</div>
-      <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
-        • <strong>การทดสอบ:</strong> เข้าสู่หน้า Screen 5 เลือกรอบเดือน 8-2567<br>
-        • <strong>ผลลัพธ์ที่คาดหวัง:</strong> รายชื่อครัวเรือนจะถูกจัดเรียงตามลำดับเส้นทางเดินจริง (<code>seq_no</code>) ตั้งแต่บ้านเลขที่ 1 เป็นต้นไป ด้านบนแสดงแถบความคืบหน้า (Progress Bar) ที่ 88%
-      </div>
-    </div>
-
-    <div class="step-box">
-      <div style="font-weight: 600; color: #1e3a8a; font-size: 12px; margin-bottom: 2px;">จุดทดสอบที่ 2: การจำลองการสแกน QR Code หน้าบ้านด้วยกล้อง (Screen 6)</div>
-      <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
-        • <strong>การทดสอบ:</strong> กดปุ่ม <code>[📷 สแกน QR]</code> ในหน้าจอจำลอง<br>
-        • <strong>ผลลัพธ์ที่คาดหวัง:</strong> กล่องจำลองกล้องจะทำงาน และโฟกัสไปยังแถวข้อมูลของบ้านเลขที่นั้นทันทีโดยไม่ต้องเลื่อนหา
-      </div>
-    </div>
-
-    <div class="step-box">
-      <div style="font-weight: 600; color: #1e3a8a; font-size: 12px; margin-bottom: 2px;">จุดทดสอบที่ 3: การทดสอบตรวจจับตัวเลขผิดปกติ (Anomaly Detection)</div>
-      <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
-        • <strong>ทดสอบกรณีที่ 1 (เลขถอยหลัง):</strong> ป้อนเลขครั้งนี้ <code>110</code> ในขณะที่เลขครั้งก่อนคือ <code>120</code> ระบบจำลองจะแสดงแถบเตือนสีแดงว่า "เลขอ่านครั้งนี้ต่ำกว่าครั้งก่อน"<br>
-        • <strong>ทดสอบกรณีที่ 2 (ปกติ):</strong> ป้อนเลขครั้งนี้ <code>135</code> ระบบจะคำนวณหน่วยใช้ <code>15</code> และแสดงยอดเงิน <code>115.00 บาท</code> อัตโนมัติ
+      <div>
+        <div class="figure-frame">
+          <img src="assets/wireframe_settings.jpg" alt="Screen 6">
+        </div>
+        <div class="figure-caption">รูปที่ 3.2 การป้อนเลขอ่านและตรวจจับค่าผิดปกติ (Screen 6)</div>
       </div>
     </div>
 
-    <div class="footer-bar">
-      <span>คู่มือการทดสอบต้นแบบส่วนติดต่อผู้ใช้ (Axure RP Manual) • โครงการระบบประปาหมู่บ้านวังยาง</span>
+    <div class="running-footer">
+      <span>คู่มือการทดสอบต้นแบบส่วนติดต่อผู้ใช้ (Axure RP Manual) • กองทุนประปาหมู่บ้านวังยาง</span>
       <span>หน้า 4 จาก 6</span>
     </div>
   </div>
 
-  <!-- ================= หน้าที่ 5: เส้นทางการเงินและงบดุล ================= -->
+  <!-- ================= หน้าที่ 5: บทที่ 4 เส้นทางการเงิน ================= -->
   <div class="page">
-    <div class="doc-header">
-      <div class="doc-title">คู่มือการทดสอบต้นแบบส่วนติดต่อผู้ใช้ (Axure RP Manual) • ส่วนที่ 4 เส้นทางการเงินและงบดุล</div>
-      <div class="doc-id">รหัส: MN-2567-WTR-AXURE</div>
-    </div>
+    <div class="doc-running-head">คู่มือการทดสอบต้นแบบส่วนติดต่อผู้ใช้ (Axure RP Manual) • บทที่ 4 เส้นทางการเงิน</div>
+    <div class="page-number">หน้า 5 จาก 6</div>
 
-    <div class="section-title">7. ขั้นตอนการทดสอบเส้นทางที่ 3: งานการเงิน ใบเสร็จ และงบดุล (Treasurer & Finance Flow)</div>
+    <div class="chapter-heading">บทที่ 4<br>ขั้นตอนการทดสอบเส้นทางที่ 3: งานการเงิน ใบเสร็จ และงบดุล</div>
 
-    <div class="grid-2" style="margin-bottom: 8px;">
-      <div class="figure-box">
-        <img src="assets/wireframe_voucher_10pct.jpg" alt="Screen 9">
-        <div class="figure-caption">รูปที่ 5: หน้าต่างใบสำคัญเบิกจ่ายค่าตอบแทน 10% (Screen 9)</div>
+    <div class="section-heading">4.1 การตัดรับชำระเงินและออกใบเสร็จรับเงิน ป.31/32 (Screen 7 – 8)</div>
+    <p class="no-indent" style="margin-left: 0.75cm; font-size: 12.5px; line-height: 1.45;">
+      1. เปิดหน้า Screen 7 คลิกปุ่ม <code>[รับชำระ]</code> ที่แถวข้อมูลลูกหนี้ ป้ายสถานะจะสลับเป็นสีเขียว <strong>PAID</strong> ทันที<br>
+      2. คลิกปุ่ม <code>[ใบเสร็จ]</code> หน้าต่างป๊อปอัปใบเสร็จ ป.31/32 จะแสดงขึ้นมา มีเลขที่ใบเสร็จ รายละเอียดการใช้น้ำ และตัวอักษรบาทไทยถูกต้องตามระเบียบ สามารถคลิกจำลองการสั่งพิมพ์ได้
+    </p>
+
+    <div class="section-heading">4.2 การควบคุมหนี้ค้างชำระ กค.4 (Screen 11 – 12)</div>
+    <p class="no-indent" style="margin-left: 0.75cm; font-size: 12.5px; line-height: 1.45;">
+      1. สลับไปที่แท็บทะเบียนคุมหนี้ กค.4 คลิกเลือกกรองอายุหนี้ <code>ค้างเกิน 3 เดือน</code><br>
+      2. คลิกปุ่ม <code>[พิมพ์หนังสือเตือน]</code> เพื่อแสดงหน้าตัวอย่างหนังสือแจ้งเตือนระงับการใช้น้ำกำหนดชำระภายใน 7 วัน
+    </p>
+
+    <div class="section-heading">4.3 การคำนวณค่าตอบแทน 10% และรายงานงบดุล (Screen 9, 18)</div>
+    <p class="no-indent" style="margin-left: 0.75cm; font-size: 12.5px; line-height: 1.45;">
+      1. ในแท็บใบสำคัญเบิกจ่าย คลิกปุ่ม <code>[ซิงค์ค่าตอบแทน 10%]</code> ระบบจำลองจะคำนวณยอดเงิน 10% จากยอดที่ชำระแล้วทั้งหมดโดยอัตโนมัติ พร้อมสร้างใบสำคัญรับเงิน 3 ลายเซ็น<br>
+      2. เปิดหน้า Screen 18 เพื่อดูรายงานงบดุลประจำเดือน แสดงรายรับ รายจ่าย ยอดคงเหลือเงินสด และเงินฝากธนาคาร
+    </p>
+
+    <div class="grid-2" style="margin-top: 8px;">
+      <div>
+        <div class="figure-frame">
+          <img src="assets/wireframe_voucher_10pct.jpg" alt="Screen 9">
+        </div>
+        <div class="figure-caption">รูปที่ 4.1 หน้าต่างใบสำคัญเบิกจ่าย 10% (Screen 9)</div>
       </div>
-      <div class="figure-box">
-        <img src="assets/wireframe_financial_report.jpg" alt="Screen 18">
-        <div class="figure-caption">รูปที่ 6: หน้างบดุลประจำเดือนมาตรฐานกองทุน (Screen 18)</div>
-      </div>
-    </div>
-
-    <div class="step-box">
-      <div style="font-weight: 600; color: #1e3a8a; font-size: 12px; margin-bottom: 2px;">จุดทดสอบที่ 1: การตัดรับเงินและออกใบเสร็จรับเงิน ป.31/32 (Screen 7 – 8)</div>
-      <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
-        • <strong>การทดสอบ:</strong> คลิกปุ่ม <code>[รับชำระ]</code> ที่แถวของลูกหนี้ ป้ายสถานะจะสลับเป็นสีเขียว <strong>PAID</strong> ทันที จากนั้นคลิกปุ่ม <code>[ใบเสร็จ]</code><br>
-        • <strong>ผลลัพธ์ที่คาดหวัง:</strong> ป๊อปอัปใบเสร็จ ป.31/32 จะปรากฏขึ้น แสดงหมายเลขใบเสร็จ รายละเอียดค่าน้ำ และตัวอักษรบาทไทยถูกต้อง
-      </div>
-    </div>
-
-    <div class="step-box">
-      <div style="font-weight: 600; color: #1e3a8a; font-size: 12px; margin-bottom: 2px;">จุดทดสอบที่ 2: การควบคุมหนี้ค้างชำระ กค.4 (Screen 11 – 12)</div>
-      <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
-        • <strong>การทดสอบ:</strong> สลับไปที่แท็บทะเบียนคุมหนี้ กค.4 คลิกกรองอายุหนี้ <code>ค้างเกิน 3 เดือน</code> แล้วกดปุ่ม <code>[พิมพ์หนังสือเตือน]</code><br>
-        • <strong>ผลลัพธ์ที่คาดหวัง:</strong> แสดงหน้าตัวอย่างหนังสือแจ้งเตือนระงับการใช้น้ำกำหนดชำระภายใน 7 วันตามระเบียบ
-      </div>
-    </div>
-
-    <div class="step-box">
-      <div style="font-weight: 600; color: #1e3a8a; font-size: 12px; margin-bottom: 2px;">จุดทดสอบที่ 3: การคำนวณค่าตอบแทน 10% และรายงานงบดุล (Screen 9, 18)</div>
-      <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
-        • <strong>การทดสอบ:</strong> ในแท็บใบสำคัญเบิกจ่าย กดปุ่ม <code>[ซิงค์ค่าตอบแทน 10%]</code> ระบบจะคำนวณยอดเงิน 10% จากยอดที่จ่ายแล้วทั้งหมดโดยอัตโนมัติ<br>
-        • <strong>งบดุลประจำเดือน:</strong> เปิด Screen 18 เพื่อดูรายงานสรุปรายรับ รายจ่าย ยอดคงเหลือ และจุดลงนามกรรมการ 3 ท่าน
+      <div>
+        <div class="figure-frame">
+          <img src="assets/wireframe_financial_report.jpg" alt="Screen 18">
+        </div>
+        <div class="figure-caption">รูปที่ 4.2 หน้ารายงานงบดุลประจำเดือน (Screen 18)</div>
       </div>
     </div>
 
-    <div class="footer-bar">
-      <span>คู่มือการทดสอบต้นแบบส่วนติดต่อผู้ใช้ (Axure RP Manual) • โครงการระบบประปาหมู่บ้านวังยาง</span>
+    <div class="running-footer">
+      <span>คู่มือการทดสอบต้นแบบส่วนติดต่อผู้ใช้ (Axure RP Manual) • กองทุนประปาหมู่บ้านวังยาง</span>
       <span>หน้า 5 จาก 6</span>
     </div>
   </div>
 
-  <!-- ================= หน้าที่ 6: ตารางเทียบเคียงและการลงนาม ================= -->
+  <!-- ================= หน้าที่ 6: บทที่ 5 ตารางเทียบเคียงและการลงนาม ================= -->
   <div class="page">
-    <div class="doc-header">
-      <div class="doc-title">คู่มือการทดสอบต้นแบบส่วนติดต่อผู้ใช้ (Axure RP Manual) • ส่วนที่ 5 ตารางเทียบเคียงและการรับรอง</div>
-      <div class="doc-id">รหัส: MN-2567-WTR-AXURE</div>
-    </div>
+    <div class="doc-running-head">คู่มือการทดสอบต้นแบบส่วนติดต่อผู้ใช้ (Axure RP Manual) • บทที่ 5 ตารางเทียบเคียง</div>
+    <div class="page-number">หน้า 6 จาก 6</div>
 
-    <div class="section-title">8. ตารางเทียบเคียงหน้าจอ Axure RP กับซอร์สโค้ด PHP ในระบบจริง (Traceability)</div>
+    <div class="chapter-heading">บทที่ 5<br>ตารางเทียบเคียงโค้ดจริงและการรับรองผลการทดสอบ</div>
 
-    <table>
+    <div class="section-heading">5.1 ตารางเทียบเคียงหน้าจอ Axure RP กับซอร์สโค้ด PHP ในระบบจริง (Traceability)</div>
+    <div class="caption-title">ตารางที่ 5.1 ตารางเทียบเคียงระหว่างหน้าจอต้นแบบ Axure RP และโค้ดระบบจริง</div>
+    <table class="academic-table">
       <thead>
         <tr>
           <th width="14%" class="text-center">หน้าจอ Axure</th>
           <th width="28%">ชื่อหน้าจอในต้นแบบ</th>
           <th width="26%">ไฟล์ซอร์สโค้ด PHP ในระบบจริง</th>
-          <th width="32%">ฟังก์ชันงานหลักที่ตรงกัน</th>
+          <th width="32%">หน้าที่การทำงานหลักที่สอดคล้องกัน</th>
         </tr>
       </thead>
       <tbody>
-        <tr class="bg-zebra">
+        <tr>
           <td class="text-center"><strong>Screen 1</strong></td>
           <td>Public Citizen Home</td>
           <td><code>index.php</code></td>
           <td>ค้นหาค่าน้ำด้วยเบอร์โทร แสดงสถิติกองทุน</td>
         </tr>
-        <tr class="bg-zebra">
+        <tr>
           <td class="text-center"><strong>Screen 3</strong></td>
           <td>Bill & PromptPay QR</td>
           <td><code>portal_citizen.php</code></td>
           <td>แสดงบิลค่าน้ำและภาพ QR Code พร้อมเพย์</td>
         </tr>
-        <tr class="bg-zebra">
+        <tr>
           <td class="text-center"><strong>Screen 5</strong></td>
           <td>Field Meter Reading</td>
           <td><code>meter_reading.php</code></td>
           <td>จดมิเตอร์ตามเส้นทาง ป.17 แสดงแถบความคืบหน้า</td>
         </tr>
-        <tr class="bg-zebra">
+        <tr>
           <td class="text-center"><strong>Screen 7</strong></td>
           <td>Payment & Receipt P31</td>
           <td><code>finance_billing.php</code></td>
           <td>บันทึกรับเงิน PAID และออกใบเสร็จ ป.31/32</td>
         </tr>
-        <tr class="bg-zebra">
+        <tr>
           <td class="text-center"><strong>Screen 9</strong></td>
           <td>10% Commission Voucher</td>
           <td><code>finance_billing.php (Tab 4)</code></td>
           <td>คำนวณค่าตอบแทน 10% และใบสำคัญ 8 หมวด</td>
         </tr>
-        <tr class="bg-zebra">
+        <tr>
           <td class="text-center"><strong>Screen 18</strong></td>
           <td>Monthly Balance Sheet</td>
           <td><code>executive_reports.php</code></td>
           <td>รายงานงบดุลประจำเดือน บัญชีเงินสด/ธนาคาร</td>
         </tr>
-        <tr class="bg-zebra">
+        <tr>
           <td class="text-center"><strong>Screen 30</strong></td>
           <td>QR Meter Sticker Batch</td>
           <td><code>print_qr_labels.php</code></td>
@@ -536,25 +496,25 @@
       </tbody>
     </table>
 
-    <div style="border: 1px solid #cbd5e1; padding: 18px 16px 12px 16px; margin-top: 20px; background: #ffffff;">
-      <div style="text-align: center; font-weight: 600; font-size: 12px; color: #0f172a; margin-bottom: 24px;">
+    <div class="sign-section">
+      <div style="text-align: center; font-weight: 700; font-size: 13px; margin-bottom: 22px;">
         การลงนามรับรองผลการทดสอบต้นแบบส่วนติดต่อผู้ใช้ (Prototype Acceptance)
       </div>
-      <div class="grid-3" style="text-align: center; font-size: 11.5px; color: #475569;">
+      <div class="sign-grid">
         <div>
-          <div style="margin-bottom: 34px;">ลงชื่อ ...........................................................</div>
+          <div class="sign-line">ลงชื่อ ...........................................................</div>
           <strong>(นายสมบูรณ์ มั่นคง)</strong><br>
           เหรัญญิกกองทุนประปาหมู่บ้านวังยาง<br>
           วันที่ ........ / ........ / ................
         </div>
         <div>
-          <div style="margin-bottom: 34px;">ลงชื่อ ...........................................................</div>
+          <div class="sign-line">ลงชื่อ ...........................................................</div>
           <strong>(นายวิชัย เจริญสุข)</strong><br>
           ประธานกรรมการบริหารกิจการประปา<br>
           วันที่ ........ / ........ / ................
         </div>
         <div>
-          <div style="margin-bottom: 34px;">ลงชื่อ ...........................................................</div>
+          <div class="sign-line">ลงชื่อ ...........................................................</div>
           <strong>(อาจารย์ที่ปรึกษาโครงงาน)</strong><br>
           คณะกรรมการตรวจประเมินผลงาน<br>
           วันที่ ........ / ........ / ................
@@ -562,8 +522,8 @@
       </div>
     </div>
 
-    <div class="footer-bar">
-      <span>คู่มือการทดสอบต้นแบบส่วนติดต่อผู้ใช้ (Axure RP Manual) • โครงการระบบประปาหมู่บ้านวังยาง</span>
+    <div class="running-footer">
+      <span>คู่มือการทดสอบต้นแบบส่วนติดต่อผู้ใช้ (Axure RP Manual) • กองทุนประปาหมู่บ้านวังยาง</span>
       <span>หน้า 6 จาก 6</span>
     </div>
   </div>
