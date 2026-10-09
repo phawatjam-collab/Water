@@ -46,9 +46,10 @@ $isInAppBrowser = (
 
   <style>
     .field-reading-container {
-      max-width: 1300px;
-      margin: 20px auto;
-      padding: 0 16px;
+      width: 100%;
+      max-width: 100%;
+      margin: 0;
+      padding: 0;
     }
     .field-header-card {
       background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);

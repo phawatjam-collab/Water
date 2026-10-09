@@ -170,9 +170,10 @@ try {
 
     /* Container */
     .portal-container {
-      max-width: 1200px;
-      margin: -30px auto 60px auto;
-      padding: 0 20px;
+      width: 100%;
+      max-width: 100%;
+      margin: 0 0 40px 0;
+      padding: 0;
       position: relative;
     }
 

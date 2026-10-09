@@ -70,42 +70,44 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
       <?php renderAppTopBar('รายงานภาพรวม & การเงินกองทุนประปา', 'แดชบอร์ดผู้บริหาร วิเคราะห์น้ำสูญเสีย (NRW) รายงานรายรับ-รายจ่าย และนโยบายอัตราค่าน้ำ'); ?>
 
     <!-- Top Action / Cycle Bar -->
-    <div class="card no-print" style="margin-bottom: 16px; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-left: 4px solid #0284c7;">
+    <div class="card no-print" style="margin-bottom: 16px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; border-radius: 14px; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
       <div style="display: flex; align-items: center; gap: 12px;">
-        <span style="font-size: 26px;">🏛️</span>
+        <div style="width: 42px; height: 42px; border-radius: 10px; background: #e0f2fe; color: #0284c7; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0;">
+          🏛️
+        </div>
         <div>
-          <h2 style="font-family: 'Prompt', sans-serif; font-size: 18px; margin: 0; color: #0f172a;">แดชบอร์ดคณะกรรมการบริหารการประปาหมู่บ้าน</h2>
-          <span style="font-size: 13.5px; color: #64748b;">งวดรายงาน: <strong><span id="exec-cycle-display"><?php echo $currentCycleCode; ?></span></strong></span>
+          <h2 style="font-family: 'Prompt', sans-serif; font-size: 17px; font-weight: 700; margin: 0; color: #0f172a;">แดชบอร์ดคณะกรรมการบริหารการประปาหมู่บ้าน</h2>
+          <span style="font-size: 13px; color: #64748b;">งวดรายงาน: <strong style="color: #0284c7;"><span id="exec-cycle-display"><?php echo $currentCycleCode; ?></span></strong></span>
         </div>
       </div>
 
       <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-        <label for="exec-cycle-select" style="font-size: 13px; font-weight: 600;">เลือกงวดเดือน:</label>
-        <select id="exec-cycle-select" class="form-select" style="font-weight: 600;">
+        <label for="exec-cycle-select" style="font-size: 13px; font-weight: 600; color: #475569;">📅 งวดเดือน:</label>
+        <select id="exec-cycle-select" class="form-select" style="font-weight: 700; font-size: 13.5px; padding: 6px 12px;">
           <?php foreach ($cycles as $c): ?>
             <option value="<?php echo htmlspecialchars($c['cycle_code']); ?>" <?php echo $c['cycle_code'] === $currentCycleCode ? 'selected' : ''; ?>>
-              งวดเดือน <?php echo $c['month'] . '/' . $c['year_be'] . ' (' . $c['cycle_code'] . ')'; ?>
+              <?php echo $c['month'] . '/' . $c['year_be'] . ' (' . $c['cycle_code'] . ')'; ?>
             </option>
           <?php endforeach; ?>
         </select>
         <button type="button" class="btn btn-outline" onclick="copyExcel365Summary()" title="คัดลอกสรุปตัวเลขนำไปวางใน Excel 365 หรือส่งสรุปในกลุ่มไลน์กรรมการ" style="background: #fff; font-weight: 600;">📋 สรุปส่ง Excel 365</button>
-        <button type="button" class="btn btn-primary" onclick="window.print()">🖨️ สั่งพิมพ์รายงานสรุป</button>
+        <button type="button" class="btn btn-primary" onclick="window.print()">🖨️ พิมพ์รายงานสรุป</button>
       </div>
     </div>
 
     <!-- Executive Sub-navigation Tabs -->
-    <div class="exec-nav no-print">
+    <div class="exec-nav no-print" style="margin-bottom: 20px;">
       <button class="exec-tab-btn active" data-target="pane-overview">
-        <span>📊</span> 1. แดชบอร์ดผู้บริหาร & วิเคราะห์ NRW
+        <span>📊</span> แดชบอร์ด & วิเคราะห์ NRW
       </button>
       <button class="exec-tab-btn" data-target="pane-report">
-        <span>📋</span> 2. รายงานสรุปรายรับ - รายจ่ายประจำเดือน
+        <span>📋</span> รายงานสรุปรายรับ-รายจ่าย
       </button>
       <button class="exec-tab-btn" data-target="pane-members">
-        <span>👥</span> 3. ทะเบียนผู้ใช้น้ำชุมชน
+        <span>👥</span> ทะเบียนผู้ใช้น้ำชุมชน
       </button>
       <button class="exec-tab-btn" data-target="pane-policy">
-        <span>⚙️</span> 4. ตั้งค่านโยบาย & อัตราค่าน้ำ
+        <span>⚙️</span> ตั้งค่านโยบาย & อัตราค่าน้ำ
       </button>
     </div>
 
