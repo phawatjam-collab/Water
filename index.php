@@ -687,12 +687,11 @@ try {
       <?php endif; ?>
 
       <!-- Hero Banner -->
-      <section class="portal-hero" id="about-section" style="padding: 36px 28px 40px 28px; background: linear-gradient(135deg, #075985 0%, #0284c7 100%); color: #fff; border-radius: 14px; margin-bottom: 24px; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.15);">
-        <div class="hero-badge">🏛️ กองทุนน้ำประปาหมู่บ้านวังยาง หมู่ที่ 3</div>
-        <h1 style="font-size: 28px; margin-bottom: 8px;">ระบบบริการและบริหารจัดการน้ำประปาชุมชน</h1>
-        <p style="font-size: 15px; margin: 0 auto; max-width: 800px; opacity: 0.95; line-height: 1.6;">
-          ยินดีต้อนรับสู่ระบบบริการน้ำประปาหมู่บ้านวังยาง อำนวยความสะดวกแก่สมาชิกผู้ใช้น้ำในการตรวจสอบค่าน้ำออนไลน์ 
-          พร้อมระบบบริหารจัดการข้อมูลการประปาชุมชนอย่างเป็นระบบ โปร่งใส และเข้าถึงบริการทั้งหมดได้จากแถบเมนูด้านข้าง (Sidebar)
+      <section class="portal-hero" id="about-section" style="padding: 38px 28px 42px 28px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0284c7 100%); color: #fff; border-radius: 16px; margin-bottom: 24px; box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.2); border: 1px solid rgba(255, 255, 255, 0.1);">
+        <div class="hero-badge" style="background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 9999px; padding: 4px 14px; font-size: 13px; font-weight: 600;">🏛️ กองทุนน้ำประปาหมู่บ้านวังยาง หมู่ที่ 3</div>
+        <h1 style="font-size: 28px; margin: 12px 0 8px 0; font-family: 'Prompt', sans-serif; font-weight: 700; letter-spacing: -0.3px;">ระบบบริการและบริหารจัดการน้ำประปาชุมชน</h1>
+        <p style="font-size: 15px; margin: 0 auto; max-width: 650px; opacity: 0.9; line-height: 1.5;">
+          ตรวจสอบยอดค่าน้ำ ชำระเงินผ่าน PromptPay และติดตามข้อมูลบริหารงานประปาหมู่บ้านวังยางแบบครบวงจร
         </p>
         <!-- Hero Water Bill Search Widget -->
         <div class="hero-search-box">

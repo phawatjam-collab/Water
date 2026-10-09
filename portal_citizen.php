@@ -26,25 +26,27 @@ $currentUser = getCurrentUser();
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     .citizen-hero-box {
-      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 55%, #0284c7 100%);
       color: #fff;
-      padding: 40px 24px;
+      padding: 38px 24px;
       text-align: center;
-      border-radius: 12px;
+      border-radius: 16px;
       margin-bottom: 24px;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
     .citizen-hero-box h1 {
       font-family: 'Prompt', sans-serif;
       font-size: 26px;
       font-weight: 700;
       margin-bottom: 8px;
+      letter-spacing: -0.3px;
     }
     .search-card {
       background: #fff;
-      border-radius: 12px;
-      padding: 24px;
-      box-shadow: var(--shadow);
+      border-radius: 14px;
+      padding: 24px 28px;
+      box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.08), 0 4px 6px -2px rgba(15, 23, 42, 0.04);
       border: 1px solid var(--border);
       max-width: 720px;
       margin: -25px auto 30px auto;
@@ -275,15 +277,34 @@ $currentUser = getCurrentUser();
       margin-bottom: 30px;
     }
     .quick-examples {
-      margin-top: 10px;
+      margin-top: 14px;
       font-size: 13px;
       color: #64748b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 6px;
     }
-    .quick-examples a {
+    .quick-chip {
+      background: #f1f5f9;
       color: #0284c7;
-      text-decoration: underline;
+      border: 1px solid #cbd5e1;
+      padding: 3px 12px;
+      border-radius: 9999px;
+      font-size: 12.5px;
+      font-weight: 600;
       cursor: pointer;
-      margin: 0 4px;
+      font-family: inherit;
+      transition: all 0.15s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+    }
+    .quick-chip:hover {
+      background: #e0f2fe;
+      border-color: #0284c7;
+      transform: translateY(-1px);
     }
     .service-grid {
       display: grid;
@@ -332,13 +353,12 @@ $currentUser = getCurrentUser();
     
     <!-- Hero Banner -->
     <div class="citizen-hero-box">
-      <span style="background: rgba(255,255,255,0.2); padding: 4px 14px; border-radius: 9999px; font-size: 13.5px; font-weight: 600;">
-        👥 ศูนย์บริการประชาชนและสมาชิกผู้ใช้น้ำ (Public Portal)
+      <span style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); padding: 5px 16px; border-radius: 9999px; font-size: 13px; font-weight: 600;">
+        👥 ศูนย์บริการประชาชนและสมาชิกผู้ใช้น้ำ
       </span>
-      <h1 style="margin-top: 12px;">บริการข้อมูลและตรวจสอบยอดค่าน้ำประปาออนไลน์</h1>
-      <p style="opacity: 0.9; max-width: 650px; margin: 0 auto; font-size: 14.5px;">
-        อำนวยความสะดวกแก่สมาชิกผู้ใช้น้ำในการตรวจสอบเลขมิเตอร์ ยอดค่าน้ำประจำงวด ตรวจสอบหนี้ค้างชำระ 
-        และสแกนชำระผ่าน PromptPay QR Code ได้ตลอด 24 ชั่วโมง
+      <h1 style="margin-top: 14px;">บริการตรวจสอบค่าน้ำและชำระเงินออนไลน์</h1>
+      <p style="opacity: 0.9; max-width: 600px; margin: 0 auto; font-size: 14.5px; line-height: 1.5;">
+        ตรวจสอบเลขมิเตอร์ สรุปยอดค่าน้ำประจำงวด และสแกนชำระผ่าน PromptPay ได้สะดวกรวดเร็วตลอด 24 ชั่วโมง
       </p>
     </div>
 
@@ -353,8 +373,12 @@ $currentUser = getCurrentUser();
           <span>🔍</span> ค้นหาบิล
         </button>
       </div>
-      <div class="quick-examples" style="text-align: center; margin-top: 12px;">
-        💡 <strong>Key หลัก:</strong> ค้นหาด้วยเบอร์โทรศัพท์มือถือ หรือรหัสผู้ใช้น้ำ เช่น <a onclick="setSearchDemo('0812345678')">081-234-5678</a>, <a onclick="setSearchDemo('0810001111')">081-000-1111</a>, <a onclick="setSearchDemo('WY-001')">WY-001</a>
+      <div class="quick-examples">
+        <span style="font-weight: 600; color: #475569; margin-right: 4px;">💡 ตัวอย่างค้นหา:</span>
+        <button type="button" class="quick-chip" onclick="setSearchDemo('0812345678')">📱 081-234-5678</button>
+        <button type="button" class="quick-chip" onclick="setSearchDemo('0810001111')">📱 081-000-1111</button>
+        <button type="button" class="quick-chip" onclick="setSearchDemo('WY-001')">🏷️ WY-001</button>
+        <button type="button" class="quick-chip" onclick="setSearchDemo('WY-002')">🏷️ WY-002</button>
       </div>
     </div>
 

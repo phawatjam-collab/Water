@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Complete SQL Encyclopedia & Exam Bible</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0f172a;
+      --primary-accent: #1d4ed8;
+      --secondary: #0f766e;
+      --amber: #b45309;
+      --rose: #be123c;
+      --emerald: #047857;
+      --bg-light: #f8fafc;
+      --border: #cbd5e1;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --code-bg: #0f172a;
+      --code-text: #f8fafc;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: 'Sarabun', 'Segoe UI', Tahoma, sans-serif;
+      font-size: 11pt;
+      line-height: 1.55;
+      color: var(--text);
+      background: var(--bg-light);
+      padding: 24px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1040px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 40px 50px;
+      border-radius: 12px;
+      box-shadow: 0 4px 25px rgba(0,0,0,0.06);
+    }
+
+    @page {
+      size: A4;
+      margin: 14mm 14mm 14mm 14mm;
+    }
+
+    @media print {
+      body { background: #fff; padding: 0; font-size: 9.5pt; line-height: 1.4; }
+      .container { padding: 0; box-shadow: none; max-width: 100%; border-radius: 0; }
+      .page-break { page-break-before: always; break-before: page; }
+      .no-break { page-break-inside: avoid; break-inside: avoid; }
+      h1, h2, h3 { page-break-after: avoid; break-after: avoid; }
+      pre { white-space: pre-wrap; font-size: 8.5pt; }
+    }
+
+    /* Headings */
+    h1, h2, h3, h4 { font-family: 'Prompt', sans-serif; font-weight: 700; color: var(--primary); }
+    h1 { font-size: 21pt; color: #ffffff; line-height: 1.25; }
+    h2 { font-size: 14.5pt; color: var(--primary-accent); border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; margin: 24px 0 12px 0; display: flex; align-items: center; gap: 8px; }
+    h3 { font-size: 11.5pt; color: var(--primary); margin: 14px 0 6px 0; }
+    p { margin-bottom: 8px; text-align: justify; }
+
+    /* Hero Banner */
+    .hero {
+      background: linear-gradient(135deg, #090d16 0%, #1e3a8a 50%, #0284c7 100%);
+      color: #ffffff;
+      padding: 30px 36px;
+      border-radius: 12px;
+      margin-bottom: 22px;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.25);
+    }
+    .hero .subtitle {
+      font-size: 11.5pt;
+      color: #bae6fd;
+      font-family: 'Prompt', sans-serif;
+      margin-top: 4px;
+      margin-bottom: 14px;
+    }
+    .hero-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      font-size: 9pt;
+      font-weight: 600;
+      border-radius: 16px;
+      font-family: 'Prompt', sans-serif;
+    }
+    .badge-blue { background: #dbeafe; color: #1e40af; }
+    .badge-green { background: #dcfce7; color: #15803d; }
+    .badge-amber { background: #fef3c7; color: #b45309; }
+    .badge-rose { background: #ffe4e6; color: #be123c; }
+    .badge-dark { background: rgba(255,255,255,0.18); color: #ffffff; border: 1px solid rgba(255,255,255,0.25); }
+
+    /* Card & Callouts */
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-bottom: 14px;
+      background: #ffffff;
+    }
+    .callout {
+      border-left: 4px solid var(--primary-accent);
+      background: #f0f7ff;
+      padding: 10px 16px;
+      border-radius: 0 6px 6px 0;
+      margin: 10px 0;
+      font-size: 10pt;
+    }
+    .callout.tip { border-left-color: var(--emerald); background: #f0fdf4; }
+    .callout.warn { border-left-color: var(--amber); background: #fffbeb; }
+    .callout.danger { border-left-color: var(--rose); background: #fff1f2; }
+    .callout-title { font-family: 'Prompt', sans-serif; font-weight: 700; margin-bottom: 3px; color: var(--primary); }
+
+    /* Code Blocks */
+    pre, code { font-family: 'JetBrains Mono', Consolas, monospace; }
+    code {
+      background: #f1f5f9;
+      color: #0f172a;
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-size: 9pt;
+      border: 1px solid #e2e8f0;
+    }
+    pre {
+      background: var(--code-bg);
+      color: var(--code-text);
+      padding: 10px 14px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 6px 0 10px 0;
+      font-size: 9pt;
+      line-height: 1.4;
+      border: 1px solid #334155;
+    }
+    pre .kw { color: #38bdf8; font-weight: 600; }
+    pre .fn { color: #f472b6; font-weight: 600; }
+    pre .str { color: #4ade80; }
+    pre .num { color: #fbbf24; }
+    pre .cm { color: #94a3b8; font-style: italic; }
+
+    /* Tables */
+    table { width: 100%; border-collapse: collapse; margin: 8px 0 12px 0; font-size: 9.5pt; }
+    th, td { border: 1px solid #cbd5e1; padding: 5px 8px; text-align: left; }
+    th { background: #f1f5f9; font-family: 'Prompt', sans-serif; font-weight: 600; color: var(--primary); text-align: center; }
+    tr:nth-child(even) td { background: #f8fafc; }
+    .table-center th, .table-center td { text-align: center; }
+
+    /* Problem Card */
+    .problem-card {
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin-bottom: 12px;
+      background: #ffffff;
+      page-break-inside: avoid;
+    }
+    .problem-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+      border-bottom: 1px dashed #cbd5e1;
+      padding-bottom: 4px;
+    }
+    .problem-title { font-family: 'Prompt', sans-serif; font-weight: 700; font-size: 10.5pt; color: var(--primary); }
+    .problem-desc { font-size: 10pt; color: #334155; margin-bottom: 6px; }
+    .problem-note { font-size: 9pt; color: #64748b; margin-top: -4px; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HERO BANNER -->
+  <div class="hero">
+    <h1>The Complete SQL Encyclopedia & Exam Bible</h1>
+    <div class="subtitle">สารานุกรมรวมคำสั่ง SQL ทุกหมวดหมู่ ทุกฟังก์ชัน ทุก Operators พร้อมแนวข้อสอบจริง 25 ข้อละเอียดที่สุด</div>
+    <div class="hero-badges">
+      <span class="badge badge-dark">DDL / DML / DQL / TCL / DCL</span>
+      <span class="badge badge-dark">Scalar & Aggregate Functions</span>
+      <span class="badge badge-dark">Relational Joins & Subqueries</span>
+      <span class="badge badge-dark">CTEs & Window Functions</span>
+      <span class="badge badge-dark">Views, Triggers & ACID</span>
+      <span class="badge badge-dark">25 Real-World Problems</span>
+    </div>
+  </div>
+
+  <!-- SECTION 1 -->
+  <h2>หมวดที่ 1: DDL (Data Definition Language) — การจัดการโครงสร้างตาราง</h2>
+  <p>คำสั่ง DDL ใช้สำหรับกำหนดโครงสร้าง นิยามตาราง ชนิดข้อมูล และ Constraints ทั้งหมดในฐานข้อมูล</p>
+
+  <div class="grid-2 no-break">
+    <div class="card">
+      <h3 style="margin-top: 0;">1.1 การสร้างและลบ Database / Table</h3>
+      <pre><span class="cm">-- สร้างฐานข้อมูล</span>
+<span class="kw">CREATE DATABASE IF NOT EXISTS</span> db_water
+<span class="kw">CHARACTER SET</span> utf8mb4 <span class="kw">COLLATE</span> utf8mb4_unicode_ci;
+
+<span class="cm">-- เลือกลูกค้า</span>
+<span class="kw">USE</span> db_water;
+
+<span class="cm">-- ลบตารางทิ้งทั้งโครงสร้าง</span>
+<span class="kw">DROP TABLE IF EXISTS</span> old_table;</pre>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top: 0;">1.2 สรุปชนิดข้อมูลสำคัญ (Data Types)</h3>
+      <ul style="font-size: 9.5pt; margin-left: 18px;">
+        <li><code>INT</code> / <code>BIGINT</code>: ตัวเลขจำนวนเต็ม</li>
+        <li><code>DECIMAL(10,2)</code>: ตัวเลขเงิน/ทศนิยมแม่นยำ ไม่ปัดเศษเพี้ยน</li>
+        <li><code>VARCHAR(N)</code>: ตัวหนังสือแปรผันตามความยาวจริง</li>
+        <li><code>CHAR(N)</code>: ตัวหนังสือความยาวคงที่ (เช่น รหัสไปรษณีย์)</li>
+        <li><code>DATE</code> / <code>DATETIME</code> / <code>TIMESTAMP</code>: วันที่และเวลา</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card no-break">
+    <h3 style="margin-top: 0;">1.3 ตัวอย่าง CREATE TABLE พร้อม Constraints ครบทุกตัว</h3>
+    <pre><span class="kw">CREATE TABLE</span> tb_customers (
+    cus_id <span class="kw">INT</span>(<span class="num">4</span>) <span class="kw">UNSIGNED ZEROFILL AUTO_INCREMENT</span>,      <span class="cm">-- รันเลข 0001 อัตโนมัติ</span>
+    customer_code <span class="kw">VARCHAR</span>(<span class="num">20</span>) <span class="kw">NOT NULL UNIQUE</span>,          <span class="cm">-- ห้ามว่าง และห้ามซ้ำ</span>
+    first_name <span class="kw">VARCHAR</span>(<span class="num">50</span>) <span class="kw">NOT NULL</span>,
+    last_name <span class="kw">VARCHAR</span>(<span class="num">50</span>) <span class="kw">NOT NULL</span>,
+    zone_id <span class="kw">INT NOT NULL</span>,                               <span class="cm">-- คีย์นอกเชื่อมโซน</span>
+    meter_size <span class="kw">VARCHAR</span>(<span class="num">20</span>) <span class="kw">DEFAULT</span> <span class="str">'มิเตอร์ 5/8 นิ้ว'</span>,     <span class="cm">-- ค่าตั้งต้น</span>
+    credit_limit <span class="kw">DECIMAL</span>(<span class="num">10</span>,<span class="num">2</span>) <span class="kw">CHECK</span> (credit_limit >= <span class="num">0</span>), <span class="cm">-- เงื่อนไขต้อง >= 0</span>
+    created_at <span class="kw">TIMESTAMP DEFAULT CURRENT_TIMESTAMP</span>,
+    <span class="kw">PRIMARY KEY</span> (cus_id),
+    <span class="kw">CONSTRAINT</span> fk_cust_zone <span class="kw">FOREIGN KEY</span> (zone_id) <span class="kw">REFERENCES</span> tb_zone(zone_id)
+        <span class="kw">ON UPDATE CASCADE ON DELETE RESTRICT</span>
+);</pre>
+  </div>
+
+  <div class="card no-break">
+    <h3 style="margin-top: 0;">1.4 การปรับแต่งโครงสร้างด้วย ALTER TABLE</h3>
+    <pre><span class="kw">ALTER TABLE</span> tb_customers <span class="kw">ADD COLUMN</span> phone <span class="kw">VARCHAR</span>(<span class="num">15</span>) <span class="kw">AFTER</span> last_name;     <span class="cm">-- เพิ่มคอลัมน์</span>
+<span class="kw">ALTER TABLE</span> tb_customers <span class="kw">DROP COLUMN</span> credit_limit;                           <span class="cm">-- ลบคอลัมน์</span>
+<span class="kw">ALTER TABLE</span> tb_customers <span class="kw">MODIFY COLUMN</span> phone <span class="kw">VARCHAR</span>(<span class="num">20</span>) <span class="kw">NOT NULL</span>;           <span class="cm">-- แก้ชนิดข้อมูล</span>
+<span class="kw">ALTER TABLE</span> tb_customers <span class="kw">CHANGE COLUMN</span> phone cus_tel <span class="kw">VARCHAR</span>(<span class="num">20</span>);            <span class="cm">-- เปลี่ยนชื่อคอลัมน์</span>
+<span class="kw">ALTER TABLE</span> tb_customers <span class="kw">RENAME TO</span> members;                                   <span class="cm">-- เปลี่ยนชื่อตาราง</span></pre>
+  </div>
+
+  <div class="card no-break">
+    <h3 style="margin-top: 0;">1.5 ศึกเปรียบเทียบ: DROP vs TRUNCATE vs DELETE (ออกข้อสอบบ่อยมาก)</h3>
+    <table class="table-center">
+      <thead><tr><th>คำสั่ง</th><th>ประเภท</th><th>สิ่งที่เกิดขึ้น</th><th>ความเร็ว</th><th>Rollback ได้ไหม?</th><th>AUTO_INCREMENT</th></tr></thead>
+      <tbody>
+        <tr><td><code>DROP TABLE</code></td><td>DDL</td><td>ลบทั้งโครงสร้างและข้อมูลทั้งหมด ตารางหายไปเลย</td><td>เร็วมาก</td><td>❌ ไม่ได้</td><td>ตารางหายไป</td></tr>
+        <tr><td><code>TRUNCATE TABLE</code></td><td>DDL</td><td>ลบเฉพาะข้อมูลทั้งหมด โครงสร้างยังอยู่ครบ</td><td>เร็วมาก</td><td>❌ ไม่ได้</td><td>✅ รีเซ็ตกลับเป็น 1</td></tr>
+        <tr><td><code>DELETE FROM</code></td><td>DML</td><td>ลบข้อมูลเฉพาะแถวตามเงื่อนไข <code>WHERE</code></td><td>ช้ากว่า</td><td>✅ ได้ (ใน Transaction)</td><td>❌ นับต่อจากค่าเดิม</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECTION 2 -->
+  <h2>หมวดที่ 2: DML (Data Manipulation Language) — เพิ่ม แก้ไข ลบข้อมูล</h2>
+  <div class="card no-break">
+    <pre><span class="cm">-- 1. INSERT ข้อมูลแถวเดียว และหลายแถวพร้อมกัน (Bulk Insert)</span>
+<span class="kw">INSERT INTO</span> tb_customers (customer_code, first_name, last_name, zone_id)
+<span class="kw">VALUES</span> 
+    (<span class="str">'WY-010'</span>, <span class="str">'สมบัติ'</span>, <span class="str">'มีทรัพย์'</span>, <span class="num">1</span>),
+    (<span class="str">'WY-011'</span>, <span class="str">'ดวงใจ'</span>, <span class="str">'รักสงบ'</span>, <span class="num">2</span>);
+
+<span class="cm">-- 2. INSERT INTO ... SELECT (คัดลอกข้อมูลจากตารางอื่น)</span>
+<span class="kw">INSERT INTO</span> members_backup <span class="kw">SELECT</span> * <span class="kw">FROM</span> tb_customers <span class="kw">WHERE</span> status = <span class="str">'ACTIVE'</span>;
+
+<span class="cm">-- 3. UPDATE ข้อมูล (ระวังลืม WHERE!)</span>
+<span class="kw">UPDATE</span> meter_readings 
+<span class="kw">SET</span> payment_status = <span class="str">'PAID'</span>, payment_date = <span class="fn">CURDATE</span>() 
+<span class="kw">WHERE</span> id = <span class="num">105</span>;
+
+<span class="cm">-- 4. DELETE ข้อมูลตามเงื่อนไข</span>
+<span class="kw">DELETE FROM</span> service_tickets <span class="kw">WHERE</span> status = <span class="str">'CANCELLED'</span> <span class="kw">AND</span> created_at < <span class="str">'2024-01-01'</span>;</pre>
+  </div>
+
+  <!-- PAGE BREAK -->
+  <div class="page-break"></div>
+
+  <!-- SECTION 3 -->
+  <h2>หมวดที่ 3: DQL พื้นฐาน & Operators ครบทุกตัว</h2>
+  
+  <div class="card no-break">
+    <h3 style="margin-top: 0;">3.1 คลังตัวดำเนินการเปรียบเทียบและตรรกะ (Operators Catalog)</h3>
+    <table class="table-sm">
+      <thead><tr><th>ตัวดำเนินการ</th><th>ความหมาย</th><th>ตัวอย่างการใช้งาน</th><th>ผลลัพธ์</th></tr></thead>
+      <tbody>
+        <tr><td><code>=</code></td><td>เท่ากับ</td><td><code>WHERE status = 'PAID'</code></td><td>ดึงแถวที่สถานะตรงกันเป๊ะ</td></tr>
+        <tr><td><code>!=</code> หรือ <code><></code></td><td>ไม่เท่ากับ</td><td><code>WHERE zone_id <> 1</code></td><td>ดึงแถวที่โซนไม่ใช่ 1</td></tr>
+        <tr><td><code>></code> / <code><</code></td><td>มากกว่า / น้อยกว่า</td><td><code>WHERE units_used > 50</code></td><td>ดึงหน่วยใช้น้ำเกิน 50</td></tr>
+        <tr><td><code>>=</code> / <code><=</code></td><td>มากกว่าหรือเท่ากับ / น้อยกว่าหรือเท่ากับ</td><td><code>WHERE salary >= 30000</code></td><td>ดึงเงินเดือนตั้งแต่ 30,000 ขึ้นไป</td></tr>
+        <tr><td><code>BETWEEN a AND b</code></td><td>อยู่ในช่วง a ถึง b (รวมจุดขอบ)</td><td><code>WHERE age BETWEEN 20 AND 30</code></td><td>เทียบเท่ากับ <code>age >= 20 AND age <= 30</code></td></tr>
+        <tr><td><code>IN (...)</code></td><td>มีค่าตรงกับสมาชิกในชุด</td><td><code>WHERE zone_id IN (1, 2, 4)</code></td><td>เทียบเท่ากับ <code>zone=1 OR zone=2 OR zone=4</code></td></tr>
+        <tr><td><code>LIKE</code></td><td>ค้นหาตามรูปแบบ Wildcard</td><td><code>WHERE name LIKE 'ส%'</code></td><td>ชื่อที่ขึ้นต้นด้วย 'ส'</td></tr>
+        <tr><td><code>IS NULL</code></td><td>ตรวจสอบค่าว่าง</td><td><code>WHERE receipt_no IS NULL</code></td><td>ดึงบิลที่ยังไม่ออกใบเสร็จ</td></tr>
+        <tr><td><code>IS NOT NULL</code></td><td>ตรวจสอบว่ามีค่า</td><td><code>WHERE phone IS NOT NULL</code></td><td>ดึงเฉพาะคนที่มีเบอร์โทร</td></tr>
+        <tr><td><code>AND</code> / <code>OR</code> / <code>NOT</code></td><td>ตรรกะ และ / หรือ / ปฏิเสธ</td><td><code>WHERE (a OR b) AND c</code></td><td><strong>ต้องใส่วงเล็บรอบ OR เสมอ</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECTION 4 -->
+  <h2>หมวดที่ 4: ฟังก์ชันเดี่ยวครบวงจร (Built-in Scalar Functions)</h2>
+
+  <div class="grid-2 no-break">
+    <div class="card">
+      <h3 style="margin-top: 0; color: var(--primary-accent);">4.1 ฟังก์ชันข้อความ (String)</h3>
+      <ul style="font-size: 9.5pt; margin-left: 16px;">
+        <li><code>CONCAT(a, ' ', b)</code>: ต่อข้อความเข้าด้วยกัน</li>
+        <li><code>CONCAT_WS(', ', a, b, c)</code>: ต่อข้อความโดยมีตัวคั่น</li>
+        <li><code>SUBSTRING(str, 1, 5)</code>: ตัดข้อความ (เริ่มนับที่ 1)</li>
+        <li><code>UPPER(s)</code> / <code>LOWER(s)</code>: แปลงเป็นตัวพิมพ์ใหญ่/เล็ก</li>
+        <li><code>TRIM(s)</code>: ตัดช่องว่างส่วนเกินหน้า-หลัง</li>
+        <li><code>REPLACE(str, from, to)</code>: แทนที่ข้อความ</li>
+        <li><code>CHAR_LENGTH(s)</code>: นับจำนวนตัวอักษรจริง</li>
+        <li><code>LPAD(num, 4, '0')</code>: เติมศูนย์ข้างหน้า เช่น '0005'</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top: 0; color: var(--emerald);">4.2 ฟังก์ชันตัวเลข & เงื่อนไข (Math & Flow)</h3>
+      <ul style="font-size: 9.5pt; margin-left: 16px;">
+        <li><code>ROUND(val, 2)</code>: ปัดเศษทศนิยม 2 ตำแหน่ง</li>
+        <li><code>CEIL(val)</code>: ปัดเศษขึ้นเป็นจำนวนเต็มเสมอ</li>
+        <li><code>FLOOR(val)</code>: ปัดเศษทิ้งลงเป็นจำนวนเต็มเสมอ</li>
+        <li><code>ABS(val)</code>: หาค่าสัมบูรณ์</li>
+        <li><code>MOD(a, b)</code>: หารเอาเศษ (Modulo)</li>
+        <li><code>IF(cond, true_val, false_val)</code>: เงื่อนไข 2 ทางเลือก</li>
+        <li><code>IFNULL(val, default)</code>: ถ้าเป็น NULL ให้ใช้ค่า default</li>
+        <li><code>COALESCE(a, b, c)</code>: คืนค่าตัวแรกที่ไม่ใช่ NULL</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card no-break">
+    <h3 style="margin-top: 0; color: var(--rose);">4.3 ฟังก์ชันวันและเวลา (Date & Time Functions — จุดชี้ขาดคะแนน)</h3>
+    <table class="table-sm">
+      <thead><tr><th>ฟังก์ชัน</th><th>ตัวอย่างคำสั่ง</th><th>ผลลัพธ์ / การนำไปใช้งานจริง</th></tr></thead>
+      <tbody>
+        <tr><td><code>CURDATE()</code> / <code>NOW()</code></td><td><code>SELECT CURDATE(), NOW();</code></td><td>ดึงวันที่ปัจจุบัน ('2026-10-10') และ วันที่พร้อมเวลา</td></tr>
+        <tr><td><code>YEAR()</code> / <code>MONTH()</code> / <code>DAY()</code></td><td><code>SELECT YEAR(hire_date);</code></td><td>ดึงชิ้นส่วนปี เดือน หรือ วัน ของวันที่ออกมาเป็นตัวเลข</td></tr>
+        <tr><td><code>TIMESTAMPDIFF(unit, d1, d2)</code></td><td><code>TIMESTAMPDIFF(YEAR, hire_date, CURDATE())</code></td><td><strong>คำนวณอายุงานเต็มปีที่แม่นยำที่สุด</strong> (ยังไม่ถึงวันครบรอบไม่ปัดขึ้น)</td></tr>
+        <tr><td><code>DATEDIFF(d1, d2)</code></td><td><code>DATEDIFF('2024-08-30', '2024-08-20')</code></td><td>คำนวณจำนวนวันที่ต่างกัน คืนค่าเป็นตัวเลขวัน (ได้ 10)</td></tr>
+        <tr><td><code>DATE_ADD()</code> / <code>DATE_SUB()</code></td><td><code>DATE_ADD(CURDATE(), INTERVAL 15 DAY)</code></td><td>บวก/ลบวันที่ (เช่น หาวันครบกำหนดชำระบิลอีก 15 วันข้างหน้า)</td></tr>
+        <tr><td><code>DATE_FORMAT(date, format)</code></td><td><code>DATE_FORMAT(reading_date, '%d/%m/%Y')</code></td><td>จัดรูปแบบวันที่ไทย เช่น '27/08/2567'</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECTION 5 & 6 -->
+  <h2>หมวดที่ 5 & 6: การจัดกลุ่ม (Grouping) และการเชื่อมตาราง (JOINs)</h2>
+
+  <div class="grid-2 no-break">
+    <div class="card">
+      <h3 style="margin-top: 0;">5.1 กฎเหล็กของ GROUP BY & HAVING</h3>
+      <p style="font-size: 9.5pt;">
+        • <strong>กฎเหล็ก:</strong> คอลัมน์ที่ไม่ได้อยู่ใน Aggregate Function (SUM, AVG ฯลฯ) ต้องใส่ใน <code>GROUP BY</code> ทั้งหมด<br>
+        • <strong>WHERE vs HAVING:</strong><br>
+        - <code>WHERE</code> กรองแถวก่อนรวมกลุ่ม (ห้ามใส่ SUM/AVG)<br>
+        - <code>HAVING</code> กรองกลุ่มหลังคำนวณสถิติเสร็จแล้ว
+      </p>
+      <pre><span class="kw">SELECT</span> zone_id, <span class="fn">SUM</span>(units_used) <span class="kw">AS</span> total_units
+<span class="kw">FROM</span> meter_readings
+<span class="kw">WHERE</span> payment_status = <span class="str">'PAID'</span>
+<span class="kw">GROUP BY</span> zone_id
+<span class="kw">HAVING</span> <span class="fn">SUM</span>(units_used) > <span class="num">100</span>;</pre>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top: 0;">6.1 สรุปชนิดของ Relational JOINs</h3>
+      <ul style="font-size: 9.5pt; margin-left: 16px;">
+        <li><strong>INNER JOIN:</strong> เอาเฉพาะแถวที่คีย์ตรงกันทั้งสองฝั่ง ($A \cap B$)</li>
+        <li><strong>LEFT JOIN:</strong> เอาฝั่งซ้ายครบทุกแถว ฝั่งขวาไม่มีใส่ <code>NULL</code></li>
+        <li><strong>RIGHT JOIN:</strong> เอาฝั่งขวาครบทุกแถว (กลับทิศ LEFT JOIN)</li>
+        <li><strong>CROSS JOIN:</strong> Cartesian Product จับคู่ทุกแถว ($M \times N$)</li>
+        <li><strong>SELF JOIN:</strong> ตารางเดิม JOIN กับตัวเอง (เช่น พนักงาน-หัวหน้า)</li>
+        <li><strong>Anti-Join:</strong> <code>LEFT JOIN ... WHERE right.id IS NULL</code></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- PAGE BREAK -->
+  <div class="page-break"></div>
+
+  <!-- SECTION 7, 8, 9 -->
+  <h2>หมวดที่ 7, 8 & 9: Subqueries, CTEs, Window Functions & Set Operations</h2>
+
+  <div class="grid-2 no-break">
+    <div class="card">
+      <h3 style="margin-top: 0;">7.1 Set Operations (รวมเซต)</h3>
+      <ul style="font-size: 9.5pt; margin-left: 16px;">
+        <li><code>UNION</code>: รวม 2 ตาราง + <strong>ตัดแถวซ้ำออก</strong></li>
+        <li><code>UNION ALL</code>: รวม 2 ตาราง <strong>ไม่ตัดแถวซ้ำ</strong> (เร็วที่สุด)</li>
+        <li><code>INTERSECT</code>: เอาเฉพาะแถวที่เหมือนกันทั้งสองชุด</li>
+        <li><code>EXCEPT</code> / <code>MINUS</code>: เอาชุดแรก หักชุดสองออก</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top: 0;">8.1 ชนิดของ Subqueries</h3>
+      <ul style="font-size: 9.5pt; margin-left: 16px;">
+        <li><strong>Scalar:</strong> คืนค่าเดียวเดี่ยวๆ เช่น <code>WHERE salary > (SELECT AVG(...))</code></li>
+        <li><strong>IN / NOT IN:</strong> คืนรายการหลายแถว</li>
+        <li><strong>EXISTS:</strong> ตรวจสอบว่ามีข้อมูลอย่างน้อย 1 แถวหรือไม่ (เร็วกว่า IN)</li>
+        <li><strong>Correlated:</strong> ซับคิวรีที่ผูกกับแถวด้านนอก รันทีละแถว</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card no-break">
+    <h3 style="margin-top: 0; color: var(--primary-accent);">9.1 Window Functions: โครงสร้างและการจัดอันดับ</h3>
+    <pre><span class="cm">-- ไวยากรณ์หลัก:</span>
+<span class="fn">FUNCTION</span>() <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> group_col <span class="kw">ORDER BY</span> sort_col)
+
+<span class="cm">-- ตัวอย่างการจัดอันดับ Top 3:</span>
+<span class="kw">WITH</span> Ranked <span class="kw">AS</span> (
+    <span class="kw">SELECT</span> fullname, zone_id, units_used,
+           <span class="fn">DENSE_RANK</span>() <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> zone_id <span class="kw">ORDER BY</span> units_used <span class="kw">DESC</span>) <span class="kw">AS</span> rk
+    <span class="kw">FROM</span> meter_readings
+)
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> Ranked <span class="kw">WHERE</span> rk <= <span class="num">3</span>;</pre>
+    <div style="font-size: 9pt; display: flex; gap: 14px; margin-top: 4px;">
+      <div>• <strong>ROW_NUMBER():</strong> 1, 2, 3, 4 (ไม่สนค่าซ้ำ)</div>
+      <div>• <strong>RANK():</strong> 1, 2, 2, 4 (ซ้ำอันดับเท่ากัน แต่ลำดับถัดไปกระโดด)</div>
+      <div>• <strong>DENSE_RANK():</strong> 1, 2, 2, 3 (ซ้ำอันดับเท่ากัน ลำดับถัดไปไม่กระโดด)</div>
+      <div>• <strong>LAG(col, 1):</strong> ดึงค่าแถวก่อนหน้า</div>
+    </div>
+  </div>
+
+  <!-- SECTION 12: 25 EXAM PROBLEMS -->
+  <h2>หมวดที่ 12: คลังโจทย์ข้อสอบจริง 25 ข้อ พร้อมเฉลยละเอียดแบบ Step-by-Step</h2>
+
+  <!-- PROBLEMS 1 to 5 -->
+  <div class="problem-card">
+    <div class="problem-header"><span class="problem-title">ข้อ 1: SELECT และคำนวณสูตรค่าน้ำ (Expressions)</span><span class="badge badge-green">พื้นฐาน</span></div>
+    <div class="problem-desc">จงแสดงรหัสลูกค้า, ชื่อ-นามสกุล, และค่าน้ำดิบที่คำนวณจากหน่วยใช้น้ำคูณหน่วยละ 7 บาท โดยตั้งชื่อคอลัมน์ว่า <code>calculated_charge</code></div>
+    <pre><span class="kw">SELECT</span> customer_code, fullname, (units_used * <span class="num">7.00</span>) <span class="kw">AS</span> calculated_charge <span class="kw">FROM</span> meter_readings;</pre>
+  </div>
+
+  <div class="problem-card">
+    <div class="problem-header"><span class="problem-title">ข้อ 2: กรองข้อมูลตัวเลขด้วย BETWEEN</span><span class="badge badge-green">พื้นฐาน</span></div>
+    <div class="problem-desc">จงหารายการจดมิเตอร์น้ำที่มียอดใช้น้ำอยู่ระหว่าง 15 ถึง 30 หน่วย ในรอบบิล '8-2567'</div>
+    <pre><span class="kw">SELECT</span> * <span class="kw">FROM</span> meter_readings <span class="kw">WHERE</span> billing_cycle_id = <span class="str">'8-2567'</span> <span class="kw">AND</span> units_used <span class="kw">BETWEEN</span> <span class="num">15.00</span> <span class="kw">AND</span> <span class="num">30.00</span>;</pre>
+  </div>
+
+  <div class="problem-card">
+    <div class="problem-header"><span class="problem-title">ข้อ 3: ตรรกะร่วม AND / OR และการใส่วงเล็บ</span><span class="badge badge-blue">ปานกลาง</span></div>
+    <div class="problem-desc">จงแสดงสมาชิกในโซน 1 หรือ 2 ที่มีสถานะ 'ACTIVE' และติดตั้งมิเตอร์ขนาด 'มิเตอร์ขนาด 5/8 นิ้ว'</div>
+    <pre><span class="kw">SELECT</span> fullname, zone_id, meter_size, status <span class="kw">FROM</span> customers
+<span class="kw">WHERE</span> (zone_id = <span class="num">1</span> <span class="kw">OR</span> zone_id = <span class="num">2</span>) <span class="kw">AND</span> status = <span class="str">'ACTIVE'</span> <span class="kw">AND</span> meter_size = <span class="str">'มิเตอร์ขนาด 5/8 นิ้ว'</span>;</pre>
+  </div>
+
+  <div class="problem-card">
+    <div class="problem-header"><span class="problem-title">ข้อ 4: การค้นหาข้อความด้วย LIKE Wildcards</span><span class="badge badge-blue">ปานกลาง</span></div>
+    <div class="problem-desc">จงหาข้อร้องเรียนแจ้งซ่อม (`service_tickets`) ที่มีคำว่า 'แตก' หรือ 'รั่ว' อยู่ในประเภทปัญหา</div>
+    <pre><span class="kw">SELECT</span> ticket_no, reporter_name, issue_type, description <span class="kw">FROM</span> service_tickets
+<span class="kw">WHERE</span> issue_type <span class="kw">LIKE</span> <span class="str">'%แตก%'</span> <span class="kw">OR</span> issue_type <span class="kw">LIKE</span> <span class="str">'%รั่ว%'</span>;</pre>
+  </div>
+
+  <div class="problem-card">
+    <div class="problem-header"><span class="problem-title">ข้อ 5: การตรวจจับค่าว่างตามหลัก 3VL ด้วย IS NULL</span><span class="badge badge-blue">ปานกลาง</span></div>
+    <div class="problem-desc">จงแสดงรายการบิลค่าน้ำทั้งหมดที่ยังไม่ได้ออกเลขที่ใบเสร็จรับเงิน (`receipt_no IS NULL`)</div>
+    <pre><span class="kw">SELECT</span> id, customer_id, grand_total, payment_status <span class="kw">FROM</span> meter_readings <span class="kw">WHERE</span> receipt_no <span class="kw">IS NULL</span>;</pre>
+  </div>
+
+  <!-- PAGE BREAK -->
+  <div class="page-break"></div>
+
+  <!-- PROBLEMS 6 to 10 -->
+  <div class="problem-card">
+    <div class="problem-header"><span class="problem-title">ข้อ 6: คำนวณอายุงานจากปีคงที่ด้วย YEAR()</span><span class="badge badge-blue">ปานกลาง</span></div>
+    <div class="problem-desc">จงแสดงชื่อลูกค้า วันที่ติดตั้งมิเตอร์ และจำนวนปีที่ติดตั้งจนถึงปี 2024 เฉพาะผู้ที่ติดตั้งมาแล้ว >= 3 ปี</div>
+    <pre><span class="kw">SELECT</span> fullname, meter_installed_date, (<span class="num">2024</span> - <span class="fn">YEAR</span>(meter_installed_date)) <span class="kw">AS</span> installed_years
+<span class="kw">FROM</span> customers <span class="kw">WHERE</span> (<span class="num">2024</span> - <span class="fn">YEAR</span>(meter_installed_date)) >= <span class="num">3</span>;</pre>
+  </div>
+
+  <div class="problem-card">
+    <div class="problem-header"><span class="problem-title">ข้อ 7: คำนวณอายุงานเทียบกับวันปัจจุบันด้วย TIMESTAMPDIFF()</span><span class="badge badge-blue">ปานกลาง</span></div>
+    <div class="problem-desc">จงแสดงรหัสเจ้าหน้าที่ ชื่อ และอายุงานเต็มปีเทียบกับวันปัจจุบันของระบบ เรียงจากมากไปน้อย</div>
+    <pre><span class="kw">SELECT</span> user_id, fullname, <span class="fn">TIMESTAMPDIFF</span>(<span class="kw">YEAR</span>, created_at, <span class="fn">CURDATE</span>()) <span class="kw">AS</span> service_years
+<span class="kw">FROM</span> tb_users <span class="kw">WHERE</span> role = <span class="str">'staff'</span> <span class="kw">ORDER BY</span> service_years <span class="kw">DESC</span>;</pre>
+  </div>
+
+  <div class="problem-card">
+    <div class="problem-header"><span class="problem-title">ข้อ 8: การหาผลรวมและจัดกลุ่มด้วย GROUP BY</span><span class="badge badge-blue">ปานกลาง</span></div>
+    <div class="problem-desc">จงสรุปปริมาณการใช้น้ำรวม (`total_units`) และค่าน้ำรวม แยกตามแต่ละโซน</div>
+    <pre><span class="kw">SELECT</span> c.zone_id, <span class="fn">SUM</span>(mr.units_used) <span class="kw">AS</span> total_units, <span class="fn">SUM</span>(mr.current_total) <span class="kw">AS</span> total_revenue
+<span class="kw">FROM</span> meter_readings mr <span class="kw">JOIN</span> tb_customers c <span class="kw">ON</span> mr.customer_id = c.cus_id <span class="kw">GROUP BY</span> c.zone_id;</pre>
+  </div>
+
+  <div class="problem-card">
+    <div class="problem-header"><span class="problem-title">ข้อ 9: การกรองผลรวมของกลุ่มด้วย HAVING</span><span class="badge badge-blue">ปานกลาง</span></div>
+    <div class="problem-desc">จงหาโซนที่มีลูกหนี้ค้างชำระรวมกันตั้งแต่ 3 รายขึ้นไป</div>
+    <pre><span class="kw">SELECT</span> c.zone_id, <span class="fn">COUNT</span>(mr.id) <span class="kw">AS</span> unpaid_count
+<span class="kw">FROM</span> meter_readings mr <span class="kw">JOIN</span> tb_customers c <span class="kw">ON</span> mr.customer_id = c.cus_id
+<span class="kw">WHERE</span> mr.payment_status = <span class="str">'UNPAID'</span> <span class="kw">GROUP BY</span> c.zone_id <span class="kw">HAVING COUNT</span>(mr.id) >= <span class="num">3</span>;</pre>
+  </div>
+
+  <div class="problem-card">
+    <div class="problem-header"><span class="problem-title">ข้อ 10: เชื่อมโยง 3 ตารางด้วย INNER JOIN</span><span class="badge badge-blue">ปานกลาง</span></div>
+    <div class="problem-desc">จงแสดงรหัสบิล, ชื่อลูกค้า, ชื่อโซน (`zone_name`), และยอดชำระสุทธิ (`grand_total`)</div>
+    <pre><span class="kw">SELECT</span> mr.id <span class="kw">AS</span> bill_id, c.fullname, z.zone_name, mr.grand_total
+<span class="kw">FROM</span> meter_readings mr
+<span class="kw">JOIN</span> tb_customers c <span class="kw">ON</span> mr.customer_id = c.cus_id
+<span class="kw">JOIN</span> tb_zone z <span class="kw">ON</span> c.zone_id = z.zone_id;</pre>
+  </div>
+
+  <!-- PROBLEMS 11 to 15 -->
+  <div class="problem-card">
+    <div class="problem-header"><span class="problem-title">ข้อ 11: Anti-Join ด้วย LEFT JOIN หาคนไม่มีคู่</span><span class="badge badge-amber">ขั้นสูง</span></div>
+    <div class="problem-desc">จงหารายชื่อลูกค้าที่ไม่มีประวัติการจดมิเตอร์ในรอบบิลปัจจุบันเลย</div>
+    <pre><span class="kw">SELECT</span> c.cus_id, c.fullname <span class="kw">FROM</span> tb_customers c
+<span class="kw">LEFT JOIN</span> meter_readings mr <span class="kw">ON</span> c.cus_id = mr.customer_id <span class="kw">AND</span> mr.billing_cycle_id = <span class="num">1</span>
+<span class="kw">WHERE</span> mr.id <span class="kw">IS NULL</span>;</pre>
+  </div>
+
+  <div class="problem-card">
+    <div class="problem-header"><span class="problem-title">ข้อ 12: การจำแนกข้อมูลด้วย CASE WHEN</span><span class="badge badge-amber">ขั้นสูง</span></div>
+    <div class="problem-desc">จงแสดงชื่อลูกค้า หน่วยใช้น้ำ และระดับการใช้: <10 'น้อย', 10-25 'ปานกลาง', เกิน 25 'สูง'</div>
+    <pre><span class="kw">SELECT</span> c.fullname, mr.units_used,
+       <span class="kw">CASE</span> 
+           <span class="kw">WHEN</span> mr.units_used < <span class="num">10</span> <span class="kw">THEN</span> <span class="str">'น้อย'</span>
+           <span class="kw">WHEN</span> mr.units_used <span class="kw">BETWEEN</span> <span class="num">10</span> <span class="kw">AND</span> <span class="num">25</span> <span class="kw">THEN</span> <span class="str">'ปานกลาง'</span>
+           <span class="kw">ELSE</span> <span class="str">'สูง'</span>
+       <span class="kw">END AS</span> consumption_level
+<span class="kw">FROM</span> meter_readings mr <span class="kw">JOIN</span> tb_customers c <span class="kw">ON</span> mr.customer_id = c.cus_id;</pre>
+  </div>
+
+  <div class="problem-card">
+    <div class="problem-header"><span class="problem-title">ข้อ 13: Conditional Aggregation (Pivot ยอดบิล)</span><span class="badge badge-amber">ขั้นสูง</span></div>
+    <div class="problem-desc">จงสรุปจำนวนบิลในแต่ละโซน แยกเป็นบิลจ่ายแล้ว (`paid_bills`) และบิลค้างชำระ (`unpaid_bills`)</div>
+    <pre><span class="kw">SELECT</span> c.zone_id,
+       <span class="fn">COUNT</span>(<span class="kw">CASE WHEN</span> mr.payment_status = <span class="str">'PAID'</span> <span class="kw">THEN</span> <span class="num">1</span> <span class="kw">END</span>) <span class="kw">AS</span> paid_bills,
+       <span class="fn">COUNT</span>(<span class="kw">CASE WHEN</span> mr.payment_status = <span class="str">'UNPAID'</span> <span class="kw">THEN</span> <span class="num">1</span> <span class="kw">END</span>) <span class="kw">AS</span> unpaid_bills
+<span class="kw">FROM</span> meter_readings mr <span class="kw">JOIN</span> tb_customers c <span class="kw">ON</span> mr.customer_id = c.cus_id <span class="kw">GROUP BY</span> c.zone_id;</pre>
+  </div>
+
+  <div class="problem-card">
+    <div class="problem-header"><span class="problem-title">ข้อ 14: Subquery เทียบกับค่าสูงสุด MAX()</span><span class="badge badge-amber">ขั้นสูง</span></div>
+    <div class="problem-desc">จงหาข้อมูลบิลค่าน้ำที่มียอดใช้น้ำสูงที่สุดในระบบ</div>
+    <pre><span class="kw">SELECT</span> * <span class="kw">FROM</span> meter_readings <span class="kw">WHERE</span> units_used = (<span class="kw">SELECT</span> <span class="fn">MAX</span>(units_used) <span class="kw">FROM</span> meter_readings);</pre>
+  </div>
+
+  <div class="problem-card">
+    <div class="problem-header"><span class="problem-title">ข้อ 15: Subquery ด้วย NOT IN และเช็ค NULL</span><span class="badge badge-amber">ขั้นสูง</span></div>
+    <div class="problem-desc">จงหารายชื่อลูกค้าที่ไม่มีหนี้ค้างชำระเลยแม้แต่บาทเดียว</div>
+    <pre><span class="kw">SELECT</span> cus_id, fullname <span class="kw">FROM</span> customers
+<span class="kw">WHERE</span> cus_id <span class="kw">NOT IN</span> (
+    <span class="kw">SELECT</span> customer_id <span class="kw">FROM</span> meter_readings <span class="kw">WHERE</span> previous_arrears > <span class="num">0</span> <span class="kw">AND</span> customer_id <span class="kw">IS NOT NULL</span>
+);</pre>
+  </div>
+
+  <!-- PAGE BREAK -->
+  <div class="page-break"></div>
+
+  <!-- PROBLEMS 16 to 20 -->
+  <div class="problem-card">
+    <div class="problem-header"><span class="problem-title">ข้อ 16: การหายอดเงินสูงสุดอันดับที่ 2 (Second Highest)</span><span class="badge badge-amber">ขั้นสูง</span></div>
+    <div class="problem-desc">จงหายอดเงินค่าน้ำที่สูงที่สุดเป็นอันดับที่ 2 ของหมู่บ้าน</div>
+    <pre><span class="kw">SELECT</span> <span class="fn">MAX</span>(grand_total) <span class="kw">AS</span> second_highest_bill
+<span class="kw">FROM</span> meter_readings <span class="kw">WHERE</span> grand_total < (<span class="kw">SELECT</span> <span class="fn">MAX</span>(grand_total) <span class="kw">FROM</span> meter_readings);</pre>
+  </div>
+
+  <div class="problem-card">
+    <div class="problem-header"><span class="problem-title">ข้อ 17: Subquery ใน FROM (Derived Table)</span><span class="badge badge-amber">ขั้นสูง</span></div>
+    <div class="problem-desc">จงหาค่าเฉลี่ยของ "ยอดเงินรวมต่อโซน" ของทุกโซนในหมู่บ้าน</div>
+    <pre><span class="kw">SELECT</span> <span class="fn">AVG</span>(zone_total) <span class="kw">AS</span> avg_zone_revenue
+<span class="kw">FROM</span> (
+    <span class="kw">SELECT</span> c.zone_id, <span class="fn">SUM</span>(mr.grand_total) <span class="kw">AS</span> zone_total
+    <span class="kw">FROM</span> meter_readings mr <span class="kw">JOIN</span> tb_customers c <span class="kw">ON</span> mr.customer_id = c.cus_id <span class="kw">GROUP BY</span> c.zone_id
+) <span class="kw">AS</span> ZoneSummary;</pre>
+  </div>
+
+  <div class="problem-card">
+    <div class="problem-header"><span class="problem-title">ข้อ 18: การจัดอันดับด้วย DENSE_RANK()</span><span class="badge badge-rose">ระดับเซียน</span></div>
+    <div class="problem-desc">จงจัดอันดับผู้ที่ใช้น้ำมากที่สุด Top 3 ในแต่ละโซน</div>
+    <pre><span class="kw">WITH</span> Ranked <span class="kw">AS</span> (
+    <span class="kw">SELECT</span> c.zone_id, c.fullname, mr.units_used,
+           <span class="fn">DENSE_RANK</span>() <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> c.zone_id <span class="kw">ORDER BY</span> mr.units_used <span class="kw">DESC</span>) <span class="kw">AS</span> rk
+    <span class="kw">FROM</span> meter_readings mr <span class="kw">JOIN</span> tb_customers c <span class="kw">ON</span> mr.customer_id = c.cus_id
+)
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> Ranked <span class="kw">WHERE</span> rk <= <span class="num">3</span>;</pre>
+  </div>
+
+  <div class="problem-card">
+    <div class="problem-header"><span class="problem-title">ข้อ 19: LAG() ฟังก์ชันดึงค่าแถวก่อนหน้า</span><span class="badge badge-rose">ระดับเซียน</span></div>
+    <div class="problem-desc">จงแสดงประวัติการใช้น้ำ พร้อมดึงยอดใช้น้ำเดือนก่อนหน้ามาเปรียบเทียบผลต่าง</div>
+    <pre><span class="kw">SELECT</span> customer_id, reading_date, units_used,
+       <span class="fn">LAG</span>(units_used, <span class="num">1</span>, <span class="num">0</span>) <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> customer_id <span class="kw">ORDER BY</span> reading_date <span class="kw">ASC</span>) <span class="kw">AS</span> prev_units,
+       (units_used - <span class="fn">LAG</span>(units_used, <span class="num">1</span>, <span class="num">0</span>) <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> customer_id <span class="kw">ORDER BY</span> reading_date <span class="kw">ASC</span>)) <span class="kw">AS</span> diff
+<span class="kw">FROM</span> meter_readings;</pre>
+  </div>
+
+  <div class="problem-card">
+    <div class="problem-header"><span class="problem-title">ข้อ 20: Running Total ยอดเงินสะสมต่อเนื่อง</span><span class="badge badge-rose">ระดับเซียน</span></div>
+    <div class="problem-desc">จงแสดงยอดเงินรับชำระรายวัน พร้อมยอดสะสมรวมตั้งแต่วันแรกจนถึงปัจจุบัน</div>
+    <pre><span class="kw">SELECT</span> payment_date, <span class="fn">SUM</span>(amount_paid) <span class="kw">AS</span> daily_income,
+       <span class="fn">SUM</span>(<span class="fn">SUM</span>(amount_paid)) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> payment_date <span class="kw">ASC</span>) <span class="kw">AS</span> running_total
+<span class="kw">FROM</span> meter_readings <span class="kw">WHERE</span> payment_status = <span class="str">'PAID'</span> <span class="kw">AND</span> payment_date <span class="kw">IS NOT NULL</span> <span class="kw">GROUP BY</span> payment_date;</pre>
+  </div>
+
+  <!-- PROBLEMS 21 to 25 -->
+  <div class="problem-card">
+    <div class="problem-header"><span class="problem-title">ข้อ 21: รวมรายการเบิกจ่ายด้วย UNION ALL</span><span class="badge badge-rose">ระดับเซียน</span></div>
+    <div class="problem-desc">จงรวมรายการฎีกาเบิกจ่าย (`payment_vouchers`) และค่าซ่อมท่อในคำร้อง เป็นบัญชีรายจ่ายแผ่นเดียว</div>
+    <pre><span class="kw">SELECT</span> voucher_date <span class="kw">AS</span> exp_date, voucher_type <span class="kw">AS</span> exp_type, amount, recipient_name <span class="kw">AS</span> payee <span class="kw">FROM</span> payment_vouchers
+<span class="kw">UNION ALL</span>
+<span class="kw">SELECT DATE</span>(resolved_at) <span class="kw">AS</span> exp_date, issue_type <span class="kw">AS</span> exp_type, repair_cost <span class="kw">AS</span> amount, reporter_name <span class="kw">AS</span> payee
+<span class="kw">FROM</span> service_tickets <span class="kw">WHERE</span> status = <span class="str">'RESOLVED'</span> <span class="kw">AND</span> repair_cost > <span class="num">0</span> <span class="kw">ORDER BY</span> exp_date <span class="kw">DESC</span>;</pre>
+  </div>
+
+  <div class="problem-card">
+    <div class="problem-header"><span class="problem-title">ข้อ 22: Relational Division ด้วย NOT EXISTS</span><span class="badge badge-rose">บอสใหญ่</span></div>
+    <div class="problem-desc">จงหารายชื่อลูกค้าที่จ่ายค่าน้ำครบทุกรอบบิลที่มีในระบบ (ไม่เคยค้างชำระแม้แต่งวดเดียว)</div>
+    <pre><span class="kw">SELECT</span> c.cus_id, c.fullname <span class="kw">FROM</span> tb_customers c
+<span class="kw">WHERE NOT EXISTS</span> (
+    <span class="kw">SELECT</span> b.id <span class="kw">FROM</span> billing_cycles b
+    <span class="kw">WHERE NOT EXISTS</span> (
+        <span class="kw">SELECT</span> <span class="num">1</span> <span class="kw">FROM</span> meter_readings mr
+        <span class="kw">WHERE</span> mr.billing_cycle_id = b.id <span class="kw">AND</span> mr.customer_id = c.cus_id <span class="kw">AND</span> mr.payment_status = <span class="str">'PAID'</span>
+    )
+);</pre>
+  </div>
+
+  <div class="problem-card">
+    <div class="problem-header"><span class="problem-title">ข้อ 23: Multi-table UPDATE with JOIN</span><span class="badge badge-rose">บอสใหญ่</span></div>
+    <div class="problem-desc">จงอัปเดตสถานะบิลเป็น 'PAID' พร้อมใส่วันที่และเลขที่ใบเสร็จจากตารางทำรายการพร้อมเพย์</div>
+    <pre><span class="kw">UPDATE</span> meter_readings mr
+<span class="kw">JOIN</span> promptpay_transactions pt <span class="kw">ON</span> mr.id = pt.bill_id
+<span class="kw">SET</span> mr.payment_status = <span class="str">'PAID'</span>, mr.payment_date = pt.transaction_date, mr.receipt_no = pt.ref_no
+<span class="kw">WHERE</span> pt.status = <span class="str">'SUCCESS'</span> <span class="kw">AND</span> mr.payment_status = <span class="str">'UNPAID'</span>;</pre>
+  </div>
+
+  <div class="problem-card">
+    <div class="problem-header"><span class="problem-title">ข้อ 24: SARGable Optimization (เขียนให้เร็วระดับแสง)</span><span class="badge badge-rose">บอสใหญ่</span></div>
+    <div class="problem-desc">เขียนคำสั่งค้นหาบิลในปี 2024 ให้ใช้ B-Tree Index ที่คอลัมน์ reading_date ได้เต็ม 100%</div>
+    <pre><span class="kw">SELECT</span> * <span class="kw">FROM</span> meter_readings 
+<span class="kw">WHERE</span> reading_date >= <span class="str">'2024-01-01'</span> <span class="kw">AND</span> reading_date < <span class="str">'2025-01-01'</span>;</pre>
+  </div>
+
+  <div class="problem-card">
+    <div class="problem-header"><span class="problem-title">ข้อ 25: Recursive CTE ผังองค์กรไม่จำกัดระดับ (Final Boss)</span><span class="badge badge-rose">บอสใหญ่</span></div>
+    <div class="problem-desc">จงแสดงสายการบังคับบัญชาของเจ้าหน้าที่การประปา จากประธานกองทุน (id=1) ลงไปหาลูกน้องทุกคน</div>
+    <pre><span class="kw">WITH RECURSIVE</span> StaffTree <span class="kw">AS</span> (
+    <span class="kw">SELECT</span> user_id, fullname, manager_id, <span class="num">1</span> <span class="kw">AS</span> lvl, <span class="fn">CAST</span>(fullname <span class="kw">AS CHAR</span>(<span class="num">500</span>)) <span class="kw">AS</span> chain
+    <span class="kw">FROM</span> tb_users <span class="kw">WHERE</span> user_id = <span class="num">1</span>
+    <span class="kw">UNION ALL</span>
+    <span class="kw">SELECT</span> u.user_id, u.fullname, u.manager_id, st.lvl + <span class="num">1</span>, <span class="fn">CONCAT</span>(st.chain, <span class="str">' ➔ '</span>, u.fullname)
+    <span class="kw">FROM</span> tb_users u <span class="kw">JOIN</span> StaffTree st <span class="kw">ON</span> u.manager_id = st.user_id
+)
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> StaffTree <span class="kw">ORDER BY</span> lvl, user_id;</pre>
+  </div>
+
+</div>
+
+</body>
+</html>

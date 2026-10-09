@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Ultimate SQL Mastery Guide: จากศูนย์สู่ Expert SQL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0f172a;
+      --primary-accent: #2563eb;
+      --indigo: #4f46e5;
+      --teal: #0d9488;
+      --amber: #d97706;
+      --rose: #e11d48;
+      --emerald: #059669;
+      --bg-light: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #cbd5e1;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --code-bg: #0f172a;
+      --code-text: #f1f5f9;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: 'Sarabun', 'Segoe UI', Tahoma, sans-serif;
+      font-size: 11pt;
+      line-height: 1.6;
+      color: var(--text-main);
+      background: var(--bg-light);
+      padding: 24px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1040px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 40px 50px;
+      border-radius: 12px;
+      box-shadow: 0 4px 25px rgba(0,0,0,0.06);
+    }
+
+    @page {
+      size: A4;
+      margin: 15mm 15mm 15mm 15mm;
+    }
+
+    @media print {
+      body { background: #fff; padding: 0; font-size: 10pt; line-height: 1.45; }
+      .container { padding: 0; box-shadow: none; max-width: 100%; border-radius: 0; }
+      .page-break { page-break-before: always; break-before: page; }
+      .no-break { page-break-inside: avoid; break-inside: avoid; }
+      h1, h2, h3 { page-break-after: avoid; break-after: avoid; }
+      pre { white-space: pre-wrap; font-size: 9.5pt; }
+    }
+
+    /* Headings */
+    h1, h2, h3, h4 { font-family: 'Prompt', sans-serif; font-weight: 700; color: var(--primary); }
+    h1 { font-size: 22pt; color: #ffffff; line-height: 1.25; }
+    h2 { font-size: 15pt; color: var(--primary-accent); border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; margin: 24px 0 12px 0; display: flex; align-items: center; gap: 8px; }
+    h3 { font-size: 12pt; color: var(--primary); margin: 16px 0 8px 0; }
+    h4 { font-size: 11pt; color: var(--text-muted); }
+    p { margin-bottom: 10px; text-align: justify; }
+
+    /* Hero Banner */
+    .hero {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #1d4ed8 100%);
+      color: #ffffff;
+      padding: 32px 36px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.25);
+    }
+    .hero .subtitle {
+      font-size: 12.5pt;
+      color: #93c5fd;
+      font-family: 'Prompt', sans-serif;
+      margin-top: 4px;
+      margin-bottom: 16px;
+    }
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      font-size: 9.5pt;
+      font-weight: 600;
+      border-radius: 20px;
+      font-family: 'Prompt', sans-serif;
+    }
+    .badge-blue { background: #dbeafe; color: #1e40af; }
+    .badge-green { background: #dcfce7; color: #15803d; }
+    .badge-amber { background: #fef3c7; color: #b45309; }
+    .badge-rose { background: #ffe4e6; color: #be123c; }
+    .badge-dark { background: rgba(255,255,255,0.15); color: #ffffff; border: 1px solid rgba(255,255,255,0.25); }
+
+    /* Callout & Cards */
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 14px;
+      background: #ffffff;
+    }
+    .callout {
+      border-left: 4.5px solid var(--primary-accent);
+      background: #f0f7ff;
+      padding: 12px 18px;
+      border-radius: 0 8px 8px 0;
+      margin: 12px 0;
+    }
+    .callout.tip { border-left-color: var(--emerald); background: #f0fdf4; }
+    .callout.warn { border-left-color: var(--amber); background: #fffbeb; }
+    .callout.danger { border-left-color: var(--rose); background: #fff1f2; }
+    .callout-title { font-family: 'Prompt', sans-serif; font-weight: 700; font-size: 11pt; margin-bottom: 4px; color: var(--primary); }
+
+    /* Code Blocks */
+    pre, code { font-family: 'JetBrains Mono', Consolas, monospace; }
+    code {
+      background: #f1f5f9;
+      color: #0f172a;
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-size: 9.5pt;
+      border: 1px solid #e2e8f0;
+    }
+    pre {
+      background: var(--code-bg);
+      color: var(--code-text);
+      padding: 12px 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 8px 0 12px 0;
+      font-size: 9.5pt;
+      line-height: 1.45;
+      border: 1px solid #334155;
+    }
+    pre .kw { color: #38bdf8; font-weight: 600; }
+    pre .fn { color: #f472b6; font-weight: 600; }
+    pre .str { color: #4ade80; }
+    pre .num { color: #fbbf24; }
+    pre .cm { color: #94a3b8; font-style: italic; }
+
+    /* Tables */
+    table { width: 100%; border-collapse: collapse; margin: 10px 0 14px 0; font-size: 10pt; }
+    th, td { border: 1px solid #cbd5e1; padding: 6px 10px; text-align: left; }
+    th { background: #f1f5f9; font-family: 'Prompt', sans-serif; font-weight: 600; color: var(--primary); text-align: center; }
+    tr:nth-child(even) td { background: #f8fafc; }
+    .table-center th, .table-center td { text-align: center; }
+
+    /* Problem Card */
+    .problem-card {
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-bottom: 16px;
+      background: #ffffff;
+      page-break-inside: avoid;
+    }
+    .problem-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      border-bottom: 1px dashed #cbd5e1;
+      padding-bottom: 6px;
+    }
+    .problem-title { font-family: 'Prompt', sans-serif; font-weight: 700; font-size: 11pt; color: var(--primary); }
+    .problem-desc { font-size: 10.5pt; color: #334155; margin-bottom: 8px; }
+    .problem-note { font-size: 9.5pt; color: #64748b; margin-top: -6px; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <h1>The Ultimate SQL Mastery Guide</h1>
+    <div class="subtitle">คู่มือเจาะลึก SQL จากศูนย์สู่ระดับ Expert ฉบับเข้มข้นที่สุดสำหรับนักพัฒนาและสายข้อมูล</div>
+    <div class="hero-badges">
+      <span class="badge badge-dark">Execution Order</span>
+      <span class="badge badge-dark">Three-Valued Logic</span>
+      <span class="badge badge-dark">Exact Date Math</span>
+      <span class="badge badge-dark">Relational Joins</span>
+      <span class="badge badge-dark">CTEs & Window Functions</span>
+      <span class="badge badge-dark">20 Real-World Problems</span>
+    </div>
+  </div>
+
+  <!-- PART 1 -->
+  <h2>Part 1: The Core Philosophy & Execution Order (กลไกสมองกลของ SQL)</h2>
+  <p>ความผิดพลาด 90% ของผู้เริ่มต้นเขียน SQL มาจากความเข้าใจผิดว่าคำสั่งทำงานจากบนลงล่างตามที่เราพิมพ์ แท้จริงแล้ว SQL คือ <strong>Declarative Language</strong> (เราสั่งว่าจะเอาอะไร Database Optimizer จะคิดเองว่าทำอย่างไร) และมีลำดับการประมวลผลภายในดังนี้:</p>
+
+  <div class="card no-break">
+    <table class="table-center">
+      <thead>
+        <tr>
+          <th>ลำดับการพิมพ์ (Syntax Order)</th>
+          <th>➔</th>
+          <th>ลำดับการประมวลผลจริง (Logical Execution Order)</th>
+          <th>หน้าที่และการทำงานของ Database Engine</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>1. SELECT</strong></td><td>➔</td><td><strong style="color: #2563eb;">1. FROM & JOIN</strong></td><td>กำหนดตารางต้นทาง และทำการจับคู่แถวข้ามตาราง</td></tr>
+        <tr><td><strong>2. FROM & JOIN</strong></td><td>➔</td><td><strong style="color: #2563eb;">2. WHERE</strong></td><td>กรองตัดแถวที่ไม่เข้าเงื่อนไขทิ้งก่อนเพื่อน (เร็วที่สุด)</td></tr>
+        <tr><td><strong>3. WHERE</strong></td><td>➔</td><td><strong style="color: #2563eb;">3. GROUP BY</strong></td><td>ยุบรวมแถวที่มีค่าเหมือนกันเป็นกลุ่มเดียว</td></tr>
+        <tr><td><strong>4. GROUP BY</strong></td><td>➔</td><td><strong style="color: #2563eb;">4. HAVING</strong></td><td>กรองผลลัพธ์ของกลุ่มที่คำนวณสถิติเสร็จแล้ว</td></tr>
+        <tr><td><strong>5. HAVING</strong></td><td>➔</td><td><strong style="color: #2563eb;">5. SELECT</strong></td><td>เลือกคอลัมน์ที่จะส่งกลับ และคำนวณคอลัมน์ใหม่ (Alias)</td></tr>
+        <tr><td><strong>6. ORDER BY</strong></td><td>➔</td><td><strong style="color: #2563eb;">6. DISTINCT</strong></td><td>ตัดแถวที่ข้อมูลซ้ำกันออก</td></tr>
+        <tr><td><strong>7. LIMIT / OFFSET</strong></td><td>➔</td><td><strong style="color: #2563eb;">7. ORDER BY</strong></td><td>จัดเรียงลำดับแถว (ใช้ Alias จาก SELECT ได้แล้ว)</td></tr>
+        <tr><td>-</td><td>➔</td><td><strong style="color: #2563eb;">8. LIMIT</strong></td><td>ตัดเฉพาะจำนวนแถวตามที่ระบุส่งกลับให้ผู้ใช้</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn" style="margin-top: 8px;">
+      <div class="callout-title">💡 กฎที่ต้องจำขึ้นใจจาก Execution Order:</div>
+      1. <strong>ห้ามใช้ Alias ใน WHERE:</strong> เพราะ <code>WHERE</code> ทำงานก่อน <code>SELECT</code> (ระบบยังไม่รู้จักชื่อเล่นของคอลัมน์)<br>
+      2. <strong>สามารถใช้ Alias ใน ORDER BY ได้:</strong> เพราะ <code>ORDER BY</code> ทำงานหลัง <code>SELECT</code> แล้ว!
+    </div>
+  </div>
+
+  <!-- PART 2 -->
+  <h2>Part 2: Precision Filtering & Logic (การกรองข้อมูลและตรรกศาสตร์)</h2>
+
+  <div class="grid-2 no-break">
+    <div class="card">
+      <h3 style="margin-top: 0;">2.1 กฎการประเมินตรรกะ (Precedence)</h3>
+      <p style="font-size: 10pt;">ลำดับความสำคัญของตัวดำเนินการ:</p>
+      <div style="background: #f1f5f9; padding: 6px 12px; border-radius: 4px; font-weight: 600; text-align: center; margin-bottom: 8px;">
+        วงเล็บ ( ) &nbsp;➔&nbsp; NOT &nbsp;➔&nbsp; AND &nbsp;➔&nbsp; OR
+      </div>
+      <p style="font-size: 9.5pt; color: #b91c1c;">
+        ⚠️ <strong>คำเตือน:</strong> หากมี <code>OR</code> ปะปนกับ <code>AND</code> โดยไม่ใส่วงเล็บ <code>AND</code> จะถูกประมวลผลก่อนเสมอ ส่งผลให้ Logic ของเงื่อนไขพังทลายทันที
+      </p>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top: 0;">2.2 ความลับของ NULL (Three-Valued Logic)</h3>
+      <p style="font-size: 10pt;">ใน SQL ผลลัพธ์ทางตรรกะมี 3 ค่า: <code>TRUE</code>, <code>FALSE</code>, และ <code>UNKNOWN</code></p>
+      <ul>
+        <li style="font-size: 9.5pt;"><code>NULL = NULL</code> ให้ผลเป็น <strong>UNKNOWN</strong> (ไม่ใช่ TRUE!)</li>
+        <li style="font-size: 9.5pt;"><code>WHERE</code> จะดึงเฉพาะแถวที่เป็น <strong>TRUE</strong> เท่านั้น</li>
+        <li style="font-size: 9.5pt;">ห้ามใช้ <code>col = NULL</code> ให้ใช้ <code>col IS NULL</code> หรือ <code>col IS NOT NULL</code> เท่านั้น</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card no-break">
+    <h3 style="margin-top: 0;">2.3 Pattern Matching & Range Filtering</h3>
+    <table class="table-sm">
+      <thead><tr><th>คำสั่ง</th><th>ไวยากรณ์ตัวอย่าง</th><th>พฤติกรรมและการทำงาน</th></tr></thead>
+      <tbody>
+        <tr><td><strong>LIKE</strong></td><td><code>WHERE name LIKE 'ส%'</code></td><td>ขึ้นต้นด้วย 'ส' (เครื่องหมาย <code>%</code> แทนข้อความกี่ตัวก็ได้ 0 ตัวขึ้นไป)</td></tr>
+        <tr><td><strong>LIKE</strong></td><td><code>WHERE code LIKE 'WY-___'</code></td><td>เครื่องหมาย <code>_</code> (Underscore) แทนตัวอักษร 1 ตัวพอดี (ในตัวอย่างคือ 3 ตัวอักษร)</td></tr>
+        <tr><td><strong>IN</strong></td><td><code>WHERE role IN ('admin', 'staff')</code></td><td>เทียบเท่ากับ <code>role = 'admin' OR role = 'staff'</code> ทำงานเร็วกว่าและอ่านง่ายกว่า</td></tr>
+        <tr><td><strong>BETWEEN</strong></td><td><code>WHERE salary BETWEEN 20000 AND 35000</code></td><td>รวมค่าขอบทั้งสองฝั่ง (Inclusive): <code>salary >= 20000 AND salary <= 35000</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- PAGE BREAK -->
+  <div class="page-break"></div>
+
+  <!-- PART 3 -->
+  <h2>Part 3: Mastering Dates & Time (เซียนวัน-เวลา-อายุงาน)</h2>
+  <p>การคำนวณเวลาคือจุดวัดกึ๋นในข้อสอบและการทำงานจริง แบ่งเป็น 4 วิธีตามระดับความแม่นยำ:</p>
+
+  <div class="card no-break">
+    <table>
+      <thead>
+        <tr>
+          <th>ระดับ</th>
+          <th>โจทย์สถานการณ์</th>
+          <th>ตัวอย่างคำสั่ง SQL</th>
+          <th>คำอธิบายเชิงลึก</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1. ปีคงที่</strong></td>
+          <td>คำนวณอายุงานจนถึงปี 2024</td>
+          <td><code>(2024 - YEAR(hire_date))</code></td>
+          <td>ใช้ฟังก์ชัน <code>YEAR()</code> ดึงเลขปีมาลบตรงๆ ง่ายและเหมาะกับข้อสอบ</td>
+        </tr>
+        <tr>
+          <td><strong>2. ปีปัจจุบัน</strong></td>
+          <td>คำนวณอายุเทียบกับปีปัจจุบันของระบบ</td>
+          <td><code>(YEAR(CURDATE()) - YEAR(hire_date))</code></td>
+          <td><code>CURDATE()</code> คืนค่าวันที่ปัจจุบัน (เช่น '2026-10-10')</td>
+        </tr>
+        <tr>
+          <td><strong>3. เป๊ะระดับวัน (Pro)</strong></td>
+          <td>อายุงานเต็มปีตามกฎหมายแรงงาน</td>
+          <td><code>TIMESTAMPDIFF(YEAR, hire_date, CURDATE())</code></td>
+          <td><strong>แม่นยำที่สุด!</strong> หากยังไม่ถึงวันครบรอบวันเริ่มงาน จะไม่ปัดขึ้นเป็น 1 ปี</td>
+        </tr>
+        <tr>
+          <td><strong>4. นับจำนวนวัน</strong></td>
+          <td>หาว่าทำงานมากี่วันแล้ว</td>
+          <td><code>DATEDIFF(CURDATE(), hire_date)</code></td>
+          <td>คืนค่าเป็นจำนวนวัน (Days) ระหว่างสองช่วงเวลา</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- PART 4 -->
+  <h2>Part 4: Aggregation & Grouping (การรวมข้อมูลและสถิติ)</h2>
+  
+  <div class="callout tip no-break">
+    <div class="callout-title">👑 The Golden Rule of GROUP BY:</div>
+    คอลัมน์ใดก็ตามที่อยู่ใน <code>SELECT</code> หากไม่ได้ถูกครอบด้วย Aggregate Function (<code>SUM</code>, <code>AVG</code>, <code>COUNT</code>, <code>MIN</code>, <code>MAX</code>) <strong>คอลัมน์นั้น "ต้อง" ปรากฏอยู่ใน <code>GROUP BY</code> ทุกตัวเสมอ!</strong>
+  </div>
+
+  <div class="card no-break">
+    <h3 style="margin-top: 0;">ศึกชิงบัลลังก์: WHERE vs HAVING ต่างกันอย่างไร?</h3>
+    <table class="table-sm">
+      <thead><tr><th>คุณสมบัติ</th><th>WHERE</th><th>HAVING</th></tr></thead>
+      <tbody>
+        <tr><td><strong>จังหวะการกรอง</strong></td><td>กรองแถวเดี่ยว <strong>ก่อน</strong> นำไปรวมกลุ่ม (Step 2)</td><td>กรองกลุ่ม <strong>หลัง</strong> จากทำ GROUP BY เสร็จแล้ว (Step 4)</td></tr>
+        <tr><td><strong>ใช้กับ SUM/AVG ได้ไหม?</strong></td><td>❌ <strong>ห้ามใช้เด็ดขาด</strong> (Error ทันที)</td><td>✅ <strong>ใช้ได้</strong> เช่น <code>HAVING AVG(salary) > 40000</code></td></tr>
+        <tr><td><strong>ผลต่อประสิทธิภาพ</strong></td><td>ช่วยลดจำนวนแถว ทำให้คำนวณรวมเร็วขึ้น</td><td>ใช้คัดเฉพาะกลุ่มผลลัพธ์สุดท้ายที่ต้องการ</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- PART 5 -->
+  <h2>Part 5: Relational Joins & Subqueries (เชื่อมโยงมิติข้อมูล)</h2>
+  
+  <div class="grid-2 no-break">
+    <div class="card">
+      <h3 style="margin-top: 0; color: var(--primary-accent);">สรุปภาพรวม JOIN</h3>
+      <ul>
+        <li><strong>INNER JOIN:</strong> เอาเฉพาะแถวที่จับคู่กันได้ทั้งสองฝั่ง ($A \cap B$)</li>
+        <li><strong>LEFT JOIN:</strong> เอาฝั่งซ้ายครบทุกแถว ถ้าฝั่งขวาไม่มีคู่ให้ใส่ <code>NULL</code></li>
+        <li><strong>CROSS JOIN:</strong> จับคู่ทุกแถว (Cartesian Product: $m \times n$ แถว)</li>
+        <li><strong>SELF JOIN:</strong> ตารางเดิม JOIN กับตัวเอง (เช่น พนักงานกับหัวหน้า)</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top: 0; color: #b91c1c;">จุดปราบเซียน: ON vs WHERE ใน LEFT JOIN</h3>
+      <p style="font-size: 9.5pt;"><strong>1. เงื่อนไขใน ON:</strong><br>
+      <code>LEFT JOIN orders o ON c.id = o.c_id AND o.amt > 1000</code><br>
+      ➔ ลูกค้าทุกคนยังอยู่ครบ! แต่เฉพาะออเดอร์ที่ > 1000 ถึงจะถูกดึงมาคู่</p>
+      <p style="font-size: 9.5pt;"><strong>2. เงื่อนไขใน WHERE:</strong><br>
+      <code>LEFT JOIN orders o ON c.id = o.c_id WHERE o.amt > 1000</code><br>
+      ➔ กลายสภาพเป็น INNER JOIN ทันที! ลูกค้าที่ไม่มีออเดอร์จะถูกคัดทิ้งหมด</p>
+    </div>
+  </div>
+
+  <!-- PART 7 & 8 -->
+  <div class="card no-break">
+    <h3 style="margin-top: 0; color: var(--primary-accent);">Window Functions: อาวุธลับระดับ Expert</h3>
+    <p>คำนวณสถิติข้ามแถว <strong>โดยไม่ยุบแถวรวมกันเหมือน GROUP BY</strong> โครงสร้างคำสั่ง:</p>
+    <pre><span class="fn">FUNCTION</span>() <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> group_col <span class="kw">ORDER BY</span> sort_col)</pre>
+    <div style="font-size: 9.5pt; display: flex; gap: 14px;">
+      <div><strong>ROW_NUMBER():</strong> 1, 2, 3, 4 (ไม่สนใจคะแนนซ้ำ)</div>
+      <div><strong>RANK():</strong> 1, 2, 2, 4 (ซ้ำอันดับเท่ากัน แต่อันดับถัดไปกระโดด)</div>
+      <div><strong>DENSE_RANK():</strong> 1, 2, 2, 3 (ซ้ำอันดับเท่ากัน แต่อันดับถัดไปไม่กระโดด)</div>
+    </div>
+  </div>
+
+  <!-- PAGE BREAK -->
+  <div class="page-break"></div>
+
+  <!-- PART 9: 20 PROBLEMS -->
+  <h2>Part 9: คลังโจทย์ฝึกทำ 20 ข้อ โหด ครบ ทุกมิติ (Easy ➔ Boss Level)</h2>
+  <p style="color: var(--text-muted); margin-bottom: 14px;"><em>Schema อ้างอิง:</em> <code>employees(emp_id, emp_name, dept_id, salary, hire_date, manager_id)</code>, <code>departments(dept_id, dept_name, location)</code>, <code>expenses(exp_id, exp_type, amount, location, exp_date)</code>, <code>meter_readings(id, customer_id, current_reading, reading_date)</code></p>
+
+  <!-- Q1 -->
+  <div class="problem-card">
+    <div class="problem-header">
+      <span class="problem-title">ข้อ 1: การคำนวณคอลัมน์ใหม่และการตัดเศษทศนิยม (Easy)</span>
+      <span class="badge badge-green">พื้นฐาน</span>
+    </div>
+    <div class="problem-desc">จงแสดงชื่อพนักงาน เงินเดือนปัจจุบัน และเงินเดือนสุทธิหลังหักภาษี 5% และเงินกองทุน 500 บาท โดยตั้งชื่อคอลัมน์ว่า <code>net_salary</code></div>
+    <pre><span class="kw">SELECT</span> emp_name, salary, <span class="fn">ROUND</span>((salary * <span class="num">0.95</span>) - <span class="num">500</span>, <span class="num">2</span>) <span class="kw">AS</span> net_salary
+<span class="kw">FROM</span> employees;</pre>
+    <div class="problem-note">💡 ใช้ <code>ROUND(..., 2)</code> เพื่อควบคุมทศนิยม 2 ตำแหน่งให้ถูกต้องตามมาตรฐานการเงิน</div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="problem-card">
+    <div class="problem-header">
+      <span class="problem-title">ข้อ 2: การตรวจสอบค่าว่างที่ถูกต้องตามหลัก 3VL (Easy)</span>
+      <span class="badge badge-green">พื้นฐาน</span>
+    </div>
+    <div class="problem-desc">จงแสดงรายชื่อพนักงานทุกคนที่ไม่มีหัวหน้างานโดยตรง (ระดับ CEO/Executive)</div>
+    <pre><span class="kw">SELECT</span> emp_id, emp_name
+<span class="kw">FROM</span> employees
+<span class="kw">WHERE</span> manager_id <span class="kw">IS NULL</span>;</pre>
+    <div class="problem-note">💡 ห้ามเขียน <code>manager_id = NULL</code> เด็ดขาด เพราะจะคืนค่าเป็น UNKNOWN ทำให้ไม่มีผลลัพธ์ใดๆ แสดงออกมา</div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="problem-card">
+    <div class="problem-header">
+      <span class="problem-title">ข้อ 3: การใช้ตรรกะ OR ร่วมกับ AND และการจัดกลุ่มวงเล็บ (Medium)</span>
+      <span class="badge badge-blue">ปานกลาง</span>
+    </div>
+    <div class="problem-desc">จงหารายชื่อพนักงานในแผนก 1 หรือ 2 ที่มีเงินเดือนตั้งแต่ 30,000 ถึง 60,000 บาท และเริ่มงานตั้งแต่ปี 2021 เป็นต้นมา</div>
+    <pre><span class="kw">SELECT</span> emp_name, dept_id, salary, hire_date
+<span class="kw">FROM</span> employees
+<span class="kw">WHERE</span> (dept_id = <span class="num">1</span> <span class="kw">OR</span> dept_id = <span class="num">2</span>)
+  <span class="kw">AND</span> (salary <span class="kw">BETWEEN</span> <span class="num">30000</span> <span class="kw">AND</span> <span class="num">60000</span>)
+  <span class="kw">AND</span> hire_date >= <span class="str">'2021-01-01'</span>;</pre>
+    <div class="problem-note">💡 <code>hire_date >= '2021-01-01'</code> เป็น SARGable query ที่ทำงานเร็วกว่า <code>YEAR(hire_date) >= 2021</code></div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="problem-card">
+    <div class="problem-header">
+      <span class="problem-title">ข้อ 4: การค้นหาด้วยข้อความบางส่วนและตำแหน่งอักขระ (Medium)</span>
+      <span class="badge badge-blue">ปานกลาง</span>
+    </div>
+    <div class="problem-desc">จงแสดงรายการค่าใช้จ่ายที่มีคำว่า 'ซ่อม' อยู่ในประเภทค่าใช้จ่าย และเกิดขึ้นในสถานที่ที่ลงท้ายด้วยคำว่า 'เหนือ'</div>
+    <pre><span class="kw">SELECT</span> exp_id, exp_type, amount, location
+<span class="kw">FROM</span> expenses
+<span class="kw">WHERE</span> exp_type <span class="kw">LIKE</span> <span class="str">'%ซ่อม%'</span>
+  <span class="kw">AND</span> location <span class="kw">LIKE</span> <span class="str">'%เหนือ'</span>;</pre>
+    <div class="problem-note">💡 <code>%ซ่อม%</code> จะจับคู่ทั้ง 'ค่าซ่อมบำรุง', 'ซ่อมท่อประปา', 'จัดซื้อชุดซ่อม'</div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="problem-card">
+    <div class="problem-header">
+      <span class="problem-title">ข้อ 5: คำนวณอายุงานที่เป๊ะตามวันเกิด/วันเริ่มงาน (Medium)</span>
+      <span class="badge badge-blue">ปานกลาง</span>
+    </div>
+    <div class="problem-desc">จงแสดงชื่อพนักงาน วันที่เริ่มงาน และอายุงานเต็มปี ณ วันปัจจุบัน เฉพาะคนที่มีอายุงานตั้งแต่ 5 ปีบริบูรณ์ขึ้นไป เรียงจากอายุงานมากไปน้อย</div>
+    <pre><span class="kw">SELECT</span> emp_name, hire_date, 
+       <span class="fn">TIMESTAMPDIFF</span>(<span class="kw">YEAR</span>, hire_date, <span class="fn">CURDATE</span>()) <span class="kw">AS</span> exact_years
+<span class="kw">FROM</span> employees
+<span class="kw">WHERE</span> <span class="fn">TIMESTAMPDIFF</span>(<span class="kw">YEAR</span>, hire_date, <span class="fn">CURDATE</span>()) >= <span class="num">5</span>
+<span class="kw">ORDER BY</span> exact_years <span class="kw">DESC</span>;</pre>
+    <div class="problem-note">💡 <code>TIMESTAMPDIFF(YEAR, d1, d2)</code> คือฟังก์ชันสากลที่คืนค่าอายุเต็มปี ไม่เกิดปัญหาปัดเศษเกินจริง</div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="problem-card">
+    <div class="problem-header">
+      <span class="problem-title">ข้อ 6: การรวมกลุ่มด้วย GROUP BY และการกรองด้วย HAVING (Medium)</span>
+      <span class="badge badge-blue">ปานกลาง</span>
+    </div>
+    <div class="problem-desc">จงหาชื่อแผนก จำนวนพนักงาน และเงินเดือนเฉลี่ย เฉพาะแผนกที่มีพนักงานมากกว่า 3 คน และมีเงินเดือนเฉลี่ยเกิน 35,000 บาท</div>
+    <pre><span class="kw">SELECT</span> d.dept_name, 
+       <span class="fn">COUNT</span>(e.emp_id) <span class="kw">AS</span> total_staff, 
+       <span class="fn">ROUND</span>(<span class="fn">AVG</span>(e.salary), <span class="num">2</span>) <span class="kw">AS</span> avg_salary
+<span class="kw">FROM</span> departments d
+<span class="kw">JOIN</span> employees e <span class="kw">ON</span> d.dept_id = e.dept_id
+<span class="kw">GROUP BY</span> d.dept_id, d.dept_name
+<span class="kw">HAVING</span> <span class="fn">COUNT</span>(e.emp_id) > <span class="num">3</span> 
+   <span class="kw">AND</span> <span class="fn">AVG</span>(e.salary) > <span class="num">35000</span>;</pre>
+    <div class="problem-note">💡 เงื่อนไข <code>COUNT</code> และ <code>AVG</code> ต้องวางใน <code>HAVING</code> เท่านั้น วางใน <code>WHERE</code> ไม่ได้</div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="problem-card">
+    <div class="problem-header">
+      <span class="problem-title">ข้อ 7: Anti-Join Pattern (หาข้อมูลที่ไม่มีคู่สัมพันธ์) (Hard)</span>
+      <span class="badge badge-amber">ขั้นสูง</span>
+    </div>
+    <div class="problem-desc">จงหารายชื่อแผนกทั้งหมดที่ "ยังไม่มีพนักงานสังกัดอยู่เลยแม้แต่คนเดียว"</div>
+    <pre><span class="kw">SELECT</span> d.dept_id, d.dept_name
+<span class="kw">FROM</span> departments d
+<span class="kw">LEFT JOIN</span> employees e <span class="kw">ON</span> d.dept_id = e.dept_id
+<span class="kw">WHERE</span> e.emp_id <span class="kw">IS NULL</span>;</pre>
+    <div class="problem-note">💡 นี่คือเทคนิค Anti-Join ที่มีประสิทธิภาพสูงกว่าการเขียน <code>WHERE dept_id NOT IN (SELECT dept_id FROM employees)</code></div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="problem-card">
+    <div class="problem-header">
+      <span class="problem-title">ข้อ 8: Conditional Aggregation ด้วย CASE WHEN (Hard)</span>
+      <span class="badge badge-amber">ขั้นสูง</span>
+    </div>
+    <div class="problem-desc">จงสรุปยอดเงินเดือนรวมของแต่ละแผนก โดยแยกออกเป็น 2 คอลัมน์: ยอดรวมของคนเงินเดือนสูง (>= 40,000) และยอดรวมของคนเงินเดือนปกติ (< 40,000)</div>
+    <pre><span class="kw">SELECT</span> d.dept_name,
+       <span class="fn">SUM</span>(<span class="kw">CASE WHEN</span> e.salary >= <span class="num">40000</span> <span class="kw">THEN</span> e.salary <span class="kw">ELSE</span> <span class="num">0</span> <span class="kw">END</span>) <span class="kw">AS</span> high_salary_total,
+       <span class="fn">SUM</span>(<span class="kw">CASE WHEN</span> e.salary < <span class="num">40000</span> <span class="kw">THEN</span> e.salary <span class="kw">ELSE</span> <span class="num">0</span> <span class="kw">END</span>) <span class="kw">AS</span> normal_salary_total
+<span class="kw">FROM</span> departments d
+<span class="kw">JOIN</span> employees e <span class="kw">ON</span> d.dept_id = e.dept_id
+<span class="kw">GROUP BY</span> d.dept_id, d.dept_name;</pre>
+    <div class="problem-note">💡 เทคนิคนี้เรียกว่า "Pivot Table in SQL" ช่วยหมุนข้อมูลแนวตั้งให้กลายเป็นแนวนอนได้ทันที</div>
+  </div>
+
+  <!-- PAGE BREAK -->
+  <div class="page-break"></div>
+
+  <!-- Q9 -->
+  <div class="problem-card">
+    <div class="problem-header">
+      <span class="problem-title">ข้อ 9: Self Join — การเชื่อมตารางเดิมเข้ากับตัวเอง (Hard)</span>
+      <span class="badge badge-amber">ขั้นสูง</span>
+    </div>
+    <div class="problem-desc">จงแสดงชื่อพนักงาน พร้อมแสดงชื่อหัวหน้างานของตนเอง หากใครไม่มีหัวหน้าให้แสดงข้อความ 'Top Executive' แทน</div>
+    <pre><span class="kw">SELECT</span> e.emp_name <span class="kw">AS</span> employee_name,
+       <span class="fn">COALESCE</span>(m.emp_name, <span class="str">'Top Executive'</span>) <span class="kw">AS</span> manager_name
+<span class="kw">FROM</span> employees e
+<span class="kw">LEFT JOIN</span> employees m <span class="kw">ON</span> e.manager_id = m.emp_id;</pre>
+    <div class="problem-note">💡 <code>COALESCE(val, fallback)</code> จะคืนค่าตัวแรกที่ไม่ใช่ NULL</div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="problem-card">
+    <div class="problem-header">
+      <span class="problem-title">ข้อ 10: Correlated Subquery (ซับคิวรีที่ผูกกับตารางนอก) (Hard)</span>
+      <span class="badge badge-amber">ขั้นสูง</span>
+    </div>
+    <div class="problem-desc">จงหาพนักงานที่ได้รับเงินเดือน "สูงกว่าค่าเฉลี่ยเงินเดือนของแผนกตนเอง"</div>
+    <pre><span class="kw">SELECT</span> e.emp_name, e.dept_id, e.salary
+<span class="kw">FROM</span> employees e
+<span class="kw">WHERE</span> e.salary > (
+    <span class="kw">SELECT</span> <span class="fn">AVG</span>(sub.salary)
+    <span class="kw">FROM</span> employees sub
+    <span class="kw">WHERE</span> sub.dept_id = e.dept_id
+);</pre>
+    <div class="problem-note">💡 <code>sub.dept_id = e.dept_id</code> ทำให้ Subquery คำนวณค่าเฉลี่ยเฉพาะแผนกของพนักงานแต่ละคนแบบแถวต่อแถว</div>
+  </div>
+
+  <!-- Q11 -->
+  <div class="problem-card">
+    <div class="problem-header">
+      <span class="problem-title">ข้อ 11: การหาเงินเดือนสูงสุดอันดับที่ 2 (Second Highest Salary) (Hard)</span>
+      <span class="badge badge-amber">ขั้นสูง</span>
+    </div>
+    <div class="problem-desc">จงหาเงินเดือนที่สูงที่สุดเป็นอันดับ 2 โดยรองรับกรณีคนได้เงินเดือนอันดับ 1 มีหลายคนซ้ำกัน</div>
+    <pre><span class="kw">SELECT</span> <span class="fn">MAX</span>(salary) <span class="kw">AS</span> second_highest_salary
+<span class="kw">FROM</span> employees
+<span class="kw">WHERE</span> salary < (
+    <span class="kw">SELECT</span> <span class="fn">MAX</span>(salary) <span class="kw">FROM</span> employees
+);</pre>
+    <div class="problem-note">💡 วิธีนี้ปลอดภัยที่สุดและเป็นมาตรฐาน ANSI SQL ใช้ได้กับทุกยี่ห้อ Database</div>
+  </div>
+
+  <!-- Q12 -->
+  <div class="problem-card">
+    <div class="problem-header">
+      <span class="problem-title">ข้อ 12: DENSE_RANK() ใน Window Function (Expert)</span>
+      <span class="badge badge-rose">ระดับเซียน</span>
+    </div>
+    <div class="problem-desc">จงหาคนที่ได้เงินเดือนติดอันดับ Top 2 ของแต่ละแผนก</div>
+    <pre><span class="kw">WITH</span> RankedStaff <span class="kw">AS</span> (
+    <span class="kw">SELECT</span> emp_name, dept_id, salary,
+           <span class="fn">DENSE_RANK</span>() <span class="kw">OVER</span> (
+               <span class="kw">PARTITION BY</span> dept_id 
+               <span class="kw">ORDER BY</span> salary <span class="kw">DESC</span>
+           ) <span class="kw">AS</span> rank_no
+    <span class="kw">FROM</span> employees
+)
+<span class="kw">SELECT</span> emp_name, dept_id, salary, rank_no
+<span class="kw">FROM</span> RankedStaff
+<span class="kw">WHERE</span> rank_no <= <span class="num">2</span>;</pre>
+    <div class="problem-note">💡 <code>DENSE_RANK()</code> ป้องกันปัญหาอันดับกระโดดข้ามเมื่อมีคนได้เงินเดือนเท่ากัน</div>
+  </div>
+
+  <!-- Q13 -->
+  <div class="problem-card">
+    <div class="problem-header">
+      <span class="problem-title">ข้อ 13: Running Total (คำนวณผลรวมสะสมข้ามแถว) (Expert)</span>
+      <span class="badge badge-rose">ระดับเซียน</span>
+    </div>
+    <div class="problem-desc">จงแสดงรายการค่าใช้จ่าย เรียงตามวันที่ พร้อมแสดงยอดใช้จ่ายสะสมรวมตั้งแต่ต้นปีจนถึงรายการปัจจุบัน (Running Total)</div>
+    <pre><span class="kw">SELECT</span> exp_id, exp_date, amount,
+       <span class="fn">SUM</span>(amount) <span class="kw">OVER</span> (
+           <span class="kw">ORDER BY</span> exp_date <span class="kw">ASC</span>, exp_id <span class="kw">ASC</span>
+       ) <span class="kw">AS</span> running_total
+<span class="kw">FROM</span> expenses;</pre>
+    <div class="problem-note">💡 <code>SUM(...) OVER (ORDER BY ...)</code> จะบวกยอดทบขึ้นไปเรื่อยๆ ในแต่ละบรรทัด</div>
+  </div>
+
+  <!-- Q14 -->
+  <div class="problem-card">
+    <div class="problem-header">
+      <span class="problem-title">ข้อ 14: LAG() ฟังก์ชันดึงค่าแถวก่อนหน้า (Expert)</span>
+      <span class="badge badge-rose">ระดับเซียน</span>
+    </div>
+    <div class="problem-desc">ในระบบจดมิเตอร์น้ำ จงดึงเลขมิเตอร์ครั้งก่อนหน้า (`previous_reading`) อัตโนมัติจากประวัติในตาราง และคำนวณหน่วยใช้</div>
+    <pre><span class="kw">SELECT</span> customer_id, reading_date, current_reading,
+       <span class="fn">LAG</span>(current_reading, <span class="num">1</span>, <span class="num">0</span>) <span class="kw">OVER</span> (
+           <span class="kw">PARTITION BY</span> customer_id <span class="kw">ORDER BY</span> reading_date <span class="kw">ASC</span>
+       ) <span class="kw">AS</span> prev_reading,
+       (current_reading - <span class="fn">LAG</span>(current_reading, <span class="num">1</span>, <span class="num">0</span>) <span class="kw">OVER</span> (
+           <span class="kw">PARTITION BY</span> customer_id <span class="kw">ORDER BY</span> reading_date <span class="kw">ASC</span>
+       )) <span class="kw">AS</span> units_used
+<span class="kw">FROM</span> meter_readings;</pre>
+    <div class="problem-note">💡 <code>LAG(col, 1, 0)</code> แปลว่าดึงค่าของแถวก่อนหน้า 1 แถว ถ้าไม่มีให้ใส่เลข 0</div>
+  </div>
+
+  <!-- Q15 -->
+  <div class="problem-card">
+    <div class="problem-header">
+      <span class="problem-title">ข้อ 15: ลบข้อมูลซ้ำโดยเก็บแถวที่มี ID ล่าสุดไว้ (De-duplication Delete) (Expert)</span>
+      <span class="badge badge-rose">ระดับเซียน</span>
+    </div>
+    <div class="problem-desc">ตาราง logs มีข้อมูลซ้ำซ้อนในคู่ <code>(user_id, ip_address)</code> จงลบแถวที่ซ้ำทิ้ง โดยเก็บเฉพาะแถวที่มี <code>id</code> สูงสุดไว้</div>
+    <pre><span class="kw">DELETE</span> t1 
+<span class="kw">FROM</span> user_logs t1
+<span class="kw">JOIN</span> user_logs t2 <span class="kw">ON</span> t1.user_id = t2.user_id 
+                 <span class="kw">AND</span> t1.ip_address = t2.ip_address 
+                 <span class="kw">AND</span> t1.id < t2.id;</pre>
+    <div class="problem-note">💡 เงื่อนไข <code>t1.id < t2.id</code> ระบุว่า t1 เป็นแถวเก่า เมื่อลบ t1 แถวที่มี id มากที่สุดจะรอดปลอดภัย</div>
+  </div>
+
+  <!-- Q16 -->
+  <div class="problem-card">
+    <div class="problem-header">
+      <span class="problem-title">ข้อ 16: การจำลอง Relational Division ด้วย NOT EXISTS (Expert)</span>
+      <span class="badge badge-rose">ระดับเซียน</span>
+    </div>
+    <div class="problem-desc">จงหารายชื่อลูกค้าที่เคยซื้อสินค้า "ครบทุกชิ้นที่มีในระบบ" (FOR ALL Condition)</div>
+    <pre><span class="kw">SELECT</span> c.cus_id, c.name
+<span class="kw">FROM</span> customers c
+<span class="kw">WHERE NOT EXISTS</span> (
+    <span class="kw">SELECT</span> p.product_id <span class="kw">FROM</span> products p
+    <span class="kw">WHERE NOT EXISTS</span> (
+        <span class="kw">SELECT</span> <span class="num">1</span> <span class="kw">FROM</span> orders o 
+        <span class="kw">WHERE</span> o.cus_id = c.cus_id <span class="kw">AND</span> o.product_id = p.product_id
+    )
+);</pre>
+    <div class="problem-note">💡 Double NOT EXISTS เป็นวิธีแปลงพีชคณิตเชิงสัมพันธ์ Division ($R \div S$) ให้เป็น SQL ที่มีประสิทธิภาพสูงสุด</div>
+  </div>
+
+  <!-- PAGE BREAK -->
+  <div class="page-break"></div>
+
+  <!-- Q17 -->
+  <div class="problem-card">
+    <div class="problem-header">
+      <span class="problem-title">ข้อ 17: อัตราการเติบโตเดือนต่อเดือน (MoM Growth Rate) (Boss Level)</span>
+      <span class="badge badge-rose">บอสใหญ่</span>
+    </div>
+    <div class="problem-desc">จงคำนวณยอดรวมรายได้ในแต่ละเดือน พร้อมหา % การเติบโตเมื่อเทียบกับเดือนก่อนหน้า</div>
+    <pre><span class="kw">WITH</span> MonthlySales <span class="kw">AS</span> (
+    <span class="kw">SELECT</span> <span class="fn">DATE_FORMAT</span>(order_date, <span class="str">'%Y-%m'</span>) <span class="kw">AS</span> sales_month,
+           <span class="fn">SUM</span>(total_price) <span class="kw">AS</span> current_rev
+    <span class="kw">FROM</span> orders
+    <span class="kw">GROUP BY</span> <span class="fn">DATE_FORMAT</span>(order_date, <span class="str">'%Y-%m'</span>)
+)
+<span class="kw">SELECT</span> sales_month, current_rev,
+       <span class="fn">LAG</span>(current_rev) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> sales_month) <span class="kw">AS</span> prev_rev,
+       <span class="fn">ROUND</span>(((current_rev - <span class="fn">LAG</span>(current_rev) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> sales_month)) 
+             / <span class="fn">LAG</span>(current_rev) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> sales_month)) * <span class="num">100</span>, <span class="num">2</span>) <span class="kw">AS</span> mom_growth_pct
+<span class="kw">FROM</span> MonthlySales;</pre>
+    <div class="problem-note">💡 เป็นหัวใจของการทำ Financial & Business Intelligence Analysis</div>
+  </div>
+
+  <!-- Q18 -->
+  <div class="problem-card">
+    <div class="problem-header">
+      <span class="problem-title">ข้อ 18: การ Pivot ยอดขาย 4 ไตรมาสเป็นแนวนอน (Boss Level)</span>
+      <span class="badge badge-rose">บอสใหญ่</span>
+    </div>
+    <div class="problem-desc">จงสรุปยอดขายแยกรายปี โดยให้ยอดขายไตรมาส Q1, Q2, Q3, Q4 แสดงเป็น 4 คอลัมน์แนวนอน</div>
+    <pre><span class="kw">SELECT</span> <span class="fn">YEAR</span>(order_date) <span class="kw">AS</span> order_year,
+       <span class="fn">SUM</span>(<span class="kw">CASE WHEN</span> <span class="fn">QUARTER</span>(order_date) = <span class="num">1</span> <span class="kw">THEN</span> total_price <span class="kw">ELSE</span> <span class="num">0</span> <span class="kw">END</span>) <span class="kw">AS</span> Q1_sales,
+       <span class="fn">SUM</span>(<span class="kw">CASE WHEN</span> <span class="fn">QUARTER</span>(order_date) = <span class="num">2</span> <span class="kw">THEN</span> total_price <span class="kw">ELSE</span> <span class="num">0</span> <span class="kw">END</span>) <span class="kw">AS</span> Q2_sales,
+       <span class="fn">SUM</span>(<span class="kw">CASE WHEN</span> <span class="fn">QUARTER</span>(order_date) = <span class="num">3</span> <span class="kw">THEN</span> total_price <span class="kw">ELSE</span> <span class="num">0</span> <span class="kw">END</span>) <span class="kw">AS</span> Q3_sales,
+       <span class="fn">SUM</span>(<span class="kw">CASE WHEN</span> <span class="fn">QUARTER</span>(order_date) = <span class="num">4</span> <span class="kw">THEN</span> total_price <span class="kw">ELSE</span> <span class="num">0</span> <span class="kw">END</span>) <span class="kw">AS</span> Q4_sales,
+       <span class="fn">SUM</span>(total_price) <span class="kw">AS</span> total_yearly_sales
+<span class="kw">FROM</span> orders
+<span class="kw">GROUP BY</span> <span class="fn">YEAR</span>(order_date)
+<span class="kw">ORDER BY</span> order_year <span class="kw">DESC</span>;</pre>
+    <div class="problem-note">💡 ใช้ <code>QUARTER(date)</code> ร่วมกับ Conditional Aggregation สรุปงบไตรมาส</div>
+  </div>
+
+  <!-- Q19 -->
+  <div class="problem-card">
+    <div class="problem-header">
+      <span class="problem-title">ข้อ 19: SARGable Range Optimization (Boss Level)</span>
+      <span class="badge badge-rose">บอสใหญ่</span>
+    </div>
+    <div class="problem-desc">จงเขียนคิวรีดึงข้อมูลบิลค่าน้ำในรอบปี 2024 ที่มีสถานะ 'PAID' ให้ทำงานเร็วที่สุดบนตารางที่มี 10 ล้านแถวและมี Index ที่คอลัมน์ created_at</div>
+    <pre><span class="kw">SELECT</span> id, customer_id, grand_total, payment_date
+<span class="kw">FROM</span> meter_readings
+<span class="kw">WHERE</span> payment_status = <span class="str">'PAID'</span>
+  <span class="kw">AND</span> created_at >= <span class="str">'2024-01-01 00:00:00'</span>
+  <span class="kw">AND</span> created_at < <span class="str">'2025-01-01 00:00:00'</span>;</pre>
+    <div class="problem-note">💡 ❌ อย่าใช้ <code>YEAR(created_at) = 2024</code> เพราะ Database จะต้องคำนวณฟังก์ชันทุกแถวทำให้ Index ไร้ค่า</div>
+  </div>
+
+  <!-- Q20 -->
+  <div class="problem-card">
+    <div class="problem-header">
+      <span class="problem-title">ข้อ 20: Recursive CTE — ผังองค์กรระดับไม่จำกัด (Final Boss Level)</span>
+      <span class="badge badge-rose">บอสใหญ่</span>
+    </div>
+    <div class="problem-desc">จงแสดงผังองค์กรลำดับการบังคับบัญชาแบบต้นไม้ (Hierarchy Tree) เริ่มจาก CEO (id=1) ลงไปจนถึงระดับล่างสุด พร้อมแสดงระดับความลึก (Level) และเส้นทางสายงาน</div>
+    <pre><span class="kw">WITH RECURSIVE</span> OrgChart <span class="kw">AS</span> (
+    <span class="cm">-- 1. จุดเริ่มต้น (Anchor Member)</span>
+    <span class="kw">SELECT</span> emp_id, emp_name, manager_id, <span class="num">1</span> <span class="kw">AS</span> lvl,
+           <span class="fn">CAST</span>(emp_name <span class="kw">AS CHAR</span>(<span class="num">1000</span>)) <span class="kw">AS</span> path
+    <span class="kw">FROM</span> employees
+    <span class="kw">WHERE</span> emp_id = <span class="num">1</span>
+    
+    <span class="kw">UNION ALL</span>
+    
+    <span class="cm">-- 2. วนซ้ำดึงลูกน้อง (Recursive Member)</span>
+    <span class="kw">SELECT</span> e.emp_id, e.emp_name, e.manager_id, o.lvl + <span class="num">1</span>,
+           <span class="fn">CONCAT</span>(o.path, <span class="str">' ➔ '</span>, e.emp_name)
+    <span class="kw">FROM</span> employees e
+    <span class="kw">JOIN</span> OrgChart o <span class="kw">ON</span> e.manager_id = o.emp_id
+)
+<span class="kw">SELECT</span> emp_id, emp_name, lvl, path
+<span class="kw">FROM</span> OrgChart
+<span class="kw">ORDER BY</span> lvl, emp_id;</pre>
+    <div class="problem-note">💡 <code>WITH RECURSIVE</code> เป็นฟีเจอร์ระดับสูงสุดของ SQL สำหรับจัดการข้อมูลแบบ Graph และ Tree เช่น สายการบังคับบัญชา หรือโครงสร้างโฟลเดอร์</div>
+  </div>
+
+  <!-- FINAL SUMMARY -->
+  <div class="callout tip no-break" style="margin-top: 20px;">
+    <div class="callout-title">🏆 ขอแสดงความยินดี! คุณสำเร็จหลักสูตร The Ultimate SQL Mastery</div>
+    หากคุณเข้าใจและทำโจทย์ทั้ง 20 ข้อนี้ได้ด้วยตนเอง คุณไม่ได้อยู่แค่ในระดับสอบผ่านวิชาฐานข้อมูลแล้ว แต่คุณมีความรู้ทัดเทียมกับ <strong>Senior Backend Developer / Data Engineer</strong> ในตลาดการทำงานจริงครับ!
+  </div>
+
+</div>
+
+</body>
+</html>

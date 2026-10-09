@@ -130,70 +130,67 @@ $isInAppBrowser = (
 
     <!-- Main Content Area -->
     <main class="main-content">
-      <?php renderAppTopBar('จดมิเตอร์น้ำประปา', 'ระบบบันทึกเลขอ่านมิเตอร์ คำนวณค่าน้ำ สแกน QR หน้าบ้าน และสรุปยอดประจำเดือน'); ?>
+      <?php renderAppTopBar('จดมิเตอร์น้ำประปา', 'บันทึกเลขอ่านมิเตอร์ สแกน QR Code และคำนวณค่าน้ำอัตโนมัติ'); ?>
 
-    <?php if ($isInAppBrowser): ?>
-    <div class="no-print" style="background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #166534;">
-      <div>
-        📱 <strong>เปิดผ่านแอปพลิเคชัน (Facebook / LINE):</strong> บันทึกค่าน้ำได้ปกติ แนะนำแตะปุ่ม <strong>"📷 สแกน QR &rarr; 📸 ถ่ายรูปสแกน"</strong> หรือค้นหาเลขที่บ้าน หรือแตะจุด 3 จุดมุมขวาบนเลือก "เปิดในเบราว์เซอร์ภายนอก (Chrome)"
-      </div>
-      <button type="button" onclick="this.parentElement.style.display='none'" style="background:none; border:none; color:#166534; font-size:18px; cursor:pointer; line-height:1; padding-left:10px;">&times;</button>
-    </div>
-    <?php endif; ?>
-
-    <!-- Field Header with Progress -->
-    <div class="field-header-card no-print">
-      <div>
-        <span style="background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 9999px; font-size: 13.5px; font-weight: 600;">
-          🚶‍♂️ ระบบจดมิเตอร์น้ำประปาภาคสนาม (Field Meter Reader)
-        </span>
-        <h1 style="font-family: 'Prompt', sans-serif; font-size: 22px; margin: 8px 0 2px 0;">
-          สมุดบันทึกการจดมิเตอร์น้ำประปาประจำงวด
-        </h1>
-        <p style="opacity: 0.9; font-size: 13.5px; margin: 0 0 10px 0;">
-          สแกน QR หน้าบ้าน หรือคีย์เลขอ่านมิเตอร์ ระบบคำนวณเงินสดทันที พร้อมรองรับการนำเข้าไฟล์ Excel/CSV
-        </p>
-        <button type="button" onclick="openAddCustomerModal()" style="background: #ffffff; color: #0284c7; border: none; font-size: 13.5px; font-weight: 700; padding: 7px 16px; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
-          ➕ เพิ่มผู้ใช้น้ำ / ติดตั้งมิเตอร์ใหม่
-        </button>
+    <!-- Clean Command Header: Modern Minimalist Dashboard Card -->
+    <div class="field-command-header no-print">
+      <div class="cmd-info">
+        <div class="cmd-badge">
+          <span class="badge-dot"></span>
+          <span>ระบบจดมิเตอร์ภาคสนาม (Field Reader)</span>
+        </div>
+        <h1 class="cmd-title">สมุดบันทึกการจดมิเตอร์ประจำงวด</h1>
+        <div class="cmd-sub">
+          <span>สายจดหมู่ที่ 3 บ้านวังยาง</span>
+          <span class="dot-sep">•</span>
+          <span>งวด <?php echo htmlspecialchars($currentCycleCode); ?></span>
+        </div>
       </div>
 
-      <div style="min-width: 270px; background: rgba(0,0,0,0.2); padding: 14px 18px; border-radius: 10px;">
-        <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600;">
-          <span>ความคืบหน้าการเดินจด:</span>
-          <span id="field-progress-text">0 / 0 หลังคาเรือน (0%)</span>
+      <div class="cmd-metrics">
+        <div class="metric-item">
+          <span class="metric-label">สถานะการจด</span>
+          <strong class="metric-val text-success" id="field-count-done">จดแล้ว: 0 หลัง</strong>
         </div>
-        <div class="progress-bar-wrap">
-          <div class="progress-bar-fill" id="field-progress-bar"></div>
+        <div class="metric-sep"></div>
+        <div class="metric-item">
+          <span class="metric-label">ค้างจด</span>
+          <strong class="metric-val text-warning" id="field-count-pending">ยังไม่จด: 0 หลัง</strong>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 11.5px; margin-top: 6px; opacity: 0.85;">
-          <span id="field-count-pending">ยังไม่จด: 0 หลัง</span>
-          <span id="field-count-done">จดแล้ว: 0 หลัง</span>
+        <div class="metric-sep"></div>
+        <div class="metric-progress-box">
+          <div class="metric-prog-bar">
+            <div class="progress-bar-fill" id="field-progress-bar"></div>
+          </div>
+          <span class="metric-prog-pct" id="field-progress-text">0%</span>
         </div>
       </div>
     </div>
 
-    <!-- Filter and Quick Action Bar -->
-    <div class="filter-card no-print" style="display: flex; flex-direction: column; gap: 12px;">
-      <!-- Row 1: Filter inputs and Status Tabs -->
-      <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between;">
-        <div class="filter-inputs" style="flex: 1; min-width: 300px;">
-          <select id="field-cycle-select" class="form-select" style="font-weight: 600; min-width: 200px;">
+    <!-- Filter & Command Toolbar -->
+    <div class="filter-card no-print" style="display: flex; flex-direction: column; gap: 14px; border-left: none; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px 20px;">
+      <!-- Row 1: Search, Dropdowns, and Segmented Status Control -->
+      <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between;">
+        <div class="filter-inputs" style="flex: 1; min-width: 280px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+          <select id="field-cycle-select" class="form-select" style="font-weight: 600; min-width: 180px; height: 42px; border-radius: 8px;">
             <?php foreach ($cycles as $c): ?>
               <option value="<?php echo htmlspecialchars($c['cycle_code']); ?>" <?php echo $c['cycle_code'] === $currentCycleCode ? 'selected' : ''; ?>>
-                งวดเดือน <?php echo $c['month'] . '/' . $c['year_be'] . ' (' . $c['cycle_code'] . ')'; ?>
+                งวด <?php echo $c['month'] . '/' . $c['year_be'] . ' (' . $c['cycle_code'] . ')'; ?>
               </option>
             <?php endforeach; ?>
           </select>
 
-          <select id="field-zone-select" class="form-select" style="min-width: 170px;">
-            <option value="">ทุกคุ้ม / ทุกโซนสายเดินจด</option>
+          <select id="field-zone-select" class="form-select" style="min-width: 170px; height: 42px; border-radius: 8px;">
+            <option value="">ทุกคุ้ม / ทุกโซนสายจด</option>
           </select>
 
-          <input type="text" id="field-search-input" class="form-input" placeholder="🔍 ค้นหาบ้านเลขที่, รหัสผู้ใช้ หรือชื่อ..." style="flex: 1; min-width: 200px;">
+          <div style="position: relative; flex: 1; min-width: 220px;">
+            <input type="text" id="field-search-input" class="form-input" placeholder="พิมพ์ค้นหาบ้านเลขที่, รหัสผู้ใช้ หรือชื่อ..." style="width: 100%; height: 42px; border-radius: 8px; padding-left: 36px;">
+            <span style="position: absolute; left: 12px; top: 12px; font-size: 14px; color: #94a3b8; pointer-events: none;">🔍</span>
+          </div>
         </div>
 
-        <!-- Status Filter Tabs -->
+        <!-- Segmented Status Tabs -->
         <div class="filter-status-tabs">
           <button type="button" class="filter-status-tab active" data-status="all" onclick="setStatusFilter('all')">
             ทั้งหมด <span class="tab-badge" id="tab-badge-all">0</span>
@@ -207,39 +204,37 @@ $isInAppBrowser = (
         </div>
       </div>
 
-      <!-- Row 2: Action Buttons (Guide, QR Scanner, CSV Import/Export, Save, Print) -->
-      <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 10px;">
+      <!-- Row 2: Action Toolbar with Clear Visual Hierarchy -->
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 12px;">
         <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
-          <!-- 0. Add Customer Button -->
-          <button type="button" class="btn btn-primary" onclick="openAddCustomerModal()" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 700; background: #0284c7; box-shadow: 0 2px 6px rgba(2, 132, 199, 0.3);">
-            ➕ เพิ่มผู้ใช้น้ำ / มิเตอร์ใหม่
+          <!-- 1. Primary Hero Action: QR Code Camera Scanner -->
+          <button type="button" class="btn btn-qr-scan" onclick="openQrScannerModal()" style="height: 42px; font-size: 14px; padding: 0 18px; border-radius: 8px; background: #059669; color: #fff; font-weight: 700; border: none; box-shadow: 0 2px 6px rgba(5, 150, 105, 0.25); cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+            📷 สแกน QR มิเตอร์
           </button>
 
-          <!-- 1. QR Code Camera Scanner Button -->
-          <button type="button" class="btn btn-qr-scan" onclick="openQrScannerModal()">
-            📷 สแกน QR สติกเกอร์มิเตอร์
+          <!-- 2. Secondary Action: Add New Customer -->
+          <button type="button" class="btn btn-primary" onclick="openAddCustomerModal()" style="height: 42px; font-size: 13.5px; padding: 0 14px; border-radius: 8px; background: #0284c7; font-weight: 600; cursor: pointer;">
+            ➕ เพิ่มผู้ใช้น้ำใหม่
           </button>
 
-          <!-- 2. Excel/CSV Batch Import -->
-          <button type="button" class="btn btn-outline" onclick="openCsvImportModal()" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 600;">
-            📥 นำเข้าจาก Excel 365
-          </button>
-
-          <!-- 3. Export CSV Template -->
-          <button type="button" class="btn btn-outline" onclick="downloadCsvTemplate()" style="display: inline-flex; align-items: center; gap: 6px;">
-            📤 ส่งออก Excel/CSV
-          </button>
-
-          <!-- 4. Print QR Stickers -->
-          <a href="print_qr_labels.php" target="_blank" class="btn btn-outline" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
-            🏷️ พิมพ์สติกเกอร์ QR
-          </a>
+          <!-- 3. Tools Overflow Dropdown -->
+          <div class="action-dropdown-wrap">
+            <button type="button" class="btn btn-outline" onclick="toggleToolsDropdown()" id="btn-tools-dropdown" style="height: 42px; font-size: 13.5px; border-radius: 8px; background: #fff; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+              <span>⚙️ เครื่องมือเพิ่มเติม</span>
+              <span style="font-size: 10px; color: #64748b;">▼</span>
+            </button>
+            <div class="action-dropdown-menu" id="tools-dropdown-menu">
+              <button type="button" onclick="openCsvImportModal(); toggleToolsDropdown(false);">📥 นำเข้าจาก Excel 365</button>
+              <button type="button" onclick="downloadCsvTemplate(); toggleToolsDropdown(false);">📤 ส่งออก Excel/CSV</button>
+              <a href="print_qr_labels.php" target="_blank" onclick="toggleToolsDropdown(false)">🏷️ พิมพ์สติกเกอร์ QR Code</a>
+            </div>
+          </div>
         </div>
 
         <div style="display: flex; gap: 8px; align-items: center;">
-          <button type="button" class="btn btn-outline" id="btn-reload-field">🔄 รีเฟรช</button>
-          <button type="button" class="btn btn-secondary" id="btn-save-field">💾 บันทึกทั้งหมด</button>
-          <button type="button" class="btn btn-primary" onclick="window.print()">🖨️ พิมพ์สมุดจดมิเตอร์</button>
+          <button type="button" class="btn btn-outline" id="btn-reload-field" style="height: 42px; border-radius: 8px; background: #fff; cursor: pointer;">🔄 รีเฟรช</button>
+          <button type="button" class="btn btn-primary" id="btn-save-field" style="height: 42px; border-radius: 8px; background: #0f172a; border-color: #0f172a; font-weight: 600; cursor: pointer;">💾 บันทึกทั้งหมด</button>
+          <button type="button" class="btn btn-outline" onclick="window.print()" style="height: 42px; border-radius: 8px; background: #fff; cursor: pointer;">🖨️ พิมพ์สมุดจด</button>
         </div>
       </div>
     </div>
@@ -767,6 +762,24 @@ $isInAppBrowser = (
         setTimeout(() => toast.remove(), 350);
       }, 3500);
     }
+
+    function toggleToolsDropdown(force) {
+      const menu = document.getElementById('tools-dropdown-menu');
+      if (!menu) return;
+      if (typeof force === 'boolean') {
+        menu.classList.toggle('active', force);
+      } else {
+        menu.classList.toggle('active');
+      }
+    }
+
+    document.addEventListener('click', (e) => {
+      const wrap = document.querySelector('.action-dropdown-wrap');
+      if (wrap && !wrap.contains(e.target)) {
+        const menu = document.getElementById('tools-dropdown-menu');
+        if (menu) menu.classList.remove('active');
+      }
+    });
 
     document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('print-cycle-text').textContent = activeCycle;

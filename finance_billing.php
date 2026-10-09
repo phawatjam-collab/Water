@@ -175,23 +175,23 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
 
     <!-- Main Content Area -->
     <main class="main-content">
-      <?php renderAppTopBar('งานรับชำระเงิน & ออกใบเสร็จ', 'งานการเงิน เหรัญญิก ออกใบเสร็จรับเงิน ติดตามหนี้ค้าง และค่าตอบแทนคนจด 10%'); ?>
+      <?php renderAppTopBar('งานการเงิน & ออกใบเสร็จรับเงิน', 'บันทึกรับชำระเงิน ออกใบเสร็จ ติดตามหนี้ค้าง และสรุปรายรับ-รายจ่ายกองทุน'); ?>
 
     <!-- Unified Finance Control Header -->
-    <div class="card no-print" style="margin-bottom: 20px; padding: 18px 22px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
+    <div class="card no-print" style="margin-bottom: 20px; padding: 18px 22px; border-radius: 14px; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
       <!-- Top Level: Cycle Selector & Quick Actions -->
       <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; padding-bottom: 14px; border-bottom: 1px solid #e2e8f0;">
-        <div style="display: flex; align-items: center; gap: 14px;">
-          <div style="width: 44px; height: 44px; border-radius: 10px; background: #e0f2fe; color: #0284c7; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 42px; height: 42px; border-radius: 10px; background: #e0f2fe; color: #0284c7; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0;">
             💼
           </div>
           <div>
-            <h2 style="font-family: 'Prompt', sans-serif; font-size: 18px; font-weight: 700; margin: 0; color: #0f172a;">
+            <h2 style="font-family: 'Prompt', sans-serif; font-size: 17px; font-weight: 700; margin: 0; color: #0f172a;">
               ระบบงานการเงินและบัญชีกองทุนประปา
             </h2>
             <div style="font-size: 13px; color: #64748b; margin-top: 2px;">
               งวดบัญชี: <strong style="color: #0284c7;"><span id="current-cycle-display"><?php echo $currentCycleCode; ?></span></strong>
-              <span style="margin: 0 6px; color: #cbd5e1;">|</span>
+              <span style="margin: 0 6px; color: #cbd5e1;">•</span>
               <span id="header-quick-stat" style="color: #475569;">กำลังโหลดสรุปยอด...</span>
             </div>
           </div>
@@ -220,18 +220,18 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
       <!-- Navigation Tabs Layer -->
       <div class="finance-subnav" style="margin-top: 14px; margin-bottom: 0; padding: 0; border: none; box-shadow: none; background: transparent; display: flex; gap: 8px; flex-wrap: wrap;">
         <button class="fin-tab-btn active" data-target="pane-collection">
-          <span>✅</span> 1. ตัดรับชำระเงินประจำงวด
+          <span>✅</span> รับชำระค่าน้ำ
           <span class="fin-tab-badge" id="tab-badge-unpaid">-</span>
         </button>
         <button class="fin-tab-btn" data-target="pane-receipt">
-          <span>🧾</span> 2. พิมพ์ใบเสร็จรับเงิน
+          <span>🧾</span> ออกใบเสร็จรับเงิน
         </button>
         <button class="fin-tab-btn" data-target="pane-arrears">
-          <span>⚠️</span> 3. ติดตามยอดค้างชำระ & พิมพ์ใบเตือน
+          <span>⚠️</span> ทะเบียนหนี้ค้าง
           <span class="fin-tab-badge" id="tab-badge-debtors">-</span>
         </button>
         <button class="fin-tab-btn" data-target="pane-vouchers">
-          <span>📜</span> 4. สรุปค่าใช้จ่าย & ค่าตอบแทนคนจด (10%)
+          <span>📜</span> รายจ่าย & ค่าตอบแทน 10%
         </button>
       </div>
     </div>
@@ -288,9 +288,15 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
 
           <!-- Search input & Action buttons -->
           <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-            <input type="text" id="col-search-input" inputmode="search" oninput="renderCollectionRows()" class="form-input" placeholder="🔍 ค้นหาเบอร์โทร, ชื่อ, รหัส หรือบ้านเลขที่..." style="font-size: 13.5px; padding: 7px 14px; min-width: 240px;">
+            <div class="search-input-box" style="min-width: 250px;">
+              <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="text" id="col-search-input" inputmode="search" oninput="renderCollectionRows()" class="form-input" placeholder="ค้นหาชื่อ, เบอร์โทร, รหัส หรือบ้านเลขที่...">
+            </div>
             <button type="button" class="btn btn-outline" id="btn-reload-fin" style="font-size: 13px; padding: 7px 12px; background: #fff;">🔄 รีเฟรช</button>
-            <button type="button" class="btn btn-secondary" id="btn-pay-all-fin" style="font-size: 13px; padding: 7px 16px;">✅ ตัดรับชำระทั้งหมด</button>
+            <button type="button" class="btn btn-primary" id="btn-pay-all-fin" style="font-size: 13px; padding: 7px 16px;">✅ ตัดรับชำระทั้งหมด</button>
           </div>
         </div>
         <div class="table-responsive">
@@ -322,7 +328,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
     <!-- PANE 2: พิมพ์ใบเสร็จรับเงิน -->
     <!-- ========================================================= -->
     <div id="pane-receipt" class="fin-pane">
-      <div class="card no-print receipt-toolbar" style="margin-bottom: 20px; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-left: 4px solid #0284c7; border-radius: 12px;">
+      <div class="card no-print receipt-toolbar" style="margin-bottom: 20px; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
         <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
           <button type="button" class="btn btn-outline" onclick="switchFinanceTab('pane-collection', true)" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 600; background: #fff; padding: 7px 14px;">
             <span>&larr;</span> กลับไปหน้ารายการตัดรับชำระ
@@ -485,7 +491,13 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
           </div>
 
           <div style="display: flex; align-items: center; gap: 8px;">
-            <input type="text" id="fa-search-input" inputmode="search" oninput="renderArrearsRows()" class="form-input" placeholder="🔍 ค้นหาลูกหนี้, รหัส หรือบ้านเลขที่..." style="font-size: 13.5px; padding: 7px 14px; min-width: 240px;">
+            <div class="search-input-box" style="min-width: 250px;">
+              <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="text" id="fa-search-input" inputmode="search" oninput="renderArrearsRows()" class="form-input" placeholder="ค้นหาลูกหนี้, รหัส หรือบ้านเลขที่...">
+            </div>
           </div>
         </div>
         <div class="table-responsive">

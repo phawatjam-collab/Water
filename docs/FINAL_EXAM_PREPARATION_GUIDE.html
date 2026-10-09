@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>แนวข้อสอบปลายภาค - การพัฒนาฐานข้อมูลบนเว็บ (Final Exam Guide)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-light: #3b82f6;
+      --primary-subtle: #eff6ff;
+      --secondary: #0f766e;
+      --accent: #b45309;
+      --accent-bg: #fffbeb;
+      --danger: #b91c1c;
+      --danger-bg: #fef2f2;
+      --success: #15803d;
+      --success-bg: #f0fdf4;
+      --dark: #0f172a;
+      --gray-900: #1e293b;
+      --gray-700: #334155;
+      --gray-500: #64748b;
+      --gray-200: #e2e8f0;
+      --gray-100: #f1f5f9;
+      --gray-50: #f8fafc;
+      --border-color: #cbd5e1;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Sarabun', 'Segoe UI', Tahoma, sans-serif;
+      font-size: 13.5pt;
+      line-height: 1.6;
+      color: var(--gray-900);
+      background: #f8fafc;
+      padding: 20px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 40px 50px;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Print Setup */
+    @page {
+      size: A4;
+      margin: 15mm 15mm 15mm 15mm;
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+        padding: 0;
+        font-size: 11pt;
+        line-height: 1.5;
+      }
+      .container {
+        padding: 0;
+        box-shadow: none;
+        max-width: 100%;
+        border-radius: 0;
+      }
+      .page-break {
+        page-break-before: always;
+        break-before: page;
+      }
+      .no-break {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+      h1, h2, h3 {
+        page-break-after: avoid;
+        break-after: avoid;
+      }
+      .header-card {
+        border-top: none !important;
+      }
+    }
+
+    /* Typography */
+    h1, h2, h3, h4, .font-heading {
+      font-family: 'Prompt', sans-serif;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    h1 {
+      font-size: 24pt;
+      line-height: 1.25;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      font-size: 17pt;
+      color: var(--primary);
+      border-bottom: 2.5px solid var(--primary-light);
+      padding-bottom: 6px;
+      margin-top: 28px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    h3 {
+      font-size: 13.5pt;
+      color: var(--gray-900);
+      margin-top: 18px;
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin-bottom: 10px;
+      text-align: justify;
+    }
+
+    ul, ol {
+      margin-left: 24px;
+      margin-bottom: 12px;
+    }
+
+    li {
+      margin-bottom: 5px;
+    }
+
+    /* Header Banner */
+    .header-card {
+      background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 60%, #0369a1 100%);
+      color: #ffffff;
+      padding: 28px 32px;
+      border-radius: 10px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);
+    }
+
+    .header-card h1 {
+      color: #ffffff;
+      font-size: 21pt;
+      margin-bottom: 6px;
+    }
+
+    .header-card .subtitle {
+      font-size: 13pt;
+      opacity: 0.95;
+      font-family: 'Prompt', sans-serif;
+      margin-bottom: 14px;
+    }
+
+    .exam-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.12);
+      padding: 12px 16px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .exam-meta-item {
+      font-size: 10.5pt;
+    }
+    .exam-meta-item strong {
+      display: block;
+      color: #93c5fd;
+      font-size: 9.5pt;
+      text-transform: uppercase;
+      font-family: 'Prompt', sans-serif;
+    }
+
+    /* Badges & Tags */
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      font-size: 10pt;
+      font-weight: 600;
+      border-radius: 12px;
+      font-family: 'Prompt', sans-serif;
+    }
+    .badge-primary { background: #dbeafe; color: #1e40af; }
+    .badge-success { background: #dcfce7; color: #166534; }
+    .badge-warning { background: #fef3c7; color: #92400e; }
+    .badge-danger { background: #fee2e2; color: #991b1b; }
+
+    /* Cards & Boxes */
+    .card {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 16px;
+      background: #ffffff;
+    }
+
+    .alert-box {
+      border-left: 4.5px solid var(--primary-light);
+      background: var(--primary-subtle);
+      padding: 12px 18px;
+      border-radius: 0 6px 6px 0;
+      margin: 14px 0;
+    }
+    .alert-box.tip {
+      border-left-color: var(--success);
+      background: var(--success-bg);
+    }
+    .alert-box.warning {
+      border-left-color: var(--accent);
+      background: var(--accent-bg);
+    }
+    .alert-box.danger {
+      border-left-color: var(--danger);
+      background: var(--danger-bg);
+    }
+    .alert-box-title {
+      font-family: 'Prompt', sans-serif;
+      font-weight: 700;
+      font-size: 11pt;
+      margin-bottom: 4px;
+      color: var(--dark);
+    }
+
+    /* Code Blocks */
+    pre, code {
+      font-family: 'JetBrains Mono', Consolas, monospace;
+    }
+
+    code {
+      background: #f1f5f9;
+      color: #0f172a;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11pt;
+      border: 1px solid #e2e8f0;
+    }
+
+    pre {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 14px 18px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 10px 0 14px 0;
+      font-size: 10.5pt;
+      line-height: 1.5;
+      border: 1px solid #334155;
+    }
+
+    pre .kw { color: #38bdf8; font-weight: 600; } /* Keyword: SELECT, FROM */
+    pre .fn { color: #f472b6; } /* Function: YEAR, CURDATE */
+    pre .str { color: #4ade80; } /* String: '...' */
+    pre .num { color: #fbbf24; } /* Number */
+    pre .cm { color: #94a3b8; font-style: italic; } /* Comment */
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0 16px 0;
+      font-size: 11pt;
+    }
+
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 7px 11px;
+      text-align: left;
+    }
+
+    th {
+      background: #f1f5f9;
+      font-family: 'Prompt', sans-serif;
+      font-weight: 600;
+      color: var(--gray-900);
+      text-align: center;
+    }
+
+    tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+
+    .table-sm th, .table-sm td {
+      padding: 4px 8px;
+      font-size: 10pt;
+    }
+
+    .table-center th, .table-center td {
+      text-align: center;
+    }
+
+    .table-math {
+      border: 2px solid #3b82f6;
+    }
+    .table-math th {
+      background: #dbeafe;
+      color: #1e3a8a;
+      font-weight: 700;
+    }
+
+    /* Math Symbols */
+    .symbol {
+      font-size: 15pt;
+      font-weight: bold;
+      color: var(--primary);
+      font-family: 'Cambria Math', 'Times New Roman', serif;
+      padding: 0 4px;
+    }
+
+    /* Flowchart Boxes */
+    .flow-diagram {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: #f1f5f9;
+      padding: 14px 18px;
+      border-radius: 8px;
+      margin: 12px 0;
+      border: 1px dashed #94a3b8;
+    }
+
+    .flow-step {
+      flex: 1;
+      background: #ffffff;
+      padding: 10px 12px;
+      border-radius: 6px;
+      border: 1.5px solid #cbd5e1;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    }
+    .flow-step strong {
+      display: block;
+      color: var(--primary);
+      font-family: 'Prompt', sans-serif;
+      font-size: 11pt;
+      margin-bottom: 2px;
+    }
+    .flow-arrow {
+      font-size: 18pt;
+      color: var(--primary-light);
+      font-weight: bold;
+    }
+
+    /* Two Columns */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .checkbox {
+      width: 16px;
+      height: 16px;
+      border: 2px solid var(--primary);
+      border-radius: 3px;
+      display: inline-block;
+      margin-top: 3px;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HEADER BANNER -->
+  <div class="header-card">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+      <div>
+        <h1>แนวข้อสอบปลายภาค: การพัฒนาฐานข้อมูลบนเว็บ</h1>
+        <div class="subtitle">Web Database Development — Comprehensive Exam Preparation & Cheat Sheet</div>
+      </div>
+      <div style="text-align: right;">
+        <span class="badge badge-warning" style="font-size: 11pt; padding: 5px 14px;">เป้าหมาย: 22+ เต็ม 30</span>
+      </div>
+    </div>
+    <div class="exam-meta-grid">
+      <div class="exam-meta-item">
+        <strong>รูปแบบข้อสอบ</strong>
+        อัตนัย 3 ข้อใหญ่ (ไม่มีปรนัย)
+      </div>
+      <div class="exam-meta-item">
+        <strong>คะแนนเต็ม</strong>
+        30 คะแนน (30% ของวิชา)
+      </div>
+      <div class="exam-meta-item">
+        <strong>เวลาสอบ</strong>
+        2 ชั่วโมง (120 นาที)
+      </div>
+      <div class="exam-meta-item">
+        <strong>ข้อปฏิบัติ</strong>
+        ห้ามเอกสาร/เครื่องคำนวณ
+      </div>
+    </div>
+  </div>
+
+  <!-- STRATEGY BOX -->
+  <div class="alert-box tip no-break">
+    <div class="alert-box-title">⏱️ แผนจัดสรรเวลา 120 นาที สู่คะแนนเต็ม 30</div>
+    <div style="display: flex; justify-content: space-between; font-size: 11pt;">
+      <div><strong>ข้อ 1: อธิบายระบบโครงงาน (10 คะแนน)</strong> $\rightarrow$ ใช้เวลา 35 นาที (เขียนเรียง Input $\rightarrow$ Process $\rightarrow$ Output)</div>
+      <div><strong>ข้อ 2: เขียนคำสั่ง SQL (10 คะแนน)</strong> $\rightarrow$ ใช้เวลา 45 นาที (5 ข้อย่อย เช็ค Quote, AND/OR, ตาราง)</div>
+      <div><strong>ข้อ 3: Relational Algebra (10 คะแนน)</strong> $\rightarrow$ ใช้เวลา 35 นาที (8 ข้อย่อย วาดตารางผลลัพธ์)</div>
+      <div><strong>ตรวจทาน</strong> $\rightarrow$ 5 นาที</div>
+    </div>
+  </div>
+
+  <!-- SECTION 1 -->
+  <h2>ข้อที่ 1: การอธิบายระบบจากโครงงานกลุ่ม (10 คะแนน)</h2>
+  <p><strong>หัวใจในการตรวจ:</strong> กรรมการมองหา <em>"ความเป็นระบบและความละเอียด"</em> ห้ามตอบสั้นเป็นความเรียงก้อนเดียว ให้เขียนเป็นข้อๆ พร้อมระบุขั้นตอน <strong>Input $\rightarrow$ Process $\rightarrow$ Output</strong></p>
+
+  <div class="card no-break">
+    <h3 style="margin-top: 0; color: var(--primary);">1.1 ข้อมูลระบบและวัตถุประสงค์ (System Overview & Objectives)</h3>
+    <ul>
+      <li><strong>ชื่อระบบ:</strong> ระบบบริหารจัดการการประปาหมู่บ้านวังยาง (Village Water Supply Management System)</li>
+      <li><strong>เทคโนโลยีที่ใช้:</strong> PHP + MySQL (MariaDB) บนสภาพแวดล้อม XAMPP สถาปัตยกรรม Web-based Client-Server</li>
+      <li><strong>สภาพปัญหาก่อนพัฒนา:</strong> เดิมเจ้าหน้าที่ใช้สมุดกระดาษจดเลขมิเตอร์ (ป.17) ทำให้ตัวเลขคลาดเคลื่อนง่าย, คำนวณค่าน้ำและทบยอดหนี้ค้างชำระผิดพลาด, ประชาชนไม่ทราบยอดค่าน้ำล่วงหน้า, และสรุปบัญชีการเงินชุมชนล่าช้า</li>
+      <li><strong>วัตถุประสงค์หลัก:</strong>
+        <ol>
+          <li>เปลี่ยนระบบจดและคำนวณค่าน้ำประปาเป็นดิจิทัล ลดความผิดพลาดและทบยอดหนี้ค้างชำระอัตโนมัติ</li>
+          <li>พัฒนาระบบตรวจสอบค่าน้ำ แจ้งชำระเงิน และยื่นคำร้องแจ้งซ่อมท่อรั่วออนไลน์สำหรับประชาชน</li>
+          <li>จัดทำระบบรายงานสรุปงบการเงิน รายรับ-รายจ่าย รายการหนี้ค้างชำระ และอัตราน้ำสูญเสีย (NRW) ประจำเดือน</li>
+        </ol>
+      </li>
+    </ul>
+  </div>
+
+  <div class="card no-break">
+    <h3 style="margin-top: 0; color: var(--primary);">1.2 โครงสร้างผู้ใช้งานและระดับสิทธิ์ 4 บทบาท (RBAC Architecture)</h3>
+    <table class="table-sm">
+      <thead>
+        <tr>
+          <th style="width: 22%;">บทบาท (Role)</th>
+          <th style="width: 28%;">โมดูลที่รับผิดชอบ</th>
+          <th>หน้าที่และการทำงานหลัก</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1. ผู้ดูแลระบบ (Admin)</strong></td>
+          <td><code>dashboard.php</code><br><code>executive_reports.php</code></td>
+          <td>บริหารจัดการระบบทั้งหมด กำหนดอัตราค่าน้ำต่อหน่วย ดูรายงานรายรับ-รายจ่าย และสถิติน้ำสูญเสีย</td>
+        </tr>
+        <tr>
+          <td><strong>2. เจ้าหน้าที่ (Staff)</strong></td>
+          <td><code>meter_reading.php</code><br><code>finance_billing.php</code></td>
+          <td>บันทึกเลขมิเตอร์ประจำงวด ตัดรับชำระเงิน ออกใบเสร็จมาตรฐาน และจัดทำฎีกาเบิกจ่ายเงินกองทุน</td>
+        </tr>
+        <tr>
+          <td><strong>3. สมาชิกผู้ใช้น้ำ (Member)</strong></td>
+          <td><code>portal_citizen.php</code></td>
+          <td>เข้าสู่ระบบด้วยรหัสผู้ใช้น้ำ ดูประวัติการใช้น้ำย้อนหลัง พิมพ์ใบเสร็จ และสแกน QR Code ชำระเงิน</td>
+        </tr>
+        <tr>
+          <td><strong>4. ประชาชนทั่วไป (Public)</strong></td>
+          <td><code>index.php</code></td>
+          <td>ค้นหายอดค่าน้ำออนไลน์ตามบ้านเลขที่ และยื่นคำร้องแจ้งเหตุท่อแตก/น้ำไม่ไหล/ขอติดตั้งมิเตอร์</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="no-break">
+    <h3 style="color: var(--primary);">1.3 ขั้นตอนการทำงานอย่างละเอียด: Input $\rightarrow$ Process $\rightarrow$ Output (จุดเน้นข้อสอบ!)</h3>
+    <p>ให้อธิบายอย่างน้อย 2 ฟังก์ชันหลักของระบบ ดังนี้:</p>
+
+    <!-- FLOW 1 -->
+    <div style="margin-bottom: 16px;">
+      <strong>ฟังก์ชันที่ 1: ระบบสมุดจดบันทึกเลขมิเตอร์และคำนวณค่าน้ำอัตโนมัติ (Meter Reading & Billing)</strong>
+      <div class="flow-diagram">
+        <div class="flow-step">
+          <strong>1. ข้อมูลนำเข้า (Input)</strong>
+          <span style="font-size: 10pt; color: var(--gray-700);">
+            • รหัสรอบบิล (เช่น ส.ค. 2567)<br>
+            • รหัสผู้ใช้น้ำ (customer_id)<br>
+            • เลขมิเตอร์ครั้งนี้ (current_reading)
+          </span>
+        </div>
+        <div class="flow-arrow">➔</div>
+        <div class="flow-step">
+          <strong>2. การประมวลผล (Process)</strong>
+          <span style="font-size: 10pt; color: var(--gray-700);">
+            • ตรวจสอบเลขมิเตอร์ปัจจุบัน $\ge$ เลขครั้งก่อน<br>
+            • หน่วยใช้ = เลขครั้งนี้ − เลขครั้งก่อน<br>
+            • ค่าน้ำ = หน่วยใช้ $\times$ อัตราต่อหน่วย (7 บาท)<br>
+            • ยอดสุทธิ = ค่าน้ำ + ค่าบริการ (10) + หนี้เก่า
+          </span>
+        </div>
+        <div class="flow-arrow">➔</div>
+        <div class="flow-step">
+          <strong>3. การแสดงผล (Output)</strong>
+          <span style="font-size: 10pt; color: var(--gray-700);">
+            • รายการบันทึกสถานะ UNPAID<br>
+            • ยอดรวมค่าน้ำสุทธิบนหน้าจอ<br>
+            • ใบแจ้งหนี้ค่าน้ำประจำงวด<br>
+            • บันทึกลงตาราง <code>meter_readings</code>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- FLOW 2 -->
+    <div>
+      <strong>ฟังก์ชันที่ 2: ระบบตัดรับชำระเงินและออกใบเสร็จรับเงิน (Finance & Receipts)</strong>
+      <div class="flow-diagram">
+        <div class="flow-step">
+          <strong>1. ข้อมูลนำเข้า (Input)</strong>
+          <span style="font-size: 10pt; color: var(--gray-700);">
+            • เลขที่บิล / รหัสผู้ใช้น้ำ<br>
+            • จำนวนเงินรับชำระ (amount_paid)<br>
+            • ช่องทาง (เงินสด / PromptPay)
+          </span>
+        </div>
+        <div class="flow-arrow">➔</div>
+        <div class="flow-step">
+          <strong>2. การประมวลผล (Process)</strong>
+          <span style="font-size: 10pt; color: var(--gray-700);">
+            • ตรวจสอบยอดเงินครบถ้วน<br>
+            • อัปเดตสถานะบิลเป็น 'PAID'<br>
+            • ออกเลขที่ใบเสร็จ (เช่น 8-2567/501)<br>
+            • แปลงยอดเงินเป็นตัวอักษรไทย (bahtText)
+          </span>
+        </div>
+        <div class="flow-arrow">➔</div>
+        <div class="flow-step">
+          <strong>3. การแสดงผล (Output)</strong>
+          <span style="font-size: 10pt; color: var(--gray-700);">
+            • ใบเสร็จรับเงินทางการพร้อมพิมพ์<br>
+            • ปรับลดยอดหนี้คงเหลือเป็น 0.00<br>
+            • ปรับปรุงยอดรายรับรวมในแดชบอร์ด
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card no-break" style="margin-top: 14px;">
+    <h3 style="margin-top: 0; color: var(--primary);">1.4 ส่วนงานที่ตนเองรับผิดชอบ (Role & Contribution — เขียนตอบให้ดูเป็นมืออาชีพ)</h3>
+    <p><em>(เลือกตอบด้านใดด้านหนึ่งที่ตนเองมั่นใจ):</em></p>
+    <ul>
+      <li><strong>แนวตอบด้านฐานข้อมูลและแบ็กเอนด์ (Backend & Database Developer):</strong><br>
+      <em>"ข้าพเจ้ารับผิดชอบการออกแบบฐานข้อมูลเชิงสัมพันธ์ (Database Schema) ตาราง <code>tb_customers</code>, <code>meter_readings</code>, <code>billing_cycles</code>, <code>tb_users</code> พร้อมกำหนด Primary Key, Foreign Key และ Referential Integrity เพื่อป้องกันข้อมูลขัดแย้ง รวมถึงเขียนคำสั่ง SQL และสคริปต์ PHP ฝั่งเซิร์ฟเวอร์ในการประมวลผลคำนวณค่าน้ำแบบอัตโนมัติ จัดการระบบ Session Login ป้องกันการเข้าถึงโดยไม่ได้รับอนุญาต และสร้าง API สำหรับออกใบเสร็จรับเงิน"</em></li>
+      <li><strong>แนวตอบด้านส่วนติดต่อผู้ใช้ (Frontend & UI Developer):</strong><br>
+      <em>"ข้าพเจ้ารับผิดชอบการออกแบบหน้าจอผู้ใช้งาน (UI/UX) ให้ทำงานแบบ Responsive Web รองรับแท็บเล็ตและสมาร์ตโฟนสำหรับเจ้าหน้าที่จดมิเตอร์ภาคสนาม พัฒนาระบบตรวจสอบความถูกต้องของข้อมูล (Form Validation) ด้วย JavaScript เพื่อป้องกันไม่ให้กรอกเลขมิเตอร์ติดลบหรือน้อยกว่าครั้งก่อนหน้า และพัฒนาหน้า Portal ให้ประชาชนสแกน QR Code ชำระเงินได้อย่างสะดวก"</em></li>
+    </ul>
+  </div>
+
+  <!-- PAGE BREAK FOR SECTION 2 -->
+  <div class="page-break"></div>
+
+  <!-- SECTION 2 -->
+  <h2>ข้อที่ 2: การเขียนคำสั่ง SQL (10 คะแนน — 5 ข้อย่อย)</h2>
+  <p><strong>แนวข้อสอบ:</strong> มีตารางและคอลัมน์กำหนดมาให้ ให้นักศึกษาเขียนคำสั่ง <code>SELECT</code> ตอบให้ตรงตามเงื่อนไขที่โจทย์ต้องการ</p>
+
+  <div class="card no-break">
+    <h3 style="margin-top: 0; color: var(--primary);">โครงสร้างตารางจำลองสำหรับข้อสอบ</h3>
+    <div class="grid-2">
+      <div>
+        <strong>ตาราง <code>employees</code> (พนักงาน)</strong>
+        <table class="table-sm">
+          <thead>
+            <tr><th>คอลัมน์</th><th>ชนิดข้อมูล</th><th>คำอธิบาย</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>emp_id</code></td><td>INT (PK)</td><td>รหัสพนักงาน</td></tr>
+            <tr><td><code>emp_name</code></td><td>VARCHAR</td><td>ชื่อ-นามสกุล</td></tr>
+            <tr><td><code>department</code></td><td>VARCHAR</td><td>แผนกที่สังกัด</td></tr>
+            <tr><td><code>salary</code></td><td>DECIMAL</td><td>เงินเดือน</td></tr>
+            <tr><td><code>hire_date</code></td><td>DATE</td><td>วันที่เริ่มงาน (เช่น '2018-05-01')</td></tr>
+            <tr><td><code>province</code></td><td>VARCHAR</td><td>จังหวัดที่ประจำการ</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <strong>ตาราง <code>expenses</code> (รายการค่าใช้จ่าย)</strong>
+        <table class="table-sm">
+          <thead>
+            <tr><th>คอลัมน์</th><th>ชนิดข้อมูล</th><th>คำอธิบาย</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>exp_id</code></td><td>INT (PK)</td><td>รหัสค่าใช้จ่าย</td></tr>
+            <tr><td><code>exp_type</code></td><td>VARCHAR</td><td>ประเภทค่าใช้จ่าย</td></tr>
+            <tr><td><code>amount</code></td><td>DECIMAL</td><td>จำนวนเงิน</td></tr>
+            <tr><td><code>location</code></td><td>VARCHAR</td><td>สถานที่เกิดค่าใช้จ่าย</td></tr>
+            <tr><td><code>exp_date</code></td><td>DATE</td><td>วันที่จ่ายเงิน</td></tr>
+            <tr><td><code>emp_id</code></td><td>INT (FK)</td><td>รหัสพนักงานผู้เบิก</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5 SQL PATTERNS -->
+  <div class="no-break">
+    <h3 style="color: var(--primary);">เก็งโจทย์ 5 ข้อย่อย พร้อมเฉลยละเอียดและหลักการคิด</h3>
+
+    <!-- Q1 -->
+    <div style="margin-bottom: 14px;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <strong>ข้อย่อยที่ 1: การเลือกคอลัมน์ (SELECT) และการเปรียบเทียบตัวเลข (WHERE > หรือ <)</strong>
+        <span class="badge badge-primary">2 คะแนน</span>
+      </div>
+      <p style="margin: 4px 0; font-size: 11pt; color: var(--gray-700);"><em>โจทย์:</em> จงเขียนคำสั่ง SQL เพื่อแสดงรหัสพนักงาน (<code>emp_id</code>), ชื่อพนักงาน (<code>emp_name</code>) และเงินเดือน (<code>salary</code>) ของพนักงานที่มีเงินเดือน<strong>มากกว่า 35,000 บาท</strong></p>
+      <pre><span class="kw">SELECT</span> emp_id, emp_name, salary
+<span class="kw">FROM</span> employees
+<span class="kw">WHERE</span> salary > <span class="num">35000</span>;</pre>
+      <div style="font-size: 10pt; color: var(--gray-500); margin-top: -8px;">💡 <em>ข้อสังเกต:</em> ตัวเลขไม่ต้องใส่เครื่องหมายคำพูด (Quote)</div>
+    </div>
+
+    <!-- Q2 -->
+    <div style="margin-bottom: 14px;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <strong>ข้อย่อยที่ 2: การกำหนดหลายเงื่อนไขด้วย AND และ OR (ระวังใส่วงเล็บ)</strong>
+        <span class="badge badge-primary">2 คะแนน</span>
+      </div>
+      <p style="margin: 4px 0; font-size: 11pt; color: var(--gray-700);"><em>โจทย์:</em> จงแสดงชื่อพนักงาน แผนก และเงินเดือน ของพนักงานที่อยู่แผนก <strong>'ไอที' หรือ 'การเงิน'</strong> และมีเงินเดือน<strong>ตั้งแต่ 30,000 บาทขึ้นไป</strong></p>
+      <pre><span class="kw">SELECT</span> emp_name, department, salary
+<span class="kw">FROM</span> employees
+<span class="kw">WHERE</span> (department = <span class="str">'ไอที'</span> <span class="kw">OR</span> department = <span class="str">'การเงิน'</span>)
+  <span class="kw">AND</span> salary >= <span class="num">30000</span>;</pre>
+      <div class="alert-box danger" style="padding: 6px 12px; margin: 4px 0; font-size: 10pt;">
+        ⚠️ <strong>จุดหักคะแนน:</strong> หากไม่ใส่วงเล็บรอบกลุ่ม <code>OR</code> ลำดับการประมวลผลจะเอา <code>AND</code> ทำก่อน ทำให้คนแผนกไอทีเงินเดือนเท่าไรก็โผล่มาทันที!
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div style="margin-bottom: 14px;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <strong>ข้อย่อยที่ 3: การคำนวณระยะเวลาหรืออายุงานจากปีที่โจทย์กำหนด</strong>
+        <span class="badge badge-primary">2 คะแนน</span>
+      </div>
+      <p style="margin: 4px 0; font-size: 11pt; color: var(--gray-700);"><em>โจทย์:</em> จงแสดงชื่อพนักงาน วันที่เริ่มงาน และ<strong>อายุงาน (จำนวนปี) จนถึงปี 2024</strong> พร้อมแสดงเฉพาะผู้ที่มีอายุงาน<strong>มากกว่า 5 ปี</strong></p>
+      <pre><span class="kw">SELECT</span> emp_name, hire_date, (<span class="num">2024</span> - <span class="fn">YEAR</span>(hire_date)) <span class="kw">AS</span> work_years
+<span class="kw">FROM</span> employees
+<span class="kw">WHERE</span> (<span class="num">2024</span> - <span class="fn">YEAR</span>(hire_date)) > <span class="num">5</span>;</pre>
+      <div style="font-size: 10pt; color: var(--gray-500); margin-top: -8px;">
+        💡 <em>กรณีโจทย์ให้เทียบกับปีปัจจุบันของระบบ:</em> ให้เปลี่ยน <code>2024</code> เป็น <code>YEAR(CURDATE())</code> เช่น <code>(YEAR(CURDATE()) - YEAR(hire_date))</code>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div style="margin-bottom: 14px;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <strong>ข้อย่อยที่ 4: การกรองข้อมูลตามข้อความ (สถานที่ และประเภทค่าใช้จ่าย)</strong>
+        <span class="badge badge-primary">2 คะแนน</span>
+      </div>
+      <p style="margin: 4px 0; font-size: 11pt; color: var(--gray-700);"><em>โจทย์:</em> จงแสดงรายการค่าใช้จ่ายทั้งหมดที่เป็นประเภท <strong>'ค่าซ่อมบำรุง'</strong> หรือ <strong>'ค่าเดินทาง'</strong> ที่เกิดขึ้น ณ สถานที่ <strong>'เชียงใหม่'</strong></p>
+      <pre><span class="kw">SELECT</span> *
+<span class="kw">FROM</span> expenses
+<span class="kw">WHERE</span> (exp_type = <span class="str">'ค่าซ่อมบำรุง'</span> <span class="kw">OR</span> exp_type = <span class="str">'ค่าเดินทาง'</span>)
+  <span class="kw">AND</span> location = <span class="str">'เชียงใหม่'</span>;</pre>
+      <div style="font-size: 10pt; color: var(--gray-500); margin-top: -8px;">
+        💡 <em>อีกวิธีที่ถูกต้อง:</em> ใช้ <code>IN</code> แทนได้: <code>WHERE exp_type IN ('ค่าซ่อมบำรุง', 'ค่าเดินทาง') AND location = 'เชียงใหม่'</code>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div>
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <strong>ข้อย่อยที่ 5: การอ่านโครงสร้างตาราง และการกรองด้วย LIKE / NOT EQUAL</strong>
+        <span class="badge badge-primary">2 คะแนน</span>
+      </div>
+      <p style="margin: 4px 0; font-size: 11pt; color: var(--gray-700);"><em>โจทย์:</em> จงแสดงรหัสค่าใช้จ่าย จำนวนเงิน และสถานที่ ของรายการที่มีจำนวนเงินตั้งแต่ 5,000 บาทขึ้นไป และสถานที่<strong>ไม่ใช่ 'กรุงเทพ'</strong></p>
+      <pre><span class="kw">SELECT</span> exp_id, amount, location
+<span class="kw">FROM</span> expenses
+<span class="kw">WHERE</span> amount >= <span class="num">5000</span>
+  <span class="kw">AND</span> location <> <span class="str">'กรุงเทพ'</span>;</pre>
+      <div style="font-size: 10pt; color: var(--gray-500); margin-top: -8px;">💡 เครื่องหมายไม่เท่ากับใน SQL เขียนได้ทั้ง <code><></code> หรือ <code>!=</code></div>
+    </div>
+  </div>
+
+  <!-- PAGE BREAK FOR SECTION 3 -->
+  <div class="page-break"></div>
+
+  <!-- SECTION 3 -->
+  <h2>ข้อที่ 3: พีชคณิตเชิงสัมพันธ์ (Relational Algebra) (10 คะแนน — 8 ข้อย่อย)</h2>
+  <p><strong>ข้อปฏิบัติ:</strong> ข้อสอบจะให้นิพจน์มา หรือให้เขียนสัญลักษณ์ และ<strong>ให้แสดงตารางผลลัพธ์ (Result Table)</strong></p>
+
+  <div class="card no-break">
+    <h3 style="margin-top: 0; color: var(--primary);">ตารางตั้งต้นสำหรับการคำนวณ (Reference Relations)</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+      <div>
+        <strong>ตาราง $R$ (พนักงานประจำ)</strong>
+        <table class="table-sm table-center">
+          <thead><tr><th>ID</th><th>Name</th><th>Dept</th><th>Salary</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Alice</td><td>IT</td><td>40,000</td></tr>
+            <tr><td>2</td><td>Bob</td><td>HR</td><td>30,000</td></tr>
+            <tr><td>3</td><td>Charlie</td><td>IT</td><td>50,000</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <strong>ตาราง $S$ (พนักงานสัญญาจ้าง)</strong>
+        <table class="table-sm table-center">
+          <thead><tr><th>ID</th><th>Name</th><th>Dept</th><th>Salary</th></tr></thead>
+          <tbody>
+            <tr><td>2</td><td>Bob</td><td>HR</td><td>30,000</td></tr>
+            <tr><td>4</td><td>David</td><td>IT</td><td>45,000</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8 OPERATORS -->
+  <div class="no-break">
+    <h3 style="color: var(--primary);">เจาะลึก 8 ตัวดำเนินการ และตารางผลลัพธ์ที่ต้องวาดในข้อสอบ</h3>
+
+    <!-- 1 & 2 -->
+    <div class="grid-2">
+      <div class="card">
+        <strong style="color: var(--primary);"><span class="symbol">σ</span> 1. Selection (การเลือกแถว)</strong>
+        <p style="font-size: 10.5pt; margin: 4px 0;">เลือกเฉพาะแถวที่ตรงตามเงื่อนไข (คอลัมน์เท่าเดิม)</p>
+        <div style="background: #f1f5f9; padding: 4px 8px; border-radius: 4px; font-weight: 600; font-size: 10pt; margin-bottom: 6px;">
+          นิพจน์: $\sigma_{Dept = 'IT'}(R)$
+        </div>
+        <table class="table-sm table-center table-math">
+          <thead><tr><th>ID</th><th>Name</th><th>Dept</th><th>Salary</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Alice</td><td>IT</td><td>40,000</td></tr>
+            <tr><td>3</td><td>Charlie</td><td>IT</td><td>50,000</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <strong style="color: var(--primary);"><span class="symbol">π</span> 2. Projection (การเลือกคอลัมน์)</strong>
+        <p style="font-size: 10.5pt; margin: 4px 0;">เลือกเฉพาะคอลัมน์ที่ต้องการ <strong>และตัดแถวที่ซ้ำออก!</strong></p>
+        <div style="background: #f1f5f9; padding: 4px 8px; border-radius: 4px; font-weight: 600; font-size: 10pt; margin-bottom: 6px;">
+          นิพจน์: $\pi_{Dept}(R)$
+        </div>
+        <table class="table-sm table-center table-math">
+          <thead><tr><th>Dept</th></tr></thead>
+          <tbody>
+            <tr><td>IT</td></tr>
+            <tr><td>HR</td></tr>
+          </tbody>
+        </table>
+        <div style="font-size: 9pt; color: #b91c1c;">* เดิมมี IT สองแถว ตัดซ้ำเหลือแถวเดียว</div>
+      </div>
+    </div>
+
+    <!-- 3 & 4 -->
+    <div class="grid-2">
+      <div class="card">
+        <strong style="color: var(--primary);"><span class="symbol">∪</span> 3. Union (การรวมข้อมูล)</strong>
+        <p style="font-size: 10.5pt; margin: 4px 0;">รวมข้อมูล 2 ตาราง ตัดตัวซ้ำ (ต้อง Union-Compatible)</p>
+        <div style="background: #f1f5f9; padding: 4px 8px; border-radius: 4px; font-weight: 600; font-size: 10pt; margin-bottom: 6px;">
+          นิพจน์: $R \cup S$
+        </div>
+        <table class="table-sm table-center table-math">
+          <thead><tr><th>ID</th><th>Name</th><th>Dept</th><th>Salary</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Alice</td><td>IT</td><td>40,000</td></tr>
+            <tr><td>2</td><td>Bob</td><td>HR</td><td>30,000</td></tr>
+            <tr><td>3</td><td>Charlie</td><td>IT</td><td>50,000</td></tr>
+            <tr><td>4</td><td>David</td><td>IT</td><td>45,000</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <strong style="color: var(--primary);"><span class="symbol">∩</span> 4. Intersection (หาข้อมูลร่วมกัน)</strong>
+        <p style="font-size: 10.5pt; margin: 4px 0;">เอาเฉพาะแถวที่มีอยู่ใน<strong>ทั้งสองตาราง</strong></p>
+        <div style="background: #f1f5f9; padding: 4px 8px; border-radius: 4px; font-weight: 600; font-size: 10pt; margin-bottom: 6px;">
+          นิพจน์: $R \cap S$
+        </div>
+        <table class="table-sm table-center table-math">
+          <thead><tr><th>ID</th><th>Name</th><th>Dept</th><th>Salary</th></tr></thead>
+          <tbody>
+            <tr><td>2</td><td>Bob</td><td>HR</td><td>30,000</td></tr>
+          </tbody>
+        </table>
+        <div style="font-size: 9pt; color: var(--gray-500);">* Bob มีอยู่ในทั้ง R และ S</div>
+      </div>
+    </div>
+
+    <!-- 5 & 6 -->
+    <div class="grid-2">
+      <div class="card">
+        <strong style="color: var(--primary);"><span class="symbol">−</span> 5. Difference (ผลต่างข้อมูล)</strong>
+        <p style="font-size: 10.5pt; margin: 4px 0;">อยู่ในตัวตั้ง แต่<strong>ไม่อยู่</strong>ในตัวหลัง ($R - S \neq S - R$)</p>
+        <div style="background: #f1f5f9; padding: 4px 8px; border-radius: 4px; font-weight: 600; font-size: 10pt; margin-bottom: 6px;">
+          นิพจน์: $R - S$
+        </div>
+        <table class="table-sm table-center table-math">
+          <thead><tr><th>ID</th><th>Name</th><th>Dept</th><th>Salary</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Alice</td><td>IT</td><td>40,000</td></tr>
+            <tr><td>3</td><td>Charlie</td><td>IT</td><td>50,000</td></tr>
+          </tbody>
+        </table>
+        <div style="font-size: 9pt; color: var(--gray-500);">* Bob โดนลบออกเพราะมีใน S</div>
+      </div>
+
+      <div class="card">
+        <strong style="color: var(--primary);"><span class="symbol">×</span> 6. Cartesian Product (การคูณทุกแถว)</strong>
+        <p style="font-size: 10.5pt; margin: 4px 0;">จับคู่ทุกแถว: แถว $= m \times n$ / คอลัมน์ $= c_1 + c_2$</p>
+        <div style="background: #f1f5f9; padding: 4px 8px; border-radius: 4px; font-weight: 600; font-size: 10pt; margin-bottom: 6px;">
+          นิพจน์: $A \times B$ (เมื่อ $A=\{1,2\}$, $B=\{X,Y\}$)
+        </div>
+        <table class="table-sm table-center table-math">
+          <thead><tr><th>A.Num</th><th>B.Char</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>X</td></tr>
+            <tr><td>1</td><td>Y</td></tr>
+            <tr><td>2</td><td>X</td></tr>
+            <tr><td>2</td><td>Y</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 7 & 8 -->
+    <div class="grid-2">
+      <div class="card">
+        <strong style="color: var(--primary);"><span class="symbol">⋈</span> 7. Join (การเชื่อมโยงตาราง)</strong>
+        <p style="font-size: 10.5pt; margin: 4px 0;">จับคู่ตามคอลัมน์ที่ตรงกัน (Natural Join ตัดคอลัมน์ซ้ำ)</p>
+        <div style="font-size: 9.5pt; color: var(--gray-700); margin-bottom: 4px;">
+          กำหนด: $Emp(ID, Name, DeptID)$ และ $Dept(DeptID, DeptName)$
+        </div>
+        <div style="background: #f1f5f9; padding: 4px 8px; border-radius: 4px; font-weight: 600; font-size: 10pt; margin-bottom: 6px;">
+          นิพจน์: $Emp \bowtie Dept$
+        </div>
+        <table class="table-sm table-center table-math">
+          <thead><tr><th>ID</th><th>Name</th><th>DeptID</th><th>DeptName</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>John</td><td>D1</td><td>Accounting</td></tr>
+            <tr><td>2</td><td>Jane</td><td>D2</td><td>IT</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <strong style="color: var(--primary);"><span class="symbol">÷</span> 8. Division (การหารเชิงสัมพันธ์)</strong>
+        <p style="font-size: 10.5pt; margin: 4px 0;"><strong>ข้อปราบเซียน:</strong> หาแถวที่จับคู่กับ <strong>"ทุกค่า"</strong> ของอีกตาราง</p>
+        <div style="font-size: 9.5pt; color: var(--gray-700); margin-bottom: 4px;">
+          $Takes(Student, Course) \div Req(Course=\{DB, Net\})$
+        </div>
+        <div style="background: #f1f5f9; padding: 4px 8px; border-radius: 4px; font-weight: 600; font-size: 10pt; margin-bottom: 6px;">
+          นิพจน์: $Takes \div Req$
+        </div>
+        <table class="table-sm table-center table-math">
+          <thead><tr><th>Student</th></tr></thead>
+          <tbody>
+            <tr><td>สมชาย</td></tr>
+            <tr><td>สมหญิง</td></tr>
+          </tbody>
+        </table>
+        <div style="font-size: 9pt; color: var(--success); font-weight: 600;">* คนที่ลงครบทั้ง DB และ Net</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHECKLIST SECTION -->
+  <div class="card no-break" style="background: #f8fafc; border: 1.5px solid #cbd5e1; margin-top: 16px;">
+    <h3 style="margin-top: 0; color: var(--primary);">📝 สรุป Checklist ท่องจำ 5 นาทีก่อนเดินเข้าห้องสอบ</h3>
+    <div class="grid-2">
+      <div>
+        <div class="checklist-item"><span class="checkbox"></span> <span><strong>ข้อ 1:</strong> จำโมดูลหลัก: จดมิเตอร์ $\rightarrow$ คำนวณค่าน้ำ $\rightarrow$ ออกใบเสร็จ</span></div>
+        <div class="checklist-item"><span class="checkbox"></span> <span><strong>ข้อ 1:</strong> จำลำดับ Input (เลขใหม่) $\rightarrow$ Process (ลบเลขเก่า $\times$ 7) $\rightarrow$ Output (บิล)</span></div>
+        <div class="checklist-item"><span class="checkbox"></span> <span><strong>ข้อ 2:</strong> ข้อความ/วันที่ ต้องใส่ Single Quote เสมอ <code>'การเงิน'</code>, <code>'2024-01-01'</code></span></div>
+        <div class="checklist-item"><span class="checkbox"></span> <span><strong>ข้อ 2:</strong> อายุงาน: <code>(2024 - YEAR(hire_date))</code> หรือ <code>(YEAR(CURDATE()) - YEAR(hire_date))</code></span></div>
+      </div>
+      <div>
+        <div class="checklist-item"><span class="checkbox"></span> <span><strong>ข้อ 2:</strong> เมื่อเจอ <code>OR</code> ปนกับ <code>AND</code> ต้องครอบวงเล็บ <code>(...)</code></span></div>
+        <div class="checklist-item"><span class="checkbox"></span> <span><strong>ข้อ 3:</strong> $\sigma$ (Sigma) = แถว (นอน), $\pi$ (Pi) = คอลัมน์ (ตั้ง) + ตัดตัวซ้ำ</span></div>
+        <div class="checklist-item"><span class="checkbox"></span> <span><strong>ข้อ 3:</strong> $\cup$ (รวม), $\cap$ (ซ้ำกัน), $-$ (หักออก), $\times$ (คูณแถว)</span></div>
+        <div class="checklist-item"><span class="checkbox"></span> <span><strong>ข้อ 3:</strong> $\bowtie$ (เชื่อมด้วยคีย์), $\div$ (จับคู่ครบทุกตัว FOR ALL)</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

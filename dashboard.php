@@ -27,19 +27,20 @@ $currentUser = requireRole(['admin']);
     <main class="main-content">
       
       <!-- Unified Global Top Bar -->
-      <?php renderAppTopBar('ศูนย์ควบคุมระบบรวม (Master Admin Control)', 'จัดการข้อมูลระบบน้ำประปาหมู่บ้านวังยางแบบครบวงจร'); ?>
+      <?php renderAppTopBar('ศูนย์บริหารจัดการระบบประปา', 'ภาพรวมระบบ จัดการงวดบัญชี สรุปยอด และการบริหารงานแบบรวมศูนย์'); ?>
 
       <!-- Dashboard Admin Actions & Cycle Control Bar -->
-      <div class="card no-print" style="margin-bottom: 20px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-left: 4px solid #0284c7;">
+      <div class="card no-print" style="margin-bottom: 20px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; border-radius: 14px; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
         <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-          <span style="font-size: 24px;">⚙️</span>
+          <div style="width: 40px; height: 40px; border-radius: 10px; background: #e0f2fe; color: #0284c7; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0;">
+            ⚙️
+          </div>
           <div>
-            <h2 style="font-family: 'Prompt', sans-serif; font-size: 16px; margin: 0; color: #0f172a;">แผงบริหารจัดการงวดบัญชี</h2>
-            <span style="font-size: 13px; color: #64748b;">รอบบิลปัจจุบัน: <strong><span id="dashboard-cycle-display">สิงหาคม 2567 (8-2567)</span></strong></span>
+            <h2 style="font-family: 'Prompt', sans-serif; font-size: 16px; margin: 0; color: #0f172a; font-weight: 700;">แผงบริหารจัดการงวดบัญชี</h2>
+            <span style="font-size: 13px; color: #64748b;">รอบบิลปัจจุบัน: <strong style="color: #0284c7;"><span id="dashboard-cycle-display">สิงหาคม 2567 (8-2567)</span></strong></span>
           </div>
           <div class="select-cycle-wrap" style="margin-left: 8px;">
-            <label for="cycle-select" style="font-size: 13px; font-weight: 600;">เลือกงวด:</label>
-            <select id="cycle-select" class="form-select" style="font-weight: 600; min-width: 170px;">
+            <select id="cycle-select" class="form-select" style="font-weight: 700; min-width: 180px; font-size: 13.5px; padding: 6px 12px;">
               <option value="8-2567" selected>สิงหาคม 2567 (8-2567)</option>
               <option value="7-2567">กรกฎาคม 2567 (7-2567)</option>
               <option value="6-2567">มิถุนายน 2567 (6-2567)</option>
@@ -48,10 +49,10 @@ $currentUser = requireRole(['admin']);
         </div>
 
         <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-          <button class="btn btn-outline" id="btn-open-cycle" title="เปิดรอบบิลเดือนใหม่" style="font-size: 13px;">➕ เปิดรอบบิลใหม่</button>
+          <button class="btn btn-primary" id="btn-open-cycle" title="เปิดรอบบิลเดือนใหม่" style="font-size: 13px;">➕ เปิดรอบบิลใหม่</button>
           <button class="btn btn-outline" id="btn-export-excel" title="ส่งออกข้อมูลเป็น Excel" style="font-size: 13px;">📥 ส่งออก Excel</button>
           <a href="api/backup.php" class="btn btn-outline" style="text-decoration: none; display: inline-flex; align-items: center; gap: 4px; font-size: 13px;" title="ดาวน์โหลดไฟล์สำรองฐานข้อมูล SQL">💾 สำรอง SQL</a>
-          <button class="btn btn-primary" onclick="window.print()" style="font-size: 13px;">🖨️ สั่งพิมพ์เอกสาร</button>
+          <button class="btn btn-outline" onclick="window.print()" style="font-size: 13px;">🖨️ พิมพ์เอกสาร</button>
         </div>
       </div>
 
@@ -114,7 +115,13 @@ $currentUser = requireRole(['admin']);
         <!-- Filter Bar -->
         <div class="filter-card no-print">
           <div class="filter-inputs">
-            <input type="text" id="reading-search-input" class="form-input" placeholder="🔍 ค้นหาชื่อ, สกุล, บ้านเลขที่ หรือรหัสผู้ใช้น้ำ...">
+            <div class="search-input-box" style="flex: 1; min-width: 260px;">
+              <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="text" id="reading-search-input" class="form-input" placeholder="ค้นหาชื่อ, สกุล, บ้านเลขที่ หรือรหัสผู้ใช้น้ำ...">
+            </div>
             <select id="reading-zone-filter" class="form-select">
               <option value="">ทุกโซน / ทุกหมู่</option>
             </select>
@@ -586,7 +593,13 @@ $currentUser = requireRole(['admin']);
         <!-- Filter and Action Bar (no-print) -->
         <div class="filter-card no-print">
           <div class="filter-inputs">
-            <input type="text" id="arrears-search-input" class="form-input" placeholder="🔍 ค้นหาชื่อลูกหนี้, บ้านเลขที่ หรือรหัสผู้ใช้น้ำ...">
+            <div class="search-input-box" style="flex: 1; min-width: 260px;">
+              <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="text" id="arrears-search-input" class="form-input" placeholder="ค้นหาชื่อลูกหนี้, บ้านเลขที่ หรือรหัสผู้ใช้น้ำ...">
+            </div>
             <select id="arrears-aging-filter" class="form-select">
               <option value="">ทุกระดับอายุหนี้</option>
               <option value="WARNING_1">ค้าง 1 งวด (เตือนรอบ 1)</option>
@@ -637,8 +650,14 @@ $currentUser = requireRole(['admin']);
       <!-- ======================================================= -->
       <section id="tab-customers" class="tab-pane">
         <div class="card no-print customer-top-actions">
-          <div class="search-wrap">
-            <input type="text" id="cust-search" class="form-input" placeholder="🔍 ค้นหาสมาชิกด้วยชื่อ, นามสกุล, บ้านเลขที่ หรือรหัส...">
+          <div class="search-wrap" style="flex: 1; min-width: 280px;">
+            <div class="search-input-box" style="width: 100%;">
+              <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="text" id="cust-search" class="form-input" placeholder="ค้นหาสมาชิกด้วยชื่อ, นามสกุล, บ้านเลขที่ หรือรหัส...">
+            </div>
           </div>
           <div>
             <button class="btn btn-primary" id="btn-add-customer">➕ เพิ่มสมาชิกผู้ใช้น้ำใหม่</button>
@@ -708,6 +727,9 @@ $currentUser = requireRole(['admin']);
               </div>
             </form>
           </div>
+        </div>
+      </section>
+
       <!-- ======================================================= -->
       <!-- TAB 7: แจ้งซ่อมบำรุงและคำร้องบริการ (Service Tickets) -->
       <!-- ======================================================= -->
@@ -744,7 +766,13 @@ $currentUser = requireRole(['admin']);
               <option value="IN_PROGRESS">🔵 กำลังซ่อมแซม</option>
               <option value="RESOLVED">🟢 แก้ไขเรียบร้อย</option>
             </select>
-            <input type="text" id="ticket-search-input" class="form-input" placeholder="🔍 ค้นหารหัส, ผู้แจ้ง หรือเบอร์โทร..." style="min-width: 250px;">
+            <div class="search-input-box" style="min-width: 250px;">
+              <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="text" id="ticket-search-input" class="form-input" placeholder="ค้นหารหัสคำร้อง, ผู้แจ้ง หรือเบอร์โทร...">
+            </div>
           </div>
           <div style="display: flex; gap: 8px;">
             <button type="button" class="btn btn-outline" id="btn-line-settings" onclick="openLineSettingsModal()" style="border-color: #06c755; color: #16a34a; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
@@ -834,6 +862,9 @@ $currentUser = requireRole(['admin']);
           </form>
         </div>
       </div>
+    </div>
+  </div>
+
   <!-- Modal for Opening New Billing Cycle -->
   <div class="modal" id="cycle-modal">
     <div class="modal-dialog">
@@ -872,6 +903,8 @@ $currentUser = requireRole(['admin']);
           </form>
         </div>
       </div>
+    </div>
+  </div>
   <!-- Modal for Warning Notice Letter (หนังสือเตือนระงับการจ่ายน้ำ) -->
   <div class="modal" id="arrears-notice-modal">
     <div class="modal-dialog" style="max-width: 680px;">
