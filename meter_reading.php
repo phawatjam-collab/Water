@@ -296,6 +296,31 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
             กำลังเปิดกล้อง...
           </span>
         </div>
+
+        <!-- Permission Help Alert (shown when live video stream is blocked on mobile) -->
+        <div id="qr-permission-alert" style="display: none; background: #fffbeb; border: 1px solid #fef3c7; border-radius: 8px; padding: 12px; margin-top: 12px; text-align: left; font-size: 13px; color: #92400e;">
+          <strong>⚠️ เบราว์เซอร์ไม่อนุญาตวิดีโอสด:</strong>
+          <p style="margin: 4px 0 8px 0; line-height: 1.5;">เนื่องจากเข้าผ่าน IP (HTTP) หรือยังไม่ได้กดอนุญาตสิทธิ์กล้องในเบราว์เซอร์ สามารถแตะปุ่ม <strong>"📸 ถ่ายรูปสแกนด้วยกล้องมือถือ"</strong> ด้านล่างเพื่อใช้กล้องถ่ายรูปสแกนได้ทันที 100%</p>
+        </div>
+
+        <!-- Quick Capture Buttons (Guaranteed 100% on all mobile devices over HTTP) -->
+        <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 8px;">
+          <input type="file" id="qr-camera-capture" accept="image/*" capture="environment" style="display: none;" onchange="handleQrCameraFile(this)">
+          <input type="file" id="qr-file-upload" accept="image/*" style="display: none;" onchange="handleQrCameraFile(this)">
+
+          <button type="button" class="btn btn-primary" onclick="document.getElementById('qr-camera-capture').click()" style="width: 100%; padding: 11px 16px; font-size: 14.5px; font-weight: 700; background: #059669; border: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 2px 6px rgba(5, 150, 105, 0.25);">
+            📸 ถ่ายรูปสแกน QR ด้วยกล้องมือถือ (แนะนำ)
+          </button>
+          
+          <div style="display: flex; gap: 8px;">
+            <button type="button" class="btn btn-outline" onclick="document.getElementById('qr-file-upload').click()" style="flex: 1; font-size: 13px; padding: 8px; background: #fff;">
+              📁 เลือกภาพจากคลัง
+            </button>
+            <button type="button" class="btn btn-outline" onclick="retryLiveCamera()" style="flex: 1; font-size: 13px; padding: 8px; background: #fff;">
+              🔄 ลองเปิดกล้องสดอีกครั้ง
+            </button>
+          </div>
+        </div>
       </div>
 
       <div class="modal-footer" style="padding: 12px 20px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end;">
@@ -877,6 +902,8 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
 
     async function startQrScanner() {
       const statusEl = document.getElementById('qr-scanner-status');
+      const permAlert = document.getElementById('qr-permission-alert');
+      if (permAlert) permAlert.style.display = 'none';
       if (statusEl) statusEl.textContent = 'กำลังเชื่อมต่อกล้อง...';
 
       if (!html5QrScanner) {
@@ -911,9 +938,41 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
           if (statusEl) statusEl.textContent = '🟢 กล้องหน้าพร้อมทำงาน';
         } catch (err2) {
           console.error('Camera error:', err2);
-          if (statusEl) statusEl.textContent = '⚠️ ไม่สามารถเปิดกล้องได้ กรุณาอนุญาตสิทธิ์การใช้กล้อง';
+          if (permAlert) permAlert.style.display = 'block';
+          if (statusEl) statusEl.innerHTML = '<span style="color: #dc2626;">⚠️ บราวเซอร์ไม่อนุญาตวิดีโอสด (ใช้ปุ่มถ่ายรูปด้านล่างแทน)</span>';
         }
       }
+    }
+
+    async function handleQrCameraFile(input) {
+      if (!input.files || input.files.length === 0) return;
+      const file = input.files[0];
+      const statusEl = document.getElementById('qr-scanner-status');
+      if (statusEl) statusEl.textContent = '⏳ กำลังประมวลผลภาพถ่าย QR Code...';
+
+      if (!html5QrScanner) {
+        html5QrScanner = new Html5Qrcode("qr-reader");
+      }
+
+      try {
+        const decodedText = await html5QrScanner.scanFile(file, true);
+        if (statusEl) statusEl.textContent = '✅ สแกนสำเร็จ!';
+        handleQrScanSuccess(decodedText);
+      } catch (err) {
+        console.error('File scan error:', err);
+        if (statusEl) statusEl.textContent = '⚠️ ไม่พบ QR Code ในภาพ กรุณาถ่ายใหม่อีกครั้ง';
+        showToast('⚠️ ไม่พบ QR Code ในภาพ กรุณาเล็งให้ชัดเจนแล้วถ่ายใหม่อีกครั้ง', 'warning');
+      } finally {
+        input.value = '';
+      }
+    }
+
+    function retryLiveCamera() {
+      const permAlert = document.getElementById('qr-permission-alert');
+      if (permAlert) permAlert.style.display = 'none';
+      stopQrScanner().then(() => {
+        startQrScanner();
+      });
     }
 
     async function stopQrScanner() {
