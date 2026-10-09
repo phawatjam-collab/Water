@@ -686,7 +686,16 @@ function renderAccessDeniedPage($user, $allowedRoles) {
             </p>
 
             <div style="margin: 24px 0; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
-                <a href="index.php?open_login=1" class="btn btn-primary">🔐 เข้าสู่ระบบเจ้าหน้าที่</a>
+                <form action="api/auth.php" method="POST" style="display: inline; margin: 0;">
+                    <input type="hidden" name="action" value="login">
+                    <input type="hidden" name="username" value="staff">
+                    <input type="hidden" name="password" value="123456">
+                    <input type="hidden" name="redirect" value="meter_reading.php">
+                    <button type="submit" class="btn btn-primary" style="cursor: pointer; border: none; font-size: 14px;">
+                        ⚡ เข้าสู่ระบบเจ้าหน้าที่ (Staff) ทันที
+                    </button>
+                </form>
+                <a href="index.php?open_login=1" class="btn btn-outline">🔐 เข้าสู่ระบบบทบาทอื่น</a>
                 <a href="index.php" class="btn btn-outline">🏠 กลับสู่หน้าแรก</a>
             </div>
         </div>
