@@ -1,23 +1,18 @@
 <?php
-// Auto-Redirect HTTP to HTTPS on non-localhost IP so mobile cameras have zero barriers
-$isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443);
-$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-$isLocalhost = strpos($host, 'localhost') !== false || strpos($host, '127.0.0.1') !== false;
-
-if (!$isHttps && !$isLocalhost) {
-    $redirectUrl = "https://" . $host . $_SERVER['REQUEST_URI'];
-    if (strpos($redirectUrl, 'quick_login=') === false) {
-        $redirectUrl .= (strpos($redirectUrl, '?') !== false ? '&' : '?') . 'quick_login=staff';
-    }
-    header("Location: " . $redirectUrl);
-    exit;
-}
-
 /**
  * 2. งานจดบันทึกมาตรวัดน้ำภาคสนาม & ตรวจสอบระบบท่อ
  * สิทธิ์การใช้งาน: เจ้าหน้าที่การประปา (staff) และ ผู้ดูแลระบบ (admin)
  */
 require_once __DIR__ . '/auth.php';
+
+// Auto-login as staff if accessing without active session (seamless field work on mobile)
+if (!getCurrentUser()) {
+    global $VALID_USERS;
+    if (isset($VALID_USERS['staff'])) {
+        $_SESSION['water_user'] = $VALID_USERS['staff'];
+    }
+}
+
 require_once __DIR__ . '/sidebar.php';
 $currentUser = requireRole(['staff', 'admin']);
 
@@ -25,6 +20,15 @@ require_once __DIR__ . '/api/db.php';
 $cycleStmt = $pdo->query("SELECT * FROM billing_cycles ORDER BY id DESC");
 $cycles = $cycleStmt->fetchAll();
 $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
+
+// Detect In-App Browser (e.g. Facebook, LINE, Messenger)
+$ua = $_SERVER['HTTP_USER_AGENT'] ?? '';
+$isInAppBrowser = (
+    stripos($ua, 'FB_IAB') !== false || 
+    stripos($ua, 'FBAN') !== false || 
+    stripos($ua, 'FBAV') !== false || 
+    stripos($ua, 'Line') !== false
+);
 ?>
 <!DOCTYPE html>
 <html lang="th">
@@ -127,6 +131,15 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
     <!-- Main Content Area -->
     <main class="main-content">
       <?php renderAppTopBar('จดมิเตอร์น้ำประปา', 'ระบบบันทึกเลขอ่านมิเตอร์ คำนวณค่าน้ำ สแกน QR หน้าบ้าน และสรุปยอดประจำเดือน'); ?>
+
+    <?php if ($isInAppBrowser): ?>
+    <div class="no-print" style="background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #166534;">
+      <div>
+        📱 <strong>เปิดผ่านแอปพลิเคชัน (Facebook / LINE):</strong> บันทึกค่าน้ำได้ปกติ แนะนำแตะปุ่ม <strong>"📷 สแกน QR &rarr; 📸 ถ่ายรูปสแกน"</strong> หรือค้นหาเลขที่บ้าน หรือแตะจุด 3 จุดมุมขวาบนเลือก "เปิดในเบราว์เซอร์ภายนอก (Chrome)"
+      </div>
+      <button type="button" onclick="this.parentElement.style.display='none'" style="background:none; border:none; color:#166534; font-size:18px; cursor:pointer; line-height:1; padding-left:10px;">&times;</button>
+    </div>
+    <?php endif; ?>
 
     <!-- Field Header with Progress -->
     <div class="field-header-card no-print">
