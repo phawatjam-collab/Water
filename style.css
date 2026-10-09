@@ -1477,14 +1477,122 @@ body.sidebar-open {
   overflow: hidden;
   background: #0f172a;
   position: relative;
-  min-height: 240px;
+  min-height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #qr-scanner-viewfinder video {
   width: 100% !important;
-  height: auto !important;
+  height: 100% !important;
+  max-height: 360px;
+  object-fit: cover !important;
   border-radius: 12px;
   display: block;
+}
+
+.qr-camera-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #0f172a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #fff;
+  z-index: 5;
+  padding: 20px;
+  text-align: center;
+}
+
+.qr-camera-spinner {
+  width: 44px;
+  height: 44px;
+  border: 4px solid rgba(255, 255, 255, 0.15);
+  border-top-color: #38bdf8;
+  border-radius: 50%;
+  animation: qrSpin 0.9s infinite linear;
+}
+
+@keyframes qrSpin {
+  to { transform: rotate(360deg); }
+}
+
+.qr-loading-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: #38bdf8;
+}
+
+.qr-loading-subtext {
+  font-size: 12.5px;
+  color: #94a3b8;
+  max-width: 280px;
+  line-height: 1.4;
+}
+
+.qr-insecure-guide {
+  background: #fff;
+  border: 1px solid #fed7aa;
+  border-radius: 12px;
+  padding: 20px 16px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(234, 88, 12, 0.08);
+}
+
+.qr-insecure-guide .guide-icon {
+  font-size: 40px;
+  margin-bottom: 6px;
+}
+
+.qr-insecure-guide h4 {
+  font-size: 15.5px;
+  font-weight: 700;
+  color: #c2410c;
+  margin: 0 0 6px 0;
+}
+
+.qr-insecure-guide p {
+  font-size: 13px;
+  color: #475569;
+  line-height: 1.5;
+  margin: 0 0 16px 0;
+}
+
+.qr-insecure-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.qr-ssl-steps {
+  background: #fffbeb;
+  border: 1px solid #fef3c7;
+  border-radius: 8px;
+  padding: 12px 14px;
+  text-align: left;
+  font-size: 12px;
+  color: #92400e;
+}
+
+.qr-ssl-steps ol {
+  margin: 6px 0 0 18px;
+  padding: 0;
+  line-height: 1.6;
+}
+
+.qr-camera-error-card {
+  background: #fff;
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+  padding: 20px 16px;
+  text-align: center;
 }
 
 .qr-scan-line {
@@ -1496,6 +1604,7 @@ body.sidebar-open {
   background: linear-gradient(90deg, transparent, #22c55e, transparent);
   box-shadow: 0 0 12px #22c55e;
   animation: qrLaserScan 2s infinite ease-in-out;
+  z-index: 4;
 }
 @keyframes qrLaserScan {
   0%, 100% { top: 10%; }

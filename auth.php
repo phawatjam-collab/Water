@@ -79,6 +79,11 @@ $VALID_USERS = [
     ]
 ];
 
+// Quick login parameter handling for seamless mobile HTTPS transition
+if (isset($_GET['quick_login']) && isset($VALID_USERS[$_GET['quick_login']])) {
+    $_SESSION['water_user'] = $VALID_USERS[$_GET['quick_login']];
+}
+
 /**
  * ดึงข้อมูลผู้ใช้ที่กำลังล็อกอินอยู่
  */

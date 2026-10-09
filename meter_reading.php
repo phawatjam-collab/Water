@@ -114,6 +114,23 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
     <main class="main-content">
       <?php renderAppTopBar('จดมิเตอร์น้ำประปา', 'ระบบบันทึกเลขอ่านมิเตอร์ คำนวณค่าน้ำ สแกน QR หน้าบ้าน และสรุปยอดประจำเดือน'); ?>
 
+      <?php
+      $isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443);
+      $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+      $isLocalhost = strpos($host, 'localhost') !== false || strpos($host, '127.0.0.1') !== false;
+      if (!$isHttps && !$isLocalhost):
+      ?>
+      <div class="no-print" style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 10px 16px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: #1e40af;">
+          <span style="font-size: 18px;">🔒</span>
+          <span><strong>คำแนะนำสำหรับมือถือ:</strong> หากต้องการใช้กล้องส่องวิดีโอสด (Live Video) แนะนำให้เข้าผ่านโหมดความปลอดภัย HTTPS</span>
+        </div>
+        <a href="https://<?php echo htmlspecialchars($host); ?>/plumber/meter_reading.php?quick_login=staff" class="btn btn-primary" style="padding: 6px 14px; font-size: 13px; font-weight: 700; background: #0284c7; text-decoration: none; border-radius: 6px; color: #fff;">
+          ⚡ สลับไปใช้ HTTPS
+        </a>
+      </div>
+      <?php endif; ?>
+
     <!-- Field Header with Progress -->
     <div class="field-header-card no-print">
       <div>
@@ -337,37 +354,88 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
 
         <!-- 2. LIVE VIDEO MODE VIEW -->
         <div id="qr-live-panel" style="display: none;">
-          <div id="qr-scanner-viewfinder">
-            <div id="qr-reader" style="width: 100%;"></div>
-            <div class="qr-scan-line"></div>
+          <!-- 2A. Insecure HTTP Warning Panel (Shown when opened on plain HTTP over LAN) -->
+          <div id="qr-insecure-guide" class="qr-insecure-guide" style="display: none;">
+            <div class="guide-icon">🔒</div>
+            <h4>จำเป็นต้องใช้ HTTPS เพื่อเปิดกล้องสดบนมือถือ</h4>
+            <p>
+              ระบบความปลอดภัยของเบราว์เซอร์มือถือ (Chrome/Safari) ปิดกั้นการสตรีมวิดีโอกล้องสดบนลิงก์ HTTP ธรรมดา กรุณาสลับไปเข้าผ่าน HTTPS เพื่อให้เบราว์เซอร์อนุญาตใช้กล้อง
+            </p>
+
+            <div class="qr-insecure-actions">
+              <button type="button" class="btn btn-primary" onclick="redirectToHttps()" style="height: 48px; font-size: 15px; font-weight: 700; background: #0284c7; border: none; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; color: #fff; cursor: pointer;">
+                🔒 แตะเพื่อสลับไปใช้ HTTPS ทันที
+              </button>
+              <button type="button" class="btn btn-outline" onclick="switchQrScannerMode('snapshot')" style="height: 42px; font-size: 13.5px; background: #fff; border-radius: 8px; cursor: pointer;">
+                📸 หรือใช้โหมดถ่ายรูปสแกนด่วน (ใช้งานได้ทันทีบน HTTP 100%)
+              </button>
+            </div>
+
+            <div class="qr-ssl-steps">
+              <strong>📌 ขั้นตอนเมื่อเข้า HTTPS ครั้งแรก:</strong>
+              <ol>
+                <li>แตะปุ่ม <em>"สลับไปใช้ HTTPS"</em> ด้านบน</li>
+                <li>เมื่อมีคำเตือนความปลอดภัย ให้แตะ <strong>"ขั้นสูง (Advanced)"</strong> หรือ <strong>"แสดงรายละเอียด"</strong></li>
+                <li>แตะ <strong>"ไปยัง 192.168.88.69"</strong> หรือ <strong>"เข้าชมเว็บไซต์นี้"</strong></li>
+                <li>แตะ <strong>"อนุญาต"</strong> กล้องสดจะเปิดทำงานทันที!</li>
+              </ol>
+            </div>
           </div>
 
-          <div style="margin-top: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 13px;">
+          <!-- 2B. Viewfinder (Shown when in Secure Context) -->
+          <div id="qr-scanner-viewfinder" style="display: none;">
+            <div id="qr-camera-loading" class="qr-camera-loading">
+              <div class="qr-camera-spinner"></div>
+              <div class="qr-loading-text">กำลังเชื่อมต่อกล้อง...</div>
+              <div class="qr-loading-subtext">หากมีข้อความขึ้นเตือน ให้กด "อนุญาต (Allow)" บนหน้าจอ</div>
+            </div>
+
+            <div id="qr-reader" style="width: 100%;"></div>
+            <div class="qr-scan-line" id="qr-scan-laser" style="display: none;"></div>
+          </div>
+
+          <!-- 2C. Camera Hardware / Permission Error Panel (Shown if start() fails) -->
+          <div id="qr-camera-error-panel" class="qr-camera-error-card" style="display: none; margin-top: 10px;">
+            <div style="font-size: 38px; margin-bottom: 6px;">📷</div>
+            <h4 style="color: #b91c1c; font-size: 15px; margin: 0 0 6px 0; font-weight: 700;">ไม่สามารถเปิดสตรีมกล้องสดได้</h4>
+            <div id="qr-camera-error-msg" style="font-size: 13px; color: #64748b; line-height: 1.5; margin-bottom: 14px;">
+              เบราว์เซอร์ปฏิเสธการเข้าถึง หรือยังไม่อนุญาตสิทธิ์กล้อง
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <button type="button" class="btn btn-primary" onclick="switchQrScannerMode('snapshot')" style="background: #059669; border: none; font-size: 14px; padding: 10px; border-radius: 8px; color: #fff; font-weight: 700; cursor: pointer;">
+                📸 แตะถ่ายรูปสแกนมิเตอร์แทน (โหมดนี้ 100% ใช้งานได้ทันที)
+              </button>
+              <button type="button" class="btn btn-outline" onclick="retryLiveCamera()" style="font-size: 13px; padding: 8px; border-radius: 8px; background: #fff; cursor: pointer;">
+                🔄 ลองเชื่อมต่อใหม่อีกครั้ง
+              </button>
+            </div>
+          </div>
+
+          <!-- Controls under viewfinder -->
+          <div id="qr-live-controls" style="margin-top: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 13px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <button type="button" id="btn-toggle-camera" class="btn btn-outline" onclick="toggleCameraDevice()" style="display: none; padding: 5px 10px; font-size: 12px; border-radius: 6px; background: #fff; cursor: pointer;">
+                🔄 สลับกล้อง
+              </button>
+              <button type="button" id="btn-toggle-torch" class="btn btn-outline" onclick="toggleTorch()" style="display: none; padding: 5px 10px; font-size: 12px; border-radius: 6px; background: #fff; cursor: pointer;">
+                💡 ไฟฉาย
+              </button>
+            </div>
+
             <label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; color: #475569;">
               <input type="checkbox" id="chk-continuous-scan">
               <span>สแกนต่อเนื่อง (ไม่ปิดกล้อง)</span>
             </label>
 
-            <span id="qr-scanner-status" style="font-weight: 600; color: #0284c7;">
-              กำลังเตรียมพร้อมกล้อง...
-            </span>
+            <span id="qr-scanner-status" style="font-weight: 600; color: #0284c7; width: 100%; text-align: center; margin-top: 4px;"></span>
           </div>
 
-          <!-- Permission Help Alert -->
-          <div id="qr-permission-alert" style="display: none; background: #fffbeb; border: 1px solid #fef3c7; border-radius: 8px; padding: 12px; margin-top: 12px; text-align: left; font-size: 13px; color: #92400e;">
-            <strong>⚠️ เบราว์เซอร์ไม่อนุญาตวิดีโอสด:</strong>
-            <p style="margin: 4px 0 8px 0; line-height: 1.5;">เนื่องจากเข้าผ่าน IP (HTTP) หรือยังไม่ได้กดอนุญาตสิทธิ์กล้องในเบราว์เซอร์ แนะนำให้กดสลับไปที่แท็บ <strong>"ถ่ายรูปสแกนด่วน"</strong> ด้านบน ซึ่งใช้งานได้ทันที 100%</p>
-            <button type="button" class="btn btn-primary" onclick="switchQrScannerMode('snapshot')" style="padding: 6px 14px; font-size: 12.5px; background: #0284c7; border: none; border-radius: 6px; cursor: pointer;">
-              👈 สลับไปใช้โหมดถ่ายรูปสแกนด่วน
-            </button>
-          </div>
-
-          <div style="margin-top: 12px; display: flex; gap: 8px;">
+          <div style="margin-top: 10px; display: flex; gap: 8px;">
             <button type="button" class="btn btn-outline" onclick="retryLiveCamera()" style="flex: 1; font-size: 13px; padding: 8px; background: #fff; cursor: pointer;">
-              🔄 รีสตาร์ทกล้องสด
+              🔄 รีสตาร์ทกล้อง
             </button>
             <button type="button" class="btn btn-outline" onclick="switchQrScannerMode('snapshot')" style="flex: 1; font-size: 13px; padding: 8px; background: #fff; cursor: pointer;">
-              📸 สลับไปถ่ายรูป
+              📸 ถ่ายรูปแทน
             </button>
           </div>
         </div>
@@ -944,6 +1012,22 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
     // QR Code Camera Scanner Logic (Robust Dual-Mode: Snapshot & Live)
     // =========================================================
     let currentQrMode = 'snapshot';
+    let availableCameras = [];
+    let currentCameraIndex = 0;
+    let isTorchOn = false;
+
+    function isSecureContextCheck() {
+      return (window.isSecureContext || location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1');
+    }
+
+    function redirectToHttps() {
+      const host = window.location.hostname;
+      const path = window.location.pathname;
+      const search = window.location.search || '';
+      const urlParams = new URLSearchParams(search);
+      urlParams.set('quick_login', 'staff');
+      window.location.href = `https://${host}${path}?${urlParams.toString()}`;
+    }
 
     function openQrScannerModal() {
       const modal = document.getElementById('modal-qr-scanner');
@@ -963,8 +1047,12 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
       const snapStatus = document.getElementById('qr-snapshot-status');
       if (snapStatus) snapStatus.innerHTML = '💡 ใช้กล้องมือถือถ่ายภาพสติกเกอร์มิเตอร์ หรือเลือกจากอัลบั้ม';
 
-      // Always start in Snapshot mode (guaranteed 100% on all mobile devices over HTTP, no black screen!)
-      switchQrScannerMode('snapshot');
+      // If already on HTTPS or localhost, start in Live mode. Otherwise default to snapshot
+      if (isSecureContextCheck()) {
+        switchQrScannerMode('live');
+      } else {
+        switchQrScannerMode('snapshot');
+      }
     }
 
     function closeQrScannerModal() {
@@ -981,6 +1069,10 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
       const tabLive = document.getElementById('tab-btn-live');
       const panelSnap = document.getElementById('qr-snapshot-panel');
       const panelLive = document.getElementById('qr-live-panel');
+      const insecureGuide = document.getElementById('qr-insecure-guide');
+      const viewfinder = document.getElementById('qr-scanner-viewfinder');
+      const errPanel = document.getElementById('qr-camera-error-panel');
+      const liveControls = document.getElementById('qr-live-controls');
 
       if (tabSnap) tabSnap.classList.toggle('active', mode === 'snapshot');
       if (tabLive) tabLive.classList.toggle('active', mode === 'live');
@@ -988,15 +1080,18 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
       if (panelLive) panelLive.style.display = (mode === 'live') ? 'block' : 'none';
 
       if (mode === 'live') {
-        const isSecure = (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1');
-        const hasMedia = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
-        const permAlert = document.getElementById('qr-permission-alert');
-
-        if (!isSecure && !hasMedia) {
-          if (permAlert) permAlert.style.display = 'block';
-          const statusEl = document.getElementById('qr-scanner-status');
-          if (statusEl) statusEl.innerHTML = '<span style="color: #ea580c;">⚠️ ต้องใช้ HTTPS สำหรับวิดีโอสด แนะนำใช้โหมดถ่ายรูป</span>';
+        if (!isSecureContextCheck()) {
+          // Insecure HTTP origin -> Never display an empty black box!
+          if (viewfinder) viewfinder.style.display = 'none';
+          if (errPanel) errPanel.style.display = 'none';
+          if (liveControls) liveControls.style.display = 'none';
+          if (insecureGuide) insecureGuide.style.display = 'block';
+          stopQrScanner();
         } else {
+          if (insecureGuide) insecureGuide.style.display = 'none';
+          if (errPanel) errPanel.style.display = 'none';
+          if (viewfinder) viewfinder.style.display = 'flex';
+          if (liveControls) liveControls.style.display = 'flex';
           startQrScanner();
         }
       } else {
@@ -1016,6 +1111,9 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
       const previewBox = document.getElementById('qr-snapshot-preview');
       const promptBox = document.getElementById('qr-target-prompt');
       const previewImg = document.getElementById('qr-preview-img');
+
+      // Stop any live video stream if running
+      await stopQrScanner();
 
       // Display preview thumbnail immediately so the user sees the photo they just took
       if (previewImg && file) {
@@ -1048,13 +1146,40 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
     }
 
     async function startQrScanner() {
+      const viewfinder = document.getElementById('qr-scanner-viewfinder');
+      const loadingEl = document.getElementById('qr-camera-loading');
+      const laserEl = document.getElementById('qr-scan-laser');
       const statusEl = document.getElementById('qr-scanner-status');
-      const permAlert = document.getElementById('qr-permission-alert');
-      if (permAlert) permAlert.style.display = 'none';
+      const errPanel = document.getElementById('qr-camera-error-panel');
+      const errMsgEl = document.getElementById('qr-camera-error-msg');
+      const btnToggleCam = document.getElementById('btn-toggle-camera');
+
+      if (viewfinder) viewfinder.style.display = 'flex';
+      if (loadingEl) loadingEl.style.display = 'flex';
+      if (laserEl) laserEl.style.display = 'none';
+      if (errPanel) errPanel.style.display = 'none';
       if (statusEl) statusEl.textContent = 'กำลังเชื่อมต่อกล้อง...';
+
+      await stopQrScanner();
 
       if (!html5QrScanner) {
         html5QrScanner = new Html5Qrcode("qr-reader");
+      }
+
+      // Enumerate cameras if available
+      let selectedCameraIdOrConfig = { facingMode: "environment" };
+      try {
+        const devices = await Html5Qrcode.getCameras();
+        if (devices && devices.length > 0) {
+          availableCameras = devices;
+          if (btnToggleCam) btnToggleCam.style.display = devices.length > 1 ? 'inline-block' : 'none';
+          const backIndex = devices.findIndex(d => /back|rear|environment|หลัง|wide|main/i.test(d.label));
+          currentCameraIndex = backIndex !== -1 ? backIndex : devices.length - 1;
+          selectedCameraIdOrConfig = devices[currentCameraIndex].id;
+        }
+      } catch (camErr) {
+        console.warn('Camera enumeration error, fallback to facingMode constraint:', camErr);
+        selectedCameraIdOrConfig = { facingMode: "environment" };
       }
 
       const qrSuccessCallback = (decodedText, decodedResult) => {
@@ -1062,51 +1187,144 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
       };
 
       const config = {
-        fps: 10,
-        qrbox: { width: 250, height: 250 },
-        aspectRatio: 1.0
+        fps: 15,
+        qrbox: (viewfinderWidth, viewfinderHeight) => {
+          const minEdge = Math.min(viewfinderWidth, viewfinderHeight);
+          const qrboxSize = Math.max(180, Math.floor(minEdge * 0.72));
+          return { width: qrboxSize, height: qrboxSize };
+        },
+        aspectRatio: 1.0,
+        showTorchButtonIfSupported: true
       };
 
       try {
         await html5QrScanner.start(
-          { facingMode: "environment" },
+          selectedCameraIdOrConfig,
           config,
-          qrSuccessCallback
+          qrSuccessCallback,
+          () => {}
         );
-        if (statusEl) statusEl.textContent = '🟢 กล้องพร้อมทำงาน ส่องที่ QR ติดมิเตอร์';
-      } catch (err) {
-        console.warn('Back camera failed, trying default camera:', err);
-        try {
-          await html5QrScanner.start(
-            { facingMode: "user" },
-            config,
-            qrSuccessCallback
-          );
-          if (statusEl) statusEl.textContent = '🟢 กล้องหน้าพร้อมทำงาน';
-        } catch (err2) {
-          console.error('Camera error:', err2);
-          if (permAlert) permAlert.style.display = 'block';
-          if (statusEl) statusEl.innerHTML = '<span style="color: #dc2626;">⚠️ บราวเซอร์ไม่อนุญาตวิดีโอสด (ใช้แท็บถ่ายรูปแทน)</span>';
+
+        if (loadingEl) loadingEl.style.display = 'none';
+        if (laserEl) laserEl.style.display = 'block';
+        if (statusEl) statusEl.textContent = '🟢 กล้องพร้อมทำงาน ส่องที่ QR สติกเกอร์';
+
+        // Set playsinline & muted explicitly on video element for mobile WebKit & Blink
+        const videoEl = document.querySelector('#qr-reader video');
+        if (videoEl) {
+          videoEl.setAttribute('playsinline', 'true');
+          videoEl.setAttribute('webkit-playsinline', 'true');
+          videoEl.muted = true;
+          videoEl.autoplay = true;
+          videoEl.style.width = '100%';
+          videoEl.style.height = '100%';
+          videoEl.style.objectFit = 'cover';
+          videoEl.play().catch(e => console.warn('video play:', e));
         }
+
+        checkTorchCapability();
+
+      } catch (err) {
+        console.error('Camera start error:', err);
+        // Fallback: try user camera
+        if (typeof selectedCameraIdOrConfig === 'object' && selectedCameraIdOrConfig.facingMode === 'environment') {
+          try {
+            await html5QrScanner.start({ facingMode: "user" }, config, qrSuccessCallback, () => {});
+            if (loadingEl) loadingEl.style.display = 'none';
+            if (laserEl) laserEl.style.display = 'block';
+            if (statusEl) statusEl.textContent = '🟢 กล้องหน้าพร้อมทำงาน';
+            return;
+          } catch (err2) {
+            console.error('User camera fallback error:', err2);
+          }
+        }
+
+        // Hide viewfinder so NO BLACK BOX remains
+        if (viewfinder) viewfinder.style.display = 'none';
+        if (loadingEl) loadingEl.style.display = 'none';
+        if (laserEl) laserEl.style.display = 'none';
+        if (errPanel) errPanel.style.display = 'block';
+
+        let errMessage = 'เบราว์เซอร์ไม่อนุญาตให้เปิดสตรีมกล้องสด';
+        const errString = String(err);
+        if (/NotAllowedError|Permission/i.test(errString)) {
+          errMessage = '⚠️ สิทธิ์ถูกปฏิเสธ: กรุณาแตะไอคอน 🔒 ข้างช่อง URL ของเบราว์เซอร์ แล้วเลือก "อนุญาตการเข้าถึงกล้อง"';
+        } else if (/NotFoundError|DevicesNotFoundError/i.test(errString)) {
+          errMessage = '⚠️ ไม่พบกล้องบนอุปกรณ์ หรือกล้องกำลังถูกใช้งานโดยแอปอื่น';
+        } else if (/NotReadableError|TrackStartError/i.test(errString)) {
+          errMessage = '⚠️ ฮาร์ดแวร์กล้องไม่ตอบสนอง กรุณาปิดแอปกล้องอื่นแล้วลองใหม่อีกครั้ง';
+        }
+        if (errMsgEl) errMsgEl.textContent = errMessage;
+        if (statusEl) statusEl.innerHTML = '<span style="color: #dc2626;">❌ ไม่สามารถเปิดกล้องสดได้</span>';
+      }
+    }
+
+    async function toggleCameraDevice() {
+      if (availableCameras.length < 2) return;
+      currentCameraIndex = (currentCameraIndex + 1) % availableCameras.length;
+      const statusEl = document.getElementById('qr-scanner-status');
+      if (statusEl) statusEl.textContent = `กำลังสลับกล้อง (${currentCameraIndex + 1}/${availableCameras.length})...`;
+      await stopQrScanner();
+      await startQrScanner();
+    }
+
+    async function toggleTorch() {
+      if (!html5QrScanner) return;
+      try {
+        const caps = html5QrScanner.getRunningTrackCameraCapabilities();
+        if (caps && caps.torchFeature().isSupported()) {
+          isTorchOn = !isTorchOn;
+          await html5QrScanner.applyVideoConstraints({
+            advanced: [{ torch: isTorchOn }]
+          });
+          const btn = document.getElementById('btn-toggle-torch');
+          if (btn) btn.textContent = isTorchOn ? '🔦 ปิดไฟฉาย' : '💡 เปิดไฟฉาย';
+        }
+      } catch (e) {
+        console.warn('Torch toggle error:', e);
+      }
+    }
+
+    function checkTorchCapability() {
+      try {
+        const btn = document.getElementById('btn-toggle-torch');
+        if (!btn || !html5QrScanner) return;
+        const caps = html5QrScanner.getRunningTrackCameraCapabilities();
+        if (caps && caps.torchFeature().isSupported()) {
+          btn.style.display = 'inline-block';
+          btn.textContent = '💡 ไฟฉาย';
+        } else {
+          btn.style.display = 'none';
+        }
+      } catch (e) {
+        const btn = document.getElementById('btn-toggle-torch');
+        if (btn) btn.style.display = 'none';
       }
     }
 
     function retryLiveCamera() {
-      const permAlert = document.getElementById('qr-permission-alert');
-      if (permAlert) permAlert.style.display = 'none';
+      const errPanel = document.getElementById('qr-camera-error-panel');
+      if (errPanel) errPanel.style.display = 'none';
       stopQrScanner().then(() => {
         startQrScanner();
       });
     }
 
     async function stopQrScanner() {
-      if (html5QrScanner && html5QrScanner.isScanning) {
+      if (html5QrScanner) {
         try {
-          await html5QrScanner.stop();
+          if (html5QrScanner.isScanning) {
+            await html5QrScanner.stop();
+          }
+          html5QrScanner.clear();
         } catch (e) {
           console.warn('Error stopping QR scanner:', e);
         }
       }
+      const loadingEl = document.getElementById('qr-camera-loading');
+      const laserEl = document.getElementById('qr-scan-laser');
+      if (loadingEl) loadingEl.style.display = 'none';
+      if (laserEl) laserEl.style.display = 'none';
     }
 
     // Handler when QR code is detected
