@@ -291,6 +291,34 @@ $currentUser = getCurrentUser();
       gap: 20px;
       margin-top: 24px;
     }
+    @media (max-width: 580px) {
+      .bill-result-card {
+        padding: 16px !important;
+      }
+      .bill-qr-box {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        padding: 16px !important;
+      }
+      .bill-qr-flex {
+        flex-direction: column !important;
+        text-align: center !important;
+        align-items: center !important;
+      }
+      .bill-qr-box button {
+        width: 100% !important;
+        justify-content: center !important;
+        margin-top: 10px !important;
+      }
+      .citizen-search-row {
+        flex-direction: column !important;
+      }
+      .citizen-search-row .btn-search {
+        width: 100% !important;
+        justify-content: center !important;
+        height: 48px !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -318,7 +346,7 @@ $currentUser = getCurrentUser();
     <div class="search-card">
       <div class="citizen-search-row">
         <div class="search-input-wrapper">
-          <input type="text" id="citizen-search-input" autocomplete="off" placeholder="พิมพ์เบอร์โทรศัพท์ (เช่น 081-234-5678) หรือรหัสผู้ใช้น้ำ (เช่น WY-001)...">
+          <input type="text" id="citizen-search-input" inputmode="search" autocomplete="off" placeholder="พิมพ์เบอร์โทรศัพท์ (เช่น 081-234-5678) หรือรหัสผู้ใช้น้ำ (เช่น WY-001)...">
           <div id="citizen-search-dropdown" class="search-autocomplete-dropdown" style="display: none;"></div>
         </div>
         <button type="button" id="btn-search-bill" class="btn-search">
@@ -375,8 +403,8 @@ $currentUser = getCurrentUser();
             <h4 style="font-family: 'Prompt', sans-serif; font-size: 16px; color: #0f172a; margin: 0 0 4px 0;">🔍 ติดตามสถานะคำร้องแจ้งซ่อม</h4>
             <span style="font-size: 13px; color: #64748b;">กรอกเบอร์โทรศัพท์ที่ใช้แจ้ง หรือรหัสคำร้อง (เช่น TK-2567-0801) เพื่อตรวจสอบความคืบหน้า</span>
           </div>
-          <div style="display: flex; gap: 8px;">
-            <input type="text" id="track-ticket-input" class="form-input" placeholder="พิมพ์เบอร์โทร หรือรหัส TK-..." style="min-width: 240px;">
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <input type="text" id="track-ticket-input" inputmode="search" class="form-input" placeholder="พิมพ์เบอร์โทร หรือรหัส TK-..." style="min-width: 240px; flex: 1;">
             <button type="button" class="btn btn-primary" onclick="trackServiceTickets()">ค้นหาคำร้อง</button>
           </div>
         </div>
@@ -423,14 +451,13 @@ $currentUser = getCurrentUser();
             </div>
             <div class="form-group" style="margin-bottom: 12px;">
               <label class="form-label">เบอร์โทรศัพท์ที่ติดต่อได้:</label>
-              <input type="text" class="form-input" id="req-phone" required placeholder="เช่น 081-xxxxxxx">
+              <input type="tel" class="form-input" id="req-phone" inputmode="tel" required placeholder="เช่น 081-xxxxxxx">
             </div>
             <div class="form-group" style="margin-bottom: 12px;">
               <label class="form-label">คุ้ม / โซน:</label>
               <select class="form-select" id="req-zone">
-                <option value="โซน 1 วังยางเหนือ">โซน 1 วังยางเหนือ</option>
-                <option value="โซน 2 วังยางกลาง">โซน 2 วังยางกลาง</option>
-                <option value="โซน 3 วังยางใต้">โซน 3 วังยางใต้</option>
+                <option value="โซนทุ่งสามัคคี">โซนทุ่งสามัคคี</option>
+                <option value="โซนโค้งขี้เหล็ก">โซนโค้งขี้เหล็ก</option>
               </select>
             </div>
             <div class="form-group" style="margin-bottom: 12px;">
@@ -828,9 +855,9 @@ $currentUser = getCurrentUser();
             </div>
 
             <!-- PromptPay QR Code Payment Channel -->
-            <div style="background: #f0fdf4; border: 1px dashed #22c55e; border-radius: 10px; padding: 20px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
-              <div style="display: flex; align-items: center; gap: 16px;">
-                <img src="https://promptpay.io/0812345678/${grandTotal.toFixed(2)}.png" alt="PromptPay QR" style="width: 120px; height: 120px; border-radius: 8px; background: #fff; border: 1px solid #bbf7d0; padding: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            <div class="bill-qr-box" style="background: #f0fdf4; border: 1px dashed #22c55e; border-radius: 10px; padding: 20px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
+              <div class="bill-qr-flex" style="display: flex; align-items: center; gap: 16px;">
+                <img src="https://promptpay.io/0812345678/${grandTotal.toFixed(2)}.png" alt="PromptPay QR" style="width: 120px; height: 120px; border-radius: 8px; background: #fff; border: 1px solid #bbf7d0; padding: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); flex-shrink: 0;">
                 <div>
                   <div style="display: inline-block; background: #15803d; color: #fff; font-size: 13px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 4px;">
                     📱 สแกนจ่ายผ่าน Mobile Banking ได้ทุกธนาคาร

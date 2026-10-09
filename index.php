@@ -356,13 +356,48 @@ try {
     .btn-search-bill:hover {
       background: #0369a1 !important;
     }
+    @media (max-width: 900px) {
+      .kpi-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 14px !important;
+      }
+    }
     @media (max-width: 560px) {
+      .kpi-grid {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+      }
+      .kpi-card {
+        padding: 16px !important;
+      }
+      .hero-search-bar {
+        flex-direction: column !important;
+        padding: 8px !important;
+      }
+      .hero-search-bar .search-input-wrapper {
+        width: 100% !important;
+      }
+      .hero-search-btn {
+        width: 100% !important;
+        justify-content: center !important;
+        height: 48px !important;
+      }
       .citizen-search-bar {
         flex-direction: column !important;
       }
       .btn-search-bill {
         width: 100% !important;
         justify-content: center !important;
+        height: 48px !important;
+      }
+      .portal-hero {
+        padding: 28px 16px 32px 16px !important;
+      }
+      .portal-hero h1 {
+        font-size: 22px !important;
+      }
+      .portal-hero p {
+        font-size: 14px !important;
       }
     }
     .search-autocomplete-dropdown {
@@ -663,7 +698,7 @@ try {
         <div class="hero-search-box">
           <div class="hero-search-bar">
             <div class="search-input-wrapper">
-              <input type="text" id="hero-citizen-input" class="hero-search-input" autocomplete="off" placeholder="พิมพ์เบอร์โทรศัพท์ (เช่น 081-234-5678) หรือรหัสผู้ใช้น้ำ...">
+              <input type="text" id="hero-citizen-input" class="hero-search-input" inputmode="search" autocomplete="off" placeholder="พิมพ์เบอร์โทรศัพท์ (เช่น 081-234-5678) หรือรหัสผู้ใช้น้ำ...">
               <div id="hero-search-dropdown" class="search-autocomplete-dropdown" style="display: none;"></div>
             </div>
             <button type="button" id="btn-hero-citizen-search" class="hero-search-btn">

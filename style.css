@@ -480,6 +480,20 @@ body.sidebar-open {
   margin-bottom: 20px;
 }
 
+@media (max-width: 992px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
+@media (max-width: 576px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
 .stat-card {
   background: #fff;
   padding: 18px;
@@ -966,6 +980,13 @@ body.sidebar-open {
   grid-template-columns: repeat(2, 1fr);
   gap: 24px;
   margin-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+  .financial-tables-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
 }
 
 .fin-header {
@@ -1942,5 +1963,249 @@ body.sidebar-open {
   align-items: center !important;
   gap: 6px !important;
 }
+
+/* =========================================================
+   COMPREHENSIVE MOBILE RESPONSIVENESS SUITE (SMARTPHONE & TABLET)
+   ========================================================= */
+
+/* 1. Mobile Safe Area & Sticky Bottom FAB Padding */
+@media (max-width: 860px) {
+  .mobile-bottom-fab {
+    padding-bottom: max(12px, env(safe-area-inset-bottom)) !important;
+  }
+  .main-content {
+    padding-bottom: calc(85px + env(safe-area-inset-bottom)) !important;
+  }
+}
+
+/* 2. Responsive Table-to-Card Transformation for Meter Reading Table */
+@media (max-width: 768px) {
+  #field-readings-table thead {
+    display: none !important;
+  }
+  #field-readings-table,
+  #field-readings-table tbody,
+  #field-readings-table tr {
+    display: block !important;
+    width: 100% !important;
+  }
+  #field-readings-table tr {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 14px !important;
+    padding: 14px 16px !important;
+    margin-bottom: 14px !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+    transition: all 0.2s ease !important;
+  }
+  #field-readings-table tr.row-done {
+    border-left: 5px solid #22c55e !important;
+  }
+  #field-readings-table tr.row-pending {
+    border-left: 5px solid #f59e0b !important;
+  }
+  #field-readings-table tr.qr-highlight-row {
+    border-color: #0284c7 !important;
+    border-left: 6px solid #0284c7 !important;
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.3) !important;
+    background: #f0f9ff !important;
+  }
+  #field-readings-table td {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 7px 0 !important;
+    border: none !important;
+    border-bottom: 1px dashed #f1f5f9 !important;
+    text-align: right !important;
+    font-size: 14px !important;
+    min-height: 38px !important;
+  }
+  #field-readings-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #64748b;
+    text-align: left;
+    padding-right: 12px;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+  #field-readings-table td:last-child {
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
+  }
+  #field-readings-table td.meter-td-input {
+    background: #f8fafc !important;
+    padding: 10px 12px !important;
+    border-radius: 10px !important;
+    margin: 8px 0 !important;
+    border: 1px solid #e2e8f0 !important;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .meter-input-cell {
+    width: 140px !important;
+    height: 46px !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    text-align: right !important;
+    border: 2px solid #0284c7 !important;
+    border-radius: 8px !important;
+    padding: 6px 12px !important;
+    background: #ffffff !important;
+  }
+}
+
+/* 3. Mobile Table-to-Card for Arrears Table */
+@media (max-width: 768px) {
+  #fin-arrears-table thead {
+    display: none !important;
+  }
+  #fin-arrears-table,
+  #fin-arrears-table tbody,
+  #fin-arrears-table tr {
+    display: block !important;
+    width: 100% !important;
+  }
+  #fin-arrears-table tr {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 14px !important;
+    padding: 14px 16px !important;
+    margin-bottom: 14px !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+    border-left: 5px solid #ea580c !important;
+  }
+  #fin-arrears-table td {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 7px 0 !important;
+    border: none !important;
+    border-bottom: 1px dashed #f1f5f9 !important;
+    text-align: right !important;
+    font-size: 13.5px !important;
+  }
+  #fin-arrears-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #64748b;
+    text-align: left;
+    padding-right: 12px;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+  #fin-arrears-table td:last-child {
+    border-bottom: none !important;
+  }
+}
+
+/* 3.1 Mobile Table-to-Card for Collection Table */
+@media (max-width: 768px) {
+  #collection-table thead {
+    display: none !important;
+  }
+  #collection-table,
+  #collection-table tbody,
+  #collection-table tr {
+    display: block !important;
+    width: 100% !important;
+  }
+  #collection-table tr {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 14px !important;
+    padding: 14px 16px !important;
+    margin-bottom: 14px !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+    transition: all 0.2s ease !important;
+  }
+  #collection-table tr.row-done {
+    border-left: 5px solid #22c55e !important;
+  }
+  #collection-table tr.row-pending {
+    border-left: 5px solid #0284c7 !important;
+  }
+  #collection-table td {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 7px 0 !important;
+    border: none !important;
+    border-bottom: 1px dashed #f1f5f9 !important;
+    text-align: right !important;
+    font-size: 13.5px !important;
+    min-height: 38px !important;
+  }
+  #collection-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #64748b;
+    text-align: left;
+    padding-right: 12px;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+  #collection-table td:last-child {
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
+  }
+}
+
+/* 4. Touch Targets & Mobile Input Optimization */
+@media (max-width: 640px) {
+  input, select, textarea, button {
+    font-size: 15px !important;
+  }
+  .form-input, .form-select {
+    height: 44px !important;
+    font-size: 15px !important;
+  }
+  .card {
+    padding: 16px !important;
+  }
+  .main-content {
+    padding: 14px 12px !important;
+  }
+  .top-bar {
+    padding: 12px 14px !important;
+  }
+  .top-bar-title h1 {
+    font-size: 16px !important;
+  }
+  .top-bar-title span {
+    font-size: 11.5px !important;
+  }
+  .modal-dialog {
+    width: 95% !important;
+    margin: 12px auto !important;
+    max-height: 92vh !important;
+    border-radius: 14px !important;
+  }
+  .modal-body {
+    padding: 16px !important;
+    max-height: 75vh !important;
+  }
+  .filter-inputs {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+  .filter-inputs select,
+  .filter-inputs input {
+    width: 100% !important;
+  }
+  .filter-status-tabs {
+    width: 100% !important;
+    justify-content: stretch !important;
+  }
+  .filter-status-tab {
+    flex: 1 !important;
+    text-align: center !important;
+    justify-content: center !important;
+    padding: 8px 6px !important;
+    font-size: 12.5px !important;
+  }
+}
+
 
 

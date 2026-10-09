@@ -729,18 +729,20 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
         const isSpike = (units > 35); // Leak / spike warning threshold
 
         return `
-          <tr data-customer-id="${c.id}" data-customer-code="${c.customer_code}">
-            <td class="text-center font-bold" style="color: #64748b;">${c.seq_no}</td>
-            <td><strong>${c.customer_code}</strong></td>
-            <td><strong>${c.first_name} ${c.last_name}</strong></td>
-            <td>${c.house_no}</td>
-            <td><a href="tel:${c.phone || ''}" style="color: #0284c7; text-decoration: none; font-weight: 600; white-space: nowrap;">📞 ${c.phone || '-'}</a></td>
-            <td><span style="font-size: 13.5px; color: #475569;">${c.zone}</span></td>
-            <td><code style="font-size: 13px;">${c.meter_serial || '-'}</code></td>
-            <td class="text-right" style="color: #475569; font-weight: 600;">${prev.toFixed(1)}</td>
-            <td class="text-right">
+          <tr data-customer-id="${c.id}" data-customer-code="${c.customer_code}" class="${isRead ? 'row-done' : 'row-pending'}">
+            <td data-label="ลำดับสายจด" class="text-center font-bold" style="color: #64748b;">${c.seq_no}</td>
+            <td data-label="รหัสผู้ใช้น้ำ"><strong>${c.customer_code}</strong></td>
+            <td data-label="ชื่อ - นามสกุล"><strong>${c.first_name} ${c.last_name}</strong></td>
+            <td data-label="บ้านเลขที่">${c.house_no}</td>
+            <td data-label="เบอร์โทรศัพท์"><a href="tel:${c.phone || ''}" style="color: #0284c7; text-decoration: none; font-weight: 600; white-space: nowrap;">📞 ${c.phone || '-'}</a></td>
+            <td data-label="โซน / คุ้ม"><span style="font-size: 13.5px; color: #475569;">${c.zone}</span></td>
+            <td data-label="หมายเลขมิเตอร์"><code style="font-size: 13px;">${c.meter_serial || '-'}</code></td>
+            <td data-label="เลขครั้งก่อน" class="text-right" style="color: #475569; font-weight: 600;">${prev.toFixed(1)}</td>
+            <td data-label="เลขครั้งหลัง (กรอก)" class="text-right meter-td-input">
               <input type="number" 
                      step="0.1" 
+                     inputmode="decimal"
+                     autocomplete="off"
                      class="meter-input-cell no-print" 
                      data-id="${c.id}" 
                      data-code="${c.customer_code}"
@@ -752,13 +754,13 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
               ${isNegative ? '<br><span class="abnormal-warning" style="background: #fef3c7; color: #92400e; border: 1px solid #f59e0b;" title="สันนิษฐาน: 2 ระบบดันกันเอง (ปั๊มบาดาลดันย้อน) หรือใช้น้ำผิดปกติ">⚠️ มิเตอร์ติดลบ (2 ระบบดันกัน)</span>' : ''}
               ${isSpike ? '<br><span class="abnormal-warning">⚠️ ใช้น้ำพุ่งสูงผิดปกติ</span>' : ''}
             </td>
-            <td class="text-right font-bold" style="color: ${units > 0 ? '#0284c7' : '#94a3b8'};">
+            <td data-label="หน่วยที่ใช้" class="text-right font-bold" style="color: ${units > 0 ? '#0284c7' : '#94a3b8'};">
               <span id="units-disp-${c.id}">${units.toFixed(1)}</span>
             </td>
-            <td class="text-right font-bold text-danger">
+            <td data-label="ยอดเงินงวดนี้" class="text-right font-bold text-danger">
               <span id="amount-disp-${c.id}">${grandTotal.toFixed(2)}</span> ฿
             </td>
-            <td class="text-center">
+            <td data-label="สถานะ" class="text-center">
               <span class="badge ${isRead ? 'badge-paid' : 'badge-unpaid'}" style="font-size: 13px;">
                 ${isRead ? 'จดแล้ว' : 'ยังไม่จด'}
               </span>

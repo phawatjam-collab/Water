@@ -280,16 +280,15 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
             </div>
 
             <select id="col-zone-select" class="form-select" onchange="renderCollectionRows()" style="font-size: 13px; padding: 6px 12px; min-width: 150px;">
-              <option value="">ทุกโซน / ทุกคุ้ม</option>
-              <option value="โซน 1">โซน 1 วังยางเหนือ</option>
-              <option value="โซน 2">โซน 2 วังยางกลาง</option>
-              <option value="โซน 3">โซน 3 วังยางใต้</option>
+              <option value="">ทุกโซนพื้นที่</option>
+              <option value="โซนทุ่งสามัคคี">โซนทุ่งสามัคคี</option>
+              <option value="โซนโค้งขี้เหล็ก">โซนโค้งขี้เหล็ก</option>
             </select>
           </div>
 
           <!-- Search input & Action buttons -->
           <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-            <input type="text" id="col-search-input" oninput="renderCollectionRows()" class="form-input" placeholder="🔍 ค้นหาเบอร์โทร, ชื่อ, รหัส หรือบ้านเลขที่..." style="font-size: 13.5px; padding: 7px 14px; min-width: 240px;">
+            <input type="text" id="col-search-input" inputmode="search" oninput="renderCollectionRows()" class="form-input" placeholder="🔍 ค้นหาเบอร์โทร, ชื่อ, รหัส หรือบ้านเลขที่..." style="font-size: 13.5px; padding: 7px 14px; min-width: 240px;">
             <button type="button" class="btn btn-outline" id="btn-reload-fin" style="font-size: 13px; padding: 7px 12px; background: #fff;">🔄 รีเฟรช</button>
             <button type="button" class="btn btn-secondary" id="btn-pay-all-fin" style="font-size: 13px; padding: 7px 16px;">✅ ตัดรับชำระทั้งหมด</button>
           </div>
@@ -486,7 +485,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
           </div>
 
           <div style="display: flex; align-items: center; gap: 8px;">
-            <input type="text" id="fa-search-input" oninput="renderArrearsRows()" class="form-input" placeholder="🔍 ค้นหาลูกหนี้, รหัส หรือบ้านเลขที่..." style="font-size: 13.5px; padding: 7px 14px; min-width: 240px;">
+            <input type="text" id="fa-search-input" inputmode="search" oninput="renderArrearsRows()" class="form-input" placeholder="🔍 ค้นหาลูกหนี้, รหัส หรือบ้านเลขที่..." style="font-size: 13.5px; padding: 7px 14px; min-width: 240px;">
           </div>
         </div>
         <div class="table-responsive">
@@ -1077,28 +1076,28 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
         const isPaid = (r.payment_status === 'PAID');
 
         return `
-          <tr>
-            <td class="text-center">${i + 1}</td>
-            <td><strong style="color: #0284c7;">${r.customer_code}</strong></td>
-            <td><strong>${r.first_name} ${r.last_name}</strong></td>
-            <td>${r.house_no}</td>
-            <td><span class="badge" style="background: #f1f5f9; color: #475569;">${r.zone}</span></td>
-            <td>
+          <tr class="${isPaid ? 'row-done' : 'row-pending'}">
+            <td data-label="ลำดับ" class="text-center">${i + 1}</td>
+            <td data-label="รหัสผู้ใช้"><strong style="color: #0284c7;">${r.customer_code}</strong></td>
+            <td data-label="ชื่อ - นามสกุล"><strong>${r.first_name} ${r.last_name}</strong></td>
+            <td data-label="บ้านเลขที่">${r.house_no}</td>
+            <td data-label="โซน"><span class="badge" style="background: #f1f5f9; color: #475569;">${r.zone}</span></td>
+            <td data-label="เบอร์โทรศัพท์">
               ${r.phone ? `<a href="tel:${r.phone}" style="color: #2563eb; text-decoration: none; font-size: 13px;">📞 ${r.phone}</a>` : '<span class="text-muted">-</span>'}
             </td>
-            <td class="text-right font-bold">${parseFloat(r.units_used || 0).toFixed(1)}</td>
-            <td class="text-right font-bold ${isPaid ? 'text-success' : 'text-danger'}" style="font-size: 14.5px;">
+            <td data-label="หน่วยใช้" class="text-right font-bold">${parseFloat(r.units_used || 0).toFixed(1)}</td>
+            <td data-label="ยอดรวมสุทธิ" class="text-right font-bold ${isPaid ? 'text-success' : 'text-danger'}" style="font-size: 14.5px;">
               ${grand.toFixed(2)} ฿
             </td>
-            <td class="text-center">
+            <td data-label="สถานะ" class="text-center">
               <span class="badge ${isPaid ? 'badge-paid' : 'badge-unpaid'}" style="font-size: 12.5px;">
                 ${isPaid ? '✓ ชำระแล้ว' : 'ค้างชำระ'}
               </span>
             </td>
-            <td class="text-center font-bold" style="font-size: 13px; color: #4338ca;">
+            <td data-label="เลขที่ใบเสร็จ" class="text-center font-bold" style="font-size: 13px; color: #4338ca;">
               ${r.receipt_no || '<span class="text-muted" style="font-weight: normal;">-</span>'}
             </td>
-            <td class="text-center no-print">
+            <td data-label="การดำเนินการ" class="text-center no-print">
               <div style="display: inline-flex; gap: 6px; align-items: center; justify-content: center;">
                 <button type="button" class="btn btn-sm ${isPaid ? 'btn-outline' : 'btn-secondary'} btn-toggle-pay" data-id="${r.customer_id}" onclick="togglePayment(${r.customer_id}, this)" style="font-weight: 600;">
                   ${isPaid ? '↩️ ยกเลิกจ่าย' : '✅ รับชำระ'}
@@ -1561,20 +1560,20 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
       }
 
       tbody.innerHTML = filtered.map((d, i) => `
-        <tr>
-          <td class="text-center">${i + 1}</td>
-          <td><strong style="color: #dc2626;">${d.customerCode}</strong></td>
-          <td><strong>${d.name}</strong></td>
-          <td>${d.houseNo}</td>
-          <td><span class="badge" style="background: #f1f5f9; color: #475569;">${d.zone}</span></td>
-          <td>
+        <tr class="row-pending">
+          <td data-label="ลำดับ" class="text-center">${i + 1}</td>
+          <td data-label="รหัสผู้ใช้"><strong style="color: #dc2626;">${d.customerCode}</strong></td>
+          <td data-label="ชื่อ - นามสกุล"><strong>${d.name}</strong></td>
+          <td data-label="บ้านเลขที่">${d.houseNo}</td>
+          <td data-label="โซน"><span class="badge" style="background: #f1f5f9; color: #475569;">${d.zone}</span></td>
+          <td data-label="เบอร์โทรศัพท์">
             ${d.phone ? `<a href="tel:${d.phone}" style="color: #2563eb; text-decoration: none; font-size: 13px;">📞 ${d.phone}</a>` : '-'}
           </td>
-          <td>${d.meterSerial}</td>
-          <td class="text-center"><strong style="color: ${d.monthsOverdue >= 3 ? '#dc2626' : '#d97706'};">${d.monthsOverdue}</strong> เดือน</td>
-          <td class="text-right font-bold text-danger" style="font-size: 14px;">${d.totalDebt.toFixed(2)} ฿</td>
-          <td class="text-center"><span class="${d.badgeClass}" style="font-size: 12px;">${d.urgencyText}</span></td>
-          <td class="text-center no-print">
+          <td data-label="เลขมิเตอร์">${d.meterSerial}</td>
+          <td data-label="อายุหนี้" class="text-center"><strong style="color: ${d.monthsOverdue >= 3 ? '#dc2626' : '#d97706'};">${d.monthsOverdue}</strong> เดือน</td>
+          <td data-label="ยอดค้างรวม" class="text-right font-bold text-danger" style="font-size: 14px;">${d.totalDebt.toFixed(2)} ฿</td>
+          <td data-label="ระดับการติดตาม" class="text-center"><span class="${d.badgeClass}" style="font-size: 12px;">${d.urgencyText}</span></td>
+          <td data-label="การจัดการ" class="text-center no-print">
             <div style="display: inline-flex; gap: 6px; justify-content: center; align-items: center;">
               <button type="button" class="btn btn-secondary btn-sm" onclick="payDebtorFromArrears('${d.customerCode}')" style="font-size: 12px; padding: 4px 8px; font-weight: 600;" title="ไปยังรายการเพื่อตัดรับชำระ">
                 💳 ตัดชำระ
