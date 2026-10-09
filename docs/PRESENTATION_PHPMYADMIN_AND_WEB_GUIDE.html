@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>คู่มือการนำเสนอและการเชื่อมต่อสถาปัตยกรรม phpMyAdmin กับเว็บไซต์</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-dark: #0369a1;
+      --primary-light: #e0f2fe;
+      --secondary: #0f172a;
+      --accent: #059669;
+      --accent-light: #d1fae5;
+      --warning: #d97706;
+      --warning-light: #fef3c7;
+      --danger: #dc2626;
+      --danger-light: #fee2e2;
+      --gray-50: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-600: #475569;
+      --gray-800: #1e293b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Sarabun', sans-serif;
+      font-size: 13.5pt;
+      line-height: 1.6;
+      color: var(--gray-800);
+      background: #f8fafc;
+      padding: 24px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .doc-container {
+      max-width: 960px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 45px 50px;
+      border-radius: 12px;
+      box-shadow: 0 4px 25px rgba(0,0,0,0.06);
+    }
+
+    @page {
+      size: A4;
+      margin: 15mm 15mm 15mm 15mm;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+        padding: 0;
+        font-size: 11pt;
+      }
+      .doc-container {
+        box-shadow: none;
+        padding: 0;
+        max-width: 100%;
+      }
+      .page-break {
+        page-break-before: always;
+      }
+      .no-break {
+        page-break-inside: avoid;
+      }
+    }
+
+    /* Headers */
+    .doc-header {
+      border-bottom: 3px solid var(--primary);
+      padding-bottom: 20px;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+
+    .doc-badge {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      font-family: 'Prompt', sans-serif;
+      font-weight: 700;
+      font-size: 12pt;
+      padding: 4px 14px;
+      border-radius: 9999px;
+      margin-bottom: 10px;
+      letter-spacing: 0.5px;
+    }
+
+    h1 {
+      font-family: 'Prompt', sans-serif;
+      font-size: 23pt;
+      font-weight: 700;
+      color: var(--secondary);
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      font-family: 'Prompt', sans-serif;
+      font-size: 16pt;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin: 26px 0 12px 0;
+      padding-bottom: 6px;
+      border-bottom: 1.5px solid var(--gray-200);
+    }
+
+    h3 {
+      font-family: 'Prompt', sans-serif;
+      font-size: 13.5pt;
+      font-weight: 600;
+      color: var(--secondary);
+      margin: 16px 0 8px 0;
+    }
+
+    p {
+      margin-bottom: 12px;
+      text-align: justify;
+    }
+
+    /* Screenshot Banner */
+    .screenshot-card {
+      background: #f8fafc;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 10px;
+      padding: 16px;
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    .screenshot-card img {
+      max-width: 280px;
+      height: auto;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border: 1px solid #cbd5e1;
+    }
+
+    .screenshot-caption {
+      margin-top: 10px;
+      font-size: 11pt;
+      color: var(--gray-600);
+      font-weight: 600;
+    }
+
+    /* Architecture Box */
+    .arch-box {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 18px 22px;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9.5pt;
+      line-height: 1.45;
+      overflow-x: auto;
+      margin: 16px 0;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 18px 0;
+      font-size: 11.5pt;
+    }
+
+    th {
+      background: #0284c7;
+      color: #ffffff;
+      font-family: 'Prompt', sans-serif;
+      font-weight: 600;
+      text-align: left;
+      padding: 10px 12px;
+      border: 1px solid #0284c7;
+    }
+
+    td {
+      padding: 9px 12px;
+      border: 1px solid var(--gray-200);
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) {
+      background: #f8fafc;
+    }
+
+    .table-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      color: #0369a1;
+      font-size: 10.5pt;
+    }
+
+    /* Callouts */
+    .callout {
+      border-left: 4px solid var(--primary);
+      background: var(--primary-light);
+      padding: 12px 18px;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0;
+      font-size: 12pt;
+    }
+
+    .callout-title {
+      font-family: 'Prompt', sans-serif;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 4px;
+    }
+
+    /* Code Block */
+    pre code {
+      display: block;
+      background: #1e293b;
+      color: #f8fafc;
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10pt;
+      line-height: 1.5;
+      overflow-x: auto;
+      margin: 12px 0;
+    }
+
+    /* Q&A Cards */
+    .qa-card {
+      background: #ffffff;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+
+    .qa-q {
+      font-family: 'Prompt', sans-serif;
+      font-size: 13pt;
+      font-weight: 700;
+      color: #0284c7;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .qa-a {
+      font-size: 12pt;
+      color: var(--gray-800);
+      line-height: 1.6;
+      background: #f8fafc;
+      padding: 12px 14px;
+      border-radius: 6px;
+      border-left: 3px solid #10b981;
+    }
+
+    .qa-badge {
+      background: #0284c7;
+      color: #fff;
+      font-size: 10pt;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .footer-note {
+      margin-top: 35px;
+      padding-top: 15px;
+      border-top: 1px solid var(--gray-200);
+      text-align: center;
+      font-size: 11pt;
+      color: var(--gray-600);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="doc-container">
+
+    <!-- Header Section -->
+    <div class="doc-header">
+      <span class="doc-badge">PRESENTATION & ARCHITECTURE GUIDE</span>
+      <h1>คู่มือการนำเสนอและการเชื่อมต่อสถาปัตยกรรม</h1>
+      <h3 style="color: var(--gray-600); font-weight: 500;">
+        ระบบบริหารจัดการน้ำประปาหมู่บ้านวังยาง (Wang Yang Village Water Supply System)<br>
+        การเชื่อมต่อระหว่าง phpMyAdmin (MySQL Database) กับระบบเว็บไซต์ และแนวทางตอบคำถามกรรมการ
+      </h3>
+    </div>
+
+    <!-- Section 1 -->
+    <h2>1. ภาพรวมสถาปัตยกรรม (System Architecture Overview)</h2>
+    <p>
+      จากการตรวจสอบภาพโครงสร้างฐานข้อมูลใน <strong>phpMyAdmin</strong> ที่ผู้ใช้งานได้จับภาพหน้าจอมา (Database: <code>plumber</code> / <code>db_city_water_supply</code>) ระบบนี้ใช้สถาปัตยกรรมแบบ <strong>3-Tier Web Database Architecture</strong> ซึ่งประกอบด้วย 3 ส่วนสำคัญที่ทำงานประสานกันอย่างมีประสิทธิภาพ:
+    </p>
+
+    <div class="screenshot-card no-break">
+      <img src="assets/phpmyadmin_tables.png" alt="phpMyAdmin Tables Screenshot">
+      <div class="screenshot-caption">
+        รูปที่ 1: โครงสร้างตารางทั้ง 16 ตารางใน phpMyAdmin ที่เชื่อมโยงกับระบบเว็บไซต์
+      </div>
+    </div>
+
+    <ul style="padding-left: 22px; margin-bottom: 14px;">
+      <li><strong>1. Database Server Engine (MySQL 10.4 / MariaDB Port 3306):</strong> ทำหน้าที่ประมวลผลคำสั่ง SQL, เก็บรักษาข้อมูลลงฮาร์ดดิสก์, ดูแลความถูกต้องของคีย์ (Primary/Foreign Key) และจัดการ Transaction แบบ ACID</li>
+      <li><strong>2. Database Management Tool (phpMyAdmin GUI):</strong> เป็นเครื่องมือผ่านหน้าเว็บสำหรับผู้ดูแลระบบ (Admin) ใช้ดูตาราง, ตรวจสอบข้อมูลดิบ, และบริหารจัดการฐานข้อมูล (เปรียบเสมือน Dashboard หลังบ้าน)</li>
+      <li><strong>3. Web Application Backend (PHP 8 with PDO):</strong> ทำหน้าที่เชื่อมต่อกับ MySQL ผ่านคลาส <code>PDO</code> ในไฟล์ <code>api/db.php</code> เพื่อดึงข้อมูลมาแสดงผลบนหน้าจอ และบันทึกข้อมูลธุรกรรมที่เจ้าหน้าที่หรือลูกบ้านกรอกเข้ามาแบบ Real-time</li>
+    </ul>
+
+    <div class="arch-box no-break">
+┌────────────────────────────────────────────────────────────────────────┐
+│                        ผู้ใช้งาน / อุปกรณ์ลูกข่าย                       │
+│    [เจ้าหน้าที่จดมิเตอร์บนมือถือ]    [ฝ่ายการเงินบน PC]    [ลูกบ้านบนสมาร์ตโฟน]  │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │ (HTTP / HTTPS Request)
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                   เว็บเซิร์ฟเวอร์ Apache (Port 80 / 443)                 │
+│              รองรับทั้ง Localhost, LAN IP และ Cloudflare Public Tunnel  │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                     PHP 8 Application Backend Engine                    │
+│   • meter_reading.php    • finance_billing.php    • portal_citizen.php │
+│   • auth.php (RBAC)      • api/readings.php       • api/customers.php  │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │ (PDO Prepared Statements)
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                      MySQL Database Server (Port 3306)                 │
+│                         ฐานข้อมูล: db_city_water_supply / plumber      │
+│                                                                        │
+│   ┌────────────────────────────────────────────────────────────────┐   │
+│   │ phpMyAdmin (Admin GUI Interface)                               │   │
+│   │ หน้าต่างสำหรับผู้ดูแลระบบตรวจสอบตารางและจัดการข้อมูลดิบ          │   │
+│   └────────────────────────────────────────────────────────────────┘   │
+└────────────────────────────────────────────────────────────────────────┘
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- Section 2 -->
+    <h2>2. คำอธิบายตารางทั้ง 16 ตารางในรูปภาพแคปเจอร์ (Table Breakdown)</h2>
+    <p>
+      ตารางที่ปรากฏในรูปภาพ phpMyAdmin ทั้ง 16 ตาราง ถูกจัดสรรออกเป็น 5 กลุ่มโมดูลหลัก ซึ่งเชื่อมโยงข้อมูลกันอย่างเป็นระบบ ดังนี้:
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th width="50" style="text-align: center;">ที่</th>
+          <th width="190">ชื่อตารางใน phpMyAdmin</th>
+          <th>คำอธิบายหน้าที่การทำงานในระบบ</th>
+          <th width="200">คีย์และการเชื่อมโยง (Key Relations)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align: center;">1</td>
+          <td class="table-code">billing_cycles</td>
+          <td><strong>รอบบิลการใช้น้ำประจำเดือน:</strong> เก็บงวดประจำเดือน เช่น <code>8-2567</code>, วันเปิดรอบ, วันปิดรอบ, กำหนดชำระเงิน และสถานะรอบ</td>
+          <td><code>id</code> (PK), <code>cycle_code</code> (Unique) เชื่อมไปยัง <code>meter_readings</code></td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">2</td>
+          <td class="table-code">customers</td>
+          <td><strong>ทะเบียนผู้ใช้น้ำ (ลูกบ้าน):</strong> รหัสผู้ใช้ (เช่น <code>WY-001</code>), ชื่อ-นามสกุล, บ้านเลขที่, โซน, เบอร์โทร, พิกัด GPS</td>
+          <td><code>id</code> (PK), <code>customer_code</code> (Unique) เชื่อมไปยัง <code>meter_readings</code></td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">3</td>
+          <td class="table-code">meter_readings</td>
+          <td><strong>สมุดบันทึกเลขอ่านมิเตอร์:</strong> เก็บเลขอ่านครั้งก่อน, ครั้งนี้, หน่วยที่ใช้, ยอดเงินรวม, สถานะชำระเงิน (unpaid/paid)</td>
+          <td><code>id</code> (PK), <code>customer_id</code> (FK), <code>cycle_code</code> (FK)</td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">4</td>
+          <td class="table-code">monthly_financial_reports</td>
+          <td><strong>รายงานงบการเงินประจำเดือน:</strong> สรุปยอดค่าน้ำรวม, ค่าธรรมเนียม, ยอดค้างชำระ, ต้นทุนการผลิต, กำไรสุทธิ</td>
+          <td><code>id</code> (PK), <code>cycle_code</code> เชื่อมกับ <code>billing_cycles</code></td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">5</td>
+          <td class="table-code">payment_vouchers</td>
+          <td><strong>หลักฐานการรับเงิน/สลิปโอน:</strong> บันทึกประวัติการออกใบเสร็จ, ยอดเงิน, วิธีการชำระ (เงินสด/PromptPay QR)</td>
+          <td><code>id</code> (PK), <code>reading_id</code> (FK), <code>customer_id</code> (FK)</td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">6</td>
+          <td class="table-code">service_tickets</td>
+          <td><strong>ระบบแจ้งซ่อมและร้องเรียน:</strong> รับแจ้งท่อแตกรั่ว, น้ำไม่ไหล, ขอติดตั้งมิเตอร์ใหม่ พร้อมสถานะงานช่าง</td>
+          <td><code>id</code> (PK), <code>customer_id</code> (FK เชื่อม <code>customers</code>)</td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">7</td>
+          <td class="table-code">tariff_rates</td>
+          <td><strong>อัตราค่าน้ำแบบขั้นบันได:</strong> กำหนดช่วงหน่วยน้ำ (0-10, 11-20), ราคาต่อหน่วย และค่าบำรุงรักษา 10 บาท/เดือน</td>
+          <td><code>id</code> (PK), ช่วงหน่วย <code>min_unit</code>, <code>max_unit</code>, <code>price_per_unit</code></td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">8</td>
+          <td class="table-code">tb_customers</td>
+          <td><strong>ตารางลูกค้า (Relational Schema):</strong> รองรับโครงสร้าง Normalized Database มาตรฐาน เชื่อมโยงกับ tb_zone</td>
+          <td><code>cus_id</code> (PK), <code>zone_id</code> (FK)</td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">9</td>
+          <td class="table-code">tb_expenses</td>
+          <td><strong>บันทึกรายจ่ายกองการประปา:</strong> ค่าไฟปั๊มน้ำ, ค่าสารส้ม-คลอรีน, ค่าซ่อมท่อ และเงินเดือนเจ้าหน้าที่</td>
+          <td><code>exp_id</code> (PK), <code>exp_category</code>, <code>exp_amount</code></td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">10</td>
+          <td class="table-code">tb_financial_summary</td>
+          <td><strong>สรุปยอดบัญชีรับ-จ่ายรายปี:</strong> ข้อมูลกระแสเงินสดและยอดเงินคงเหลือของกองทุนประปาหมู่บ้าน</td>
+          <td><code>summary_id</code> (PK), <code>fiscal_year</code></td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">11</td>
+          <td class="table-code">tb_installation</td>
+          <td><strong>ประวัติการขอติดตั้งมิเตอร์ใหม่:</strong> คำขอติดตั้ง, ขนาดมิเตอร์ (1/2", 3/4"), ค่าธรรมเนียมติดตั้ง</td>
+          <td><code>inst_id</code> (PK), <code>cus_id</code> (FK เชื่อม <code>tb_customers</code>)</td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">12</td>
+          <td class="table-code">tb_meter_readings</td>
+          <td><strong>ตารางเลขอ่านมิเตอร์ (Normalized):</strong> ใช้สำรองและรองรับการประมวลผลข้อมูลร่วมกับระบบภายนอก</td>
+          <td><code>reading_id</code> (PK), <code>cus_id</code> (FK)</td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">13</td>
+          <td class="table-code">tb_receipts</td>
+          <td><strong>ประวัติใบเสร็จรับเงินอย่างเป็นทางการ:</strong> จัดเก็บเลขที่ใบเสร็จรับเงินสำหรับพิมพ์สมุดคุมใบเสร็จ</td>
+          <td><code>rcpt_id</code> (PK), <code>reading_id</code> (FK), <code>rcpt_no</code></td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">14</td>
+          <td class="table-code">tb_water_rates</td>
+          <td><strong>อัตราค่าน้ำมาตรฐานท้องถิ่น:</strong> บันทึกข้อบัญญัติท้องถิ่นเรื่องอัตราค่าน้ำและการใช้น้ำสาธารณะ</td>
+          <td><code>rate_id</code> (PK), <code>rate_type</code></td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">15</td>
+          <td class="table-code">tb_zone</td>
+          <td><strong>ทำเนียบโซนและสายเดินจด:</strong> แบ่งพื้นที่หมู่บ้าน เช่น โซน 1 คุ้มทุ่งสามัคคี, โซน 2 คุ้มวัดศรีดอนไชย</td>
+          <td><code>zone_id</code> (PK), <code>zone_name</code></td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">16</td>
+          <td class="table-code">water_loss_logs</td>
+          <td><strong>บันทึกน้ำสูญเสีย (NRW):</strong> เปรียบเทียบน้ำที่ผลิต vs น้ำที่ขายได้ เพื่อตรวจสอบท่อแตกรั่วใต้ดิน</td>
+          <td><code>id</code> (PK), <code>loss_percent</code>, <code>log_date</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout no-break">
+      <div class="callout-title">💡 จุดเด่นทางเทคนิคที่ควรอธิบายให้อาจารย์ฟัง:</div>
+      ระบบมีโครงสร้างตาราง 2 รูปแบบที่สอดคล้องกันอย่างชาญฉลาด: 
+      ตารางกลุ่ม <code>customers</code> และ <code>meter_readings</code> เป็นโครงสร้างสมัยใหม่ที่รองรับ <strong>RESTful JSON API</strong> และการทำงานความเร็วสูงบนมือถือ ส่วนตารางกลุ่ม <code>tb_...</code> เป็นโครงสร้าง <strong>Normalized Relational Schema (3NF)</strong> ที่รองรับการรายงานเชิงลึก ทำให้ระบบมีความเข้ากันได้สูง (Backward & Forward Compatibility)
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- Section 3 -->
+    <h2>3. กลไกการเชื่อมโยงโค้ดภาษา PHP กับฐานข้อมูล (Code Linkage)</h2>
+    <p>
+      เว็บไซต์เชื่อมต่อไปยังฐานข้อมูล MySQL ผ่านไฟล์ศูนย์กลางคือ <code>api/db.php</code> โดยใช้เทคโนโลยี <strong>PDO (PHP Data Objects)</strong> ซึ่งมีข้อดีคือมีความปลอดภัยสูง, รองรับ Prepared Statements ป้องกัน SQL Injection, และทำงานกับภาษาไทยได้อย่างสมบูรณ์:
+    </p>
+
+    <pre><code>// โค้ดเชื่อมต่อฐานข้อมูลใน api/db.php
+$host = 'localhost';
+$db_name = 'db_city_water_supply'; // ฐานข้อมูลที่ phpMyAdmin เปิดอ่าน
+$username = 'root';
+$password = '';
+
+try {
+    $pdo = new PDO("mysql:host={$host};dbname={$db_name};charset=utf8mb4", $username, $password, [
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION, // แจ้งเตือน Error เป็น Exception
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,       // คืนค่าแบบ Associative Array
+        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4, time_zone = '+07:00'" // เวลาและฟอนต์ไทย
+    ]);
+} catch (PDOException $e) {
+    die("Database Connection Error: " . $e->getMessage());
+}</code></pre>
+
+    <h3>แผนผังหน้าเว็บแต่ละหน้าสัมพันธ์กับตารางใดบ้าง:</h3>
+    <table>
+      <thead>
+        <tr>
+          <th width="180">หน้าเว็บไซต์</th>
+          <th width="200">ตารางใน phpMyAdmin ที่เกี่ยวข้อง</th>
+          <th>คำสั่ง SQL และพฤติกรรมข้อมูล (Behavior)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>meter_reading.php</strong><br>(จดมิเตอร์ภาคสนาม)</td>
+          <td>• <code>customers</code><br>• <code>meter_readings</code><br>• <code>billing_cycles</code></td>
+          <td>
+            • เมื่อเปิดหน้า: รัน <code>SELECT c.*, m.current_reading FROM customers c LEFT JOIN meter_readings m ...</code> เพื่อโหลดรายชื่อลูกบ้าน<br>
+            • เมื่อกดบันทึก: รัน <code>INSERT ... ON DUPLICATE KEY UPDATE</code> ลงตาราง <code>meter_readings</code>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>finance_billing.php</strong><br>(การเงิน & ออกบิล)</td>
+          <td>• <code>meter_readings</code><br>• <code>payment_vouchers</code><br>• <code>tariff_rates</code></td>
+          <td>
+            • ดึงยอดค้างชำระมาสร้าง PromptPay QR Code<br>
+            • เมื่อรับเงิน: รัน <code>UPDATE meter_readings SET status='paid'</code> และ <code>INSERT INTO payment_vouchers</code>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>portal_citizen.php</strong><br>(พอร์ทัลลูกบ้าน)</td>
+          <td>• <code>customers</code><br>• <code>meter_readings</code><br>• <code>service_tickets</code></td>
+          <td>
+            • ลูกบ้านค้นหาประวัติค่าน้ำผ่านเบอร์โทร/รหัสผู้ใช้<br>
+            • ส่งคำร้องแจ้งท่อแตกรั่ว: รัน <code>INSERT INTO service_tickets</code>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>dashboard.php</strong><br>(แดชบอร์ดผู้บริหาร)</td>
+          <td>• <code>monthly_financial_reports</code><br>• <code>water_loss_logs</code></td>
+          <td>
+            • รันคำสั่ง Aggregate <code>SUM(total_amount), COUNT(*)</code> เพื่อพล็อตกราฟรายรับ-รายจ่ายและน้ำสูญเสีย
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="page-break"></div>
+
+    <!-- Section 4 -->
+    <h2>4. แนวทางตอบคำถามอาจารย์ / คณะกรรมการสอบโปรเจกต์ (10 Defense Q&A)</h2>
+
+    <div class="qa-card no-break">
+      <div class="qa-q"><span class="qa-badge">คำถามที่ 1</span> phpMyAdmin ในรูปภาพที่แคปมา ทำหน้าที่อะไร และต่างกับ MySQL อย่างไร?</div>
+      <div class="qa-a">
+        <strong>คำตอบ:</strong> "MySQL คือระบบจัดการฐานข้อมูล (Database Engine) ที่ทำหน้าที่เก็บข้อมูลจริงบนฮาร์ดดิสก์ ส่วน phpMyAdmin เป็นหน้ากากกราฟิกผ่านเว็บ (Web-based GUI Tool) ที่ช่วยให้เราตรวจสอบตาราง, เพิ่มลบข้อมูลดิบ, และ Import/Export ไฟล์ได้ง่ายขึ้น เว็บไซต์ของเราไม่ได้ต่อเข้า phpMyAdmin โดยตรง แต่คุยกับ MySQL เครื่องยนต์เดียวกัน ทำให้ข้อมูลที่บันทึกจากหน้าเว็บจะสะท้อนใน phpMyAdmin ทันทีแบบ Real-time ครับ"
+      </div>
+    </div>
+
+    <div class="qa-card no-break">
+      <div class="qa-q"><span class="qa-badge">คำถามที่ 2</span> เว็บไซต์เชื่อมต่อไปยังฐานข้อมูลอย่างไร ใช้โค้ดส่วนไหน?</div>
+      <div class="qa-a">
+        <strong>คำตอบ:</strong> "ระบบเชื่อมต่อผ่านคลาส <code>PDO (PHP Data Objects)</code> ในไฟล์ <code>api/db.php</code> ครับ โดยระบุ Host (localhost), Port (3306), ชื่อฐานข้อมูล, และกำหนดการถอดรหัสเป็น <code>utf8mb4</code> เพื่อรองรับภาษาไทย และตั้งค่า Timezone เป็น <code>+07:00</code> (เวลาประเทศไทย) พร้อมเปิด Error Mode เป็น <code>ERRMODE_EXCEPTION</code> เพื่อดักจับ Error ได้อย่างแม่นยำครับ"
+      </div>
+    </div>
+
+    <div class="qa-card no-break">
+      <div class="qa-q"><span class="qa-badge">คำถามที่ 3</span> ทำไมในรูปภาพจึงมีทั้งตาราง customers และ tb_customers?</div>
+      <div class="qa-a">
+        <strong>คำตอบ:</strong> "ระบบออกแบบรองรับ 2 สถาปัตยกรรมครับ: ตาราง <code>customers</code> และ <code>meter_readings</code> เป็นแบบ Modern API Schema ที่มีโครงสร้างกะทัดรัด เหมาะกับการเรียกผ่าน JavaScript/JSON บนมือถือ ส่วนตาราง <code>tb_...</code> เป็น Relational Normalized Schema ดั้งเดิมที่แยกตารางเป็น 3NF เพื่อเก็บประวัติการติดตั้งและสายเดินจดเชิงลึก ทั้งสองชุดข้อมูลถูกเชื่อมโยงกันทำให้ระบบมีความยืดหยุ่นสูงครับ"
+      </div>
+    </div>
+
+    <div class="qa-card no-break">
+      <div class="qa-q"><span class="qa-badge">คำถามที่ 4</span> ระบบคิดคำนวณค่าน้ำอย่างไร ดึงข้อมูลมาจากตารางไหน?</div>
+      <div class="qa-a">
+        <strong>คำตอบ:</strong> "ระบบคำนวณตามอัตราขั้นบันได (Progressive Tariff) จากตาราง <code>tariff_rates</code> ครับ โดยคำนวณจากหน่วยน้ำที่ใช้ = <code>เลขครั้งนี้ - เลขครั้งก่อน</code> แล้วนำไปคิดราคาตามขั้นบันได เช่น 10 หน่วยแรกหน่วยละ 5 บาท, 10 หน่วยถัดไปหน่วยละ 7 บาท บวกค่าบริการรักษามิเตอร์คงที่ 10 บาท/เดือน ระบบจะคำนวณและแสดงผลสดบนหน้าจอทันทีที่คีย์ตัวเลขครับ"
+      </div>
+    </div>
+
+    <div class="qa-card no-break">
+      <div class="qa-q"><span class="qa-badge">คำถามที่ 5</span> ถ้าเลขมิเตอร์หมุนรอบกลับ (Rollover เช่น จาก 9999 หมุนมาเป็น 0005) ระบบคิดอย่างไร?</div>
+      <div class="qa-a">
+        <strong>คำตอบ:</strong> "ระบบมีฟังก์ชันดักจับกรณี <code>เลขปัจจุบัน < เลขครั้งก่อน</code> ครับ โดยจะคำนวณตามสูตรการทดรอบมิเตอร์คือ <code>(10,000 - เลขครั้งก่อน) + เลขปัจจุบัน</code> แทนที่จะแจ้งว่าติดลบ พร้อมแสดงป้ายเตือนให้เจ้าหน้าที่ตรวจสอบว่ามิเตอร์หมุนครบรอบจริงหรือไม่ครับ"
+      </div>
+    </div>
+
+    <div class="qa-card no-break">
+      <div class="qa-q"><span class="qa-badge">คำถามที่ 6</span> ระบบป้องกันการถูกแฮกหรือการโจมตี SQL Injection อย่างไร?</div>
+      <div class="qa-a">
+        <strong>คำตอบ:</strong> "ระบบใช้ <strong>PDO Prepared Statements</strong> และ Parameter Binding ในทุกจุดที่มีการรับค่าจากภายนอกครับ (เช่น <code>$stmt->prepare()</code> และ <code>$stmt->execute([$id])</code>) ไม่มีการนำตัวแปรผู้ใช้ไปต่อ String ใน SQL เด็ดขาด ทำให้ Hacker ไม่สามารถแทรกคำสั่ง SQL แปลกปลอมเข้ามาได้ครับ"
+      </div>
+    </div>
+
+    <div class="qa-card no-break">
+      <div class="qa-q"><span class="qa-badge">คำถามที่ 7</span> การชำระเงินผ่าน PromptPay QR Code เชื่อมกับฐานข้อมูลอย่างไร?</div>
+      <div class="qa-a">
+        <strong>คำตอบ:</strong> "ระบบอ่านยอดเงินค้างชำระจากตาราง <code>meter_readings</code> แล้วแปลงเป็นรหัสมาตรฐาน EMVCo PromptPay Payload แสดงเป็น QR Code บนหน้าจอ เมื่อมีการยืนยันชำระเงิน ระบบจะบันทึกลงตาราง <code>payment_vouchers</code> และเปลี่ยนสถานะใน <code>meter_readings</code> เป็น <code>paid</code> ทันทีครับ"
+      </div>
+    </div>
+
+    <div class="qa-card no-break">
+      <div class="qa-q"><span class="qa-badge">คำถามที่ 8</span> ตาราง water_loss_logs มีความสำคัญอย่างไรในทางวิศวกรรมและการจัดการ?</div>
+      <div class="qa-a">
+        <strong>คำตอบ:</strong> "ใช้สำหรับคำนวณ <strong>น้ำสูญเสีย (Non-Revenue Water)</strong> ครับ โดยเปรียบเทียบระหว่างปริมาณน้ำที่ผลิตออกจากสถานีสูบ กับปริมาณน้ำรวมที่จดได้ตามบ้าน หากพบอัตราสูญเสียเกินเกณฑ์ 20% หน้า Dashboard จะแจ้งเตือนทันที เพื่อส่งทีมช่างไปตรวจสอบท่อประปาหลักแตกรั่วใต้ดิน ช่วยประหยัดงบประมาณชุมชนครับ"
+      </div>
+    </div>
+
+    <div class="qa-card no-break">
+      <div class="qa-q"><span class="qa-badge">คำถามที่ 9</span> เมื่อเจ้าหน้าที่สแกน QR Code หน้าบ้านแล้วกดบันทึก ข้อมูลวิ่งอย่างไร?</div>
+      <div class="qa-a">
+        <strong>คำตอบ:</strong> "เมื่อสแกน QR หน้าบ้าน JavaScript จะดึงรหัส <code>customer_code</code> ไปจับคู่กับข้อมูลในเครื่อง แล้วแสดงการ์ดบันทึกตัวเลขทันที เมื่อกดบันทึก JavaScript จะส่ง JSON ผ่าน <code>fetch()</code> ไปที่ <code>api/readings.php</code> เพื่อรันคำสั่ง SQL บันทึกลงตาราง <code>meter_readings</code> ภายในเสี้ยววินาที ทำให้สแกนหลังถัดไปได้อย่างต่อเนื่องครับ"
+      </div>
+    </div>
+
+    <div class="qa-card no-break">
+      <div class="qa-q"><span class="qa-badge">คำถามที่ 10</span> ระบบรองรับการเปิดใช้งานนอกสถานที่จริงได้อย่างไร มีความปลอดภัยแค่ไหน?</div>
+      <div class="qa-a">
+        <strong>คำตอบ:</strong> "ระบบรองรับการเปิดผ่าน <strong>Cloudflare Public Tunnel (HTTPS)</strong> ซึ่งเชื่อมต่อจากเครื่อง XAMPP ออกสู่อินเทอร์เน็ตโดยมี SSL Certificate สากล ทำให้เปิดใช้กล้องสแกน QR บนมือถือผ่านเน็ต 4G/5G นอกบ้านได้จริง 100% พร้อมระบบสิทธิ์ <strong>RBAC</strong> แยกแอดมิน ช่างจดมิเตอร์ และลูกบ้านอย่างปลอดภัยครับ"
+      </div>
+    </div>
+
+    <div class="footer-note">
+      เอกสารฉบับนี้จัดทำขึ้นสำหรับประกอบการนำเสนอโครงงานและสอบประเมินผลระบบประปาหมู่บ้านวังยาง © 2026
+    </div>
+
+  </div>
+
+</body>
+</html>
