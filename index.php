@@ -8,8 +8,8 @@ require_once __DIR__ . '/api/db.php';
 $currentUser = getCurrentUser();
 
 $stats = [
-    'total_customers' => 0,
-    'total_zones' => 3,
+    'total_customers' => 580,
+    'total_zones' => 2,
     'current_rate' => 7.00,
     'maintenance_fee' => 10.00,
     'current_cycle' => '8-2567',
@@ -18,14 +18,19 @@ $stats = [
 ];
 
 try {
-
     // ดึงจำนวนผู้ใช้น้ำทั้งหมด
     $cStmt = $pdo->query("SELECT COUNT(*) as cnt FROM customers WHERE status = 'ACTIVE'");
-    $stats['total_customers'] = (int)($cStmt->fetch()['cnt'] ?? 0);
+    $cnt = (int)($cStmt->fetch()['cnt'] ?? 0);
+    if ($cnt > 0) {
+        $stats['total_customers'] = $cnt;
+    }
 
     // ดึงจำนวนโซน
     $zStmt = $pdo->query("SELECT COUNT(DISTINCT zone) as cnt FROM customers");
-    $stats['total_zones'] = (int)($zStmt->fetch()['cnt'] ?? 0);
+    $zCnt = (int)($zStmt->fetch()['cnt'] ?? 0);
+    if ($zCnt > 0) {
+        $stats['total_zones'] = $zCnt;
+    }
 
     // ดึงอัตราค่าน้ำปัจจุบัน
     $tStmt = $pdo->query("SELECT rate_per_unit, maintenance_fee FROM tariff_rates WHERE is_active = 1 ORDER BY id DESC LIMIT 1");
@@ -711,6 +716,137 @@ try {
           <span>เงินกองทุนสะสม</span>
           <strong style="color: #0284c7;"><?php echo number_format($stats['accumulated_balance'], 2); ?> บาท</strong>
         </div>
+      </div>
+    </div>
+
+    <!-- Community Water Supply Zones Section -->
+    <div style="margin-bottom: 32px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;">
+        <div>
+          <h3 style="font-family: 'Prompt', sans-serif; font-size: 19px; font-weight: 700; margin: 0; color: #0f172a;">
+            🗺️ โซนพื้นที่ให้บริการน้ำประปาชุมชน (2 โซนหลัก)
+          </h3>
+          <p style="font-size: 13.5px; color: #64748b; margin: 2px 0 0 0;">
+            ระบบจ่ายน้ำแยกสายท่อเมนหลักเพื่อรักษาแรงดันน้ำให้สม่ำเสมอทั่วถึงทุกครัวเรือน
+          </p>
+        </div>
+        <span style="font-size: 12.5px; background: #e0f2fe; color: #0369a1; padding: 4px 10px; border-radius: 6px; font-weight: 600;">
+          ครอบคลุมผู้ใช้น้ำประมาณ 580 หลังคาเรือน
+        </span>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px;">
+        <!-- Zone 1: โซนทุ่งสามัคคี -->
+        <div style="background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-left: 4px solid #0284c7;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+            <div>
+              <span style="font-size: 12px; font-weight: 700; color: #0284c7; text-transform: uppercase;">รหัสโซน 01</span>
+              <h4 style="font-family: 'Prompt', sans-serif; font-size: 17px; font-weight: 700; margin: 2px 0; color: #0f172a;">โซนทุ่งสามัคคี</h4>
+            </div>
+            <span style="background: #ecfdf5; color: #059669; font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: 9999px;">
+              จ่ายน้ำปกติ ✅
+            </span>
+          </div>
+          <p style="font-size: 13.5px; color: #475569; margin: 0 0 12px 0; line-height: 1.5;">
+            ครอบคลุมคุ้มทุ่งสามัคคี ฝั่งทิศเหนือและโรงเรียนหมู่บ้าน แหล่งจ่ายน้ำจากหอถังสูงทุ่งสามัคคี
+          </p>
+          <div style="background: #f8fafc; border-radius: 8px; padding: 10px 12px; font-size: 13px; color: #334155; display: flex; flex-direction: column; gap: 4px;">
+            <div>👤 <strong>ช่างประจำโซน:</strong> นายสมหมาย มีสุข (โทร. 081-987-6543)</div>
+            <div>🏠 <strong>ผู้ใช้น้ำโดยประมาณ:</strong> ~290 ครัวเรือน</div>
+            <div>⏱️ <strong>รอบเดินจด:</strong> วันที่ 25 - 26 ของเดือน</div>
+          </div>
+        </div>
+
+        <!-- Zone 2: โซนโค้งขี้เหล็ก -->
+        <div style="background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-left: 4px solid #0ea5e9;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+            <div>
+              <span style="font-size: 12px; font-weight: 700; color: #0ea5e9; text-transform: uppercase;">รหัสโซน 02</span>
+              <h4 style="font-family: 'Prompt', sans-serif; font-size: 17px; font-weight: 700; margin: 2px 0; color: #0f172a;">โซนโค้งขี้เหล็ก</h4>
+            </div>
+            <span style="background: #ecfdf5; color: #059669; font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: 9999px;">
+              จ่ายน้ำปกติ ✅
+            </span>
+          </div>
+          <p style="font-size: 13.5px; color: #475569; margin: 0 0 12px 0; line-height: 1.5;">
+            ครอบคลุมคุ้มโค้งขี้เหล็ก ฝั่งทิศใต้และถนนเส้นทางเข้าหมู่บ้าน แหล่งจ่ายน้ำจากหอถังสูงโค้งขี้เหล็ก
+          </p>
+          <div style="background: #f8fafc; border-radius: 8px; padding: 10px 12px; font-size: 13px; color: #334155; display: flex; flex-direction: column; gap: 4px;">
+            <div>👤 <strong>ช่างประจำโซน:</strong> นายคำดี ช่างประปา (โทร. 082-345-6789)</div>
+            <div>🏠 <strong>ผู้ใช้น้ำโดยประมาณ:</strong> ~290 ครัวเรือน</div>
+            <div>⏱️ <strong>รอบเดินจด:</strong> วันที่ 27 - 28 ของเดือน</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Community Operating Rules & Technical Guidance -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; margin-bottom: 32px;">
+      
+      <!-- Calendar & Collection Workflow -->
+      <div style="background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 22px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+        <h4 style="font-family: 'Prompt', sans-serif; font-size: 16px; font-weight: 700; margin: 0 0 14px 0; color: #0f172a; display: flex; align-items: center; gap: 8px;">
+          <span>📅</span> ปฏิทินและขั้นตอนบริการผู้ใช้น้ำ
+        </h4>
+        <div style="display: flex; flex-direction: column; gap: 12px; font-size: 13.5px;">
+          <div style="display: flex; gap: 10px;">
+            <div style="width: 28px; height: 28px; border-radius: 50%; background: #e0f2fe; color: #0284c7; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; font-size: 12px;">1</div>
+            <div>
+              <strong>รอบเดินจดมิเตอร์ (วันที่ 25 - 28):</strong>
+              <div style="color: #64748b; font-size: 13px; margin-top: 2px;">เจ้าหน้าที่ลงพื้นที่เดินจดตามเส้นทางจริง พร้อมสแกน QR หน้าบ้าน</div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <div style="width: 28px; height: 28px; border-radius: 50%; background: #e0f2fe; color: #0284c7; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; font-size: 12px;">2</div>
+            <div>
+              <strong>รอบชำระค่าน้ำ (วันที่ 28 - วันที่ 5):</strong>
+              <div style="color: #64748b; font-size: 13px; margin-top: 2px;">สแกนตรวจสอบค่าน้ำผ่านเว็บ ชำระผ่าน QR ทันที หรือชำระที่เหรัญญิก</div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <div style="width: 28px; height: 28px; border-radius: 50%; background: #fee2e2; color: #dc2626; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; font-size: 12px;">3</div>
+            <div>
+              <strong>ระเบียบยอดค้างชำระ (มติประชาคม):</strong>
+              <div style="color: #64748b; font-size: 13px; margin-top: 2px;">
+                ค้าง 2 งวด ออกหนังสือเตือน (กำหนดชำระ 7 วัน) | ค้างเกิน 3 งวด ระงับการจ่ายน้ำ/ถอดมิเตอร์ (ค่าขอต่อระบบใหม่ 2,500 บาท)
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Technical Warning: Pressure Collision / Dual Systems -->
+      <div style="background: #fff; border: 1px solid #fed7aa; border-radius: 12px; padding: 22px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); background: linear-gradient(180deg, #fffaf5 0%, #ffffff 100%);">
+        <h4 style="font-family: 'Prompt', sans-serif; font-size: 16px; font-weight: 700; margin: 0 0 10px 0; color: #9a3412; display: flex; align-items: center; gap: 8px;">
+          <span>⚠️</span> ข้อแนะนำระบบน้ำ: การป้องกันแรงดันตีกลับ (มิเตอร์ติดลบ)
+        </h4>
+        <p style="font-size: 13.5px; color: #7c2d12; line-height: 1.6; margin: 0 0 12px 0;">
+          สำหรับบ้านเรือนที่มี <strong>บ่อบาดาลส่วนตัว</strong> และต่อท่อร่วมกับระบบประปาหมู่บ้าน กรุณาตรวจสอบ <strong>เช็ควาล์ว (Check Valve)</strong> หรือปิดวาล์วแยกส่วนทุกครั้ง เพื่อป้องกันไม่ให้แรงดันจากปั๊มบาดาลดันน้ำย้อนเข้าสู่ท่อประปาหมู่บ้าน ซึ่งจะทำให้ตัวเลขมิเตอร์น้ำหมุนถอยหลังหรือเกิดค่าใช้น้ำผิดปกติ
+        </p>
+        <div style="background: #fff; border: 1px solid #fdba74; border-radius: 8px; padding: 10px 14px; font-size: 12.5px; color: #9a3412;">
+          📞 หากพบปัญหามิเตอร์หมุนถอยหลัง ท่อเมนแตกรั่ว หรือน้ำไม่ไหล กรุณาแจ้งช่างประจำโซนหรือผู้ใหญ่บ้านได้ทันทีตลอด 24 ชั่วโมง
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Contact & Committee Office Information -->
+    <div style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 12px; padding: 20px 24px; margin-bottom: 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+      <div>
+        <h4 style="font-family: 'Prompt', sans-serif; font-size: 15px; font-weight: 700; margin: 0 0 4px 0; color: #0f172a;">
+          🏛️ ที่ทำการกองทุนระบบน้ำประปาหมู่บ้านวังยาง หมู่ที่ 3
+        </h4>
+        <p style="font-size: 13px; color: #475569; margin: 0;">
+          ศาลาประชาคมหมู่บ้านวังยาง ตำบลวังยาง อำเภอวังยาง จังหวัดนครพนม 48130
+        </p>
+      </div>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <a href="tel:0891234567" style="background: #fff; border: 1px solid #cbd5e1; padding: 8px 14px; border-radius: 6px; text-decoration: none; font-size: 13px; color: #0369a1; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+          📞 ผู้ใหญ่บ้าน: 089-123-4567
+        </a>
+        <a href="portal_citizen.php#citizen-services" style="background: #0284c7; color: #fff; padding: 8px 14px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+          🔧 แจ้งท่อแตกรั่วออนไลน์ &rarr;
+        </a>
       </div>
     </div>
 

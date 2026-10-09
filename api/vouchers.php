@@ -1,6 +1,6 @@
 <?php
 /**
- * API จัดการฎีกาเบิกจ่ายเงินและใบสำคัญรับเงินกองทุนประปาหมู่บ้านวังยาง
+ * API จัดการเอกสารเบิกจ่ายเงินและใบสำคัญรับเงินกองทุนประปาหมู่บ้านวังยาง
  * รองรับ: ดึงข้อมูล, บันทึกรายการใหม่ (Custom Voucher), ลบรายการ, ซิงค์ค่าตอบแทน 10%
  */
 require_once __DIR__ . '/db.php';
@@ -29,11 +29,11 @@ if ($method === 'POST' && $action === 'delete') {
     $data = json_decode($rawInput, true);
     $id = (int)($_GET['id'] ?? $data['id'] ?? 0);
     if ($id <= 0) {
-        send_json(['error' => 'รหัสฎีกาไม่ถูกต้อง'], 400);
+        send_json(['error' => 'รหัสเอกสารไม่ถูกต้อง'], 400);
     }
     $delStmt = $pdo->prepare("DELETE FROM payment_vouchers WHERE id = ?");
     $delStmt->execute([$id]);
-    send_json(['success' => true, 'message' => 'ลบรายการฎีกาเบิกจ่ายเรียบร้อยแล้ว']);
+    send_json(['success' => true, 'message' => 'ลบรายการเบิกจ่ายเรียบร้อยแล้ว']);
 }
 
 // 2. CREATE NEW VOUCHER ACTION
@@ -69,18 +69,18 @@ if ($method === 'POST' && ($action === 'create' || empty($action))) {
         send_json(['error' => 'จำนวนเงินต้องมากกว่า 0 บาท'], 400);
     }
 
-    // Generate unique voucher_no e.g. ฎีกา-8-2567/01
+    // Generate unique voucher_no e.g. บจ-8-2567/01
     $countStmt = $pdo->prepare("SELECT COUNT(*) FROM payment_vouchers WHERE billing_cycle_id = ?");
     $countStmt->execute([(int)$cycle['id']]);
     $existingCount = (int)$countStmt->fetchColumn();
 
     $idx = $existingCount + 1;
-    $voucherNo = sprintf("ฎีกา-%s/%02d", $cycle_code, $idx);
+    $voucherNo = sprintf("บจ-%s/%02d", $cycle_code, $idx);
     // Double check uniqueness
     $checkStmt = $pdo->prepare("SELECT COUNT(*) FROM payment_vouchers WHERE voucher_no = ?");
     $checkStmt->execute([$voucherNo]);
     if ((int)$checkStmt->fetchColumn() > 0) {
-        $voucherNo = sprintf("ฎีกา-%s/%02d-%s", $cycle_code, $idx, substr(uniqid(), -3));
+        $voucherNo = sprintf("บจ-%s/%02d-%s", $cycle_code, $idx, substr(uniqid(), -3));
     }
 
     $amountTextTh = baht_text($amount);
@@ -100,7 +100,7 @@ if ($method === 'POST' && ($action === 'create' || empty($action))) {
 
     send_json([
         'success' => true,
-        'message' => 'บันทึกฎีกาเบิกจ่ายสำเร็จ',
+        'message' => 'บันทึกรายการเบิกจ่ายสำเร็จ',
         'voucher' => [
             'id' => $newId,
             'voucherNo' => $voucherNo,
@@ -151,7 +151,7 @@ if ($method === 'POST' && $action === 'sync_commission') {
         $upStmt = $pdo->prepare("UPDATE payment_vouchers SET amount = ?, amount_text_th = ?, calculation_basis = ? WHERE id = ?");
         $upStmt->execute([$commission, $amountTextTh, $basis, (int)$existing['id']]);
     } else {
-        $vNo = sprintf("ฎีกา-%s/01", $cycle_code);
+        $vNo = sprintf("บจ-%s/01", $cycle_code);
         $insStmt = $pdo->prepare("
             INSERT INTO payment_vouchers (
                 voucher_no, billing_cycle_id, voucher_date, recipient_name, recipient_position,
@@ -235,7 +235,7 @@ if (count($dbVouchers) === 0) {
     ");
 
     foreach ($defaults as $idx => $d) {
-        $vNo = sprintf("ฎีกา-%s/%02d", $cycle_code, $idx + 1);
+        $vNo = sprintf("บจ-%s/%02d", $cycle_code, $idx + 1);
         $insStmt->execute([
             $vNo,
             (int)$cycle['id'],

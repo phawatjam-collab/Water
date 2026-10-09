@@ -58,22 +58,22 @@ $currentUser = requireRole(['admin']);
       <!-- Dashboard Internal Tab Bar for Admin Tools -->
       <div class="dashboard-tabs-bar no-print">
         <button class="nav-item active" data-tab="tab-readings">
-          <span class="icon">📝</span> จดมิเตอร์ (ป.17)
+          <span class="icon">📝</span> จดมิเตอร์น้ำประปา
         </button>
         <button class="nav-item" data-tab="tab-receipts">
-          <span class="icon">🧾</span> ใบเสร็จ (ป.31/32)
+          <span class="icon">🧾</span> ออกใบเสร็จรับเงิน
         </button>
         <button class="nav-item" data-tab="tab-vouchers">
-          <span class="icon">📜</span> ฎีกาเบิกจ่าย 10%
+          <span class="icon">📜</span> ค่าตอบแทนคนจด (10%)
         </button>
         <button class="nav-item" data-tab="tab-financials">
-          <span class="icon">📊</span> งบการเงิน & กราฟ (กค.3)
+          <span class="icon">📊</span> งบการเงิน & สรุปผล
         </button>
         <button class="nav-item" data-tab="tab-arrears">
-          <span class="icon">⚠️</span> ทะเบียนคุมหนี้ (กค.4)
+          <span class="icon">⚠️</span> ติดตามยอดค้างชำระ
         </button>
         <button class="nav-item" data-tab="tab-customers">
-          <span class="icon">👥</span> ทะเบียนสมาชิก (ป.12)
+          <span class="icon">👥</span> ทะเบียนผู้ใช้น้ำ
         </button>
         <button class="nav-item" data-tab="tab-settings">
           <span class="icon">⚙️</span> ตั้งค่าอัตราค่าน้ำ
@@ -308,13 +308,13 @@ $currentUser = requireRole(['admin']);
       </section>
 
       <!-- ======================================================= -->
-      <!-- TAB 3: ใบสำคัญรับเงิน / ฎีกาเบิกจ่าย (Vouchers / Mail Merge) -->
+      <!-- TAB 3: เอกสารเบิกจ่าย & ค่าตอบแทนคนจด 10% (Vouchers / Mail Merge) -->
       <!-- ======================================================= -->
       <section id="tab-vouchers" class="tab-pane">
         <div class="card no-print voucher-filter-bar">
           <div class="voucher-info-box">
-            <h3>📜 ฎีกาเบิกจ่ายและใบสำคัญรับเงิน ประจำงวด <span id="voucher-cycle-text">สิงหาคม 2567</span></h3>
-            <p class="text-muted">ระบบคำนวณค่าตอบแทนเจ้าหน้าที่เก็บค่าน้ำ 10% จากยอดจัดเก็บจริง และค่าตอบแทนคณะกรรมการอัตโนมัติ</p>
+            <h3>📜 เอกสารเบิกจ่ายค่าตอบแทนและค่าใช้จ่าย ประจำงวด <span id="voucher-cycle-text">สิงหาคม 2567</span></h3>
+            <p class="text-muted">ระบบคำนวณค่าตอบแทนเจ้าหน้าที่เก็บค่าน้ำ 10% จากยอดจัดเก็บจริง และค่าใช้จ่ายระบบอัตโนมัติ</p>
           </div>
           <div class="voucher-actions">
             <button class="btn btn-outline" id="btn-add-custom-voucher">➕ เพิ่มรายการเบิกจ่ายใหม่</button>
@@ -556,7 +556,7 @@ $currentUser = requireRole(['admin']);
       </section>
 
       <!-- ======================================================= -->
-      <!-- TAB: ทะเบียนคุมหนี้ค้างชำระ (Delinquent Accounts - แบบ กค.4) -->
+      <!-- TAB: ทะเบียนติดตามยอดค้างชำระ (Delinquent Accounts) -->
       <!-- ======================================================= -->
       <section id="tab-arrears" class="tab-pane">
         <!-- Aging Stats Cards (no-print) -->
@@ -596,7 +596,7 @@ $currentUser = requireRole(['admin']);
           </div>
           <div class="filter-actions">
             <button class="btn btn-outline" id="btn-arrears-refresh">🔄 รีเฟรชข้อมูลลูกหนี้</button>
-            <button class="btn btn-primary" onclick="window.print()">🖨️ พิมพ์ทะเบียนคุมหนี้ (กค.4)</button>
+            <button class="btn btn-primary" onclick="window.print()">🖨️ พิมพ์รายงานยอดค้างชำระ</button>
           </div>
         </div>
 
@@ -604,7 +604,7 @@ $currentUser = requireRole(['admin']);
         <div class="card table-card" id="arrears-print-area">
           <div class="table-responsive">
             <div class="report-header only-print" style="margin-bottom: 16px;">
-              <h2>ทะเบียนคุมลูกหนี้ค่าน้ำประปาค้างชำระ (แบบ กค.4)</h2>
+              <h2>รายงานรายชื่อผู้ใช้น้ำค้างชำระค่าน้ำประปา</h2>
               <h3>กิจการประปาหมู่บ้านวังยาง หมู่ที่ 3 ตำบลวังยาง</h3>
               <p>ประจำงวดเดือน <span id="arrears-cycle-display">สิงหาคม 2567</span></p>
             </div>

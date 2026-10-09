@@ -1,6 +1,6 @@
 <?php
 /**
- * 4. งานกำกับนโยบายและรายงานการเงินกองทุน (แบบ กค.3)
+ * 4. งานกำกับนโยบายและรายงานการเงินกองทุน
  * สิทธิ์การใช้งาน: คณะกรรมการบริหาร / ประธาน (admin) และ เจ้าหน้าที่ (staff)
  */
 require_once __DIR__ . '/auth.php';
@@ -17,7 +17,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>งานกำกับนโยบายและรายงานการเงินกองทุน (แบบ กค.3) - การประปาหมู่บ้านวังยาง</title>
+  <title>รายงานภาพรวม & การเงินกองทุนประปา - การประปาหมู่บ้านวังยาง</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -67,10 +67,10 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
 
     <!-- Main Content Area -->
     <main class="main-content">
-      <?php renderAppTopBar('งานกำกับนโยบายและรายงานการเงินกองทุน (แบบ กค.3)', 'แดชบอร์ดผู้บริหาร วิเคราะห์น้ำสูญเสีย (NRW) งบดุลการเงิน และนโยบายอัตราค่าน้ำ'); ?>
+      <?php renderAppTopBar('รายงานภาพรวม & การเงินกองทุนประปา', 'แดชบอร์ดผู้บริหาร วิเคราะห์น้ำสูญเสีย (NRW) รายงานรายรับ-รายจ่าย และนโยบายอัตราค่าน้ำ'); ?>
 
     <!-- Top Action / Cycle Bar -->
-    <div class="card no-print" style="margin-bottom: 16px; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-left: 4px solid #7c3aed;">
+    <div class="card no-print" style="margin-bottom: 16px; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-left: 4px solid #0284c7;">
       <div style="display: flex; align-items: center; gap: 12px;">
         <span style="font-size: 26px;">🏛️</span>
         <div>
@@ -79,7 +79,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
         </div>
       </div>
 
-      <div style="display: flex; align-items: center; gap: 10px;">
+      <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
         <label for="exec-cycle-select" style="font-size: 13px; font-weight: 600;">เลือกงวดเดือน:</label>
         <select id="exec-cycle-select" class="form-select" style="font-weight: 600;">
           <?php foreach ($cycles as $c): ?>
@@ -88,7 +88,8 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
             </option>
           <?php endforeach; ?>
         </select>
-        <button type="button" class="btn btn-primary" onclick="window.print()">🖨️ สั่งพิมพ์รายงาน (กค.3)</button>
+        <button type="button" class="btn btn-outline" onclick="copyExcel365Summary()" title="คัดลอกสรุปตัวเลขนำไปวางใน Excel 365 หรือส่งสรุปในกลุ่มไลน์กรรมการ" style="background: #fff; font-weight: 600;">📋 สรุปส่ง Excel 365</button>
+        <button type="button" class="btn btn-primary" onclick="window.print()">🖨️ สั่งพิมพ์รายงานสรุป</button>
       </div>
     </div>
 
@@ -98,10 +99,10 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
         <span>📊</span> 1. แดชบอร์ดผู้บริหาร & วิเคราะห์ NRW
       </button>
       <button class="exec-tab-btn" data-target="pane-report">
-        <span>📋</span> 2. งบการเงินประจำเดือน (แบบ กค.3)
+        <span>📋</span> 2. รายงานสรุปรายรับ - รายจ่ายประจำเดือน
       </button>
       <button class="exec-tab-btn" data-target="pane-members">
-        <span>👥</span> 3. ทะเบียนผู้ใช้น้ำ (แบบ ป.12)
+        <span>👥</span> 3. ทะเบียนผู้ใช้น้ำชุมชน
       </button>
       <button class="exec-tab-btn" data-target="pane-policy">
         <span>⚙️</span> 4. ตั้งค่านโยบาย & อัตราค่าน้ำ
@@ -162,12 +163,12 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
     </div>
 
     <!-- ========================================================= -->
-    <!-- PANE 2: งบการเงินประจำเดือน (แบบ กค.3) -->
+    <!-- PANE 2: รายงานสรุปรายรับ - รายจ่ายประจำเดือน -->
     <!-- ========================================================= -->
     <div id="pane-report" class="exec-pane">
       <div class="report-document" style="background: #fff; padding: 30px; border-radius: 8px; border: 1px solid #cbd5e1; max-width: 900px; margin: 0 auto; box-shadow: var(--shadow);">
         <div class="report-header" style="text-align: center; border-bottom: 2px solid #0f172a; padding-bottom: 12px; margin-bottom: 20px;">
-          <h2 style="font-family: 'Prompt', sans-serif; font-size: 20px; margin: 0; color: #0f172a;">รายงานสรุปรายรับ - รายจ่าย ประจำเดือน (แบบ กค.3)</h2>
+          <h2 style="font-family: 'Prompt', sans-serif; font-size: 20px; margin: 0; color: #0f172a;">รายงานสรุปรายรับ - รายจ่าย ประจำเดือน</h2>
           <h3 style="font-size: 15px; margin: 4px 0;">กิจการประปาหมู่บ้านวังยาง หมู่ที่ 3 ตำบลวังยาง อำเภอวังยาง จังหวัดนครพนม</h3>
           <p style="font-size: 13px; color: #475569; margin: 0;">ประจำงวดเดือน <span id="gk3-cycle">-</span></p>
         </div>
@@ -266,7 +267,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
     </div>
 
     <!-- ========================================================= -->
-    <!-- PANE 3: ทะเบียนผู้ใช้น้ำ (แบบ ป.12) -->
+    <!-- PANE 3: ทะเบียนผู้ใช้น้ำชุมชน -->
     <!-- ========================================================= -->
     <div id="pane-members" class="exec-pane">
       <div class="card table-card">
@@ -500,6 +501,31 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
           </tr>
         `).join('');
       }
+    }
+
+    function copyExcel365Summary() {
+      const cycle = currentCycle;
+      const rev = document.getElementById('gk-total-rev')?.innerText || '0.00';
+      const exp = document.getElementById('gk-total-exp')?.innerText || '0.00';
+      const profit = document.getElementById('gk-net-profit')?.innerText || '0.00';
+      const balance = document.getElementById('gk-total-balance')?.innerText || '0.00';
+      const nrw = document.getElementById('exec-stat-nrw')?.innerText || '13.8%';
+      const coll = document.getElementById('exec-stat-coll')?.innerText || '92.5%';
+
+      const summaryText = `[รายงานสรุปการเงินประปาหมู่บ้านวังยาง งวด ${cycle}]\n` +
+        `รายรับทั้งสิ้น:\t${rev}\tบาท\n` +
+        `รายจ่ายทั้งสิ้น:\t${exp}\tบาท\n` +
+        `กำไร/ขาดทุนสุทธิ:\t${profit}\n` +
+        `ยอดเงินคงเหลือสะสม:\t${balance}\n` +
+        `ประสิทธิภาพการจัดเก็บ:\t${coll}\n` +
+        `น้ำสูญเสียในระบบ (NRW):\t${nrw}\n` +
+        `วันที่ส่งข้อมูล:\t${new Date().toLocaleDateString('th-TH')}`;
+
+      navigator.clipboard.writeText(summaryText).then(() => {
+        alert('📋 คัดลอกข้อมูลสรุปประจำงวดเรียบร้อยแล้ว!\nสามารถนำไปวาง (Ctrl+V) ใน Excel 365 หรือส่งสรุปในกลุ่มไลน์คณะกรรมการได้ทันที');
+      }).catch(() => {
+        prompt('คัดลอกข้อความสรุปด้านล่างนี้สำหรับวางใน Excel 365:', summaryText);
+      });
     }
 
     function handlePolicySave(e) {

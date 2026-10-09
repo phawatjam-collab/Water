@@ -411,7 +411,7 @@ CREATE TABLE `tb_zone` (
 
 LOCK TABLES `tb_zone` WRITE;
 /*!40000 ALTER TABLE `tb_zone` DISABLE KEYS */;
-INSERT INTO `tb_zone` VALUES (01,'โซน 1 วังยางเหนือ'),(02,'โซน 2 วังยางกลาง'),(03,'โซน 3 วังยางใต้');
+INSERT INTO `tb_zone` VALUES (01,'โซนทุ่งสามัคคี'),(02,'โซนโค้งขี้เหล็ก');
 /*!40000 ALTER TABLE `tb_zone` ENABLE KEYS */;
 UNLOCK TABLES;
 

@@ -117,7 +117,7 @@ function renderAppSidebar($activeRoute = 'home') {
                 'items' => [
                     [
                         'id' => 'field',
-                        'title' => 'สมุดจดมิเตอร์ (ป.17)',
+                        'title' => 'จดมิเตอร์น้ำประปา',
                         'icon' => '📝',
                         'url' => 'meter_reading.php',
                         'is_sub' => false
@@ -131,21 +131,21 @@ function renderAppSidebar($activeRoute = 'home') {
                     ],
                     [
                         'id' => 'finance',
-                        'title' => 'ตัดรับชำระเงิน & ออกใบเสร็จ',
+                        'title' => 'รับชำระเงิน & ออกใบเสร็จ',
                         'icon' => '🧾',
                         'url' => 'finance_billing.php',
                         'is_sub' => false
                     ],
                     [
                         'id' => 'arrears',
-                        'title' => 'ทะเบียนหนี้ค้างชำระ',
+                        'title' => 'ติดตามยอดค้างชำระ & พิมพ์ใบเตือน',
                         'icon' => '⚠️',
                         'url' => 'finance_billing.php#pane-arrears',
                         'is_sub' => true
                     ],
                     [
                         'id' => 'vouchers',
-                        'title' => 'ฎีกาเบิกจ่ายเงินกองทุน',
+                        'title' => 'สรุปค่าใช้จ่าย & ค่าตอบแทนคนจด (10%)',
                         'icon' => '📜',
                         'url' => 'finance_billing.php#pane-vouchers',
                         'is_sub' => true
@@ -217,7 +217,7 @@ function renderAppSidebar($activeRoute = 'home') {
                 'items' => [
                     [
                         'id' => 'field',
-                        'title' => 'สมุดจดมิเตอร์ (ภาคสนาม)',
+                        'title' => 'จดมิเตอร์น้ำประปา',
                         'icon' => '📝',
                         'url' => 'meter_reading.php',
                         'is_sub' => false
@@ -231,21 +231,21 @@ function renderAppSidebar($activeRoute = 'home') {
                     ],
                     [
                         'id' => 'finance',
-                        'title' => 'งานการเงิน & ฎีกาเบิกจ่าย',
+                        'title' => 'รับชำระเงิน & ออกใบเสร็จ',
                         'icon' => '🧾',
                         'url' => 'finance_billing.php',
                         'is_sub' => false
                     ],
                     [
                         'id' => 'arrears',
-                        'title' => 'ทะเบียนหนี้ค้างชำระ',
+                        'title' => 'ติดตามยอดค้างชำระ & พิมพ์ใบเตือน',
                         'icon' => '⚠️',
                         'url' => 'finance_billing.php#pane-arrears',
                         'is_sub' => true
                     ],
                     [
                         'id' => 'vouchers',
-                        'title' => 'ฎีกาเบิกจ่ายเงินกองทุน',
+                        'title' => 'สรุปค่าใช้จ่าย & ค่าตอบแทนคนจด (10%)',
                         'icon' => '📜',
                         'url' => 'finance_billing.php#pane-vouchers',
                         'is_sub' => true

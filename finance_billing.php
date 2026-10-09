@@ -1,6 +1,6 @@
 <?php
 /**
- * 3. งานรับชำระเงินและจัดทำฎีกาเบิกจ่าย
+ * 3. งานรับชำระเงิน ออกใบเสร็จ และสรุปค่าใช้จ่าย
  * สิทธิ์การใช้งาน: เจ้าหน้าที่การประปา (staff) และ ผู้ดูแลระบบ (admin)
  */
 require_once __DIR__ . '/auth.php';
@@ -17,7 +17,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>งานการเงิน ออกใบเสร็จ และฎีกาเบิกจ่าย - การประปาหมู่บ้านวังยาง</title>
+  <title>งานการเงิน ออกใบเสร็จ และสรุปค่าใช้จ่าย - การประปาหมู่บ้านวังยาง</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -175,7 +175,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
 
     <!-- Main Content Area -->
     <main class="main-content">
-      <?php renderAppTopBar('งานรับชำระเงินและจัดทำฎีกาเบิกจ่าย', 'งานการเงิน เหรัญญิก ออกใบเสร็จมาตรฐาน ทะเบียนคุมหนี้ และฎีกา 10%'); ?>
+      <?php renderAppTopBar('งานรับชำระเงิน & ออกใบเสร็จ', 'งานการเงิน เหรัญญิก ออกใบเสร็จรับเงิน ติดตามหนี้ค้าง และค่าตอบแทนคนจด 10%'); ?>
 
     <!-- Unified Finance Control Header -->
     <div class="card no-print" style="margin-bottom: 20px; padding: 18px 22px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
@@ -224,14 +224,14 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
           <span class="fin-tab-badge" id="tab-badge-unpaid">-</span>
         </button>
         <button class="fin-tab-btn" data-target="pane-receipt">
-          <span>🧾</span> 2. พิมพ์ใบเสร็จรับเงิน (ป.31/32)
+          <span>🧾</span> 2. พิมพ์ใบเสร็จรับเงิน
         </button>
         <button class="fin-tab-btn" data-target="pane-arrears">
-          <span>⚠️</span> 3. ทะเบียนคุมหนี้ค้างชำระ (กค.4)
+          <span>⚠️</span> 3. ติดตามยอดค้างชำระ & พิมพ์ใบเตือน
           <span class="fin-tab-badge" id="tab-badge-debtors">-</span>
         </button>
         <button class="fin-tab-btn" data-target="pane-vouchers">
-          <span>📜</span> 4. ฎีกาเบิกจ่าย & ใบสำคัญรับเงิน
+          <span>📜</span> 4. สรุปค่าใช้จ่าย & ค่าตอบแทนคนจด (10%)
         </button>
       </div>
     </div>
@@ -320,7 +320,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
     </div>
 
     <!-- ========================================================= -->
-    <!-- PANE 2: พิมพ์ใบเสร็จรับเงิน (แบบ ป.31/32) -->
+    <!-- PANE 2: พิมพ์ใบเสร็จรับเงิน -->
     <!-- ========================================================= -->
     <div id="pane-receipt" class="fin-pane">
       <div class="card no-print receipt-toolbar" style="margin-bottom: 20px; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-left: 4px solid #0284c7; border-radius: 12px;">
@@ -351,7 +351,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
           <h2 style="font-family: 'Prompt', sans-serif; font-size: 20px; margin: 0; color: #0f172a;">ใบเสร็จรับเงินค่าน้ำประปาหมู่บ้าน</h2>
           <h3 style="font-size: 15px; margin: 2px 0; color: #334151;">การประปาหมู่บ้านวังยาง หมู่ที่ 3 ตำบลวังยาง อำเภอวังยาง จังหวัดนครพนม</h3>
           <span style="display: inline-block; background: #0f172a; color: #fff; font-size: 13px; font-weight: 700; padding: 3px 14px; border-radius: 4px; margin-top: 6px;">
-            แบบ ป.31/32 (ต้นฉบับสำหรับผู้ใช้น้ำ)
+            ใบเสร็จรับเงินค่าน้ำประปา (ต้นฉบับสำหรับผู้ใช้น้ำ)
           </span>
         </div>
 
@@ -442,7 +442,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
     </div>
 
     <!-- ========================================================= -->
-    <!-- PANE 3: ทะเบียนคุมหนี้ค้างชำระ (แบบ กค.4) -->
+    <!-- PANE 3: ทะเบียนติดตามยอดค้างชำระ & พิมพ์หนังสือเตือน -->
     <!-- ========================================================= -->
     <div id="pane-arrears" class="fin-pane">
       <div class="stats-grid no-print" style="margin-bottom: 16px;">
@@ -515,7 +515,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
     </div>
 
     <!-- ========================================================= -->
-    <!-- PANE 4: ฎีกาเบิกจ่าย & ใบสำคัญรับเงินกองทุนประปา -->
+    <!-- PANE 4: สรุปค่าใช้จ่าย & ค่าตอบแทนคนจด (10%) -->
     <!-- ========================================================= -->
     <div id="pane-vouchers" class="fin-pane">
       <!-- Summary Statistics Bar -->
@@ -528,7 +528,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
         <div class="stat-card">
           <span class="stat-label">ยอดเบิกจ่ายรวมงวดนี้</span>
           <span class="stat-value text-danger" id="vc-stat-disbursed">0.00 ฿</span>
-          <span class="stat-desc text-muted">จากฎีกาทั้งหมด <span id="vc-stat-count">0</span> ฉบับ</span>
+          <span class="stat-desc text-muted">จากรายการเบิกจ่ายทั้งหมด <span id="vc-stat-count">0</span> ฉบับ</span>
         </div>
         <div class="stat-card">
           <span class="stat-label">ยอดเงินกองทุนคงเหลืองวดนี้</span>
@@ -574,7 +574,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
         <!-- Action Buttons -->
         <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
           <button type="button" class="btn btn-primary" onclick="openCreateVoucherModal()" style="font-weight: 600; padding: 8px 16px; display: inline-flex; align-items: center; gap: 6px;">
-            <span>➕</span> ออกฎีกาเบิกจ่ายรายการใหม่
+            <span>➕</span> บันทึกรายการเบิกจ่ายใหม่
           </button>
           <button type="button" class="btn btn-outline" onclick="printBlankVoucher()" style="font-weight: 600; padding: 8px 14px; display: inline-flex; align-items: center; gap: 6px; background: #fff;">
             <span>📄</span> พิมพ์แบบฟอร์มเปล่า
@@ -592,14 +592,14 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
     </main>
   </div> <!-- /.app-layout -->
 
-  <!-- Modal for Quick Receipt Preview & Printing (ใบเสร็จรับเงินมาตรฐาน ป.31/32) -->
+  <!-- Modal for Quick Receipt Preview & Printing (ใบเสร็จรับเงินมาตรฐาน) -->
   <div class="modal" id="fin-receipt-modal">
     <div class="modal-dialog" style="max-width: 820px;">
       <div class="modal-content">
         <div class="modal-header" style="background: #0284c7; color: #fff;">
           <div style="display: flex; align-items: center; gap: 8px;">
             <span style="font-size: 20px;">🧾</span>
-            <h3 style="color: #fff; margin: 0; font-size: 16px; font-weight: 700;" id="m-rcpt-title">ใบเสร็จรับเงินค่าน้ำประปา (แบบ ป.31/32)</h3>
+            <h3 style="color: #fff; margin: 0; font-size: 16px; font-weight: 700;" id="m-rcpt-title">ใบเสร็จรับเงินค่าน้ำประปา</h3>
           </div>
           <button type="button" class="modal-close" onclick="closeModal('fin-receipt-modal')" style="color: #fff;">&times;</button>
         </div>
@@ -613,7 +613,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
           <div style="display: flex; gap: 8px; flex-wrap: wrap;">
             <button type="button" class="btn btn-outline" onclick="closeModal('fin-receipt-modal')" style="background: #fff;">ปิดหน้าต่าง</button>
             <button type="button" class="btn btn-outline" id="btn-m-rcpt-fullpage" style="background: #fff; color: #0284c7; border-color: #0284c7; font-weight: 600;">
-              🖥️ เปิดหน้าเต็ม (ป.31/32)
+              🖥️ เปิดหน้าเต็มใบเสร็จ
             </button>
             <button type="button" class="btn btn-primary" id="btn-m-rcpt-print" style="font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
               <span>🖨️</span> สั่งพิมพ์ใบเสร็จนี้
@@ -643,14 +643,14 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
     </div>
   </div>
 
-  <!-- Modal for Creating New Custom Payment Voucher (แบบฟอร์มออกฎีกาเบิกจ่ายรายการใหม่) -->
+  <!-- Modal for Creating New Custom Payment Voucher (แบบฟอร์มบันทึกรายการเบิกจ่ายใหม่) -->
   <div class="modal" id="fin-voucher-modal">
     <div class="modal-dialog" style="max-width: 640px;">
       <div class="modal-content">
         <div class="modal-header" style="background: #0f172a; color: #fff;">
           <div style="display: flex; align-items: center; gap: 8px;">
             <span style="font-size: 20px;">📜</span>
-            <h3 style="color: #38bdf8; margin: 0; font-size: 16px; font-weight: 700;">ออกฎีกาเบิกจ่ายเงิน / ใบสำคัญรับเงิน (รายการใหม่)</h3>
+            <h3 style="color: #38bdf8; margin: 0; font-size: 16px; font-weight: 700;">บันทึกรายการเบิกจ่ายเงิน / ใบสำคัญรับเงิน (รายการใหม่)</h3>
           </div>
           <button type="button" class="modal-close" onclick="closeModal('fin-voucher-modal')" style="color: #94a3b8;">&times;</button>
         </div>
@@ -726,7 +726,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
 
           <div class="form-actions text-right" style="padding-top: 14px; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 10px;">
             <button type="button" class="btn btn-outline" onclick="closeModal('fin-voucher-modal')">ยกเลิก</button>
-            <button type="submit" class="btn btn-primary" id="btn-submit-voucher" style="font-weight: 600;">💾 บันทึกและออกฎีกาเบิกจ่าย</button>
+            <button type="submit" class="btn btn-primary" id="btn-submit-voucher" style="font-weight: 600;">💾 บันทึกรายการเบิกจ่าย</button>
           </div>
         </form>
       </div>
@@ -1165,7 +1165,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
             <h2 style="font-family: 'Prompt', sans-serif; font-size: 19px; margin: 0; color: #0f172a;">${d.organizationName || 'การประปาหมู่บ้านวังยาง หมู่ที่ 3'}</h2>
             <h3 style="font-size: 14.5px; margin: 3px 0; color: #334151;">ใบเสร็จรับเงินค่าน้ำประปาหมู่บ้าน</h3>
             <span style="display: inline-block; background: #0f172a; color: #fff; font-size: 12px; font-weight: 700; padding: 2px 12px; border-radius: 4px; margin-top: 4px;">
-              แบบ ป.31/32 (ต้นฉบับสำหรับผู้ใช้น้ำ)
+              ใบเสร็จรับเงินค่าน้ำประปา (ต้นฉบับสำหรับผู้ใช้น้ำ)
             </span>
           </div>
 
@@ -1344,7 +1344,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
         <html lang="th">
         <head>
           <meta charset="UTF-8">
-          <title>พิมพ์ใบเสร็จรับเงิน ป.31/32 - การประปาหมู่บ้านวังยาง</title>
+          <title>พิมพ์ใบเสร็จรับเงินค่าน้ำประปา - การประปาหมู่บ้านวังยาง</title>
           <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700&family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
           <style>
             @page { size: A4 portrait; margin: 15mm; }
@@ -1617,8 +1617,8 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
           <p style="text-indent: 30px; margin: 10px 0;">
             จากการตรวจสอบบัญชี ปรากฏว่าท่านค้างชำระค่าน้ำประปาเป็นเวลา <strong>${d.monthsOverdue} งวด</strong> ยอดหนี้รวมทั้งสิ้น <strong>${d.totalDebt.toFixed(2)} บาท (${d.totalDebtTextTh})</strong> ขอให้ท่านนำเงินไปชำระ ณ ที่ทำการกองทุนประปาหมู่บ้าน ภายใน <strong>๗ วัน</strong>
           </p>
-          <div style="background: #fee2e2; border-left: 4px solid #dc2626; padding: 8px 12px; font-size: 12.5px; color: #991b1b; margin-top: 14px;">
-            ⚠️ หากพ้นกำหนด คณะกรรมการจำเป็นต้องระงับการจ่ายน้ำ (ถอดมิเตอร์) ตามระเบียบข้อบังคับ พ.ศ. 2544
+          <div style="background: #fef2f2; border-left: 4px solid #dc2626; padding: 10px 14px; font-size: 13px; color: #991b1b; margin-top: 14px; border-radius: 4px;">
+            ⚠️ <strong>ระเบียบกองทุนประปาหมู่บ้านวังยาง:</strong> ค้างชำระได้ไม่เกิน 3 เดือน (เตือนเมื่อค้างครบ 2 เดือน) หากค้างเกิน 3 เดือนและไม่ชำระตามกำหนด กองทุนจะทำการระงับการจ่ายน้ำและถอดมิเตอร์ออกจากระบบ หากต้องการขอต่อระบบเข้าใหม่ภายหลัง จะต้องชำระหนี้คงค้างทั้งหมด พร้อม <strong>ค่าแรกเข้าขอต่อระบบใหม่ 2,500 บาท</strong> ตามมติที่ประชุมกองทุน
           </div>
         </div>
       `;
@@ -1696,10 +1696,10 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
         container.innerHTML = `
           <div class="card text-center" style="padding: 40px 20px; border: 2px dashed #cbd5e1; background: #f8fafc;">
             <div style="font-size: 36px; margin-bottom: 10px;">📜</div>
-            <h4 style="font-size: 16px; color: #475569; margin: 0 0 6px 0;">ยังไม่มีรายการฎีกาเบิกจ่ายในหมวดนี้</h4>
-            <p style="font-size: 13.5px; color: #94a3b8; margin: 0 0 16px 0;">คุณสามารถออกฎีกาเบิกจ่ายรายการใหม่ หรือสั่งพิมพ์แบบฟอร์มเปล่าสำหรับเขียนด้วยมือได้</p>
+            <h4 style="font-size: 16px; color: #475569; margin: 0 0 6px 0;">ยังไม่มีรายการเบิกจ่ายในหมวดนี้</h4>
+            <p style="font-size: 13.5px; color: #94a3b8; margin: 0 0 16px 0;">คุณสามารถบันทึกรายการเบิกจ่ายใหม่ หรือสั่งพิมพ์แบบฟอร์มเปล่าสำหรับเขียนด้วยมือได้</p>
             <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
-              <button type="button" class="btn btn-primary" onclick="openCreateVoucherModal()">➕ ออกฎีกาเบิกจ่ายรายการใหม่</button>
+              <button type="button" class="btn btn-primary" onclick="openCreateVoucherModal()">➕ บันทึกรายการเบิกจ่ายใหม่</button>
               <button type="button" class="btn btn-outline" onclick="printBlankVoucher()">📄 พิมพ์แบบฟอร์มเปล่า</button>
             </div>
           </div>
@@ -1738,7 +1738,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
             </div>
 
             <div class="voucher-header">
-              <h3>ใบสำคัญรับเงิน / ฎีกาเบิกจ่ายเงินกองทุนประปาหมู่บ้าน</h3>
+              <h3>ใบสำคัญรับเงิน / เอกสารเบิกจ่ายเงินกองทุนประปาหมู่บ้าน</h3>
               <h4>การประปาหมู่บ้านวังยาง หมู่ที่ 3 ตำบลวังยาง อำเภอวังยาง จังหวัดนครพนม</h4>
               <p class="text-muted" style="margin-top: 6px; font-size: 13.5px;">
                 เลขที่เอกสาร: <strong>${v.voucherNo}</strong> | ประจำงวดเดือน: <strong>${v.cycleCode}</strong> | วันที่: <strong>${v.date}</strong>
@@ -1946,7 +1946,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
         });
         const data = await res.json();
         if (data.success) {
-          showToast(`✅ บันทึกฎีกา ${data.voucher.voucherNo} เรียบร้อยแล้ว`, 'success');
+          showToast(`✅ บันทึกรายการเบิกจ่าย ${data.voucher.voucherNo} เรียบร้อยแล้ว`, 'success');
           closeModal('fin-voucher-modal');
           document.getElementById('form-create-voucher').reset();
           await loadVouchersData();
@@ -1962,13 +1962,13 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
     }
 
     async function deleteVoucher(id, voucherNo) {
-      if (!confirm(`ยืนยันการลบฎีกาเบิกจ่าย "${voucherNo}" ใช่หรือไม่?`)) return;
+      if (!confirm(`ยืนยันการลบรายการเบิกจ่าย "${voucherNo}" ใช่หรือไม่?`)) return;
 
       try {
         const res = await fetch(`${API_BASE}/vouchers.php?action=delete&id=${id}`, { method: 'POST' });
         const data = await res.json();
         if (data.success) {
-          showToast(`🗑️ ลบฎีกาเบิกจ่าย ${voucherNo} เรียบร้อยแล้ว`, 'info');
+          showToast(`🗑️ ลบรายการเบิกจ่าย ${voucherNo} เรียบร้อยแล้ว`, 'info');
           await loadVouchersData();
         } else {
           showToast(data.error || 'เกิดข้อผิดพลาดในการลบ', 'error');
@@ -2005,7 +2005,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
         <html lang="th">
         <head>
           <meta charset="UTF-8">
-          <title>แบบฟอร์มเปล่า ใบสำคัญรับเงิน / ฎีกาเบิกจ่ายเงินกองทุนประปาหมู่บ้านวังยาง</title>
+          <title>แบบฟอร์มเปล่า ใบสำคัญรับเงิน / เอกสารเบิกจ่ายเงินกองทุนประปาหมู่บ้านวังยาง</title>
           <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
           <style>
             @page { size: A4 portrait; margin: 15mm 20mm; }
@@ -2036,7 +2036,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
 
           <div class="voucher-doc">
             <div class="header">
-              <h2>ใบสำคัญรับเงิน / ฎีกาเบิกจ่ายเงินกองทุนประปาหมู่บ้าน</h2>
+              <h2>ใบสำคัญรับเงิน / เอกสารเบิกจ่ายเงินกองทุนประปาหมู่บ้าน</h2>
               <h3>กองทุนระบบการประปาหมู่บ้านวังยาง หมู่ที่ 3 ตำบลวังยาง อำเภอวังยาง จังหวัดนครพนม</h3>
               <div class="meta-line">
                 <div>เลขที่เอกสาร: <span class="dot" style="min-width: 160px;"></span></div>
@@ -2106,7 +2106,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
         <html lang="th">
         <head>
           <meta charset="UTF-8">
-          <title>ฎีกาเบิกจ่าย ${v.voucherNo} - การประปาหมู่บ้านวังยาง</title>
+          <title>เอกสารเบิกจ่าย ${v.voucherNo} - การประปาหมู่บ้านวังยาง</title>
           <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
           <style>
             @page { size: A4 portrait; margin: 15mm 20mm; }
@@ -2135,7 +2135,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
 
           <div class="voucher-doc">
             <div class="header">
-              <h2>ใบสำคัญรับเงิน / ฎีกาเบิกจ่ายเงินกองทุนประปาหมู่บ้าน</h2>
+              <h2>ใบสำคัญรับเงิน / เอกสารเบิกจ่ายเงินกองทุนประปาหมู่บ้าน</h2>
               <h3>กองทุนระบบการประปาหมู่บ้านวังยาง หมู่ที่ 3 ตำบลวังยาง อำเภอวังยาง จังหวัดนครพนม</h3>
               <div class="meta-line">
                 <div>เลขที่เอกสาร: <strong>${v.voucherNo}</strong></div>

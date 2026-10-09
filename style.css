@@ -860,7 +860,7 @@ body.sidebar-open {
 }
 
 /* =========================================================
-   VOUCHERS / ฎีกาเบิกจ่าย
+   VOUCHERS / เอกสารเบิกจ่าย & ค่าตอบแทนคนจด 10%
    ========================================================= */
 .voucher-filter-bar {
   display: flex;
@@ -1154,7 +1154,7 @@ body.sidebar-open {
   font-weight: 600;
 }
 
-/* Debt Aging Badges (แบบ กค.4) */
+/* Debt Aging Badges (ระบบติดตามหนี้ค้างชำระ) */
 .badge-aging-1 {
   display: inline-block;
   padding: 4px 10px;

@@ -726,7 +726,7 @@ HTML;
         ['url' => 'index.php', 'title' => '🏠 หน้าหลัก (Portal)', 'id' => 'portal'],
         ['url' => 'portal_citizen.php', 'title' => '👥 ตรวจสอบค่าน้ำ (ประชาชน)', 'id' => 'citizen'],
         ['url' => 'meter_reading.php', 'title' => '🚶‍♂️ งานจดมิเตอร์ภาคสนาม', 'id' => 'field'],
-        ['url' => 'finance_billing.php', 'title' => '💼 งานการเงินและฎีกาเบิกจ่าย', 'id' => 'finance'],
+        ['url' => 'finance_billing.php', 'title' => '💼 รับชำระเงิน & สรุปค่าใช้จ่าย', 'id' => 'finance'],
         ['url' => 'executive_reports.php', 'title' => '🏛️ นโยบาย & งบการเงิน', 'id' => 'executive']
     ];
 

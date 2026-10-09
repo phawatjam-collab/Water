@@ -1,6 +1,6 @@
 <?php
 /**
- * 2. งานจดบันทึกมาตรวัดน้ำภาคสนาม (แบบ ป.17)
+ * 2. งานจดบันทึกมาตรวัดน้ำภาคสนาม & ตรวจสอบระบบท่อ
  * สิทธิ์การใช้งาน: เจ้าหน้าที่การประปา (staff) และ ผู้ดูแลระบบ (admin)
  */
 require_once __DIR__ . '/auth.php';
@@ -17,7 +17,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>งานจดบันทึกมาตรวัดน้ำภาคสนาม (แบบ ป.17) - การประปาหมู่บ้านวังยาง</title>
+  <title>จดมิเตอร์น้ำประปา - การประปาหมู่บ้านวังยาง</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -112,19 +112,19 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
 
     <!-- Main Content Area -->
     <main class="main-content">
-      <?php renderAppTopBar('งานจดบันทึกมาตรวัดน้ำภาคสนาม (แบบ ป.17)', 'ระบบบันทึกเลขมิเตอร์ คำนวณหน่วยใช้น้ำ สแกน QR และนำเข้าไฟล์ Excel/CSV'); ?>
+      <?php renderAppTopBar('จดมิเตอร์น้ำประปา', 'ระบบบันทึกเลขอ่านมิเตอร์ คำนวณค่าน้ำ สแกน QR หน้าบ้าน และสรุปยอดประจำเดือน'); ?>
 
     <!-- Field Header with Progress -->
     <div class="field-header-card no-print">
       <div>
         <span style="background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 9999px; font-size: 13.5px; font-weight: 600;">
-          🚶‍♂️ โมดูลพนักงานจดมิเตอร์ภาคสนาม (Field Reader Interface)
+          🚶‍♂️ ระบบจดมิเตอร์น้ำประปาภาคสนาม (Field Meter Reader)
         </span>
         <h1 style="font-family: 'Prompt', sans-serif; font-size: 22px; margin: 8px 0 2px 0;">
-          สมุดบันทึกการจดมาตรวัดน้ำประจำงวด (แบบ ป.17)
+          สมุดบันทึกการจดมิเตอร์น้ำประปาประจำงวด
         </h1>
         <p style="opacity: 0.9; font-size: 13.5px; margin: 0 0 10px 0;">
-          สแกน QR บนมิเตอร์ หรือคีย์เลขครั้งหลัง ระบบคำนวณเงินทันที พร้อมรองรับการนำเข้าไฟล์ Excel/CSV
+          สแกน QR หน้าบ้าน หรือคีย์เลขอ่านมิเตอร์ ระบบคำนวณเงินสดทันที พร้อมรองรับการนำเข้าไฟล์ Excel/CSV
         </p>
         <button type="button" onclick="openAddCustomerModal()" style="background: #ffffff; color: #0284c7; border: none; font-size: 13.5px; font-weight: 700; padding: 7px 16px; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
           ➕ เพิ่มผู้ใช้น้ำ / ติดตั้งมิเตอร์ใหม่
@@ -190,12 +190,12 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
 
           <!-- 1. QR Code Camera Scanner Button -->
           <button type="button" class="btn btn-qr-scan" onclick="openQrScannerModal()">
-            📷 สแกน QR มิเตอร์
+            📷 สแกน QR หน้าบ้าน (โหมดขนส่ง)
           </button>
 
           <!-- 2. Excel/CSV Batch Import -->
           <button type="button" class="btn btn-outline" onclick="openCsvImportModal()" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 600;">
-            📥 นำเข้าจาก Excel/CSV
+            📥 นำเข้าจาก Excel 365
           </button>
 
           <!-- 3. Export CSV Template -->
@@ -212,14 +212,14 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
         <div style="display: flex; gap: 8px; align-items: center;">
           <button type="button" class="btn btn-outline" id="btn-reload-field">🔄 รีเฟรช</button>
           <button type="button" class="btn btn-secondary" id="btn-save-field">💾 บันทึกทั้งหมด</button>
-          <button type="button" class="btn btn-primary" onclick="window.print()">🖨️ พิมพ์สมุดจด (ป.17)</button>
+          <button type="button" class="btn btn-primary" onclick="window.print()">🖨️ พิมพ์สมุดจดมิเตอร์</button>
         </div>
       </div>
     </div>
 
-    <!-- Printable Header for Official Form ป.17 -->
+    <!-- Printable Header for Readings Book -->
     <div class="only-print" style="margin-bottom: 20px; text-align: center;">
-      <h2 style="font-family: 'Prompt', sans-serif; font-size: 18px; margin: 0;">สมุดบันทึกการจดมาตรวัดน้ำประจำเดือน (แบบ ป.17)</h2>
+      <h2 style="font-family: 'Prompt', sans-serif; font-size: 18px; margin: 0;">สมุดบันทึกการจดมิเตอร์น้ำประปาประจำเดือน</h2>
       <h3 style="font-size: 15px; margin: 4px 0;">การประปาหมู่บ้านวังยาง หมู่ที่ 3 ตำบลวังยาง</h3>
       <p style="font-size: 13px; margin: 0;">งวดประจำเดือน <span id="print-cycle-text"></span> | เจ้าหน้าที่ผู้จด: <?php echo htmlspecialchars($currentUser['name']); ?></p>
     </div>
@@ -430,9 +430,8 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
                 โซน / คุ้มสายจด <span style="color: #ef4444;">*</span>
               </label>
               <select name="zoneId" class="form-select" required style="width: 100%;">
-                <option value="1">โซน 1 วังยางเหนือ</option>
-                <option value="2">โซน 2 วังยางกลาง</option>
-                <option value="3">โซน 3 วังยางใต้</option>
+                <option value="1">โซนทุ่งสามัคคี</option>
+                <option value="2">โซนโค้งขี้เหล็ก</option>
               </select>
             </div>
             <div>
@@ -725,7 +724,8 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
         const curr = r ? parseFloat(r.current_reading) : 0;
         const units = r ? parseFloat(r.units_used) : 0;
         const grandTotal = r ? parseFloat(r.grand_total) : 10;
-        const isRead = (curr > 0 && curr >= prev);
+        const isRead = (curr > 0);
+        const isNegative = (curr > 0 && curr < prev);
         const isSpike = (units > 35); // Leak / spike warning threshold
 
         return `
@@ -749,6 +749,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
                      value="${curr > 0 ? curr.toFixed(1) : ''}" 
                      placeholder="${prev.toFixed(1)}">
               <span class="only-print font-bold">${curr.toFixed(1)}</span>
+              ${isNegative ? '<br><span class="abnormal-warning" style="background: #fef3c7; color: #92400e; border: 1px solid #f59e0b;" title="สันนิษฐาน: 2 ระบบดันกันเอง (ปั๊มบาดาลดันย้อน) หรือใช้น้ำผิดปกติ">⚠️ มิเตอร์ติดลบ (2 ระบบดันกัน)</span>' : ''}
               ${isSpike ? '<br><span class="abnormal-warning">⚠️ ใช้น้ำพุ่งสูงผิดปกติ</span>' : ''}
             </td>
             <td class="text-right font-bold" style="color: ${units > 0 ? '#0284c7' : '#94a3b8'};">
@@ -797,7 +798,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
           const arrears = parseFloat(e.target.dataset.arrears) || 0;
 
           if (curr > 0 && curr < prev) {
-            showToast(`⚠️ คำเตือน: เลขมิเตอร์ (${curr}) น้อยกว่าครั้งก่อน (${prev})!`, 'warning');
+            showToast(`⚠️ สันนิษฐาน: เลขมิเตอร์ (${curr}) ต่ำกว่าเดิม (${prev}) อาจเกิดจากระบบน้ำ 2 ระบบดันกันเอง (ปั๊มบาดาลดันย้อน) หรือใช้น้ำผิดปกติ`, 'warning', 6000);
           }
 
           const units = curr >= prev ? (curr - prev) : ((10000 - prev) + curr);
