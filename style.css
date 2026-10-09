@@ -1611,6 +1611,102 @@ body.sidebar-open {
   50% { top: 85%; }
 }
 
+/* Viewfinder HUD Target Overlay */
+.qr-viewfinder-hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+}
+
+.qr-viewfinder-hud .hud-box {
+  width: 200px;
+  height: 200px;
+  position: relative;
+  box-shadow: 0 0 0 9999px rgba(15, 23, 42, 0.35);
+  border-radius: 12px;
+}
+
+.qr-viewfinder-hud .hud-corner {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-color: #22c55e;
+  border-style: solid;
+}
+
+.qr-viewfinder-hud .hud-corner.tl { top: -2px; left: -2px; border-width: 4px 0 0 4px; border-top-left-radius: 8px; }
+.qr-viewfinder-hud .hud-corner.tr { top: -2px; right: -2px; border-width: 4px 4px 0 0; border-top-right-radius: 8px; }
+.qr-viewfinder-hud .hud-corner.bl { bottom: -2px; left: -2px; border-width: 0 0 4px 4px; border-bottom-left-radius: 8px; }
+.qr-viewfinder-hud .hud-corner.br { bottom: -2px; right: -2px; border-width: 0 4px 4px 0; border-bottom-right-radius: 8px; }
+
+.qr-viewfinder-hud .hud-hint {
+  margin-top: 14px;
+  background: rgba(15, 23, 42, 0.75);
+  color: #fff;
+  padding: 4px 14px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+/* Quick Meter Entry Card */
+.qr-quick-entry-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 18px;
+  border: 2px solid #0284c7;
+  box-shadow: 0 4px 20px rgba(2, 132, 199, 0.12);
+  text-align: left;
+  animation: modalFadeIn 0.2s ease;
+}
+
+.qe-customer-badge {
+  display: inline-block;
+  background: #e0f2fe;
+  color: #0369a1;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.qe-calc-preview {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13.5px;
+}
+
+/* Modal Search Dropdown Item */
+.modal-search-item {
+  padding: 8px 12px;
+  border-bottom: 1px solid #f1f5f9;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  transition: background-color 0.15s ease;
+}
+
+.modal-search-item:hover {
+  background: #f0f9ff;
+}
+
 /* CSV Dropzone */
 .csv-dropzone {
   border: 2px dashed #0284c7;

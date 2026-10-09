@@ -1,4 +1,18 @@
 <?php
+// Auto-Redirect HTTP to HTTPS on non-localhost IP so mobile cameras have zero barriers
+$isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443);
+$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+$isLocalhost = strpos($host, 'localhost') !== false || strpos($host, '127.0.0.1') !== false;
+
+if (!$isHttps && !$isLocalhost) {
+    $redirectUrl = "https://" . $host . $_SERVER['REQUEST_URI'];
+    if (strpos($redirectUrl, 'quick_login=') === false) {
+        $redirectUrl .= (strpos($redirectUrl, '?') !== false ? '&' : '?') . 'quick_login=staff';
+    }
+    header("Location: " . $redirectUrl);
+    exit;
+}
+
 /**
  * 2. งานจดบันทึกมาตรวัดน้ำภาคสนาม & ตรวจสอบระบบท่อ
  * สิทธิ์การใช้งาน: เจ้าหน้าที่การประปา (staff) และ ผู้ดูแลระบบ (admin)
@@ -113,23 +127,6 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
     <!-- Main Content Area -->
     <main class="main-content">
       <?php renderAppTopBar('จดมิเตอร์น้ำประปา', 'ระบบบันทึกเลขอ่านมิเตอร์ คำนวณค่าน้ำ สแกน QR หน้าบ้าน และสรุปยอดประจำเดือน'); ?>
-
-      <?php
-      $isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443);
-      $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-      $isLocalhost = strpos($host, 'localhost') !== false || strpos($host, '127.0.0.1') !== false;
-      if (!$isHttps && !$isLocalhost):
-      ?>
-      <div class="no-print" style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 10px 16px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
-        <div style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: #1e40af;">
-          <span style="font-size: 18px;">🔒</span>
-          <span><strong>คำแนะนำสำหรับมือถือ:</strong> หากต้องการใช้กล้องส่องวิดีโอสด (Live Video) แนะนำให้เข้าผ่านโหมดความปลอดภัย HTTPS</span>
-        </div>
-        <a href="https://<?php echo htmlspecialchars($host); ?>/plumber/meter_reading.php?quick_login=staff" class="btn btn-primary" style="padding: 6px 14px; font-size: 13px; font-weight: 700; background: #0284c7; text-decoration: none; border-radius: 6px; color: #fff;">
-          ⚡ สลับไปใช้ HTTPS
-        </a>
-      </div>
-      <?php endif; ?>
 
     <!-- Field Header with Progress -->
     <div class="field-header-card no-print">
@@ -309,6 +306,18 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
           </button>
         </div>
 
+        <!-- Option 3: Quick House Number / Name Search Bar (No camera needed) -->
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 14px; margin-bottom: 12px; text-align: left;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <label for="modal-quick-search-input" style="font-size: 12.5px; font-weight: 700; color: #475569;">
+              🔍 ค้นหาด้วยเลขที่บ้าน / ชื่อ (หากไม่สะดวกส่องกล้อง):
+            </label>
+            <span style="font-size: 11px; color: #0284c7; font-weight: 600;">ไม่ต้องใช้กล้อง</span>
+          </div>
+          <input type="text" id="modal-quick-search-input" placeholder="พิมพ์เลขที่บ้าน เช่น 24/1 หรือ ชื่อลูกบ้าน..." class="form-input" style="width: 100%; font-size: 14px; padding: 7px 10px; background: #fff;" oninput="handleModalQuickSearch(this.value)">
+          <div id="modal-quick-search-results" style="display: none; max-height: 140px; overflow-y: auto; margin-top: 6px; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.06);"></div>
+        </div>
+
         <!-- 1. SNAPSHOT MODE VIEW (Default on Mobile - 100% Works, No Black Screen) -->
         <div id="qr-snapshot-panel">
           <div class="qr-target-box" onclick="triggerQrCameraCapture()">
@@ -328,7 +337,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
               <div style="font-size: 46px; margin-bottom: 6px;">📷</div>
               <strong style="font-size: 16px; color: #0284c7; display: block;">แตะเพื่อถ่ายรูปสแกนสติกเกอร์มิเตอร์</strong>
               <span style="font-size: 13px; color: #64748b; margin-top: 4px; display: block;">
-                เปิดกล้องมือถือถ่ายภาพสติกเกอร์ QR หน้าบ้าน<br>ระบบจะอ่านรหัสและกระโดดไปช่องกรอกทันที
+                เปิดกล้องมือถือถ่ายภาพสติกเกอร์ QR หน้าบ้าน<br>ระบบจะอ่านรหัสและเปิดช่องกรอกเลขให้ทันที
               </span>
             </div>
           </div>
@@ -390,9 +399,24 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
               <div class="qr-loading-subtext">หากมีข้อความขึ้นเตือน ให้กด "อนุญาต (Allow)" บนหน้าจอ</div>
             </div>
 
+            <div class="qr-viewfinder-hud">
+              <div class="hud-box">
+                <span class="hud-corner tl"></span>
+                <span class="hud-corner tr"></span>
+                <span class="hud-corner bl"></span>
+                <span class="hud-corner br"></span>
+              </div>
+              <div class="hud-hint">เล็ง QR Code ให้อยู่ในกรอบสีเขียว</div>
+            </div>
+
             <div id="qr-reader" style="width: 100%;"></div>
             <div class="qr-scan-line" id="qr-scan-laser" style="display: none;"></div>
           </div>
+
+          <!-- Quick fallback to snapshot if live stream has glare/reflection -->
+          <button type="button" class="btn btn-outline" onclick="triggerQrCameraCapture()" style="width: 100%; margin-top: 8px; font-size: 13px; padding: 8px; border-radius: 8px; background: #f0fdf4; color: #166534; font-weight: 600; border: 1px dashed #22c55e; cursor: pointer;">
+            📸 ส่องสแกนยาก หรือแสงสะท้อน? แตะที่นี่เพื่อถ่ายรูปสแกนแทนทันที
+          </button>
 
           <!-- 2C. Camera Hardware / Permission Error Panel (Shown if start() fails) -->
           <div id="qr-camera-error-panel" class="qr-camera-error-card" style="display: none; margin-top: 10px;">
@@ -440,12 +464,45 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
           </div>
         </div>
 
-        <!-- Success overlay card (shown briefly when QR code is found) -->
-        <div id="qr-scan-success-card" style="display: none; background: #ecfdf5; border: 2px solid #22c55e; border-radius: 12px; padding: 18px; margin-top: 14px; animation: modalFadeIn 0.2s ease;">
-          <div style="font-size: 32px; margin-bottom: 4px;">✅</div>
-          <h4 style="margin: 0; color: #15803d; font-size: 16px; font-weight: 700;">พบรหัสผู้ใช้น้ำในระบบ!</h4>
-          <div id="qr-success-details" style="font-size: 14px; color: #166534; margin: 8px 0; font-weight: 600;"></div>
-          <span style="font-size: 12px; color: #047857;">กำลังเลื่อนไปยังช่องกรอกเลขมิเตอร์...</span>
+        <!-- Quick Meter Entry Card (Shown instantly when customer is scanned or selected) -->
+        <div id="qr-quick-entry-card" class="qr-quick-entry-card" style="display: none;">
+          <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">
+            <div>
+              <span class="qe-customer-badge" id="qe-cust-code">WY-001</span>
+              <h3 id="qe-cust-name" style="margin: 4px 0 0 0; font-size: 17px; color: #0f172a; font-weight: 700;">นายสมเกียรติ สุขใจ</h3>
+              <div id="qe-cust-meta" style="font-size: 12.5px; color: #64748b; margin-top: 2px;">บ้านเลขที่ 24/1 ม.3 • โซนทุ่งสามัคคี</div>
+            </div>
+            <div style="text-align: right; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 12px;">
+              <span style="font-size: 11px; color: #64748b; display: block; font-weight: 600;">เลขครั้งก่อน</span>
+              <strong id="qe-prev-reading" style="font-size: 17px; color: #475569; font-family: monospace;">120.0</strong>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 12px;">
+            <label for="qe-current-reading" style="font-size: 13px; font-weight: 700; color: #0369a1; display: block; margin-bottom: 4px;">
+              🔢 กรอกเลขมิเตอร์ครั้งนี้ (ปัจจุบัน):
+            </label>
+            <input type="number" step="0.1" min="0" id="qe-current-reading" class="form-input" placeholder="เช่น 125.0" inputmode="decimal" style="font-size: 24px; font-weight: 700; text-align: center; height: 52px; border: 2px solid #0284c7; border-radius: 10px; width: 100%; font-family: monospace; background: #f0f9ff;" oninput="updateQuickEntryCalc()">
+          </div>
+
+          <div id="qe-calc-preview" class="qe-calc-preview">
+            <div>💧 หน่วยใช้: <strong id="qe-units-val" style="color: #15803d; font-size: 16px;">0.0</strong> ลบ.ม.</div>
+            <div>💰 ยอดค่าน้ำ: <strong id="qe-amount-val" style="color: #047857; font-size: 16px;">0.00</strong> บาท</div>
+          </div>
+
+          <div style="display: flex; gap: 8px; flex-direction: column;">
+            <button type="button" class="btn btn-primary" id="btn-qe-save-next" onclick="submitQuickEntry(true)" style="height: 48px; font-size: 15px; font-weight: 700; background: #059669; border: none; border-radius: 10px; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);">
+              💾 บันทึก & สแกนหลังถัดไป ⏭️
+            </button>
+            <div style="display: flex; gap: 8px;">
+              <button type="button" class="btn btn-outline" onclick="submitQuickEntry(false)" style="flex: 1; height: 42px; font-size: 13.5px; border-radius: 8px; background: #fff; cursor: pointer;">
+                💾 บันทึก & ปิดหน้าต่าง
+              </button>
+              <button type="button" class="btn btn-outline" onclick="cancelQuickEntry()" style="height: 42px; font-size: 13px; border-radius: 8px; background: #fff; color: #64748b; cursor: pointer;">
+                ❌ ยกเลิก
+              </button>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -1034,9 +1091,15 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
       if (!modal) return;
       modal.style.display = 'flex';
 
-      // Reset state & clear previous previews
-      const successCard = document.getElementById('qr-scan-success-card');
-      if (successCard) successCard.style.display = 'none';
+      // Reset state & clear previous quick entry / search previews
+      const qeCard = document.getElementById('qr-quick-entry-card');
+      if (qeCard) qeCard.style.display = 'none';
+      activeQuickEntryCustomer = null;
+
+      const searchInp = document.getElementById('modal-quick-search-input');
+      if (searchInp) searchInp.value = '';
+      const searchRes = document.getElementById('modal-quick-search-results');
+      if (searchRes) { searchRes.style.display = 'none'; searchRes.innerHTML = ''; }
 
       const previewBox = document.getElementById('qr-snapshot-preview');
       if (previewBox) previewBox.style.display = 'none';
@@ -1060,6 +1123,9 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
       if (modal) {
         modal.style.display = 'none';
         stopQrScanner();
+        const qeCard = document.getElementById('qr-quick-entry-card');
+        if (qeCard) qeCard.style.display = 'none';
+        activeQuickEntryCustomer = null;
       }
     }
 
@@ -1327,6 +1393,8 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
       if (laserEl) laserEl.style.display = 'none';
     }
 
+    let activeQuickEntryCustomer = null;
+
     // Handler when QR code is detected
     function handleQrScanSuccess(decodedText) {
       playBeep(880, 150);
@@ -1352,56 +1420,235 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
         return;
       }
 
-      // Show success feedback card inside the modal
-      const successCard = document.getElementById('qr-scan-success-card');
-      const detailsEl = document.getElementById('qr-success-details');
+      // Open Quick Meter Entry Card directly inside the modal!
+      openQuickEntryCardForCustomer(targetCustomer);
+    }
+
+    function openQuickEntryCardForCustomer(targetCustomer) {
+      activeQuickEntryCustomer = targetCustomer;
+      stopQrScanner();
+
+      // Hide scanner panels & search dropdown
       const panelSnap = document.getElementById('qr-snapshot-panel');
       const panelLive = document.getElementById('qr-live-panel');
+      const searchResults = document.getElementById('modal-quick-search-results');
+      const quickEntryCard = document.getElementById('qr-quick-entry-card');
 
       if (panelSnap) panelSnap.style.display = 'none';
       if (panelLive) panelLive.style.display = 'none';
-      if (detailsEl) {
-        detailsEl.innerHTML = `
-          <strong>${targetCustomer.customer_code}</strong>: ${targetCustomer.first_name} ${targetCustomer.last_name}<br>
-          <span style="font-size: 13px; color: #475569;">บ้านเลขที่ ${targetCustomer.house_no} | โซน: ${targetCustomer.zone}</span>
-        `;
-      }
-      if (successCard) successCard.style.display = 'block';
+      if (searchResults) searchResults.style.display = 'none';
 
-      // Reset filters so customer row is guaranteed to be rendered
-      if (document.getElementById('field-search-input').value) {
-        document.getElementById('field-search-input').value = '';
-      }
-      if (currentStatusFilter !== 'all') {
-        setStatusFilter('all');
-      }
-      renderFieldRows();
+      // Populate customer info
+      document.getElementById('qe-cust-code').textContent = targetCustomer.customer_code;
+      document.getElementById('qe-cust-name').textContent = `${targetCustomer.first_name} ${targetCustomer.last_name}`;
+      document.getElementById('qe-cust-meta').textContent = `บ้านเลขที่ ${targetCustomer.house_no} • โซน: ${targetCustomer.zone || 'ทั่วไป'}`;
 
-      const isContinuous = document.getElementById('chk-continuous-scan')?.checked;
+      // Get previous reading & existing reading
+      const r = fieldReadings.find(x => parseInt(x.customer_id, 10) === parseInt(targetCustomer.id, 10));
+      const prev = r ? parseFloat(r.previous_reading) : 0;
+      const curr = r && r.current_reading > 0 ? parseFloat(r.current_reading) : '';
 
+      document.getElementById('qe-prev-reading').textContent = prev.toFixed(1);
+      const currInp = document.getElementById('qe-current-reading');
+      currInp.value = curr;
+      updateQuickEntryCalc();
+
+      if (quickEntryCard) quickEntryCard.style.display = 'block';
+
+      // Focus input with numeric keypad ready
       setTimeout(() => {
-        if (!isContinuous) {
-          closeQrScannerModal();
-        }
+        currInp.focus();
+        if (currInp.value) currInp.select();
+      }, 150);
+    }
 
-        // Find table row
-        const targetRow = document.querySelector(`tr[data-customer-id="${targetCustomer.id}"]`);
-        if (targetRow) {
-          targetRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          targetRow.classList.remove('qr-highlight-row');
-          void targetRow.offsetWidth; // Trigger reflow
-          targetRow.classList.add('qr-highlight-row');
+    function updateQuickEntryCalc() {
+      if (!activeQuickEntryCustomer) return;
+      const r = fieldReadings.find(x => parseInt(x.customer_id, 10) === parseInt(activeQuickEntryCustomer.id, 10));
+      const prev = r ? parseFloat(r.previous_reading) : 0;
+      const valStr = document.getElementById('qe-current-reading').value;
+      const curr = parseFloat(valStr);
 
-          const inputCell = targetRow.querySelector('.meter-input-cell');
-          if (inputCell) {
-            setTimeout(() => {
-              inputCell.focus();
-              inputCell.select();
-            }, 300);
+      const unitsEl = document.getElementById('qe-units-val');
+      const amountEl = document.getElementById('qe-amount-val');
+
+      if (isNaN(curr) || valStr === '') {
+        unitsEl.textContent = '0.0';
+        amountEl.textContent = '0.00';
+        return;
+      }
+
+      const units = curr >= prev ? (curr - prev) : ((10000 - prev) + curr);
+      let waterCharge = 0;
+      let remaining = units;
+      const tiers = [
+        { max: 10, rate: 10 },
+        { max: 10, rate: 15 },
+        { max: 10, rate: 20 },
+        { max: Infinity, rate: 25 }
+      ];
+      for (const t of tiers) {
+        if (remaining <= 0) break;
+        const take = Math.min(remaining, t.max);
+        waterCharge += take * t.rate;
+        remaining -= take;
+      }
+      const maintenanceFee = 10;
+      const total = waterCharge + maintenanceFee;
+
+      unitsEl.textContent = units.toFixed(1);
+      amountEl.textContent = total.toFixed(2);
+    }
+
+    async function submitQuickEntry(continueNext) {
+      if (!activeQuickEntryCustomer) return;
+      const custId = parseInt(activeQuickEntryCustomer.id, 10);
+      const currStr = document.getElementById('qe-current-reading').value.trim();
+
+      if (currStr === '' || isNaN(parseFloat(currStr))) {
+        showToast('⚠️ กรุณากรอกเลขมิเตอร์ปัจจุบัน', 'warning');
+        document.getElementById('qe-current-reading').focus();
+        return;
+      }
+
+      const curr = parseFloat(currStr);
+      const r = fieldReadings.find(x => parseInt(x.customer_id, 10) === custId);
+      const prev = r ? parseFloat(r.previous_reading) : 0;
+      const arrears = r ? parseFloat(r.previous_arrears) : 0;
+      const units = curr >= prev ? (curr - prev) : ((10000 - prev) + curr);
+
+      const btnSaveNext = document.getElementById('btn-qe-save-next');
+      if (btnSaveNext) btnSaveNext.disabled = true;
+
+      try {
+        const res = await fetch(`${API_BASE}/readings.php?cycle=${encodeURIComponent(activeCycle)}&action=save`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            items: [{
+              customerId: custId,
+              previousReading: prev,
+              currentReading: curr,
+              previousArrears: arrears
+            }]
+          })
+        });
+
+        if (res.ok) {
+          playBeep(1046, 180);
+          showToast(`🎉 บันทึก ${activeQuickEntryCustomer.customer_code} (${activeQuickEntryCustomer.first_name}) เรียบร้อย: ${curr.toFixed(1)} ลบ.ม.`, 'success');
+
+          // Update local memory and table
+          if (r) {
+            r.current_reading = curr;
+            r.units_used = units;
+          } else {
+            fieldReadings.push({
+              customer_id: custId,
+              previous_reading: prev,
+              current_reading: curr,
+              units_used: units,
+              previous_arrears: arrears
+            });
           }
+
+          // Update corresponding table row DOM
+          const targetRow = document.querySelector(`tr[data-customer-id="${custId}"]`);
+          if (targetRow) {
+            const inputCell = targetRow.querySelector('.meter-input-cell');
+            if (inputCell) {
+              inputCell.value = curr.toFixed(1);
+              inputCell.style.borderColor = '#22c55e';
+              inputCell.style.background = '#f0fdf4';
+            }
+            const uDisp = document.getElementById(`units-disp-${custId}`);
+            if (uDisp) uDisp.textContent = units.toFixed(1);
+          }
+          updateProgressStats();
+
+          if (continueNext) {
+            // Reset for next house
+            document.getElementById('qr-quick-entry-card').style.display = 'none';
+            const sInp = document.getElementById('modal-quick-search-input');
+            if (sInp) sInp.value = '';
+            const sRes = document.getElementById('modal-quick-search-results');
+            if (sRes) sRes.style.display = 'none';
+            activeQuickEntryCustomer = null;
+            // Resume scanner
+            switchQrScannerMode(currentQrMode);
+          } else {
+            closeQrScannerModal();
+            if (targetRow) {
+              targetRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              targetRow.classList.remove('qr-highlight-row');
+              void targetRow.offsetWidth;
+              targetRow.classList.add('qr-highlight-row');
+            }
+          }
+        } else {
+          showToast('❌ ไม่สามารถบันทึกข้อมูลได้', 'error');
         }
-        showToast(`📷 สแกนพบ: <strong>${targetCustomer.customer_code}</strong> ${targetCustomer.first_name} (บ้านเลขที่ ${targetCustomer.house_no})`, 'success');
-      }, isContinuous ? 1500 : 700);
+      } catch (err) {
+        console.error('Error saving quick entry:', err);
+        showToast('❌ การเชื่อมต่อผิดพลาด ไม่สามารถบันทึกได้', 'error');
+      } finally {
+        if (btnSaveNext) btnSaveNext.disabled = false;
+      }
+    }
+
+    function cancelQuickEntry() {
+      const qeCard = document.getElementById('qr-quick-entry-card');
+      if (qeCard) qeCard.style.display = 'none';
+      activeQuickEntryCustomer = null;
+      switchQrScannerMode(currentQrMode);
+    }
+
+    function handleModalQuickSearch(keyword) {
+      const resultsBox = document.getElementById('modal-quick-search-results');
+      if (!resultsBox) return;
+      const kw = (keyword || '').trim().toLowerCase();
+      if (!kw) {
+        resultsBox.style.display = 'none';
+        resultsBox.innerHTML = '';
+        return;
+      }
+
+      const matches = fieldCustomers.filter(c => {
+        const code = (c.customer_code || '').toLowerCase();
+        const name = `${c.first_name || ''} ${c.last_name || ''}`.toLowerCase();
+        const house = (c.house_no || '').toLowerCase();
+        const phone = (c.phone || '').replace(/\D/g, '');
+        return code.includes(kw) || name.includes(kw) || house.includes(kw) || phone.includes(kw);
+      }).slice(0, 6);
+
+      if (matches.length === 0) {
+        resultsBox.innerHTML = '<div style="padding: 10px; font-size: 13px; color: #94a3b8; text-align: center;">ไม่พบข้อมูลผู้ใช้น้ำที่ตรงกับคำค้นหา</div>';
+        resultsBox.style.display = 'block';
+        return;
+      }
+
+      resultsBox.innerHTML = matches.map(c => `
+        <div class="modal-search-item" onclick="selectQuickSearchCustomer(${c.id})">
+          <div>
+            <strong style="color: #0284c7;">${c.customer_code}</strong>: ${c.first_name} ${c.last_name}
+            <div style="font-size: 12px; color: #64748b;">บ้านเลขที่ ${c.house_no} • โซน: ${c.zone || 'ทั่วไป'}</div>
+          </div>
+          <button type="button" class="btn btn-primary" style="padding: 4px 10px; font-size: 12px; border-radius: 6px; background: #0284c7; border: none; color: #fff;">
+            เลือก 👉
+          </button>
+        </div>
+      `).join('');
+      resultsBox.style.display = 'block';
+    }
+
+    function selectQuickSearchCustomer(customerId) {
+      const cust = fieldCustomers.find(c => parseInt(c.id, 10) === parseInt(customerId, 10));
+      if (!cust) return;
+      const resultsBox = document.getElementById('modal-quick-search-results');
+      const searchInp = document.getElementById('modal-quick-search-input');
+      if (resultsBox) resultsBox.style.display = 'none';
+      if (searchInp) searchInp.value = '';
+      openQuickEntryCardForCustomer(cust);
     }
 
     // =========================================================
