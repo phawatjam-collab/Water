@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>คู่มือการติดตั้งและใช้งานระบบจริง (XAMPP Production User Manual)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 12mm 15mm;
+    }
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    body {
+      font-family: 'Sarabun', sans-serif;
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: #1e293b;
+      background: #f1f5f9;
+      margin: 0;
+      padding: 0;
+    }
+    h1, h2, h3, h4 {
+      font-family: 'Prompt', sans-serif;
+      color: #0f172a;
+      margin-top: 0;
+    }
+    .page {
+      background: #fff;
+      padding: 22px 26px;
+      margin: 0 auto 20px auto;
+      max-width: 210mm;
+      min-height: 297mm;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      position: relative;
+    }
+    @media print {
+      body { background: #fff; }
+      .page {
+        box-shadow: none;
+        padding: 0;
+        margin: 0;
+        max-width: 100%;
+        min-height: auto;
+        page-break-after: always;
+      }
+      .no-print { display: none !important; }
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 10.5px;
+      font-weight: 600;
+    }
+    .badge-blue { background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd; }
+    .badge-green { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+    .badge-purple { background: #f3e8ff; color: #7c3aed; border: 1px solid #e9d5ff; }
+    .badge-red { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
+    .badge-amber { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+
+    .header-bar {
+      border-bottom: 2px solid #0284c7;
+      padding-bottom: 5px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header-bar h2 {
+      font-size: 16px;
+      margin: 0;
+      color: #0f172a;
+    }
+    .header-bar span {
+      font-size: 11px;
+      color: #64748b;
+    }
+    .card {
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      background: #fff;
+      page-break-inside: avoid;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 6px 0;
+      font-size: 11.5px;
+      page-break-inside: avoid;
+    }
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 5px 7px;
+      vertical-align: top;
+    }
+    th {
+      background: #0f172a;
+      color: #fff;
+      font-family: 'Prompt', sans-serif;
+      font-weight: 600;
+      text-align: left;
+      font-size: 11.5px;
+    }
+    .table-striped tr:nth-child(even) {
+      background: #f8fafc;
+    }
+    code {
+      font-family: 'Fira Code', monospace;
+      font-size: 10.5px;
+      background: #f1f5f9;
+      color: #0369a1;
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+    .step-box {
+      border-left: 3px solid #0284c7;
+      background: #f8fafc;
+      padding: 8px 12px;
+      margin-bottom: 8px;
+      border-radius: 0 6px 6px 0;
+    }
+    .footer-page-num {
+      position: absolute;
+      bottom: 10px;
+      right: 26px;
+      font-size: 10.5px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= PAGE 1: COVER & SYSTEM SPECS ================= -->
+  <div class="page">
+    <div style="border: 2px solid #0284c7; padding: 22px; border-radius: 8px; background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 30%, #ffffff 100%);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <span class="badge badge-blue" style="font-size: 11px; padding: 4px 10px;">📖 Official Production User Manual</span>
+        <span style="font-size: 11px; color: #64748b;">รหัส: MN-WTR-2026-XAMPP</span>
+      </div>
+
+      <div style="text-align: center; margin-bottom: 20px;">
+        <div style="font-size: 40px; margin-bottom: 6px;">💻</div>
+        <h1 style="font-size: 21px; font-weight: 700; color: #0f172a; margin-bottom: 4px; line-height: 1.3;">
+          คู่มือการติดตั้งและใช้งานระบบจริง (XAMPP Production Manual)<br>
+          <span style="color: #0284c7; font-size: 16px;">ระบบบริหารจัดการน้ำประปาหมู่บ้านอัจฉริยะ (Smart ERP)</span>
+        </h1>
+        <p style="font-size: 12px; color: #475569; margin: 0;">
+          กองทุนระบบการประปาหมู่บ้านวังยาง หมู่ที่ 3 ตำบลวังยาง อำเภอวังยาง จังหวัดนครพนม
+        </p>
+      </div>
+
+      <h4 style="font-size: 12.5px; margin-bottom: 6px;">⚙️ ข้อกำหนดคุณสมบัติของระบบ (System Specifications)</h4>
+      <div class="grid-2">
+        <div class="card" style="border-top: 3px solid #0284c7;">
+          <strong style="color: #0284c7; font-size: 12px; display: block; margin-bottom: 4px;">🖥️ ฝั่งเครื่องแม่ข่าย (Server Requirements):</strong>
+          <div style="font-size: 11px; color: #334151; line-height: 1.5;">
+            • <strong>OS:</strong> Windows 10/11 (64-bit) หรือ Ubuntu 22.04 LTS<br>
+            • <strong>CPU:</strong> Intel Core i3 / Ryzen 3 ขึ้นไป (2.0 GHz+)<br>
+            • <strong>RAM:</strong> 4 GB ขึ้นไป (แนะนำ 8 GB)<br>
+            • <strong>Software:</strong> XAMPP for Windows (PHP 8.0 - 8.2)<br>
+            • <strong>DB:</strong> MariaDB 10.4 / MySQL (InnoDB, utf8mb4)
+          </div>
+        </div>
+
+        <div class="card" style="border-top: 3px solid #16a34a;">
+          <strong style="color: #16a34a; font-size: 12px; display: block; margin-bottom: 4px;">📱 ฝั่งเครื่องลูกข่าย (Client Requirements):</strong>
+          <div style="font-size: 11px; color: #334151; line-height: 1.5;">
+            • <strong>อุปกรณ์:</strong> คอมพิวเตอร์, โน้ตบุ๊ก, แท็บเล็ต, สมาร์ตโฟน<br>
+            • <strong>Browser:</strong> Google Chrome, Microsoft Edge, Safari<br>
+            • <strong>Screen:</strong> รองรับ Responsive 360px ถึง 1920px<br>
+            • <strong>กล้องมือถือ:</strong> สแกน QR Code หน้าบ้านผู้ใช้น้ำ<br>
+            • <strong>Printer:</strong> เครื่องพิมพ์ A4/A5 สำหรับพิมพ์ใบเสร็จ ป.31/32
+          </div>
+        </div>
+      </div>
+
+      <h4 style="font-size: 12.5px; margin: 10px 0 6px 0;">🔑 บัญชีผู้ใช้งานระบบสำหรับการทดสอบ (Default Accounts)</h4>
+      <table class="table-striped">
+        <thead>
+          <tr>
+            <th width="20%">ชื่อบัญชี (Username)</th>
+            <th width="20%">รหัสผ่าน</th>
+            <th width="22%">ระดับสิทธิ์ (Role)</th>
+            <th width="38%">หน้าที่ความรับผิดชอบในชุมชน</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>admin</code></td>
+            <td><em>ไม่ต้องกรอก</em></td>
+            <td><span class="badge badge-purple">Superadmin</span></td>
+            <td>ประธานกองทุน/ผู้ใหญ่บ้าน: คุมระบบทั้งหมด อนุมัติฎีกา</td>
+          </tr>
+          <tr>
+            <td><code>staff</code> / <code>finance</code></td>
+            <td><em>ไม่ต้องกรอก</em></td>
+            <td><span class="badge badge-blue">Staff</span></td>
+            <td>เหรัญญิก/ช่างจด: จดมิเตอร์ ตัดเงิน ใบเสร็จ ป.31/32 หนี้ กค.4</td>
+          </tr>
+          <tr>
+            <td><code>member</code></td>
+            <td><em>ไม่ต้องกรอก</em></td>
+            <td><span class="badge badge-green">Member</span></td>
+            <td>สมาชิกผู้ใช้น้ำ (WY-002): ดูกราฟใช้น้ำ สแกนจ่ายพร้อมเพย์</td>
+          </tr>
+          <tr>
+            <td><code>user</code></td>
+            <td><em>ไม่ต้องกรอก</em></td>
+            <td><span class="badge badge-amber">User</span></td>
+            <td>ประชาชนทั่วไป: เช็คยอดด้วยเบอร์โทร สแกนจ่าย แจ้งท่อแตก</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="footer-page-num">หน้า 1 / 6</div>
+  </div>
+
+  <!-- ================= PAGE 2: INSTALLATION & ZERO-CONFIG ================= -->
+  <div class="page">
+    <div class="header-bar">
+      <h2>1. ขั้นตอนการติดตั้งและการเริ่มต้นระบบ (Installation & Setup)</h2>
+      <span>XAMPP Manual • ส่วนที่ 1</span>
+    </div>
+
+    <div class="step-box">
+      <strong style="color: #0284c7; font-size: 12px;">ขั้นตอนที่ 1: วางไฟล์โปรเจกต์ลงใน htdocs</strong>
+      <div style="font-size: 11px; color: #475569; margin-top: 2px;">
+        นำโฟลเดอร์โปรเจกต์ <code>plumber</code> ไปวางในไดเรกทอรี <code>htdocs</code> ของ XAMPP เช่น <code>D:\Games\xamppp\htdocs\plumber</code> หรือ <code>C:\xampp\htdocs\plumber</code>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <strong style="color: #0284c7; font-size: 12px;">ขั้นตอนที่ 2: เริ่มต้นบริการ Apache และ MySQL ใน XAMPP Control Panel</strong>
+      <div style="font-size: 11px; color: #475569; margin-top: 2px;">
+        เปิดโปรแกรม <strong>XAMPP Control Panel</strong> แล้วกดปุ่ม <strong>[Start]</strong> ที่แถวของ <strong>Apache</strong> (Port 80) และ <strong>MySQL</strong> (Port 3306) โดยสังเกตว่าทั้งสองโมดูลเปลี่ยนเป็นแถบสีเขียวแสดงว่าบริการพร้อมทำงาน
+      </div>
+    </div>
+
+    <div class="step-box">
+      <strong style="color: #0284c7; font-size: 12px;">ขั้นตอนที่ 3: เปิดใช้งานและระบบสร้างฐานข้อมูลอัตโนมัติ (Zero-Config DB Bootstrap)</strong>
+      <div style="font-size: 11px; color: #475569; margin-top: 2px;">
+        เปิดเว็บบราวเซอร์แล้วพิมพ์: <code>http://localhost/plumber/index.php</code><br>
+        <strong>กลไกเบื้องหลัง:</strong> ไฟล์ <code>api/db.php</code> จะตรวจสอบว่ามีฐานข้อมูล <code>db_city_water_supply</code> หรือไม่ หากยังไม่มี ระบบจะสร้างฐานข้อมูลและนำเข้าตารางพร้อมข้อมูลสมาชิก 400 ครัวเรือนจาก <code>database.sql</code> ให้โดยอัตโนมัติทันที
+      </div>
+    </div>
+
+    <div class="card" style="background: #f0fdf4; border: 1px solid #bbf7d0; margin-top: 14px;">
+      <h4 style="margin: 0 0 4px 0; color: #166534; font-size: 12.5px;">📡 การเชื่อมต่อใช้งานผ่านมือถือในเครือข่าย Wi-Fi สำนักงานประปา:</h4>
+      <div style="font-size: 11px; color: #14532d; line-height: 1.5;">
+        1. ตรวจสอบหมายเลข IP ของเครื่อง Server โดยเปิด Command Prompt แล้วพิมพ์ <code>ipconfig</code> (เช่น <code>192.168.1.100</code>)<br>
+        2. ให้เจ้าหน้าที่เดินจดมิเตอร์เชื่อมต่อสมาร์ตโฟนกับสัญญาณ Wi-Fi เดียวกันกับเครื่อง Server<br>
+        3. เปิดเบราว์เซอร์บนมือถือ แล้วพิมพ์: <code>http://192.168.1.100/plumber/</code><br>
+        4. เจ้าหน้าที่สามารถเดินจดมิเตอร์หรือประชาชนสามารถเช็คยอดค่าน้ำได้ทันทีแบบ Local LAN ออฟไลน์ 100%
+      </div>
+    </div>
+
+    <h4 style="font-size: 12.5px; margin-top: 14px; margin-bottom: 6px;">📂 โครงสร้างไฟล์หลักของระบบ (Directory Structure):</h4>
+    <table class="table-striped" style="font-size: 11px;">
+      <thead>
+        <tr>
+          <th width="30%">เส้นทางไฟล์ (Path)</th>
+          <th width="70%">หน้าที่และฟังก์ชันการทำงาน</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>index.php</code></td>
+          <td>หน้าแรกประชาชน เช็คยอดด้วยเบอร์โทร สแกน QR พร้อมเพย์ แจ้งท่อแตก</td>
+        </tr>
+        <tr>
+          <td><code>meter_reading.php</code></td>
+          <td>หน้าเดินจดมิเตอร์ภาคสนาม ป.17 เรียงตามลำดับ สแกนกล้อง QR</td>
+        </tr>
+        <tr>
+          <td><code>finance_billing.php</code></td>
+          <td>ศูนย์การเงิน: ตัดรับเงิน, ใบเสร็จ ป.31/32, ทะเบียนหนี้ กค.4, ฎีกา 10%</td>
+        </tr>
+        <tr>
+          <td><code>print_qr_labels.php</code></td>
+          <td>พิมพ์สติกเกอร์รหัส QR Code ประจำตัวมิเตอร์ติดหน้าบ้าน 4 รูปแบบ</td>
+        </tr>
+        <tr>
+          <td><code>portal_citizen.php</code></td>
+          <td>พอร์ทัลสมาชิก ดูกราฟย้อนหลัง 6 เดือน สแกนชำระเงิน</td>
+        </tr>
+        <tr>
+          <td><code>dashboard.php</code> / <code>executive_reports.php</code></td>
+          <td>แผงสถิติผู้บริหาร KPI รายรับ หนี้คงค้าง และงบดุลประจำเดือน</td>
+        </tr>
+        <tr>
+          <td><code>api/db.php</code></td>
+          <td>เชื่อมต่อฐานข้อมูล PDO พร้อมระบบสร้าง DB อัตโนมัติ (Zero-Config)</td>
+        </tr>
+        <tr>
+          <td><code>api/backup.php</code></td>
+          <td>สคริปต์สำรองฐานข้อมูลฉุกเฉิน 1 คลิกดาวน์โหลดเป็นไฟล์ .sql</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="footer-page-num">หน้า 2 / 6</div>
+  </div>
+
+  <!-- ================= PAGE 3: FIELD & CITIZEN MODULES ================= -->
+  <div class="page">
+    <div class="header-bar">
+      <h2>2. คู่มือการใช้งาน: ฝั่งประชาชนและช่างจดมิเตอร์ภาคสนาม</h2>
+      <span>XAMPP Manual • ส่วนที่ 2</span>
+    </div>
+
+    <div class="card" style="border-left: 4px solid #0284c7;">
+      <h3 style="margin: 0 0 6px 0; font-size: 13px; color: #0284c7;">📱 2.1 หน้าบริการประชาชนและการค้นหาค่าน้ำ (index.php)</h3>
+      <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
+        <strong>ขั้นตอนการใช้งานสำหรับชาวบ้าน:</strong><br>
+        1. เปิดหน้าเว็บ <code>index.php</code><br>
+        2. ในช่องค้นหา <strong>"ตรวจสอบยอดค่าน้ำประปาของท่าน"</strong> พิมพ์หมายเลขโทรศัพท์ 10 หลัก (เช่น <code>0812345678</code>) หรือบ้านเลขที่<br>
+        3. กดปุ่ม <strong>[🔍 ค้นหาค่าน้ำ]</strong>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;• ระบบจะแสดงการ์ดยอดค่าน้ำ: ชื่อเจ้าของบ้าน, ปริมาณน้ำที่ใช้, ยอดเงินรวมสุทธิ<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;• กดปุ่ม <strong>[📱 ชำระเงินด้วย QR Code พร้อมเพย์]</strong> เพื่อเปิดภาพ QR Code มาตรฐาน EMVCo ที่มียอดเงินตรงตามสตางค์จริง แล้วใช้แอปธนาคารสแกนจ่ายได้ทันที<br>
+        4. หากพบท่อแตกหรือน้ำไม่ไหล สามารถเลื่อนลงมากรอกแบบฟอร์ม <strong>"แจ้งเหตุท่อแตก / น้ำรั่ว"</strong> ด้านล่าง พร้อมระบุเบอร์โทรและจุดเกิดเหตุ
+      </div>
+    </div>
+
+    <div class="card" style="border-left: 4px solid #16a34a; margin-top: 14px;">
+      <h3 style="margin: 0 0 6px 0; font-size: 13px; color: #16a34a;">📲 2.2 หน้าเดินจดมิเตอร์ภาคสนามตามเส้นทางจริง (meter_reading.php)</h3>
+      <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
+        <strong>ขั้นตอนการใช้งานสำหรับเจ้าหน้าที่จดมิเตอร์:</strong><br>
+        1. ล็อกอินด้วยบัญชี <strong>Staff</strong> แล้วเลือกเมนู <strong>"จดมิเตอร์น้ำ"</strong><br>
+        2. เลือก <strong>"งวดเดือน"</strong> ที่ต้องการจด (เช่น <code>8-2567</code>)<br>
+        3. รายชื่อผู้ใช้น้ำจะถูกเรียงตามลำดับหน้าบ้านจริง (<code>seq_no</code>) ตั้งแต่บ้านหลังแรกถึงหลังสุดท้าย<br>
+        4. <strong>การบันทึกเลขอ่านทำได้ 2 วิธี:</strong><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;• <em>สแกน QR Code:</em> กดปุ่ม <strong>[📷 สแกน QR]</strong> เปิดกล้องสแกนสติกเกอร์ที่ติดบนมิเตอร์น้ำ ระบบจะกระโดดไปที่แถวบ้านนั้นให้อัตโนมัติ<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;• <em>พิมพ์ตัวเลข:</em> แตะที่ช่อง <strong>"เลขครั้งนี้"</strong> แล้วพิมพ์ตัวเลขมิเตอร์<br>
+        5. <strong>การประมวลผลอัตโนมัติ:</strong><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;• ระบบคำนวณหน่วยใช้ = เลขใหม่ - เลขเดิม<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;• คิดค่าน้ำตามสูตร: <code>(หน่วย x 7 บาท) + ค่าบำรุง 10 บาท + หนี้ค้างเก่า = ยอดสุทธิ</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;• บันทึกข้อมูลลงฐานข้อมูลทันทีแบบ Real-time Auto-save<br>
+        6. <strong>ระบบแจ้งเตือนความผิดปกติ:</strong> หากกรอกตัวเลขน้อยกว่าครั้งก่อน ระบบจะขึ้นแถบสีแดงแจ้งเตือนทันที ป้องกันการดูเลขผิดหรือมิเตอร์หมุนกลับ
+      </div>
+    </div>
+    <div class="footer-page-num">หน้า 3 / 6</div>
+  </div>
+
+  <!-- ================= PAGE 4: FINANCE & BILLING MODULE ================= -->
+  <div class="page">
+    <div class="header-bar">
+      <h2>3. คู่มือการใช้งาน: ระบบการเงิน ตัดรับชำระ และใบเสร็จ ป.31/32</h2>
+      <span>XAMPP Manual • ส่วนที่ 3</span>
+    </div>
+
+    <div class="card" style="border-left: 4px solid #0284c7;">
+      <h3 style="margin: 0 0 6px 0; font-size: 13px; color: #0284c7;">💳 3.1 การตัดรับชำระเงินและดูใบเสร็จด่วน (Tab 1: #pane-collection)</h3>
+      <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
+        1. เปิดหน้า <code>finance_billing.php</code> แล้วเลือกงวดเดือนที่ต้องการจัดการ<br>
+        2. พิมพ์เบอร์โทรศัพท์หรือชื่อผู้ใช้น้ำในช่องค้นหาเพื่อค้นหาบิล<br>
+        3. เมื่อรับเงิน ให้กดปุ่ม <strong>[✅ รับชำระ]</strong>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;• สถานะจะเปลี่ยนเป็น <strong>PAID (ชำระแล้ว)</strong> สีเขียวทันที (Optimistic UI)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;• ออกเลขที่ใบเสร็จ <code>RC-YYYYMM-XXX</code> อัตโนมัติ<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;• มี Toast แจ้งเตือนสีเขียวพร้อมปุ่ม <strong>[🖨️ พิมพ์ใบเสร็จ]</strong><br>
+        4. กดปุ่ม <strong>[🧾 ใบเสร็จ]</strong> เพื่อเปิดหน้าต่าง <strong>Quick Receipt Modal</strong> ป๊อปอัปพรีวิวใบเสร็จ ป.31/32 พร้อมสั่งพิมพ์ได้ในเสี้ยววินาทีโดยไม่ต้องสลับหน้าจอ<br>
+        5. กดปุ่ม <strong>[📥 ส่งออก Excel]</strong> หากต้องการดาวน์โหลดรายงานสรุปการจัดเก็บเป็นไฟล์ Excel
+      </div>
+    </div>
+
+    <div class="card" style="border-left: 4px solid #dc2626; margin-top: 14px;">
+      <h3 style="margin: 0 0 6px 0; font-size: 13px; color: #dc2626;">⚠️ 3.2 ทะเบียนคุมหนี้ค้างชำระ กค.4 และหนังสือเตือน (Tab 3: #pane-arrears)</h3>
+      <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
+        1. คลิกแท็บ <strong>"3. ทะเบียนคุมหนี้ค้างชำระ (กค.4)"</strong><br>
+        2. เลือกระดับความเร่งด่วนตามอายุหนี้: 1 เดือน, 2 เดือน, หรือ 3 เดือนขึ้นไป (หนี้วิกฤต)<br>
+        3. กดปุ่ม <strong>[✉️ ออกหนังสือเตือน]:</strong> เปิดเอกสารหนังสือเตือนระงับการใช้น้ำชั่วคราว ดึงยอดหนี้รวมและกำหนดเส้นตายชำระ 7 วัน พร้อมสั่งพิมพ์ไปส่งที่บ้านลูกหนี้<br>
+        4. กดปุ่ม <strong>[💳 ตัดชำระ]:</strong> สลับหน้าจอกลับไปยังแท็บ 1 ทันที พร้อมกรอกชื่อลูกหนี้ลงช่องค้นหาให้อัตโนมัติเพื่อรับเงินได้ทันที 1 คลิก
+      </div>
+    </div>
+
+    <div class="card" style="border-left: 4px solid #7c3aed; margin-top: 14px;">
+      <h3 style="margin: 0 0 6px 0; font-size: 13px; color: #7c3aed;">📜 3.3 ฎีกาเบิกจ่ายและซิงค์ค่าตอบแทนผู้จัดเก็บ 10% (Tab 4: #pane-vouchers)</h3>
+      <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
+        1. คลิกแท็บ <strong>"4. ฎีกาเบิกจ่ายเงิน (10% & ค่าใช้จ่าย)"</strong><br>
+        2. กดปุ่ม <strong>[🔄 ซิงค์ค่าตอบแทน 10%]</strong>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;• ระบบจะคำนวณ: <code>ยอดค่าตอบแทน = ยอดรับชำระจริงในงวดนั้น x 10%</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;• สร้างฎีกาเบิกจ่ายค่าตอบแทนให้อัตโนมัติ พร้อมแปลงตัวเลขเป็นตัวอักษรบาทไทย<br>
+        3. กดปุ่ม <strong>[➕ ออกฎีกาเบิกจ่ายรายการใหม่]</strong> เพื่อเบิกจ่ายค่าไฟปั๊มน้ำ, ซ่อมท่อ, สารส้ม 8 หมวด<br>
+        4. เอกสารฎีกาจะมีช่องลงนาม 3 ฝ่าย (ผู้รับเงิน, เหรัญญิก, ประธานกองทุน) ถูกต้องตามระเบียบ
+      </div>
+    </div>
+    <div class="footer-page-num">หน้า 4 / 6</div>
+  </div>
+
+  <!-- ================= PAGE 5: ADMIN & DISASTER RECOVERY ================= -->
+  <div class="page">
+    <div class="header-bar">
+      <h2>4. คู่มือผู้บริหารและการสำรองข้อมูลฉุกเฉิน (Admin & Backup)</h2>
+      <span>XAMPP Manual • ส่วนที่ 4</span>
+    </div>
+
+    <div class="card" style="border-left: 4px solid #0f172a;">
+      <h3 style="margin: 0 0 6px 0; font-size: 13px; color: #0f172a;">📊 4.1 แดชบอร์ดผู้บริหารและรายงานงบดุล (dashboard.php, executive_reports.php)</h3>
+      <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
+        • <strong>KPI ภาพรวม:</strong> ยอดรายรับจริง, ยอดหนี้ค้างชำระ, ปริมาณการใช้น้ำรวมของหมู่บ้าน<br>
+        • <strong>แผนผังโซนการจ่ายน้ำ:</strong> แยกสถิติ 3 โซน (วังยางเหนือ, วังยางกลาง, วังยางใต้)<br>
+        • <strong>การวิเคราะห์น้ำสูญเสีย (NRW):</strong> เปรียบเทียบน้ำที่ผลิตจ่าย กับน้ำที่วัดได้ตามบ้าน เพื่อตรวจหาจุดท่อแตกใต้ดิน<br>
+        • <strong>รายงานงบดุลประจำเดือน:</strong> สรุปรายรับสุทธิ หักรายจ่ายสุทธิ คงเหลือยกไป พร้อมจุดลงนามกรรมการ 3 ท่าน
+      </div>
+    </div>
+
+    <div class="card" style="border-left: 4px solid #16a34a; margin-top: 14px;">
+      <h3 style="margin: 0 0 6px 0; font-size: 13px; color: #16a34a;">💾 4.2 ระบบสำรองฐานข้อมูล 1-Click Backup (api/backup.php)</h3>
+      <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
+        เพื่อความปลอดภัยสูงสุดของข้อมูลการเงินชุมชน ให้ดำเนินการสำรองข้อมูลเป็นประจำ:<br>
+        1. เข้าสู่ระบบด้วยบทบาท <strong>Admin</strong><br>
+        2. ไปที่เมนู <strong>"สำรองฐานข้อมูล"</strong> หรือพิมพ์ URL: <code>http://localhost/plumber/api/backup.php</code><br>
+        3. ระบบจะทำการดาวน์โหลดไฟล์ <code>backup_city_water_YYYY-MM-DD_HH-ii-ss.sql</code> ลงเครื่องทันที<br>
+        4. แนะนำให้คัดลอกไฟล์นี้ลง Flash Drive หรือ External HDD ทุกสิ้นเดือนหลังปิดงวดบัญชี
+      </div>
+    </div>
+
+    <div class="card" style="border-left: 4px solid #d97706; margin-top: 14px;">
+      <h3 style="margin: 0 0 6px 0; font-size: 13px; color: #d97706;">🔄 4.3 ขั้นตอนการกู้คืนข้อมูล (Database Restore)</h3>
+      <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
+        หากคอมพิวเตอร์สำนักงานเกิดความเสียหายและต้องย้ายไปลงเครื่องใหม่:<br>
+        1. ติดตั้งโปรแกรม XAMPP บนเครื่องใหม่ และเปิดบริการ MySQL<br>
+        2. เข้าไปที่ <code>http://localhost/phpmyadmin</code><br>
+        3. คลิกแท็บ <strong>"นำเข้า (Import)"</strong> เลือกไฟล์ <code>.sql</code> สำรองล่าสุด แล้วกด <strong>"นำเข้า / Go"</strong><br>
+        4. ข้อมูลสมาชิก 400 ราย และประวัติการเงินทั้งหมดจะกลับคืนมาสมบูรณ์ 100%
+      </div>
+    </div>
+    <div class="footer-page-num">หน้า 5 / 6</div>
+  </div>
+
+  <!-- ================= PAGE 6: TROUBLESHOOTING & SIGN-OFF ================= -->
+  <div class="page">
+    <div class="header-bar">
+      <h2>5. การแก้ไขปัญหาเบื้องต้นและการรับรองคู่มือ (Troubleshooting & Sign-Off)</h2>
+      <span>XAMPP Manual • ส่วนที่ 5</span>
+    </div>
+
+    <h4 style="font-size: 12.5px; margin-bottom: 6px;">🛠️ ปัญหาที่พบบ่อยและแนวทางแก้ไข (Troubleshooting Matrix)</h4>
+    <table class="table-striped">
+      <thead>
+        <tr>
+          <th width="32%">ปัญหาที่พบ</th>
+          <th width="33%">สาเหตุที่เป็นไปได้</th>
+          <th width="35%">แนวทางการแก้ไข</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>เข้าเว็บไม่ได้ (Cannot Connect)</strong></td>
+          <td>ลืมกด Start โมดูล Apache ใน XAMPP</td>
+          <td>เปิด XAMPP Control Panel กดปุ่ม Start ที่ Apache</td>
+        </tr>
+        <tr>
+          <td><strong>ขึ้นข้อความ Database Connection Failed</strong></td>
+          <td>ลืมกด Start โมดูล MySQL ใน XAMPP</td>
+          <td>กดปุ่ม Start ที่ MySQL ใน XAMPP Control Panel</td>
+        </tr>
+        <tr>
+          <td><strong>มือถือเข้า Wi-Fi สำนักงานไม่ได้</strong></td>
+          <td>Windows Firewall บล็อกพอร์ต 80</td>
+          <td>ไปที่ Firewall เลือก Allow Apache ผ่าน Private Network</td>
+        </tr>
+        <tr>
+          <td><strong>จดมิเตอร์แล้วขึ้นแถบสีแดง</strong></td>
+          <td>ตัวเลขใหม่น้อยกว่าตัวเลขเดิม</td>
+          <td>ตรวจสอบว่าดูมิเตอร์ผิดหรือไม่ หากมิเตอร์วนรอบให้แจ้ง Admin</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="card" style="margin-top: 40px; padding: 18px; border: 1px dashed #94a3b8;">
+      <h4 style="margin: 0 0 16px 0; text-align: center; font-size: 12.5px; color: #0f172a;">
+        การลงนามรับรองคู่มือการใช้งานระบบจริง (Manual Approval & Sign-Off)
+      </h4>
+      <div class="grid-3" style="text-align: center; font-size: 11px; color: #475569;">
+        <div>
+          <div style="margin-bottom: 30px;">...............................................................</div>
+          <strong>(นายสมบูรณ์ มั่นคง)</strong><br>
+          เหรัญญิกกองทุนประปาหมู่บ้านวังยาง
+        </div>
+        <div>
+          <div style="margin-bottom: 30px;">...............................................................</div>
+          <strong>(นายวิชัย เจริญสุข)</strong><br>
+          ประธานกรรมการบริหารกิจการประปา
+        </div>
+        <div>
+          <div style="margin-bottom: 30px;">...............................................................</div>
+          <strong>(อาจารย์ที่ปรึกษาโครงการ)</strong><br>
+          คณะกรรมการตรวจประเมินผลงาน
+        </div>
+      </div>
+    </div>
+    <div class="footer-page-num">หน้า 6 / 6</div>
+  </div>
+
+</body>
+</html>
