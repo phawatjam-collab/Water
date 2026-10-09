@@ -6,11 +6,11 @@
   <title>เอกสารข้อกำหนดความต้องการซอฟต์แวร์ฉบับสมบูรณ์ (Full SRS) - โครงการระบบบริหารจัดการน้ำประปาหมู่บ้านวังยาง</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Prompt:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
   <style>
     @page {
       size: A4 portrait;
-      margin: 12mm 15mm;
+      margin: 18mm 18mm 18mm 24mm;
     }
     * {
       box-sizing: border-box;
@@ -19,27 +19,27 @@
     }
     body {
       font-family: 'Sarabun', 'TH Sarabun New', Tahoma, sans-serif;
-      font-size: 12.5px;
-      line-height: 1.5;
-      color: #1f2937;
-      background: #e2e8f0;
+      font-size: 13px;
+      line-height: 1.36;
+      color: #000000;
+      background: #ffffff;
       margin: 0;
       padding: 0;
     }
     h1, h2, h3, h4, h5 {
-      font-family: 'Prompt', 'Sarabun', sans-serif;
-      color: #0f172a;
-      margin-top: 0;
-      font-weight: 600;
+      font-family: 'Sarabun', 'TH Sarabun New', Tahoma, sans-serif;
+      color: #000000;
+      margin: 0;
+      font-weight: 700;
     }
     .page {
       background: #ffffff;
-      padding: 24px 28px;
-      margin: 0 auto 20px auto;
+      padding: 20mm 18mm 18mm 24mm;
+      margin: 0 auto 15px auto;
       max-width: 210mm;
       min-height: 297mm;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
       position: relative;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
     }
     @media print {
       body { background: #ffffff; }
@@ -51,138 +51,112 @@
         min-height: auto;
         page-break-after: always;
       }
-      .no-print { display: none !important; }
     }
-    .doc-header {
-      border-bottom: 2px solid #1e3a8a;
-      padding-bottom: 5px;
-      margin-bottom: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-    }
-    .doc-header .doc-title {
-      font-size: 11px;
-      color: #475569;
-      font-weight: 500;
-    }
-    .doc-header .doc-id {
-      font-size: 11px;
-      color: #1e3a8a;
-      font-weight: 600;
-    }
-    .footer-bar {
+    .page-number {
       position: absolute;
-      bottom: 12px;
-      left: 28px;
-      right: 28px;
-      border-top: 1px solid #cbd5e1;
-      padding-top: 5px;
-      display: flex;
-      justify-content: space-between;
+      top: 12mm;
+      right: 18mm;
+      font-size: 11.5px;
+      color: #333333;
+    }
+    .doc-running-head {
+      position: absolute;
+      top: 12mm;
+      left: 24mm;
       font-size: 11px;
-      color: #64748b;
+      color: #555555;
     }
-    .cover-border {
-      border: 1.5px solid #1e3a8a;
-      padding: 32px 26px;
-      min-height: 268mm;
+    .running-footer {
+      position: absolute;
+      bottom: 12mm;
+      left: 24mm;
+      right: 18mm;
+      border-top: 0.5pt solid #666666;
+      padding-top: 4px;
       display: flex;
-      flex-direction: column;
       justify-content: space-between;
+      font-size: 10.5px;
+      color: #555555;
     }
-    .section-title {
+    p {
+      margin: 3.5px 0;
+      text-indent: 1.25cm;
+      text-align: justify;
+      text-justify: inter-cluster;
+    }
+    .no-indent {
+      text-indent: 0 !important;
+    }
+    .chapter-heading {
+      text-align: center;
+      font-size: 15.5px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-heading {
       font-size: 14px;
       font-weight: 700;
-      color: #1e3a8a;
-      border-left: 4px solid #1e3a8a;
-      padding-left: 8px;
-      margin: 12px 0 6px 0;
+      margin-top: 8px;
+      margin-bottom: 3px;
     }
-    table {
+    .sub-section-heading {
+      font-size: 13px;
+      font-weight: 700;
+      margin-top: 5px;
+      margin-bottom: 2px;
+      text-indent: 0.75cm;
+    }
+    .caption-title {
+      font-size: 12.5px;
+      font-weight: 700;
+      margin-top: 6px;
+      margin-bottom: 2px;
+      text-align: left;
+    }
+    .figure-caption {
+      font-size: 11.5px;
+      font-weight: 700;
+      text-align: center;
+      margin-top: 3px;
+      margin-bottom: 5px;
+    }
+    table.academic-table {
       width: 100%;
       border-collapse: collapse;
-      margin: 6px 0;
-      font-size: 11.5px;
+      margin: 5px 0 8px 0;
+      font-size: 12px;
       page-break-inside: avoid;
     }
-    th, td {
-      border: 1px solid #cbd5e1;
-      padding: 5px 7px;
+    table.academic-table th {
+      border-top: 1.5pt solid #000000;
+      border-bottom: 1pt solid #000000;
+      padding: 4px 5px;
+      background: #f9f9f9;
+      font-weight: 700;
+      text-align: left;
+    }
+    table.academic-table td {
+      border-bottom: 0.5pt solid #dddddd;
+      padding: 4px 5px;
       vertical-align: top;
     }
-    th {
-      background: #f1f5f9;
-      color: #0f172a;
-      font-weight: 600;
-      text-align: left;
-      font-size: 11.5px;
-      border-bottom: 2px solid #94a3b8;
+    table.academic-table tr:last-child td {
+      border-bottom: 1.5pt solid #000000;
     }
     .text-center { text-align: center; }
     .text-right { text-align: right; }
-    .bg-zebra:nth-child(even) { background: #f8fafc; }
-    .box-info {
-      border: 1px solid #cbd5e1;
-      background: #f8fafc;
-      padding: 9px 12px;
-      margin-bottom: 8px;
-      border-radius: 2px;
-    }
-    .tag {
-      display: inline-block;
-      padding: 1px 5px;
-      border: 1px solid #cbd5e1;
-      border-radius: 2px;
-      font-size: 10.5px;
-      background: #ffffff;
-      color: #1e293b;
-      font-family: 'Fira Code', monospace;
-    }
-    .req-card {
-      border: 1px solid #cbd5e1;
-      padding: 8px 10px;
-      margin-bottom: 8px;
-      background: #ffffff;
-      page-break-inside: avoid;
-    }
-    .req-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 4px;
-      border-bottom: 1px dashed #cbd5e1;
-      padding-bottom: 3px;
-    }
-    .req-code {
-      font-weight: 700;
-      color: #1e3a8a;
-      font-size: 12.5px;
-    }
-    .req-title {
-      font-weight: 600;
-      color: #0f172a;
-      font-size: 12px;
-    }
-    .figure-box {
-      border: 1px solid #cbd5e1;
-      padding: 6px;
+    .figure-frame {
+      border: 0.75pt solid #555555;
+      padding: 3px;
       background: #ffffff;
       text-align: center;
-      margin-bottom: 6px;
+      margin-bottom: 2px;
     }
-    .figure-box img {
+    .figure-frame img {
       width: 100%;
-      height: 125px;
+      height: 115px;
       object-fit: contain;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-    }
-    .figure-caption {
-      font-size: 11px;
-      color: #475569;
-      margin-top: 4px;
-      font-weight: 500;
+      background: #fafafa;
     }
     .grid-2 {
       display: grid;
@@ -194,656 +168,583 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
     }
+    .sign-section {
+      margin-top: 22px;
+      border: 0.75pt solid #777777;
+      padding: 14px 12px 10px 12px;
+    }
+    .sign-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      text-align: center;
+      font-size: 11.5px;
+    }
+    .sign-line {
+      margin-bottom: 34px;
+    }
+    .req-item {
+      margin-bottom: 6px;
+      text-align: justify;
+    }
+    .req-item-title {
+      font-weight: 700;
+      color: #000000;
+    }
   </style>
 </head>
 <body>
 
-  <!-- ================= หน้าที่ 1: ปกรายงานฉบับสมบูรณ์ ================= -->
+  <!-- ================= หน้าที่ 1: หน้าปกรายงานทางวิชาการ ================= -->
   <div class="page">
-    <div class="cover-border">
+    <div style="border: 1pt solid #000000; padding: 25px 20px; min-height: 250mm; display: flex; flex-direction: column; justify-content: space-between; text-align: center;">
       <div>
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #cbd5e1; padding-bottom: 8px;">
-          <div style="font-size: 11.5px; font-weight: 600; color: #1e3a8a;">มาตรฐานข้อกำหนดซอฟต์แวร์ IEEE Std 830-1998 / ISO 29148</div>
-          <div style="font-size: 11px; color: #64748b;">รหัสเอกสาร: SE-2567-WTR-FULL</div>
+        <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.5px;">
+          มาตรฐานข้อกำหนดความต้องการซอฟต์แวร์ IEEE Std 830-1998 / ISO 29148
+        </div>
+        <div style="font-size: 11px; color: #555555; margin-top: 2px;">
+          รหัสเอกสาร: SE-2567-WTR-FULL
         </div>
 
-        <div style="text-align: center; margin: 40px 0 25px 0;">
-          <div style="font-size: 13px; font-weight: 600; color: #475569; letter-spacing: 0.5px; margin-bottom: 8px;">
-            เอกสารข้อกำหนดความต้องการซอฟต์แวร์ฉบับสมบูรณ์ (Software Requirements Specification)
+        <div style="margin-top: 60px; margin-bottom: 30px;">
+          <div style="font-size: 14px; font-weight: 700; margin-bottom: 12px;">
+            รายงานข้อกำหนดความต้องการซอฟต์แวร์ฉบับสมบูรณ์<br>
+            (Software Requirements Specification)
           </div>
-          <h1 style="font-size: 23px; font-weight: 700; color: #0f172a; margin-bottom: 6px; line-height: 1.35;">
-            ระบบบริหารจัดการน้ำประปาหมู่บ้านวังยาง<br>
-            <span style="font-size: 17px; font-weight: 500; color: #1e3a8a;">(Smart Village Waterworks Management System)</span>
+          <h1 style="font-size: 21px; font-weight: 700; line-height: 1.4; margin-bottom: 6px;">
+            ระบบบริหารจัดการน้ำประปาหมู่บ้านวังยาง
           </h1>
-          <div style="font-size: 13.5px; color: #334151; margin-top: 10px;">
-            กองทุนระบบการประปาหมู่บ้านวังยาง หมู่ที่ 3 ตำบลวังยาง อำเภอวังยาง จังหวัดนครพนม
+          <h2 style="font-size: 15px; font-weight: 600; color: #222222;">
+            SMART VILLAGE WATERWORKS MANAGEMENT SYSTEM
+          </h2>
+          <div style="font-size: 13px; margin-top: 14px; color: #333333;">
+            โครงการพัฒนาระบบสารสนเทศเพื่อการบริหารจัดการกิจการประปาชุมชนชนบท
           </div>
         </div>
 
-        <div class="box-info" style="margin-top: 25px; padding: 14px 16px;">
-          <div style="font-weight: 600; color: #0f172a; font-size: 12.5px; margin-bottom: 6px;">บทคัดย่อโครงงาน (Project Abstract)</div>
-          <p style="margin: 0; font-size: 12px; color: #334151; text-align: justify; line-height: 1.55;">
-            โครงงานนี้จัดทำขึ้นเพื่อพัฒนาระบบสารสนเทศสำหรับบริหารจัดการกิจการประปาหมู่บ้านชนบท ทดแทนการบันทึกด้วยสมุดกระดาษแบบดั้งเดิม ระบบถูกออกแบบและพัฒนาให้รองรับการทำงานของเจ้าหน้าที่ประปาและอำนวยความสะดวกแก่ประชาชนผู้ใช้น้ำจำนวน 400 ครัวเรือน ครอบคลุมฟังก์ชันการเดินจดบันทึกมาตรวัดน้ำภาคสนามตามลำดับเส้นทางจริง (แบบ ป.17) การออกใบแจ้งหนี้และใบเสร็จรับเงิน (แบบ ป.31/32) การสร้างภาพ QR Code ชำระเงินผ่านพร้อมเพย์ตามยอดเงินจริง การควบคุมบัญชีลูกหนี้ค้างชำระ (แบบ กค.4) การคำนวณและจัดทำใบสำคัญเบิกจ่ายค่าตอบแทนผู้จัดเก็บร้อยละ 10 และรายงานสรุปงบดุลประจำเดือน
+        <div style="max-width: 140mm; margin: 40px auto 0 auto; text-align: justify; font-size: 12.5px; line-height: 1.5; border-top: 0.5pt solid #888888; border-bottom: 0.5pt solid #888888; padding: 12px 6px;">
+          <p class="no-indent" style="text-align: center; font-weight: 700; margin-bottom: 4px;">
+            บทคัดย่อโครงงาน (Project Abstract)
           </p>
+          โครงงานนี้มีวัตถุประสงค์เพื่อพัฒนาระบบสารสนเทศสำหรับบริหารจัดการน้ำประปาหมู่บ้านชนบท ทดแทนการจดบันทึกด้วยสมุดกระดาษ รองรับผู้ใช้น้ำจำนวน 400 ครัวเรือนในพื้นที่หมู่ที่ 3 ตำบลวังยาง อำเภอวังยาง จังหวัดนครพนม ระบบครอบคลุมการเดินจดบันทึกมาตรวัดน้ำภาคสนามตามเส้นทางจริง (แบบ ป.17) การรับชำระเงินและออกใบเสร็จรับเงิน (แบบ ป.31/32) การสร้างภาพ QR Code ชำระเงินผ่านพร้อมเพย์ การควบคุมบัญชีลูกหนี้ค้างชำระ (แบบ กค.4) การคำนวณและจัดทำใบสำคัญเบิกจ่ายค่าตอบแทนผู้จัดเก็บร้อยละ 10 และรายงานงบดุลประจำเดือน
         </div>
       </div>
 
-      <div>
-        <div style="border: 1px solid #cbd5e1; padding: 14px 16px; background: #ffffff; margin-bottom: 12px;">
-          <div class="grid-2" style="font-size: 12px;">
-            <div>
-              <div style="color: #64748b; font-weight: 600;">หน่วยงานกำกับดูแล / ผู้ใช้งานจริง:</div>
-              <div style="font-weight: 700; color: #0f172a; margin-top: 2px;">คณะกรรมการบริหารกิจการประปาหมู่บ้านวังยาง</div>
-              <div style="color: #475569;">หมู่ที่ 3 ตำบลวังยาง อำเภอวังยาง จังหวัดนครพนม</div>
-            </div>
-            <div>
-              <div style="color: #64748b; font-weight: 600;">เครื่องมือและแหล่งอ้างอิงของโครงงาน:</div>
-              <div style="font-weight: 600; color: #1e3a8a; margin-top: 2px;">PHP 8 + MariaDB/MySQL (InnoDB Engine)</div>
-              <div style="color: #475569;">Axure Prototype: <code>Plumber_ver-1003-gu-tam-kon-dew-i-sus.rp</code></div>
-            </div>
-          </div>
-        </div>
-
-        <div style="border-top: 1px solid #cbd5e1; padding-top: 8px; font-size: 11px; color: #64748b; display: flex; justify-content: space-between;">
-          <div>เอกสารทางวิศวกรรมซอฟต์แวร์สำหรับการสอบประเมินผลโครงงาน</div>
-          <div>ฉบับสมบูรณ์: ตุลาคม 2567 (เวอร์ชัน 1.0)</div>
-        </div>
+      <div style="font-size: 12px; line-height: 1.6; margin-bottom: 10px;">
+        <strong>หน่วยงานกำกับดูแลและผู้ใช้งาน:</strong><br>
+        กองทุนระบบการประปาหมู่บ้านวังยาง หมู่ที่ 3 ตำบลวังยาง อำเภอวังยาง จังหวัดนครพนม<br>
+        <strong>เครื่องมือที่ใช้พัฒนาและอ้างอิง:</strong> PHP 8, MariaDB/MySQL, Axure RP Prototype (31 หน้าจอ)<br>
+        <strong>ภาคการศึกษา:</strong> ภาคเรียนที่ 1 ปีการศึกษา 2567 (ตุลาคม 2567)
       </div>
-    </div>
-    <div class="footer-bar">
-      <span>เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • โครงการระบบประปาหมู่บ้านวังยาง</span>
-      <span>หน้า 1 จาก 8</span>
     </div>
   </div>
 
-  <!-- ================= หน้าที่ 2: บทนำและนิยามศัพท์ ================= -->
+  <!-- ================= หน้าที่ 2: บทที่ 1 บทนำ ================= -->
   <div class="page">
-    <div class="doc-header">
-      <div class="doc-title">เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • บทที่ 1 บทนำ</div>
-      <div class="doc-id">รหัส: SE-2567-WTR-FULL</div>
-    </div>
+    <div class="doc-running-head">เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • บทที่ 1 บทนำ</div>
+    <div class="page-number">หน้า 2 จาก 8</div>
 
-    <div class="section-title">1. บทนำและประวัติการพัฒนา (Introduction & Background)</div>
+    <div class="chapter-heading">บทที่ 1<br>บทนำ (Introduction)</div>
 
-    <div style="font-weight: 600; font-size: 12px; color: #0f172a; margin: 8px 0 4px 0;">1.1 ประวัติการแก้ไขเอกสาร (Document Revision History)</div>
-    <table>
+    <div class="section-heading">1.1 ความเป็นมาและความสำคัญของโครงงาน (Background & Significance)</div>
+    <p>
+      ระบบประปาหมู่บ้านเป็นสาธารณูปโภคขั้นพื้นฐานที่มีความสำคัญยิ่งต่อสุขอนามัยและความเป็นอยู่ของประชาชนในชนบท กิจการประปาหมู่บ้านวังยาง หมู่ที่ 3 ตำบลวังยาง อำเภอวังยาง จังหวัดนครพนม ปัจจุบันมีครัวเรือนที่ใช้น้ำจำนวน 400 ครัวเรือน การดำเนินงานที่ผ่านมาคณะกรรมการบริหารกิจการประปาใช้ระบบการจดบันทึกด้วยมือลงในสมุดกระดาษ ซึ่งก่อให้เกิดปัญหาและความล่าช้าในการปฏิบัติงานหลายประการ ได้แก่ การจดเลขอ่านมาตรวัดน้ำผิดพลาด ปัญหาตัวเลขมาตรวัดน้ำย้อนกลับ การคำนวณค่าน้ำด้วยมือที่ใช้เวลานานและมีโอกาสผิดพลาด การติดตามหนี้ค้างชำระไม่เป็นระบบ และการจัดทำหลักฐานการเบิกจ่ายเงินค่าตอบแทนผู้จัดเก็บร้อยละ 10 ตามมติที่ประชุมกองทุนขาดความโปร่งใสและตรวจสอบย้อนหลังได้ยาก
+    </p>
+    <p>
+      จากสภาพปัญหาดังกล่าว คณะผู้จัดทำจึงได้พัฒนาระบบบริหารจัดการน้ำประปาหมู่บ้านอัจฉริยะขึ้น โดยประยุกต์ใช้เทคโนโลยีเว็บแอปพลิเคชันภาษา PHP ร่วมกับฐานข้อมูล MySQL และออกแบบส่วนติดต่อผู้ใช้ด้วยโปรแกรม Axure RP เพื่อเปลี่ยนผ่านกระบวนการทำงานสู่ระบบดิจิทัล ช่วยให้การจดบันทึกมาตรวัดน้ำ การออกบิล การรับชำระเงิน และการทำบัญชีเป็นไปอย่างถูกต้อง รวดเร็ว และตรวจสอบได้
+    </p>
+
+    <div class="section-heading">1.2 วัตถุประสงค์ของโครงงาน (Project Objectives)</div>
+    <p class="no-indent" style="margin-left: 0.75cm;">
+      1. เพื่อพัฒนาระบบจดบันทึกเลขอ่านมาตรวัดน้ำภาคสนามผ่านสมาร์ตโฟนตามลำดับเส้นทางจริง พร้อมระบบตรวจจับค่าผิดปกติ<br>
+      2. เพื่อพัฒนาระบบการออกใบแจ้งหนี้และใบเสร็จรับเงินมาตรฐาน (แบบ ป.31/32) พร้อมสร้าง QR Code ชำระเงินผ่านระบบพร้อมเพย์<br>
+      3. เพื่อพัฒนาระบบทะเบียนคุมลูกหนี้ค้างชำระ (แบบ กค.4) และพิมพ์หนังสือแจ้งเตือนระงับการใช้น้ำได้อย่างมีประสิทธิภาพ<br>
+      4. เพื่อพัฒนาระบบคำนวณและจัดทำใบสำคัญเบิกจ่ายเงินค่าตอบแทนผู้จัดเก็บร้อยละ 10 และรายงานสรุปงบดุลประจำเดือนของกองทุน
+    </p>
+
+    <div class="section-heading">1.3 ขอบเขตของโครงงาน (Project Scope)</div>
+    <p>
+      โครงงานนี้ครอบคลุมการใช้งานของผู้ใช้น้ำจำนวน 400 ครัวเรือนในพื้นที่หมู่ที่ 3 ตำบลวังยาง โดยมีขอบเขตการทำงาน 5 มิติหลัก ได้แก่: (1) งานทะเบียนผู้ใช้น้ำและการสร้างสติกเกอร์รหัส QR Code (2) งานเดินจดบันทึกมาตรวัดน้ำภาคสนาม (3) งานค้นหายอดค่าน้ำและบริการประชาชน (4) งานรับชำระเงิน ออกใบเสร็จรับเงิน และคุมลูกหนี้ และ (5) งานบัญชี การเบิกจ่ายเงินกองทุน และรายงานสำหรับผู้บริหาร
+    </p>
+
+    <div class="section-heading">1.4 นิยามศัพท์เฉพาะ (Definitions & Acronyms)</div>
+    <div class="caption-title">ตารางที่ 1.1 นิยามศัพท์และคำย่อที่ใช้ในเอกสาร</div>
+    <table class="academic-table">
       <thead>
         <tr>
-          <th width="12%" class="text-center">เวอร์ชัน</th>
-          <th width="18%" class="text-center">วันที่</th>
-          <th width="28%">ผู้รับผิดชอบ / คณะทำงาน</th>
-          <th width="42%">สาระสำคัญของการปรับปรุง</th>
+          <th width="24%">คำศัพท์ / คำย่อ</th>
+          <th width="76%">ความหมายตามระเบียบปฏิบัติและทางเทคนิค</th>
         </tr>
       </thead>
       <tbody>
-        <tr class="bg-zebra">
-          <td class="text-center">0.1</td>
-          <td class="text-center">23 ก.ค. 2567</td>
-          <td>คณะผู้จัดทำโครงงาน</td>
-          <td>รวบรวมความต้องการเบื้องต้นและยกร่างโครงสร้างฐานข้อมูลเริ่มต้น</td>
-        </tr>
-        <tr class="bg-zebra">
-          <td class="text-center">0.5</td>
-          <td class="text-center">30 ก.ย. 2567</td>
-          <td>ผู้ออกแบบส่วนติดต่อผู้ใช้</td>
-          <td>จัดทำต้นแบบหน้าจอจำลองรุ่นแรกบนโปรแกรม Axure RP</td>
-        </tr>
-        <tr class="bg-zebra">
-          <td class="text-center">0.9</td>
-          <td class="text-center">3 ต.ค. 2567</td>
-          <td>นักวิเคราะห์และพัฒนาระบบ</td>
-          <td>จัดทำต้นแบบฉบับสมบูรณ์ 31 หน้าจอ (Plumber_ver-1003...rp)</td>
-        </tr>
-        <tr class="bg-zebra">
-          <td class="text-center">1.0</td>
-          <td class="text-center">9 ต.ค. 2567</td>
-          <td>คณะผู้จัดทำโครงงาน</td>
-          <td>จัดทำเอกสาร Full SRS ฉบับสมบูรณ์ บูรณาการร่วมกับระบบจริงบน XAMPP</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div style="font-weight: 600; font-size: 12px; color: #0f172a; margin: 12px 0 4px 0;">1.2 วัตถุประสงค์ของโครงงาน (Project Objectives)</div>
-    <div class="box-info">
-      <p style="margin: 0; font-size: 11.5px; color: #334151; line-height: 1.55;">
-        1. เพื่อพัฒนาระบบบันทึกการอ่านมาตรวัดน้ำภาคสนามผ่านสมาร์ตโฟน ช่วยลดความผิดพลาดในการจดบันทึกตัวเลขและป้องกันปัญหาเลขอ่านถอยหลัง<br>
-        2. เพื่อพัฒนาระบบการออกใบแจ้งหนี้และใบเสร็จรับเงินที่ได้มาตรฐาน พร้อมสร้าง QR Code ชำระเงินผ่านระบบพร้อมเพย์ อำนวยความสะดวกแก่ประชาชน<br>
-        3. เพื่อพัฒนาระบบติดตามลูกหนี้ค้างชำระ (แบบ กค.4) และพิมพ์หนังสือแจ้งเตือนระงับการใช้น้ำได้อย่างเป็นรูปธรรม<br>
-        4. เพื่อสร้างระบบการคำนวณและจัดทำใบสำคัญเบิกจ่ายค่าตอบแทนผู้จัดเก็บร้อยละ 10 ตามมติที่ประชุมกองทุน พร้อมทั้งสรุปงบดุลประจำเดือนที่โปร่งใส ตรวจสอบได้
-      </p>
-    </div>
-
-    <div style="font-weight: 600; font-size: 12px; color: #0f172a; margin: 12px 0 4px 0;">1.3 นิยามศัพท์และคำย่อที่ใช้ในเอกสาร (Definitions & Acronyms)</div>
-    <table>
-      <thead>
         <tr>
-          <th width="22%">คำศัพท์ / คำย่อ</th>
-          <th width="78%">ความหมายตามระเบียบปฏิบัติและทางเทคนิค</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="bg-zebra">
           <td><strong>แบบ ป.17</strong></td>
           <td>ทะเบียนคุมผู้ใช้น้ำและการจดบันทึกเลขอ่านมาตรวัดน้ำประจำเดือน ตามระเบียบปฏิบัติงานประปาหมู่บ้าน</td>
         </tr>
-        <tr class="bg-zebra">
+        <tr>
           <td><strong>แบบ ป.31/32</strong></td>
           <td>ใบแจ้งหนี้ค่าน้ำประปา (ป.31) และใบเสร็จรับเงินค่าน้ำประปาประจำงวด (ป.32) ซึ่งเป็นเอกสารสำคัญทางการเงิน</td>
         </tr>
-        <tr class="bg-zebra">
+        <tr>
           <td><strong>แบบ กค.4</strong></td>
           <td>ทะเบียนคุมลูกหนี้ค้างชำระเงินค่าน้ำประปา จัดกลุ่มตามอายุหนี้ (1 เดือน, 2 เดือน, 3 เดือนขึ้นไป)</td>
         </tr>
-        <tr class="bg-zebra">
+        <tr>
           <td><strong>ค่าตอบแทน 10%</strong></td>
           <td>เงินค่าตอบแทนผู้จัดเก็บค่าน้ำประปาในอัตราร้อยละ 10 ของยอดเงินที่รับชำระจริงในงวดนั้นๆ ตามมติที่ประชุมกองทุน</td>
         </tr>
-        <tr class="bg-zebra">
+        <tr>
           <td><strong>NRW (น้ำสูญเสีย)</strong></td>
           <td>Non-Revenue Water: ปริมาณน้ำที่สูบผลิตจ่ายเข้าระบบ แต่ไม่สามารถเรียกเก็บเงินได้จากจุดรั่วซึมหรือท่อแตก</td>
-        </tr>
-        <tr class="bg-zebra">
-          <td><strong>RBAC</strong></td>
-          <td>Role-Based Access Control: การกำหนดสิทธิ์การเข้าถึงข้อมูลและการทำงานของระบบตามหน้าที่ 4 ระดับ</td>
         </tr>
       </tbody>
     </table>
 
-    <div class="footer-bar">
-      <span>เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • โครงการระบบประปาหมู่บ้านวังยาง</span>
+    <div class="running-footer">
+      <span>เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • กองทุนประปาหมู่บ้านวังยาง</span>
       <span>หน้า 2 จาก 8</span>
     </div>
   </div>
 
-  <!-- ================= หน้าที่ 3: ภาพรวมระบบและสิทธิ์ผู้ใช้ ================= -->
+  <!-- ================= หน้าที่ 3: บทที่ 2 ภาพรวมระบบ ================= -->
   <div class="page">
-    <div class="doc-header">
-      <div class="doc-title">เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • บทที่ 2 ภาพรวมของระบบ</div>
-      <div class="doc-id">รหัส: SE-2567-WTR-FULL</div>
-    </div>
+    <div class="doc-running-head">เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • บทที่ 2 ภาพรวมของระบบ</div>
+    <div class="page-number">หน้า 3 จาก 8</div>
 
-    <div class="section-title">2. ภาพรวมของระบบและบทบาทผู้ใช้งาน (Overall Description & User Roles)</div>
+    <div class="chapter-heading">บทที่ 2<br>ภาพรวมของระบบและบทบาทผู้ใช้งาน (Overall Description)</div>
 
-    <div style="font-weight: 600; font-size: 12px; color: #0f172a; margin: 8px 0 4px 0;">2.1 การกำหนดบทบาทและสิทธิ์ผู้ใช้งาน 4 ระดับ (Role Matrix)</div>
-    <table>
+    <div class="section-heading">2.1 การกำหนดบทบาทและสิทธิ์การเข้าใช้งานระบบ (User Roles & Permissions)</div>
+    <p>
+      ระบบจัดแบ่งกลุ่มผู้ใช้งานออกเป็น 4 ระดับ (Role-Based Access Control: RBAC) เพื่อความปลอดภัยและการแบ่งแยกหน้าที่อย่างชัดเจน:
+    </p>
+
+    <div class="caption-title">ตารางที่ 2.1 ตารางกำหนดบทบาทและสิทธิ์การเข้าใช้งานระบบ 4 ระดับ</div>
+    <table class="academic-table">
       <thead>
         <tr>
           <th width="16%">บทบาท (Role)</th>
-          <th width="24%">กลุ่มผู้ใช้งานจริง</th>
-          <th width="42%">สิทธิ์และขอบเขตการทำงานในระบบ</th>
-          <th width="18%">หน้าจอเริ่มต้น</th>
+          <th width="24%">ตำแหน่งจริงในชุมชน</th>
+          <th width="44%">สิทธิ์และขอบเขตหน้าที่ความรับผิดชอบ</th>
+          <th width="16%">หน้าเริ่มต้น</th>
         </tr>
       </thead>
       <tbody>
-        <tr class="bg-zebra">
-          <td><strong>ผู้ดูแลระบบ</strong><br><span style="font-size: 10.5px; color: #64748b;">(Superadmin)</span></td>
+        <tr>
+          <td><strong>ผู้ดูแลระบบ</strong><br>(Superadmin)</td>
           <td>ประธานกรรมการบริหารประปา / ผู้ใหญ่บ้าน</td>
-          <td>เข้าถึงระบบได้ทุกส่วน อนุมัติใบสำคัญเบิกจ่าย กำหนดอัตราค่าน้ำ ดูรายงานงบดุล และสำรองฐานข้อมูล</td>
-          <td><span class="tag">dashboard.php</span></td>
+          <td>เข้าถึงข้อมูลได้ทุกส่วน อนุมัติใบสำคัญเบิกจ่าย กำหนดอัตราค่าน้ำ ดูรายงานงบดุล และสำรองฐานข้อมูล</td>
+          <td>dashboard.php</td>
         </tr>
-        <tr class="bg-zebra">
-          <td><strong>เจ้าหน้าที่</strong><br><span style="font-size: 10.5px; color: #64748b;">(Staff)</span></td>
+        <tr>
+          <td><strong>เจ้าหน้าที่</strong><br>(Staff)</td>
           <td>เหรัญญิกกองทุน / ช่างจดบันทึกมาตรวัดน้ำ</td>
           <td>จดบันทึกเลขอ่านมาตรวัดน้ำ (ป.17) บันทึกการรับชำระเงิน ออกใบเสร็จ (ป.31/32) และคุมหนี้ (กค.4)</td>
-          <td><span class="tag">meter_reading.php</span></td>
+          <td>meter_reading.php</td>
         </tr>
-        <tr class="bg-zebra">
-          <td><strong>สมาชิกผู้ใช้น้ำ</strong><br><span style="font-size: 10.5px; color: #64748b;">(Member)</span></td>
+        <tr>
+          <td><strong>สมาชิกผู้ใช้น้ำ</strong><br>(Member)</td>
           <td>ชาวบ้านผู้ใช้น้ำที่ลงทะเบียน</td>
-          <td>ตรวจสอบประวัติการใช้น้ำย้อนหลัง ดูยอดค้างชำระ สแกน QR Code พร้อมเพย์ และแจ้งเหตุน้ำรั่ว</td>
-          <td><span class="tag">portal_citizen.php</span></td>
+          <td>ตรวจสอบประวัติการใช้น้ำย้อนหลัง ดูยอดค้างชำระ สแกน QR Code พร้อมเพย์ และส่งเรื่องแจ้งน้ำรั่ว</td>
+          <td>portal_citizen.php</td>
         </tr>
-        <tr class="bg-zebra">
-          <td><strong>ประชาชนทั่วไป</strong><br><span style="font-size: 10.5px; color: #64748b;">(User)</span></td>
+        <tr>
+          <td><strong>ประชาชนทั่วไป</strong><br>(User)</td>
           <td>ประชาชน / บุตรหลาน</td>
           <td>ค้นหาค่าน้ำด้วยหมายเลขโทรศัพท์หรือบ้านเลขที่ สแกนจ่ายเงิน และแจ้งจุดท่อแตกฉุกเฉิน</td>
-          <td><span class="tag">index.php</span></td>
+          <td>index.php</td>
         </tr>
       </tbody>
     </table>
 
-    <div style="font-weight: 600; font-size: 12px; color: #0f172a; margin: 12px 0 4px 0;">2.2 สภาพแวดล้อมและรูปแบบการติดตั้งใช้งาน (Deployment Environment)</div>
-    <div class="grid-2">
-      <div class="box-info">
-        <div style="font-weight: 600; color: #1e3a8a; font-size: 12px; margin-bottom: 2px;">รูปแบบที่ 1: ติดตั้งบนเครือข่ายภายใน (Local LAN / On-Premise)</div>
-        <div style="font-size: 11px; color: #475569; line-height: 1.5;">
-          • ติดตั้งแพ็กเกจ XAMPP บนเครื่องคอมพิวเตอร์สำนักงานประปาหมู่บ้าน<br>
-          • เชื่อมต่อผ่านอุปกรณ์ Wi-Fi Router ภายในที่ทำการ (เช่น 192.168.1.100)<br>
-          • ไม่ต้องพึ่งพาอินเทอร์เน็ตภายนอก สามารถทำงานได้แม้สัญญาณเน็ตดับ<br>
-          • เจ้าหน้าที่สำรองฐานข้อมูลเป็นประจำผ่านไฟล์ <code>api/backup.php</code>
-        </div>
-      </div>
-      <div class="box-info">
-        <div style="font-weight: 600; color: #1e3a8a; font-size: 12px; margin-bottom: 2px;">รูปแบบที่ 2: ติดตั้งบนเซิร์ฟเวอร์คลาวด์ (Cloud VPS Hosting)</div>
-        <div style="font-size: 11px; color: #475569; line-height: 1.5;">
-          • ติดตั้งบนเซิร์ฟเวอร์เสมือน (Linux/Apache/PHP/MariaDB) พร้อมใบรับรอง SSL<br>
-          • เข้าใช้งานผ่านโดเมนและเครือข่ายอินเทอร์เน็ตมือถือ 4G/5G ตลอด 24 ชั่วโมง<br>
-          • ชาวบ้านสามารถตรวจยอดค่าน้ำและสแกนโอนเงินผ่านมือถือได้จากทุกที่<br>
-          • ช่างจดบันทึกมาตรวัดน้ำสามารถบันทึกข้อมูลเข้าสู่ฐานข้อมูลกลางได้ทันที
-        </div>
-      </div>
-    </div>
+    <div class="section-heading">2.2 สภาพแวดล้อมด้านฮาร์ดแวร์และซอฟต์แวร์ (Operating Environment)</div>
+    <p>
+      <strong>1. สภาพแวดล้อมฝั่งเครื่องแม่ข่าย (Server):</strong> เครื่องคอมพิวเตอร์สำนักงาน ติดตั้งระบบปฏิบัติการ Windows 10/11 (64-bit), CPU Intel Core i3 หรือ AMD Ryzen 3 ขึ้นไป, หน่วยความจำ RAM 4 GB ขึ้นไป และแพ็กเกจ XAMPP (Apache 2.4, PHP 8.0-8.2, MariaDB 10.4) หรือติดตั้งบนเซิร์ฟเวอร์คลาวด์เสมือน (Cloud VPS) พร้อมมาตรฐานความปลอดภัย SSL (HTTPS)
+    </p>
+    <p>
+      <strong>2. สภาพแวดล้อมฝั่งเครื่องลูกข่าย (Client):</strong> เครื่องคอมพิวเตอร์สำนักงานและอุปกรณ์สมาร์ตโฟน (Android/iOS) รองรับเว็บเบราว์เซอร์ Google Chrome, Microsoft Edge, Mozilla Firefox และกล้องสำหรับสแกน QR Code หน้าบ้าน
+    </p>
 
-    <div class="box-info" style="margin-top: 4px;">
-      <div style="font-weight: 600; color: #0f172a; font-size: 11.5px; margin-bottom: 2px;">ระบบการติดตั้งฐานข้อมูลอัตโนมัติ (Zero-Configuration Database Bootstrap):</div>
-      <div style="font-size: 11px; color: #334151;">
-        ไฟล์ <code>api/db.php</code> มีกลไกตรวจสอบความมีอยู่ของฐานข้อมูล <code>db_city_water_supply</code> หากไม่พบฐานข้อมูลหรือยังไม่มีตาราง ระบบจะนำเข้าโครงสร้างและข้อมูลเริ่มต้นจากไฟล์ <code>database.sql</code> ให้โดยอัตโนมัติ ช่วยให้พร้อมใช้งานได้ทันทีโดยไม่ต้องตั้งค่าผ่าน phpMyAdmin
-      </div>
-    </div>
+    <div class="section-heading">2.3 สถาปัตยกรรมระบบ 4 ระดับ (4-Tier Software Architecture)</div>
+    <p class="no-indent" style="margin-left: 0.75cm; font-size: 12.5px; line-height: 1.45;">
+      • <strong>Tier 1 (Presentation):</strong> Responsive Web UI พัฒนาด้วย HTML5, CSS3, JavaScript และ Bootstrap 5<br>
+      • <strong>Tier 2 (Application):</strong> ภาษา PHP 8 ดำเนินการประมวลผลตรรกะ คำนวณค่าน้ำ ตรวจจับค่าผิดปกติ และควบคุมสิทธิ์<br>
+      • <strong>Tier 3 (Data Storage):</strong> MariaDB/MySQL (InnoDB Engine, utf8mb4) รองรับธุรกรรม ACID Transactions<br>
+      • <strong>Tier 4 (Integration):</strong> การสร้างภาพพร้อมเพย์ QR Code (EMVCo), การสแกนผ่านกล้อง และการส่งออกไฟล์ Excel
+    </p>
 
-    <div class="footer-bar">
-      <span>เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • โครงการระบบประปาหมู่บ้านวังยาง</span>
+    <div class="section-heading">2.4 ระบบติดตั้งฐานข้อมูลอัตโนมัติ (Zero-Configuration Database)</div>
+    <p>
+      ไฟล์ <code>api/db.php</code> มีกลไกตรวจสอบความมีอยู่ของฐานข้อมูล <code>db_city_water_supply</code> หากไม่พบฐานข้อมูล ระบบจะสร้างและนำเข้าโครงสร้างตารางรวมทั้งข้อมูลจำลอง 400 ครัวเรือนจากไฟล์ <code>database.sql</code> ให้โดยอัตโนมัติ ช่วยลดความซับซ้อนในการติดตั้งและพร้อมใช้งานได้ทันที
+    </p>
+
+    <div class="running-footer">
+      <span>เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • กองทุนประปาหมู่บ้านวังยาง</span>
       <span>หน้า 3 จาก 8</span>
     </div>
   </div>
 
-  <!-- ================= หน้าที่ 4: ข้อกำหนดเชิงหน้าที่ 1-5 ================= -->
+  <!-- ================= หน้าที่ 4: บทที่ 3 ข้อกำหนดเชิงหน้าที่ 1-5 ================= -->
   <div class="page">
-    <div class="doc-header">
-      <div class="doc-title">เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • บทที่ 3 ข้อกำหนดเชิงหน้าที่ (ตอนที่ 1)</div>
-      <div class="doc-id">รหัส: SE-2567-WTR-FULL</div>
+    <div class="doc-running-head">เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • บทที่ 3 ข้อกำหนดเชิงหน้าที่</div>
+    <div class="page-number">หน้า 4 จาก 8</div>
+
+    <div class="chapter-heading">บทที่ 3<br>ข้อกำหนดความต้องการเชิงหน้าที่ (Functional Requirements: FR-01 ถึง FR-05)</div>
+
+    <div class="req-item">
+      <div class="req-item-title">3.1 FR-01: ระบบทะเบียนผู้ใช้น้ำและการจัดทำสติกเกอร์ QR Code (Customer Registry & QR Labeling)</div>
+      <p>
+        <strong>คำอธิบาย:</strong> ระบบทำหน้าที่จัดเก็บและปรับปรุงข้อมูลสมาชิกผู้ใช้น้ำจำนวน 400 ครัวเรือน กำหนดลำดับเส้นทางเดินจด (<code>seq_no</code>) และจัดพิมพ์แผ่นสติกเกอร์รหัส QR Code ประจำตัวมาตรวัดน้ำเพื่อนำไปติดที่ฝาครอบมาตรวัดน้ำหน้าบ้าน<br>
+        <strong>ข้อมูลนำเข้า:</strong> ชื่อ-สกุล, บ้านเลขที่, โซนจ่ายน้ำ, หมายเลขโทรศัพท์, เลขซีเรียลมิเตอร์, ลำดับเส้นทางเดินจด<br>
+        <strong>ผลลัพธ์:</strong> สร้างรหัสผู้ใช้น้ำอัตโนมัติ (<code>WY-xxx</code>) และสร้างแผ่นพิมพ์สติกเกอร์ QR Code ขนาดมาตรฐาน A4 (มีรูปแบบ 12 ป้าย/แผ่น และ 24 ป้าย/แผ่น)<br>
+        <strong>ไฟล์ระบบที่รับผิดชอบ:</strong> <code>register.php</code>, <code>print_qr_labels.php</code>, <code>api/customers.php</code> (ตาราง <code>tb_customers</code>)
+      </p>
     </div>
 
-    <div class="section-title">3. ข้อกำหนดความต้องการเชิงหน้าที่ (Functional Requirements: FR-01 ถึง FR-05)</div>
-
-    <div class="req-card">
-      <div class="req-card-header">
-        <span class="req-code">FR-01</span>
-        <span class="req-title">ระบบทะเบียนผู้ใช้น้ำและการจัดทำสติกเกอร์ QR Code (Customer Registry & QR Labeling)</span>
-      </div>
-      <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
-        • <strong>คำอธิบาย:</strong> จัดเก็บข้อมูลสมาชิกผู้ใช้น้ำ 400 ครัวเรือน กำหนดลำดับเส้นทางเดินจด (<code>seq_no</code>) และจัดพิมพ์สติกเกอร์รหัส QR Code ติดหน้าบ้าน<br>
-        • <strong>ข้อมูลนำเข้า:</strong> ชื่อ-สกุล, บ้านเลขที่, โซนจ่ายน้ำ, หมายเลขโทรศัพท์, เลขซีเรียลมิเตอร์, ลำดับเดินจด<br>
-        • <strong>ผลลัพธ์:</strong> สร้างรหัสผู้ใช้น้ำ (<code>WY-xxx</code>) และแผ่นพิมพ์สติกเกอร์ QR Code สำหรับติดหน้าบ้าน (12 และ 24 ป้ายต่อแผ่น A4)<br>
-        • <strong>ไฟล์ระบบที่รับผิดชอบ:</strong> <span class="tag">register.php</span>, <span class="tag">print_qr_labels.php</span>, <span class="tag">api/customers.php</span> (ตาราง <code>customers</code>)
-      </div>
+    <div class="req-item">
+      <div class="req-item-title">3.2 FR-02: ระบบจดบันทึกเลขอ่านมาตรวัดน้ำภาคสนามตามลำดับเส้นทาง (Sequential Field Recording: ป.17)</div>
+      <p>
+        <strong>คำอธิบาย:</strong> แสดงรายชื่อผู้ใช้น้ำเรียงตามเส้นทางเดินจริงในพื้นที่ ช่างสามารถบันทึกตัวเลขผ่านสมาร์ตโฟน สแกน QR Code หน้าบ้านด้วยกล้องเพื่อค้นหาบ้านได้ทันที และระบบคำนวณจำนวนหน่วยน้ำที่ใช้สด<br>
+        <strong>ข้อมูลนำเข้า:</strong> รอบเดือน/ปี (เช่น 8-2567), รหัสผู้ใช้น้ำ, เลขอ่านมาตรวัดน้ำครั้งนี้ (Current Reading)<br>
+        <strong>ผลลัพธ์:</strong> บันทึกหน่วยน้ำที่ใช้, ปรับปรุงแถบความคืบหน้างวด (Progress Bar เช่น 88%) และแสดงรายชื่อที่ยังไม่ได้จด<br>
+        <strong>ไฟล์ระบบที่รับผิดชอบ:</strong> <code>meter_reading.php</code>, <code>api/readings.php</code>, <code>api/cycles.php</code> (ตาราง <code>meter_readings</code>)
+      </p>
     </div>
 
-    <div class="req-card">
-      <div class="req-card-header">
-        <span class="req-code">FR-02</span>
-        <span class="req-title">ระบบจดบันทึกเลขอ่านมาตรวัดน้ำภาคสนามตามลำดับเส้นทาง (Sequential Field Recording: ป.17)</span>
-      </div>
-      <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
-        • <strong>คำอธิบาย:</strong> แสดงรายชื่อผู้ใช้น้ำเรียงตามเส้นทางเดินจริง รองรับการสแกน QR Code หน้าบ้านด้วยกล้องมือถือ คำนวณหน่วยใช้ทันที<br>
-        • <strong>ข้อมูลนำเข้า:</strong> รอบเดือน/ปี (เช่น 8-2567), รหัสผู้ใช้น้ำ, เลขอ่านมาตรวัดน้ำครั้งนี้<br>
-        • <strong>ผลลัพธ์:</strong> บันทึกหน่วยน้ำที่ใช้, ปรับปรุงแถบความคืบหน้าของรอบบิล และแสดงรายชื่อที่ยังไม่ได้จด<br>
-        • <strong>ไฟล์ระบบที่รับผิดชอบ:</strong> <span class="tag">meter_reading.php</span>, <span class="tag">api/readings.php</span>, <span class="tag">api/cycles.php</span> (ตาราง <code>meter_readings</code>)
-      </div>
+    <div class="req-item">
+      <div class="req-item-title">3.3 FR-03: ระบบคำนวณค่าน้ำประปาและตรวจจับความผิดปกติอัตโนมัติ (Tariff & Anomaly Engine)</div>
+      <p>
+        <strong>สูตรการคำนวณ:</strong> <code>ยอดสุทธิ = (จำนวนหน่วยที่ใช้ x 7.00 บาท) + 10.00 บาท (ค่าบำรุงรักษา) + หนี้ค้างเก่า</code><br>
+        <strong>กฎการตรวจจับข้อผิดพลาด (Anomaly Rules):</strong><br>
+        &nbsp;&nbsp;1. <em>กรณีเลขถอยหลัง (Current < Previous):</em> ระบบจะแสดงข้อความเตือนแถบสีแดงและไม่อนุญาตให้บันทึก เพื่อป้องกันการจดสลับหลัก<br>
+        &nbsp;&nbsp;2. <em>กรณีใช้น้ำพุ่งสูงเกิน 3 เท่า:</em> ระบบจะแจ้งเตือนให้เจ้าหน้าที่สอบถามสมาชิกว่ามีจุดท่อแตกรั่วภายในบ้านหรือไม่<br>
+        <strong>ไฟล์ระบบที่รับผิดชอบ:</strong> <code>api/readings.php</code>, <code>meter_reading.php</code>
+      </p>
     </div>
 
-    <div class="req-card">
-      <div class="req-card-header">
-        <span class="req-code">FR-03</span>
-        <span class="req-title">ระบบคำนวณค่าน้ำประปาและตรวจจับความผิดปกติอัตโนมัติ (Tariff & Anomaly Engine)</span>
-      </div>
-      <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
-        • <strong>สูตรการคำนวณ:</strong> <code>(จำนวนหน่วยที่ใช้ x 7.00 บาท) + 10.00 บาท (ค่าบำรุง) + หนี้ค้างเก่า = ยอดสุทธิ</code><br>
-        • <strong>กฎการตรวจจับข้อผิดพลาด:</strong> แจ้งเตือนแถบสีแดงกรณี <code>เลขครั้งนี้ < เลขครั้งก่อน</code> (มิเตอร์ย้อนกลับ) หรือใช้น้ำเกิน 3 เท่าของค่าเฉลี่ยเดิม<br>
-        • <strong>ไฟล์ระบบที่รับผิดชอบ:</strong> <span class="tag">api/readings.php</span>, <span class="tag">meter_reading.php</span>
-      </div>
+    <div class="req-item">
+      <div class="req-item-title">3.4 FR-04: ระบบค้นหาและตรวจสอบยอดค่าน้ำสำหรับประชาชน (Public Fast Search Portal)</div>
+      <p>
+        <strong>คำอธิบาย:</strong> ประชาชนพิมพ์เพียงหมายเลขโทรศัพท์ 10 หลัก หรือบ้านเลขที่ บนหน้าแรก ระบบค้นหาและแสดงยอดค่าน้ำค้างชำระในเวลาไม่เกิน 0.05 วินาที<br>
+        <strong>ข้อมูลนำเข้า:</strong> หมายเลขโทรศัพท์ 10 หลัก / บ้านเลขที่ / รหัสผู้ใช้น้ำ<br>
+        <strong>ผลลัพธ์:</strong> ชื่อผู้ใช้น้ำ, บ้านเลขที่, งวดเดือน, เลขอ่านเดิม-ใหม่, จำนวนหน่วย, ยอดสุทธิ และปุ่มเปิดภาพ QR Code ชำระเงินผ่านพร้อมเพย์<br>
+        <strong>ไฟล์ระบบที่รับผิดชอบ:</strong> <code>index.php</code>, <code>portal_citizen.php</code>, <code>api/customers.php</code>
+      </p>
     </div>
 
-    <div class="req-card">
-      <div class="req-card-header">
-        <span class="req-code">FR-04</span>
-        <span class="req-title">ระบบค้นหาและตรวจสอบยอดค่าน้ำสำหรับประชาชน (Public Fast Search Portal)</span>
-      </div>
-      <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
-        • <strong>คำอธิบาย:</strong> ประชาชนพิมพ์หมายเลขโทรศัพท์ 10 หลัก หรือบ้านเลขที่ ระบบค้นหายอดค้างและแสดงปุ่มชำระเงินในเวลาไม่เกิน 0.05 วินาที<br>
-        • <strong>ข้อมูลนำเข้า:</strong> หมายเลขโทรศัพท์ / บ้านเลขที่ / รหัสผู้ใช้น้ำ<br>
-        • <strong>ผลลัพธ์:</strong> ยอดค่าน้ำปัจจุบัน, ประวัติการใช้น้ำย้อนหลัง, ปุ่มเปิดภาพ QR Code ชำระเงินผ่านพร้อมเพย์<br>
-        • <strong>ไฟล์ระบบที่รับผิดชอบ:</strong> <span class="tag">index.php</span>, <span class="tag">portal_citizen.php</span>, <span class="tag">api/customers.php</span>
-      </div>
+    <div class="req-item">
+      <div class="req-item-title">3.5 FR-05: ระบบรับชำระเงินและออกใบเสร็จรับเงินมาตรฐาน (Payment Collection & Receipt: ป.31/32)</div>
+      <p>
+        <strong>คำอธิบาย:</strong> เจ้าหน้าที่กดปุ่มรับชำระเงินเพื่อเปลี่ยนสถานะบิลเป็น PAID ทันที และกดปุ่มพิมพ์เพื่อเปิดหน้าต่างป๊อปอัปใบเสร็จ ป.31/32 สั่งพิมพ์ลงกระดาษได้ในคลิกเดียว<br>
+        <strong>ข้อมูลนำเข้า:</strong> รหัสผู้ใช้น้ำ, รอบบิล, จำนวนเงินที่รับชำระ<br>
+        <strong>ผลลัพธ์:</strong> สร้างรหัสใบเสร็จ (<code>RC-YYYYMM-XXX</code>), หน้าต่างใบเสร็จ ป.31/32 พร้อมตัวอักษรบาทไทยถูกต้องตามระเบียบการเงิน<br>
+        <strong>ไฟล์ระบบที่รับผิดชอบ:</strong> <code>finance_billing.php</code> (Tab 1-2), <code>api/readings.php</code>, <code>api/receipts.php</code>
+      </p>
     </div>
 
-    <div class="req-card">
-      <div class="req-card-header">
-        <span class="req-code">FR-05</span>
-        <span class="req-title">ระบบรับชำระเงินและออกใบเสร็จรับเงินมาตรฐาน (Payment Collection & Receipt: ป.31/32)</span>
-      </div>
-      <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
-        • <strong>คำอธิบาย:</strong> กดปุ่มรับชำระเงินเพื่อเปลี่ยนสถานะเป็น PAID ทันที และกดเปิดพรีวิวใบเสร็จ ป.31/32 เพื่อสั่งพิมพ์ได้ในคลิกเดียว<br>
-        • <strong>ข้อมูลนำเข้า:</strong> รหัสผู้ใช้น้ำ, รอบบิล, จำนวนเงินที่รับชำระ<br>
-        • <strong>ผลลัพธ์:</strong> รหัสใบเสร็จ (<code>RC-YYYYMM-XXX</code>), หน้าต่างใบเสร็จ ป.31/32 พร้อมตัวอักษรบาทไทยถูกต้องตามระเบียบการเงิน<br>
-        • <strong>ไฟล์ระบบที่รับผิดชอบ:</strong> <span class="tag">finance_billing.php</span> (Tab 1-2), <span class="tag">api/readings.php</span>, <span class="tag">api/receipts.php</span>
-      </div>
-    </div>
-
-    <div class="footer-bar">
-      <span>เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • โครงการระบบประปาหมู่บ้านวังยาง</span>
+    <div class="running-footer">
+      <span>เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • กองทุนประปาหมู่บ้านวังยาง</span>
       <span>หน้า 4 จาก 8</span>
     </div>
   </div>
 
-  <!-- ================= หน้าที่ 5: ข้อกำหนดเชิงหน้าที่ 6-10 ================= -->
+  <!-- ================= หน้าที่ 5: บทที่ 3 ข้อกำหนดเชิงหน้าที่ 6-10 ================= -->
   <div class="page">
-    <div class="doc-header">
-      <div class="doc-title">เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • บทที่ 3 ข้อกำหนดเชิงหน้าที่ (ตอนที่ 2)</div>
-      <div class="doc-id">รหัส: SE-2567-WTR-FULL</div>
+    <div class="doc-running-head">เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • บทที่ 3 ข้อกำหนดเชิงหน้าที่ (ต่อ)</div>
+    <div class="page-number">หน้า 5 จาก 8</div>
+
+    <div class="chapter-heading">บทที่ 3<br>ข้อกำหนดความต้องการเชิงหน้าที่ (Functional Requirements: FR-06 ถึง FR-10 ต่อ)</div>
+
+    <div class="req-item">
+      <div class="req-item-title">3.6 FR-06: ระบบสร้าง QR Code พร้อมเพย์ตามยอดสุทธิจริง (Dynamic PromptPay EMVCo QR Code)</div>
+      <p>
+        <strong>คำอธิบาย:</strong> สร้างภาพ QR Code สำหรับการชำระเงินตามมาตรฐานธนาคารแห่งประเทศไทย (EMVCo Tag 29/54/58/63) ระบุยอดเงินตรงตามสตางค์จริง และผูกกับหมายเลขพร้อมเพย์ของกองทุนประปาหมู่บ้านวังยาง<br>
+        <strong>ข้อมูลนำเข้า:</strong> หมายเลขพร้อมเพย์กองทุน, ยอดเงินสุทธิที่ต้องชำระ (เช่น 115.00 บาท)<br>
+        <strong>ผลลัพธ์:</strong> ภาพ QR Code แสดงบนหน้าจอ รองรับการสแกนโอนเงินผ่านทุกแอปพลิเคชันของธนาคารพาณิชย์<br>
+        <strong>ไฟล์ระบบที่รับผิดชอบ:</strong> <code>index.php</code>, <code>portal_citizen.php</code>, <code>api/receipts.php</code>
+      </p>
     </div>
 
-    <div class="section-title">3. ข้อกำหนดความต้องการเชิงหน้าที่ (Functional Requirements: FR-06 ถึง FR-10 ต่อ)</div>
-
-    <div class="req-card">
-      <div class="req-card-header">
-        <span class="req-code">FR-06</span>
-        <span class="req-title">ระบบสร้าง QR Code พร้อมเพย์ตามยอดสุทธิจริง (Dynamic PromptPay EMVCo QR Code)</span>
-      </div>
-      <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
-        • <strong>คำอธิบาย:</strong> สร้างภาพ QR Code สำหรับการชำระเงินตามมาตรฐานธนาคารแห่งประเทศไทย (EMVCo Tag 29/54/58/63) ระบุยอดเงินตรงตามสตางค์จริง<br>
-        • <strong>ข้อมูลนำเข้า:</strong> หมายเลขพร้อมเพย์กองทุน, ยอดเงินสุทธิที่ต้องชำระ (เช่น 115.00 บาท)<br>
-        • <strong>ผลลัพธ์:</strong> ภาพ QR Code แสดงบนหน้าจอ รองรับการสแกนโอนเงินผ่านทุกแอปพลิเคชันของธนาคารพาณิชย์<br>
-        • <strong>ไฟล์ระบบที่รับผิดชอบ:</strong> <span class="tag">index.php</span>, <span class="tag">portal_citizen.php</span>, <span class="tag">api/receipts.php</span>
-      </div>
+    <div class="req-item">
+      <div class="req-item-title">3.7 FR-07: ระบบทะเบียนคุมหนี้ค้างชำระและหนังสือเตือนระงับการใช้น้ำ (Arrears Management: แบบ กค.4)</div>
+      <p>
+        <strong>คำอธิบาย:</strong> จัดกลุ่มลูกหนี้ตามอายุหนี้ (ค้าง 1 เดือน, 2 เดือน, 3 เดือนขึ้นไป) พร้อมระบบพิมพ์หนังสือแจ้งเตือนกำหนดชำระภายใน 7 วัน และมีปุ่มลัดสลับไปตัดรับเงิน<br>
+        <strong>การเชื่อมโยง:</strong> กดปุ่มพิมพ์หนังสือเตือน / กดปุ่มตัดชำระเพื่อกระโดดไปยังแท็บรับเงินพร้อมกรอกข้อมูลลูกหนี้ให้อัตโนมัติทันที<br>
+        <strong>ไฟล์ระบบที่รับผิดชอบ:</strong> <code>finance_billing.php</code> (Tab 3: <code>#pane-arrears</code>), <code>api/arrears.php</code>
+      </p>
     </div>
 
-    <div class="req-card">
-      <div class="req-card-header">
-        <span class="req-code">FR-07</span>
-        <span class="req-title">ระบบทะเบียนคุมหนี้ค้างชำระและหนังสือเตือนระงับการใช้น้ำ (Arrears Management: แบบ กค.4)</span>
-      </div>
-      <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
-        • <strong>คำอธิบาย:</strong> จัดกลุ่มลูกหนี้ตามอายุหนี้ (1 เดือน, 2 เดือน, 3 เดือนขึ้นไป) พร้อมปุ่มพิมพ์หนังสือแจ้งเตือนกำหนดชำระ 7 วัน และปุ่มลัดสลับไปตัดเงิน<br>
-        • <strong>การเชื่อมโยง:</strong> กดปุ่มพิมพ์หนังสือเตือน / กดปุ่มตัดชำระเพื่อกระโดดไปยังหน้าตัดเงินพร้อมกรอกข้อมูลลูกหนี้ให้อัตโนมัติ<br>
-        • <strong>ไฟล์ระบบที่รับผิดชอบ:</strong> <span class="tag">finance_billing.php</span> (Tab 3: <code>#pane-arrears</code>), <span class="tag">api/arrears.php</span>
-      </div>
+    <div class="req-item">
+      <div class="req-item-title">3.8 FR-08: ระบบคำนวณและจัดทำใบสำคัญเบิกจ่ายค่าตอบแทน 10% (Payment Voucher & 10% Commission)</div>
+      <p>
+        <strong>สูตรการคำนวณอัตโนมัติ:</strong> <code>เงินค่าตอบแทนผู้จัดเก็บ 10% = ยอดเงินที่รับชำระจริงในงวดนั้น x 10%</code><br>
+        <strong>หมวดค่าใช้จ่ายกองทุน:</strong> รองรับการบันทึกใบสำคัญเบิกจ่าย 8 หมวด (ค่าตอบแทนผู้จัดเก็บ, ค่าไฟปั๊มน้ำ, ค่าซ่อมท่อ, สารส้ม, ค่าบำรุงรักษา, ค่าตอบแทนกรรมการ, ค่าเอกสาร, ค่าใช้จ่ายอื่น) พร้อมแปลงจำนวนเงินเป็นตัวอักษรบาทไทยและช่องลงนามกรรมการ 3 ท่าน<br>
+        <strong>ไฟล์ระบบที่รับผิดชอบ:</strong> <code>finance_billing.php</code> (Tab 4: <code>#pane-vouchers</code>), <code>api/vouchers.php</code> (ตาราง <code>payment_vouchers</code>)
+      </p>
     </div>
 
-    <div class="req-card">
-      <div class="req-card-header">
-        <span class="req-code">FR-08</span>
-        <span class="req-title">ระบบซิงค์และออกใบสำคัญเบิกจ่ายค่าตอบแทน 10% (Payment Voucher & 10% Commission)</span>
-      </div>
-      <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
-        • <strong>สูตรคำนวณอัตโนมัติ:</strong> <code>เงินค่าตอบแทน 10% = ยอดเงินที่รับชำระแล้วในงวดนั้น x 10%</code><br>
-        • <strong>หมวดค่าใช้จ่ายกองทุน:</strong> รองรับ 8 หมวด (ค่าไฟปั๊มน้ำ, ซ่อมท่อ, สารส้ม, ค่าตอบแทน, เบี้ยประชุม) พร้อมแปลงจำนวนเงินเป็นบาทไทยและช่องลงนาม 3 ท่าน<br>
-        • <strong>ไฟล์ระบบที่รับผิดชอบ:</strong> <span class="tag">finance_billing.php</span> (Tab 4: <code>#pane-vouchers</code>), <span class="tag">api/vouchers.php</span>
-      </div>
+    <div class="req-item">
+      <div class="req-item-title">3.9 FR-09: ระบบบัญชีงบดุล รายรับ-รายจ่าย และรายงานสำหรับผู้บริหาร (Executive Financial Reporting)</div>
+      <p>
+        <strong>คำอธิบาย:</strong> แดชบอร์ดสรุปรายได้จริง หนี้คงค้าง อัตราน้ำสูญเสียในระบบ (NRW) บัญชีเงินสดในมือและเงินฝากธนาคาร พร้อมฟังก์ชันส่งออกข้อมูลตารางเป็นไฟล์ Excel<br>
+        <strong>ผลลัพธ์:</strong> รายงานงบดุลประจำเดือนตามมาตรฐานบัญชีกองทุนหมู่บ้าน และไฟล์ดาวน์โหลด <code>.xlsx</code> หรือ <code>.csv</code><br>
+        <strong>ไฟล์ระบบที่รับผิดชอบ:</strong> <code>dashboard.php</code>, <code>executive_reports.php</code>, <code>api/financials.php</code>, <code>api/export_excel.php</code>
+      </p>
     </div>
 
-    <div class="req-card">
-      <div class="req-card-header">
-        <span class="req-code">FR-09</span>
-        <span class="req-title">ระบบบัญชีงบดุล รายรับ-รายจ่าย และรายงานสำหรับผู้บริหาร (Executive Financial Reporting)</span>
-      </div>
-      <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
-        • <strong>คำอธิบาย:</strong> แดชบอร์ดสรุปรายได้จริง หนี้คงค้าง อัตราน้ำสูญเสียในระบบ (NRW) และจัดพิมพ์รายงานงบดุลประจำเดือนตามมาตรฐานกองทุน<br>
-        • <strong>การส่งออกข้อมูล:</strong> ส่งออกตารางการใช้น้ำและรายการทางบัญชีเป็นไฟล์ Excel ผ่าน <span class="tag">api/export_excel.php</span><br>
-        • <strong>ไฟล์ระบบที่รับผิดชอบ:</strong> <span class="tag">dashboard.php</span>, <span class="tag">executive_reports.php</span>, <span class="tag">api/financials.php</span>
-      </div>
+    <div class="req-item">
+      <div class="req-item-title">3.10 FR-10: ระบบรับแจ้งเหตุท่อแตก-น้ำรั่วและติดตามงานซ่อมบำรุง (Service Ticket & Leak Tracking)</div>
+      <p>
+        <strong>คำอธิบาย:</strong> ประชาชนสามารถส่งเรื่องแจ้งเหตุน้ำประปาไม่ไหลหรือท่อแตกรั่วผ่านหน้าแรก ระบุชื่อ เบอร์โทร และจุดเกิดเหตุ เจ้าหน้าที่อัปเดตสถานะงานซ่อมจนแล้วเสร็จ<br>
+        <strong>ผลลัพธ์:</strong> สร้างหมายเลขรายการแจ้งเหตุ (<code>TK-YYYYMMDD-XXX</code>) และแสดงรายการแจ้งเตือนบนแดชบอร์ดงานซ่อมบำรุง<br>
+        <strong>ไฟล์ระบบที่รับผิดชอบ:</strong> <code>index.php</code>, <code>portal_citizen.php</code>, <code>api/tickets.php</code> (ตาราง <code>service_tickets</code>)
+      </p>
     </div>
 
-    <div class="req-card">
-      <div class="req-card-header">
-        <span class="req-code">FR-10</span>
-        <span class="req-title">ระบบรับแจ้งเหตุท่อแตก-น้ำรั่วและติดตามงานซ่อมบำรุง (Service Ticket & Leak Tracking)</span>
-      </div>
-      <div style="font-size: 11.5px; color: #334151; line-height: 1.5;">
-        • <strong>คำอธิบาย:</strong> ประชาชนแจ้งเหตุน้ำไม่ไหลหรือท่อแตกรั่ว ระบุจุดเกิดเหตุ และเจ้าหน้าที่อัปเดตสถานะงานซ่อมจนแล้วเสร็จ<br>
-        • <strong>ผลลัพธ์:</strong> สร้างหมายเลขรายการแจ้งเหตุ (<code>TK-YYYYMMDD-XXX</code>) และแสดงสถานะบนแดชบอร์ดงานซ่อมบำรุง<br>
-        • <strong>ไฟล์ระบบที่รับผิดชอบ:</strong> <span class="tag">index.php</span>, <span class="tag">portal_citizen.php</span>, <span class="tag">api/tickets.php</span>
-      </div>
-    </div>
-
-    <div class="footer-bar">
-      <span>เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • โครงการระบบประปาหมู่บ้านวังยาง</span>
+    <div class="running-footer">
+      <span>เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • กองทุนประปาหมู่บ้านวังยาง</span>
       <span>หน้า 5 จาก 8</span>
     </div>
   </div>
 
-  <!-- ================= หน้าที่ 6: ภาพร่าง Axure RP Mapping ================= -->
+  <!-- ================= หน้าที่ 6: บทที่ 4 การจับคู่ Axure RP ================= -->
   <div class="page">
-    <div class="doc-header">
-      <div class="doc-title">เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • บทที่ 4 การจับคู่ต้นแบบ Axure RP</div>
-      <div class="doc-id">รหัส: SE-2567-WTR-FULL</div>
-    </div>
+    <div class="doc-running-head">เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • บทที่ 4 การจำลองด้วย Axure RP</div>
+    <div class="page-number">หน้า 6 จาก 8</div>
 
-    <div class="section-title">4. การจับคู่ต้นแบบหน้าจอในไฟล์ Axure RP กับระบบจริง (Prototype Traceability)</div>
-    <p style="margin: 0 0 8px 0; font-size: 11.5px; color: #475569;">
-      ภาพร่างต้นแบบ (Wireframe) ทั้ง 31 หน้าจอที่ออกแบบในไฟล์ <code>Plumber_ver-1003-gu-tam-kon-dew-i-sus.rp</code> ได้รับการพัฒนาเป็นโค้ดระบบจริงบน XAMPP:
+    <div class="chapter-heading">บทที่ 4<br>การจำลองส่วนติดต่อผู้ใช้ด้วย Axure RP (Prototype Traceability)</div>
+    <p>
+      คณะผู้จัดทำได้ออกแบบหน้าจอจำลอง (Interactive Wireframe) จำนวน 31 หน้าจอ ในไฟล์ <code>Plumber_ver-1003-gu-tam-kon-dew-i-sus.rp</code> ซึ่งได้รับการพัฒนาเป็นหน้าจอระบบจริงบนสภาพแวดล้อม XAMPP ครบถ้วน 100%:
     </p>
 
     <div class="grid-2">
-      <div class="figure-box">
-        <img src="assets/wireframe_home_search.jpg" alt="Screen 1">
+      <div>
+        <div class="figure-frame">
+          <img src="assets/wireframe_home_search.jpg" alt="Screen 1">
+        </div>
         <div class="figure-caption">
-          <strong>รูปที่ 4.1: หน้าแรกบริการประชาชน (Screen 1)</strong><br>
-          ระบบจริง: <code>index.php</code> (ค้นหาเบอร์โทร, สถิติ 4 ตัว, สแกน QR พร้อมเพย์)
+          รูปที่ 4.1 หน้าแรกบริการประชาชนและค้นหาค่าน้ำ (Screen 1)<br>
+          ระบบจริง: <code>index.php</code> (ค้นหาด้วยเบอร์โทร, สแกน QR พร้อมเพย์)
         </div>
       </div>
-      <div class="figure-box">
-        <img src="assets/wireframe_meter_reading.jpg" alt="Screen 5">
+      <div>
+        <div class="figure-frame">
+          <img src="assets/wireframe_meter_reading.jpg" alt="Screen 5">
+        </div>
         <div class="figure-caption">
-          <strong>รูปที่ 4.2: การจดบันทึกมาตรวัดน้ำ ป.17 (Screen 5)</strong><br>
-          ระบบจริง: <code>meter_reading.php</code> (เรียงตาม <code>seq_no</code>, สแกนกล้อง, บาร์ 88%)
+          รูปที่ 4.2 การจดบันทึกมาตรวัดน้ำภาคสนาม ป.17 (Screen 5)<br>
+          ระบบจริง: <code>meter_reading.php</code> (เรียงตามลำดับเส้นทาง, บาร์ 88%)
         </div>
       </div>
-      <div class="figure-box">
-        <img src="assets/wireframe_receipt_p31.jpg" alt="Screen 7">
+      <div>
+        <div class="figure-frame">
+          <img src="assets/wireframe_receipt_p31.jpg" alt="Screen 7">
+        </div>
         <div class="figure-caption">
-          <strong>รูปที่ 4.3: การรับชำระและใบเสร็จ ป.31/32 (Screen 7)</strong><br>
-          ระบบจริง: <code>finance_billing.php</code> (ตัดรับเงินทันที, ป๊อปอัปใบเสร็จ 1 คลิก)
+          รูปที่ 4.3 การรับชำระและพิมพ์ใบเสร็จ ป.31/32 (Screen 7)<br>
+          ระบบจริง: <code>finance_billing.php</code> (ตัดรับเงิน PAID, ป๊อปอัปใบเสร็จ)
         </div>
       </div>
-      <div class="figure-box">
-        <img src="assets/wireframe_voucher_10pct.jpg" alt="Screen 9">
+      <div>
+        <div class="figure-frame">
+          <img src="assets/wireframe_voucher_10pct.jpg" alt="Screen 9">
+        </div>
         <div class="figure-caption">
-          <strong>รูปที่ 4.4: ฎีกาเบิกจ่ายค่าตอบแทน 10% (Screen 9)</strong><br>
-          ระบบจริง: <code>finance_billing.php (Tab 4)</code> (ซิงค์ 10% อัตโนมัติ, ลงนาม 3 ท่าน)
+          รูปที่ 4.4 ฎีกาเบิกจ่ายค่าตอบแทนผู้จัดเก็บ 10% (Screen 9)<br>
+          ระบบจริง: <code>finance_billing.php (Tab 4)</code> (ซิงค์ 10%, 8 หมวดรายจ่าย)
         </div>
       </div>
-      <div class="figure-box">
-        <img src="assets/wireframe_financial_report.jpg" alt="Screen 18">
+      <div>
+        <div class="figure-frame">
+          <img src="assets/wireframe_financial_report.jpg" alt="Screen 18">
+        </div>
         <div class="figure-caption">
-          <strong>รูปที่ 4.5: รายงานงบดุลประจำเดือน (Screen 18)</strong><br>
-          ระบบจริง: <code>executive_reports.php</code> (บัญชีงบดุลมาตรฐาน, บัญชีเงินสด/ธนาคาร)
+          รูปที่ 4.5 รายงานงบดุลประจำเดือนมาตรฐานกองทุน (Screen 18)<br>
+          ระบบจริง: <code>executive_reports.php</code> (งบดุล รายรับ-รายจ่าย บัญชีเงินสด)
         </div>
       </div>
-      <div class="figure-box">
-        <img src="assets/wireframe_receipt_batch.jpg" alt="Screen 30">
+      <div>
+        <div class="figure-frame">
+          <img src="assets/wireframe_receipt_batch.jpg" alt="Screen 30">
+        </div>
         <div class="figure-caption">
-          <strong>รูปที่ 4.6: การพิมพ์สติกเกอร์ QR Code (Screen 30)</strong><br>
-          ระบบจริง: <code>print_qr_labels.php</code> (สติกเกอร์ติดมิเตอร์ 4 รูปแบบบนกระดาษ A4)
+          รูปที่ 4.6 การจัดพิมพ์แผ่นสติกเกอร์รหัส QR Code (Screen 30)<br>
+          ระบบจริง: <code>print_qr_labels.php</code> (สติกเกอร์ติดมิเตอร์ 4 รูปแบบบน A4)
         </div>
       </div>
     </div>
 
-    <div class="footer-bar">
-      <span>เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • โครงการระบบประปาหมู่บ้านวังยาง</span>
+    <div class="running-footer">
+      <span>เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • กองทุนประปาหมู่บ้านวังยาง</span>
       <span>หน้า 6 จาก 8</span>
     </div>
   </div>
 
-  <!-- ================= หน้าที่ 7: สถาปัตยกรรมและพจนานุกรมข้อมูล ================= -->
+  <!-- ================= หน้าที่ 7: บทที่ 5 การออกแบบฐานข้อมูล ================= -->
   <div class="page">
-    <div class="doc-header">
-      <div class="doc-title">เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • บทที่ 5 สถาปัตยกรรมและฐานข้อมูล</div>
-      <div class="doc-id">รหัส: SE-2567-WTR-FULL</div>
-    </div>
+    <div class="doc-running-head">เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • บทที่ 5 ฐานข้อมูลและความปลอดภัย</div>
+    <div class="page-number">หน้า 7 จาก 8</div>
 
-    <div class="section-title">5. สถาปัตยกรรมระบบและพจนานุกรมตารางฐานข้อมูล (Architecture & Data Schema)</div>
+    <div class="chapter-heading">บทที่ 5<br>การออกแบบฐานข้อมูลและความมั่นคงปลอดภัย (Data Schema & Security)</div>
 
-    <div style="font-weight: 600; font-size: 12px; color: #0f172a; margin: 6px 0 4px 0;">5.1 สถาปัตยกรรมระบบซอฟต์แวร์ 4 ระดับ (4-Tier Software Architecture)</div>
-    <table>
+    <div class="section-heading">5.1 พจนานุกรมตารางฐานข้อมูลหลักในระบบ (Core Data Dictionary)</div>
+    <p>
+      ฐานข้อมูล <code>db_city_water_supply</code> ถูกออกแบบตามหลักการ нормаไลเซชัน (Normalization) ประกอบด้วย 12 ตารางและมุมมองข้อมูล (View) ที่สำคัญดังตารางต่อไปนี้:
+    </p>
+
+    <div class="caption-title">ตารางที่ 5.1 พจนานุกรมตารางฐานข้อมูลหลักในระบบ</div>
+    <table class="academic-table">
       <thead>
         <tr>
-          <th width="20%">ระดับชั้น (Tier)</th>
-          <th width="35%">เทคโนโลยีและโมดูลที่ใช้</th>
-          <th width="45%">หน้าที่ความรับผิดชอบหลัก</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="bg-zebra">
-          <td><strong>Tier 1: Presentation</strong></td>
-          <td>Responsive Web, Vanilla JS, Bootstrap 5</td>
-          <td>แสดงผลหน้าจอบนอุปกรณ์ต่างๆ, ระบบค้นหาเบอร์โทร, สแกน QR Code</td>
-        </tr>
-        <tr class="bg-zebra">
-          <td><strong>Tier 2: Application</strong></td>
-          <td>PHP 8 Core, RBAC Session Guard, Business Logic</td>
-          <td>คำนวณค่าน้ำ 7+10 บ., ตรวจจับความผิดปกติ, กรองหนี้ กค.4, ซิงค์ 10%</td>
-        </tr>
-        <tr class="bg-zebra">
-          <td><strong>Tier 3: Data Storage</strong></td>
-          <td>MariaDB 10.4 / MySQL (InnoDB, utf8mb4)</td>
-          <td>จัดเก็บข้อมูลแบบ ACID Transactions, Foreign Keys, Zero-Config DB</td>
-        </tr>
-        <tr class="bg-zebra">
-          <td><strong>Tier 4: Integration</strong></td>
-          <td>PromptPay EMVCo Lib, Excel Export Engine</td>
-          <td>สร้างภาพพร้อมเพย์ตามยอดสตางค์จริง, ส่งออกรายงานเป็นไฟล์ Excel</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div style="font-weight: 600; font-size: 12px; color: #0f172a; margin: 10px 0 4px 0;">5.2 พจนานุกรมตารางฐานข้อมูลหลักในระบบ (Core Data Dictionary)</div>
-    <table>
-      <thead>
-        <tr>
-          <th width="22%">ชื่อตาราง / วิว</th>
+          <th width="24%">ชื่อตาราง / วิว</th>
           <th width="28%">คีย์หลัก / คีย์นอก (Keys)</th>
-          <th width="50%">คำอธิบายและข้อมูลที่จัดเก็บ</th>
+          <th width="48%">คำอธิบายและข้อมูลที่จัดเก็บ</th>
         </tr>
       </thead>
       <tbody>
-        <tr class="bg-zebra">
+        <tr>
           <td><code>tb_customers</code> / <code>customers</code></td>
           <td>PK: <code>cus_id</code> (วิวใช้ <code>id</code>)</td>
           <td>ข้อมูลผู้ใช้น้ำ 400 ครัวเรือน, บ้านเลขที่, โซน, เบอร์โทร, ลำดับเส้นทาง (<code>seq_no</code>)</td>
         </tr>
-        <tr class="bg-zebra">
+        <tr>
           <td><code>tb_users</code></td>
           <td>PK: <code>user_id</code> | FK: <code>cus_id</code></td>
           <td>บัญชีผู้ใช้งานระบบ 4 ระดับ รหัสผ่านเข้ารหัสแบบ BCRYPT ปลอดภัยสูง</td>
         </tr>
-        <tr class="bg-zebra">
+        <tr>
           <td><code>billing_cycles</code></td>
           <td>PK: <code>id</code> | UK: <code>cycle_code</code></td>
           <td>รอบบัญชีค่าน้ำประปาประจำเดือน (เช่น 8-2567), กำหนดวันจดและวันครบกำหนดชำระ</td>
         </tr>
-        <tr class="bg-zebra">
+        <tr>
           <td><code>meter_readings</code></td>
           <td>PK: <code>id</code> | FK: <code>customer_id, cycle_id</code></td>
           <td>เลขอ่านมิเตอร์เดิม-ใหม่, หน่วยน้ำ, ยอดเงิน, สถานะ PAID/UNPAID, เลขที่ใบเสร็จ</td>
         </tr>
-        <tr class="bg-zebra">
+        <tr>
           <td><code>payment_vouchers</code></td>
           <td>PK: <code>id</code> | FK: <code>billing_cycle_id</code></td>
           <td>ใบสำคัญเบิกจ่ายเงินกองทุน, ค่าตอบแทน 10%, ค่าไฟปั๊มน้ำ, ค่าซ่อมท่อแตก</td>
         </tr>
-        <tr class="bg-zebra">
+        <tr>
           <td><code>monthly_financial_reports</code></td>
           <td>PK: <code>id</code> | FK: <code>billing_cycle_id</code></td>
           <td>งบดุลประจำเดือน, รายรับจริง, รายจ่ายจริง, ยอดคงเหลือเงินสดและเงินฝากธนาคาร</td>
         </tr>
-        <tr class="bg-zebra">
+        <tr>
           <td><code>service_tickets</code></td>
           <td>PK: <code>id</code> | UK: <code>ticket_no</code></td>
           <td>รายการแจ้งเหตุน้ำประปาไม่ไหล ท่อแตกรั่ว พร้อมพิกัดและสถานะงานซ่อม</td>
         </tr>
+        <tr>
+          <td><code>water_loss_logs</code></td>
+          <td>PK: <code>id</code> | UK: <code>cycle_code</code></td>
+          <td>บันทึกปริมาณน้ำสูบผลิต ปริมาณน้ำจำหน่าย และอัตราร้อยละน้ำสูญเสีย (NRW)</td>
+        </tr>
       </tbody>
     </table>
 
-    <div class="box-info" style="margin-top: 4px;">
-      <div style="font-weight: 600; color: #0f172a; font-size: 11px; margin-bottom: 2px;">มาตรฐานความมั่นคงปลอดภัยตามแนวทาง OWASP Top 10:</div>
-      <div style="font-size: 10.5px; color: #475569; line-height: 1.45;">
-        • ใช้คำสั่ง PDO Prepared Statements 100% ทุกไฟล์ ป้องกันการโจมตีแบบ SQL Injection โดยเด็ดขาด<br>
-        • รหัสผ่านเข้ารหัสทางเดียวด้วย BCRYPT Hashing และมีระบบตรวจสอบ Session สิทธิ์ผู้ใช้งานทุกครั้งก่อนเข้าถึงหน้าการเงิน
-      </div>
-    </div>
+    <div class="section-heading">5.2 มาตรการด้านความมั่นคงปลอดภัยตามแนวทาง OWASP Top 10</div>
+    <p>
+      1. <strong>การป้องกันการฉีดคำสั่ง SQL (SQL Injection):</strong> ซอร์สโค้ดภาษา PHP ทุกไฟล์ในไดเรกทอรี <code>api/</code> ใช้คำสั่ง PDO Prepared Statements 100% พร้อมการผูกตัวแปรพารามิเตอร์อย่างรัดกุม ป้องกันการแทรกแซงคำสั่ง SQL โดยเด็ดขาด<br>
+      2. <strong>การเข้ารหัสผ่าน (Password Security):</strong> รหัสผ่านของผู้ใช้งานทั้งหมดได้รับการเข้ารหัสทางเดียวด้วยอัลกอริทึม BCRYPT Hashing ป้องกันการรั่วไหลของรหัสผ่านแม้ฐานข้อมูลถูกเข้าถึงโดยมิชอบ<br>
+      3. <strong>การตรวจสอบสิทธิ์การใช้งาน (Session Guard):</strong> ระบบมีฟังก์ชัน Gatekeeper ตรวจสอบสถานะการเข้าสู่ระบบและระดับสิทธิ์ (Role) ในทุกหน้าที่เกี่ยวกับธุรกรรมการเงิน
+    </p>
 
-    <div class="footer-bar">
-      <span>เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • โครงการระบบประปาหมู่บ้านวังยาง</span>
+    <div class="section-heading">5.3 กลไกการสำรองและกู้คืนข้อมูลฉุกเฉิน (Disaster Recovery)</div>
+    <p>
+      ผู้ดูแลระบบสามารถสำรองฐานข้อมูลทั้งหมดเป็นไฟล์ <code>.sql</code> ได้ในคลิกเดียวผ่านไฟล์ <code>api/backup.php</code> เพื่อป้องกันความเสียหายกรณีเครื่องคอมพิวเตอร์สำนักงานเกิดปัญหา
+    </p>
+
+    <div class="running-footer">
+      <span>เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • กองทุนประปาหมู่บ้านวังยาง</span>
       <span>หน้า 7 จาก 8</span>
     </div>
   </div>
 
-  <!-- ================= หน้าที่ 8: ตาราง RTM และการลงนาม ================= -->
+  <!-- ================= หน้าที่ 8: บทที่ 6 RTM และลงนาม ================= -->
   <div class="page">
-    <div class="doc-header">
-      <div class="doc-title">เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • บทที่ 6 การตรวจสอบย้อนกลับและการอนุมัติ</div>
-      <div class="doc-id">รหัส: SE-2567-WTR-FULL</div>
-    </div>
+    <div class="doc-running-head">เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • บทที่ 6 ตารางตรวจสอบย้อนกลับ</div>
+    <div class="page-number">หน้า 8 จาก 8</div>
 
-    <div class="section-title">6. ตารางตรวจสอบย้อนกลับและการอนุมัติโครงงาน (Traceability Matrix & Sign-Off)</div>
+    <div class="chapter-heading">บทที่ 6<br>การตรวจสอบย้อนกลับและการอนุมัติโครงงาน (Traceability & Sign-Off)</div>
 
-    <div style="font-weight: 600; font-size: 12px; color: #0f172a; margin: 6px 0 4px 0;">6.1 ตารางตรวจสอบความสอดคล้องของข้อกำหนด (Requirements Traceability Matrix: RTM)</div>
-    <table>
+    <div class="section-heading">6.1 ตารางตรวจสอบย้อนกลับความต้องการของระบบ (Requirements Traceability Matrix: RTM)</div>
+    <div class="caption-title">ตารางที่ 6.1 ตารางตรวจสอบความสอดคล้องระหว่างข้อกำหนด ซอร์สโค้ด และฐานข้อมูล</div>
+    <table class="academic-table">
       <thead>
         <tr>
-          <th width="9%" class="text-center">รหัส</th>
+          <th width="10%" class="text-center">รหัส</th>
           <th width="24%">ข้อกำหนดความต้องการ</th>
           <th width="22%">ไฟล์ซอร์สโค้ด (PHP)</th>
-          <th width="23%">ตารางฐานข้อมูล</th>
+          <th width="22%">ตารางฐานข้อมูล</th>
           <th width="22%" class="text-center">ผลการประเมิน</th>
         </tr>
       </thead>
       <tbody>
-        <tr class="bg-zebra">
+        <tr>
           <td class="text-center"><strong>FR-01</strong></td>
           <td>ทะเบียนผู้ใช้น้ำ & QR สติกเกอร์</td>
           <td><code>register.php</code></td>
           <td><code>tb_customers</code></td>
           <td class="text-center">ผ่านเกณฑ์สมบูรณ์</td>
         </tr>
-        <tr class="bg-zebra">
+        <tr>
           <td class="text-center"><strong>FR-02</strong></td>
           <td>จดมิเตอร์ตามเส้นทางจริง ป.17</td>
           <td><code>meter_reading.php</code></td>
           <td><code>meter_readings</code></td>
           <td class="text-center">ผ่านเกณฑ์สมบูรณ์</td>
         </tr>
-        <tr class="bg-zebra">
+        <tr>
           <td class="text-center"><strong>FR-03</strong></td>
           <td>คำนวณค่าน้ำ 7+10 บ. & ตรวจจับผิดปกติ</td>
           <td><code>api/readings.php</code></td>
           <td><code>meter_readings</code></td>
           <td class="text-center">ผ่านเกณฑ์สมบูรณ์</td>
         </tr>
-        <tr class="bg-zebra">
+        <tr>
           <td class="text-center"><strong>FR-04</strong></td>
           <td>ค้นหายอดค่าน้ำด้วยเบอร์โทร</td>
           <td><code>index.php</code></td>
           <td><code>customers</code> (วิว)</td>
           <td class="text-center">ผ่านเกณฑ์สมบูรณ์</td>
         </tr>
-        <tr class="bg-zebra">
+        <tr>
           <td class="text-center"><strong>FR-05</strong></td>
           <td>ตัดรับชำระเงิน & ใบเสร็จ ป.31/32</td>
           <td><code>finance_billing.php</code></td>
           <td><code>meter_readings</code></td>
           <td class="text-center">ผ่านเกณฑ์สมบูรณ์</td>
         </tr>
-        <tr class="bg-zebra">
+        <tr>
           <td class="text-center"><strong>FR-06</strong></td>
           <td>สร้าง QR Code พร้อมเพย์ EMVCo</td>
           <td><code>api/receipts.php</code></td>
           <td>-</td>
           <td class="text-center">ผ่านเกณฑ์สมบูรณ์</td>
         </tr>
-        <tr class="bg-zebra">
+        <tr>
           <td class="text-center"><strong>FR-07</strong></td>
           <td>คุมหนี้ กค.4 & หนังสือเตือน 7 วัน</td>
           <td><code>finance_billing.php</code></td>
           <td><code>meter_readings</code></td>
           <td class="text-center">ผ่านเกณฑ์สมบูรณ์</td>
         </tr>
-        <tr class="bg-zebra">
+        <tr>
           <td class="text-center"><strong>FR-08</strong></td>
           <td>ฎีกาเบิกจ่าย 10% & ค่าใช้จ่ายกองทุน</td>
           <td><code>api/vouchers.php</code></td>
           <td><code>payment_vouchers</code></td>
           <td class="text-center">ผ่านเกณฑ์สมบูรณ์</td>
         </tr>
-        <tr class="bg-zebra">
+        <tr>
           <td class="text-center"><strong>FR-09</strong></td>
           <td>งบดุล รายรับ-รายจ่าย & รายงาน NRW</td>
           <td><code>executive_reports.php</code></td>
           <td><code>monthly_financial_reports</code></td>
           <td class="text-center">ผ่านเกณฑ์สมบูรณ์</td>
         </tr>
-        <tr class="bg-zebra">
+        <tr>
           <td class="text-center"><strong>FR-10</strong></td>
           <td>รับแจ้งท่อแตก & ติดตามงานซ่อม</td>
           <td><code>api/tickets.php</code></td>
@@ -853,25 +754,25 @@
       </tbody>
     </table>
 
-    <div style="border: 1px solid #cbd5e1; padding: 20px 16px 14px 16px; margin-top: 20px; background: #ffffff;">
-      <div style="text-align: center; font-weight: 600; font-size: 12.5px; color: #0f172a; margin-bottom: 24px;">
+    <div class="sign-section">
+      <div style="text-align: center; font-weight: 700; font-size: 13px; margin-bottom: 22px;">
         การลงนามรับรองเอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Sign-Off & Approval)
       </div>
-      <div class="grid-3" style="text-align: center; font-size: 11.5px; color: #475569;">
+      <div class="sign-grid">
         <div>
-          <div style="margin-bottom: 38px;">ลงชื่อ ...........................................................</div>
+          <div class="sign-line">ลงชื่อ ...........................................................</div>
           <strong>(นายสมบูรณ์ มั่นคง)</strong><br>
           เหรัญญิกกองทุนประปาหมู่บ้านวังยาง<br>
           วันที่ ........ / ........ / ................
         </div>
         <div>
-          <div style="margin-bottom: 38px;">ลงชื่อ ...........................................................</div>
+          <div class="sign-line">ลงชื่อ ...........................................................</div>
           <strong>(นายวิชัย เจริญสุข)</strong><br>
           ประธานกรรมการบริหารกิจการประปา<br>
           วันที่ ........ / ........ / ................
         </div>
         <div>
-          <div style="margin-bottom: 38px;">ลงชื่อ ...........................................................</div>
+          <div class="sign-line">ลงชื่อ ...........................................................</div>
           <strong>(อาจารย์ที่ปรึกษาโครงงาน)</strong><br>
           คณะกรรมการตรวจประเมินผลงาน<br>
           วันที่ ........ / ........ / ................
@@ -879,8 +780,8 @@
       </div>
     </div>
 
-    <div class="footer-bar">
-      <span>เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • โครงการระบบประปาหมู่บ้านวังยาง</span>
+    <div class="running-footer">
+      <span>เอกสารข้อกำหนดความต้องการซอฟต์แวร์ (Full SRS) • กองทุนประปาหมู่บ้านวังยาง</span>
       <span>หน้า 8 จาก 8</span>
     </div>
   </div>
