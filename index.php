@@ -729,7 +729,7 @@ try {
       }
     }
   </style>
-</head>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script></head>
 <body>
   <div class="app-layout">
     <!-- Global Persistent Sidebar with Real URL Routes -->
@@ -976,7 +976,7 @@ try {
       if (typeof openLoginModal === 'function') openLoginModal();
     }
 
-    const currentCycleCode = '<?php echo $currentCycle['cycle_code']; ?>';
+    const currentCycleCode = '<?php echo $stats['current_cycle']; ?>';
     let cachedReadings = null;
     let activeDropdownIndex = -1;
 
