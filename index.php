@@ -761,10 +761,10 @@ try {
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px;">
         <!-- Zone 1: โซนทุ่งสามัคคี -->
         <div style="background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-left: 4px solid #0284c7;">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0;">
             <div>
               <span style="font-size: 12px; font-weight: 700; color: #0284c7; text-transform: uppercase;">รหัสโซน 01</span>
-              <h4 style="font-family: 'Prompt', sans-serif; font-size: 17px; font-weight: 700; margin: 2px 0 0 0; color: #0f172a;">โซนทุ่งสามัคคี</h4>
+              <h4 style="font-family: 'Prompt', sans-serif; font-size: 17px; font-weight: 700; margin: 2px 0; color: #0f172a;">โซนทุ่งสามัคคี</h4>
             </div>
             <span style="background: #ecfdf5; color: #059669; font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: 9999px;">
               จ่ายน้ำปกติ ✅
@@ -774,10 +774,10 @@ try {
 
         <!-- Zone 2: โซนโค้งขี้เหล็ก -->
         <div style="background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-left: 4px solid #0ea5e9;">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0;">
             <div>
               <span style="font-size: 12px; font-weight: 700; color: #0ea5e9; text-transform: uppercase;">รหัสโซน 02</span>
-              <h4 style="font-family: 'Prompt', sans-serif; font-size: 17px; font-weight: 700; margin: 2px 0 0 0; color: #0f172a;">โซนโค้งขี้เหล็ก</h4>
+              <h4 style="font-family: 'Prompt', sans-serif; font-size: 17px; font-weight: 700; margin: 2px 0; color: #0f172a;">โซนโค้งขี้เหล็ก</h4>
             </div>
             <span style="background: #ecfdf5; color: #059669; font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: 9999px;">
               จ่ายน้ำปกติ ✅
