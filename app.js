@@ -187,9 +187,25 @@ function initNavigation() {
   const requestedTab = urlParams.get('tab') || window.location.hash.replace('#', '');
   if (requestedTab) {
     const cleanTab = requestedTab.startsWith('tab-') ? requestedTab : `tab-${requestedTab}`;
-    const targetBtn = document.querySelector(`.nav-item[data-tab="${cleanTab}"]`);
-    if (targetBtn) {
-      targetBtn.click();
+    const targetPane = document.getElementById(cleanTab);
+    if (targetPane) {
+      tabPanes.forEach(p => p.classList.remove('active'));
+      targetPane.classList.add('active');
+
+      if (titles[cleanTab]) {
+        if (pageTitle) pageTitle.textContent = titles[cleanTab].title;
+        if (pageSubtitle) pageSubtitle.textContent = titles[cleanTab].sub;
+      }
+
+      if (cleanTab === 'tab-receipts') renderReceipt();
+      if (cleanTab === 'tab-vouchers') renderVouchers();
+      if (cleanTab === 'tab-financials') {
+        renderFinancialReport();
+        renderFinancialReportCharts();
+      }
+      if (cleanTab === 'tab-arrears') renderArrearsTable();
+      if (cleanTab === 'tab-customers') renderCustomersTable();
+      if (cleanTab === 'tab-readings') renderReadingsTable();
     }
   }
 }

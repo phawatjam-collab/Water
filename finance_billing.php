@@ -217,23 +217,6 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
         </div>
       </div>
 
-      <!-- Navigation Tabs Layer -->
-      <div class="finance-subnav" style="margin-top: 14px; margin-bottom: 0; padding: 0; border: none; box-shadow: none; background: transparent; display: flex; gap: 8px; flex-wrap: wrap;">
-        <button class="fin-tab-btn active" data-target="pane-collection">
-          <span>✅</span> รับชำระค่าน้ำ
-          <span class="fin-tab-badge" id="tab-badge-unpaid">-</span>
-        </button>
-        <button class="fin-tab-btn" data-target="pane-receipt">
-          <span>🧾</span> ออกใบเสร็จรับเงิน
-        </button>
-        <button class="fin-tab-btn" data-target="pane-arrears">
-          <span>⚠️</span> ทะเบียนหนี้ค้าง
-          <span class="fin-tab-badge" id="tab-badge-debtors">-</span>
-        </button>
-        <button class="fin-tab-btn" data-target="pane-vouchers">
-          <span>📜</span> รายจ่าย & ค่าตอบแทน 10%
-        </button>
-      </div>
     </div>
 
     <!-- ========================================================= -->

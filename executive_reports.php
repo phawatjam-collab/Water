@@ -95,21 +95,7 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
       </div>
     </div>
 
-    <!-- Executive Sub-navigation Tabs -->
-    <div class="exec-nav no-print" style="margin-bottom: 20px;">
-      <button class="exec-tab-btn active" data-target="pane-overview">
-        <span>📊</span> แดชบอร์ด & วิเคราะห์ NRW
-      </button>
-      <button class="exec-tab-btn" data-target="pane-report">
-        <span>📋</span> รายงานสรุปรายรับ-รายจ่าย
-      </button>
-      <button class="exec-tab-btn" data-target="pane-members">
-        <span>👥</span> ทะเบียนผู้ใช้น้ำชุมชน
-      </button>
-      <button class="exec-tab-btn" data-target="pane-policy">
-        <span>⚙️</span> ตั้งค่านโยบาย & อัตราค่าน้ำ
-      </button>
-    </div>
+
 
     <!-- ========================================================= -->
     <!-- PANE 1: แดชบอร์ดผู้บริหาร & วิเคราะห์ NRW -->
@@ -337,31 +323,38 @@ $currentCycleCode = $cycles[0]['cycle_code'] ?? '8-2567';
     let waterChart = null;
     let finChart = null;
 
-    document.addEventListener('DOMContentLoaded', async () => {
-      // Sub-tab switching
-      document.querySelectorAll('.exec-tab-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          document.querySelectorAll('.exec-tab-btn').forEach(b => b.classList.remove('active'));
-          document.querySelectorAll('.exec-pane').forEach(p => p.classList.remove('active'));
-          btn.classList.add('active');
-          const targetId = btn.dataset.target;
-          document.getElementById(targetId)?.classList.add('active');
-        });
+    function switchExecPane(hash) {
+      if (!hash) hash = 'pane-overview';
+      if (!hash.startsWith('pane-')) hash = 'pane-' + hash;
+      const panes = document.querySelectorAll('.exec-pane');
+      let found = false;
+      panes.forEach(p => {
+        if (p.id === hash) {
+          p.classList.add('active');
+          found = true;
+        } else {
+          p.classList.remove('active');
+        }
       });
+      if (!found && panes.length > 0) {
+        panes[0].classList.add('active');
+      }
+    }
 
+    document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('exec-cycle-select')?.addEventListener('change', async (e) => {
         currentCycle = e.target.value;
         document.getElementById('exec-cycle-display').textContent = currentCycle;
         await reloadExecutiveData();
       });
 
-      // Auto-switch tab based on URL hash (e.g. #pane-members)
-      const hash = window.location.hash.replace('#', '');
-      if (hash) {
-        const targetBtn = document.querySelector(`.exec-tab-btn[data-target="${hash}"]`) || 
-                          document.querySelector(`.exec-tab-btn[data-target="pane-${hash}"]`);
-        if (targetBtn) targetBtn.click();
-      }
+      // Switch pane based on hash on load
+      switchExecPane(window.location.hash.replace('#', ''));
+      
+      // Listen for hash changes from sidebar links
+      window.addEventListener('hashchange', () => {
+        switchExecPane(window.location.hash.replace('#', ''));
+      });
 
       await reloadExecutiveData();
     });

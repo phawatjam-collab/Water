@@ -56,33 +56,7 @@ $currentUser = requireRole(['admin']);
         </div>
       </div>
 
-      <!-- Dashboard Internal Tab Bar for Admin Tools -->
-      <div class="dashboard-tabs-bar no-print">
-        <button class="nav-item active" data-tab="tab-readings">
-          <span class="icon">📝</span> จดมิเตอร์น้ำประปา
-        </button>
-        <button class="nav-item" data-tab="tab-receipts">
-          <span class="icon">🧾</span> ออกใบเสร็จรับเงิน
-        </button>
-        <button class="nav-item" data-tab="tab-vouchers">
-          <span class="icon">📜</span> ค่าตอบแทนคนจด (10%)
-        </button>
-        <button class="nav-item" data-tab="tab-financials">
-          <span class="icon">📊</span> งบการเงิน & สรุปผล
-        </button>
-        <button class="nav-item" data-tab="tab-arrears">
-          <span class="icon">⚠️</span> ติดตามยอดค้างชำระ
-        </button>
-        <button class="nav-item" data-tab="tab-customers">
-          <span class="icon">👥</span> ทะเบียนผู้ใช้น้ำ
-        </button>
-        <button class="nav-item" data-tab="tab-settings">
-          <span class="icon">⚙️</span> ตั้งค่าอัตราค่าน้ำ
-        </button>
-        <button class="nav-item" data-tab="tab-tickets">
-          <span class="icon">🔧</span> แจ้งซ่อม/คำร้อง
-        </button>
-      </div>
+
 
       <!-- ======================================================= -->
       <!-- TAB 1: จดมิเตอร์ประจำเดือน -->
