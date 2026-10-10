@@ -318,10 +318,12 @@ function renderAppTopBar($title, $subtitle) {
         <button type="button" class="btn-sidebar-toggle no-print" onclick="toggleAppSidebar(true)" aria-label="เปิดเมนู" title="เปิดเมนู">
           <span>☰</span>
         </button>
+        <?php if (!empty($title)): ?>
         <div class="top-bar-title">
           <h1><?php echo htmlspecialchars($title); ?></h1>
           <span><?php echo htmlspecialchars($subtitle); ?></span>
         </div>
+        <?php endif; ?>
       </div>
       <div class="top-bar-actions">
         <?php if ($currentUser): ?>

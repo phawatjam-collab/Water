@@ -666,7 +666,7 @@ try {
     <main class="main-content" style="min-height: 100vh; background: #f8fafc;">
       
       <!-- Top Navigation Bar with Authentication Status -->
-      <?php renderAppTopBar('ระบบบริการและบริหารจัดการน้ำประปา', 'การประปาหมู่บ้านวังยาง หมู่ที่ 3'); ?>
+      <?php renderAppTopBar('', ''); ?>
 
       <?php if ($currentUser && ($currentUser['role'] ?? '') === 'member'): ?>
       <!-- Personalized Member Welcome Banner -->
@@ -691,9 +691,7 @@ try {
       <section class="portal-hero" id="about-section" style="padding: 38px 28px 42px 28px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0284c7 100%); color: #fff; border-radius: 16px; margin-bottom: 24px; box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.2); border: 1px solid rgba(255, 255, 255, 0.1);">
         <div class="hero-badge" style="background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 9999px; padding: 4px 14px; font-size: 13px; font-weight: 600;">🏛️ กองทุนน้ำประปาหมู่บ้านวังยาง หมู่ที่ 3</div>
         <h1 style="font-size: 28px; margin: 12px 0 8px 0; font-family: 'Prompt', sans-serif; font-weight: 700; letter-spacing: -0.3px;">ระบบบริการและบริหารจัดการน้ำประปาชุมชน</h1>
-        <p style="font-size: 15px; margin: 0 auto; max-width: 650px; opacity: 0.9; line-height: 1.5;">
-          ตรวจสอบยอดค่าน้ำ ชำระเงินผ่าน PromptPay และติดตามข้อมูลบริหารงานประปาหมู่บ้านวังยางแบบครบวงจร
-        </p>
+
         <!-- Hero Water Bill Search Widget -->
         <div class="hero-search-box">
           <div class="hero-search-bar">
@@ -787,24 +785,7 @@ try {
       </div>
     </div>
 
-    <!-- Community Operating Rules & Technical Guidance -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; margin-bottom: 32px;">
-      
-      <!-- Calendar & Collection Workflow -->
-      <div style="background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 22px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-        <h4 style="font-family: 'Prompt', sans-serif; font-size: 16px; font-weight: 700; margin: 0; color: #0f172a; display: flex; align-items: center; gap: 8px;">
-          <span>📅</span> ปฏิทินและขั้นตอนบริการผู้ใช้น้ำ
-        </h4>
-      </div>
 
-      <!-- Technical Warning: Pressure Collision / Dual Systems -->
-      <div style="background: linear-gradient(180deg, #fffaf5 0%, #ffffff 100%); border: 1px solid #fed7aa; border-radius: 12px; padding: 22px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-        <h4 style="font-family: 'Prompt', sans-serif; font-size: 15.5px; font-weight: 700; margin: 0; color: #9a3412; display: flex; align-items: center; gap: 8px;">
-          <span>⚠️</span> ระวังแรงดันน้ำตีกลับสำหรับบ้านที่มีบ่อบาดาลส่วนตัว
-        </h4>
-      </div>
-
-    </div>
 
     <!-- Contact & Committee Office Information -->
     <div style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 12px; padding: 20px 24px; margin-bottom: 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
