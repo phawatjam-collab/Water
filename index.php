@@ -707,13 +707,7 @@ try {
           </div>
         </div>
 
-        <?php if (!$currentUser): ?>
-        <div style="margin-top: 22px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
-          <button type="button" onclick="openLoginModal()" class="btn" style="background: rgba(255,255,255,0.18); color: #fff; border: 1px solid rgba(255,255,255,0.4); font-weight: 600; padding: 10px 20px; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 14px;">
-            <span>🔐</span> เข้าสู่ระบบ
-          </button>
-        </div>
-        <?php endif; ?>
+
       </section>
 
       <!-- Main Portal Container -->
@@ -767,37 +761,27 @@ try {
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px;">
         <!-- Zone 1: โซนทุ่งสามัคคี -->
         <div style="background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-left: 4px solid #0284c7;">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
             <div>
               <span style="font-size: 12px; font-weight: 700; color: #0284c7; text-transform: uppercase;">รหัสโซน 01</span>
-              <h4 style="font-family: 'Prompt', sans-serif; font-size: 17px; font-weight: 700; margin: 2px 0; color: #0f172a;">โซนทุ่งสามัคคี</h4>
+              <h4 style="font-family: 'Prompt', sans-serif; font-size: 17px; font-weight: 700; margin: 2px 0 0 0; color: #0f172a;">โซนทุ่งสามัคคี</h4>
             </div>
             <span style="background: #ecfdf5; color: #059669; font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: 9999px;">
               จ่ายน้ำปกติ ✅
             </span>
-          </div>
-          <div style="background: #f8fafc; border-radius: 8px; padding: 10px 12px; font-size: 13px; color: #334155; display: flex; flex-direction: column; gap: 4px;">
-            <div>👤 <strong>ช่างประจำโซน:</strong> นายสมหมาย มีสุข (โทร. 081-987-6543)</div>
-            <div>🏠 <strong>ผู้ใช้น้ำโดยประมาณ:</strong> ~290 ครัวเรือน</div>
-            <div>⏱️ <strong>รอบเดินจด:</strong> วันที่ 25 - 26 ของเดือน</div>
           </div>
         </div>
 
         <!-- Zone 2: โซนโค้งขี้เหล็ก -->
         <div style="background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-left: 4px solid #0ea5e9;">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
             <div>
               <span style="font-size: 12px; font-weight: 700; color: #0ea5e9; text-transform: uppercase;">รหัสโซน 02</span>
-              <h4 style="font-family: 'Prompt', sans-serif; font-size: 17px; font-weight: 700; margin: 2px 0; color: #0f172a;">โซนโค้งขี้เหล็ก</h4>
+              <h4 style="font-family: 'Prompt', sans-serif; font-size: 17px; font-weight: 700; margin: 2px 0 0 0; color: #0f172a;">โซนโค้งขี้เหล็ก</h4>
             </div>
             <span style="background: #ecfdf5; color: #059669; font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: 9999px;">
               จ่ายน้ำปกติ ✅
             </span>
-          </div>
-          <div style="background: #f8fafc; border-radius: 8px; padding: 10px 12px; font-size: 13px; color: #334155; display: flex; flex-direction: column; gap: 4px;">
-            <div>👤 <strong>ช่างประจำโซน:</strong> นายคำดี ช่างประปา (โทร. 082-345-6789)</div>
-            <div>🏠 <strong>ผู้ใช้น้ำโดยประมาณ:</strong> ~290 ครัวเรือน</div>
-            <div>⏱️ <strong>รอบเดินจด:</strong> วันที่ 27 - 28 ของเดือน</div>
           </div>
         </div>
       </div>
@@ -808,48 +792,16 @@ try {
       
       <!-- Calendar & Collection Workflow -->
       <div style="background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 22px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-        <h4 style="font-family: 'Prompt', sans-serif; font-size: 16px; font-weight: 700; margin: 0 0 14px 0; color: #0f172a; display: flex; align-items: center; gap: 8px;">
+        <h4 style="font-family: 'Prompt', sans-serif; font-size: 16px; font-weight: 700; margin: 0; color: #0f172a; display: flex; align-items: center; gap: 8px;">
           <span>📅</span> ปฏิทินและขั้นตอนบริการผู้ใช้น้ำ
         </h4>
-        <div style="display: flex; flex-direction: column; gap: 12px; font-size: 13.5px;">
-          <div style="display: flex; gap: 10px;">
-            <div style="width: 28px; height: 28px; border-radius: 50%; background: #e0f2fe; color: #0284c7; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; font-size: 12px;">1</div>
-            <div>
-              <strong>รอบเดินจดมิเตอร์ (วันที่ 25 - 28):</strong>
-              <div style="color: #64748b; font-size: 13px; margin-top: 2px;">เจ้าหน้าที่ลงพื้นที่เดินจดตามเส้นทางจริง พร้อมสแกน QR หน้าบ้าน</div>
-            </div>
-          </div>
-          <div style="display: flex; gap: 10px;">
-            <div style="width: 28px; height: 28px; border-radius: 50%; background: #e0f2fe; color: #0284c7; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; font-size: 12px;">2</div>
-            <div>
-              <strong>รอบชำระค่าน้ำ (วันที่ 28 - วันที่ 5):</strong>
-              <div style="color: #64748b; font-size: 13px; margin-top: 2px;">สแกนตรวจสอบค่าน้ำผ่านเว็บ ชำระผ่าน QR ทันที หรือชำระที่เหรัญญิก</div>
-            </div>
-          </div>
-          <div style="display: flex; gap: 10px;">
-            <div style="width: 28px; height: 28px; border-radius: 50%; background: #fee2e2; color: #dc2626; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; font-size: 12px;">3</div>
-            <div>
-              <strong>ระเบียบยอดค้างชำระ (มติประชาคม):</strong>
-              <div style="color: #64748b; font-size: 13px; margin-top: 2px;">
-                ค้าง 2 งวด ออกหนังสือเตือน (กำหนดชำระ 7 วัน) | ค้างเกิน 3 งวด ระงับการจ่ายน้ำ/ถอดมิเตอร์ (ค่าขอต่อระบบใหม่ 2,500 บาท)
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       <!-- Technical Warning: Pressure Collision / Dual Systems -->
       <div style="background: linear-gradient(180deg, #fffaf5 0%, #ffffff 100%); border: 1px solid #fed7aa; border-radius: 12px; padding: 22px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-        <h4 style="font-family: 'Prompt', sans-serif; font-size: 15.5px; font-weight: 700; margin: 0 0 12px 0; color: #9a3412; display: flex; align-items: center; gap: 8px;">
+        <h4 style="font-family: 'Prompt', sans-serif; font-size: 15.5px; font-weight: 700; margin: 0; color: #9a3412; display: flex; align-items: center; gap: 8px;">
           <span>⚠️</span> ระวังแรงดันน้ำตีกลับสำหรับบ้านที่มีบ่อบาดาลส่วนตัว
         </h4>
-        <div style="background: #fff; border: 1px solid #fdba74; border-radius: 8px; padding: 12px 14px; font-size: 13px; color: #9a3412; display: flex; gap: 10px; align-items: flex-start;">
-          <span style="font-size: 18px; line-height: 1;">📞</span>
-          <div>
-            <strong>พบปัญหาน้ำไม่ไหล หรือ มิเตอร์หมุนถอยหลัง?</strong><br>
-            แจ้งช่างประจำโซนหรือผู้ใหญ่บ้านได้ตลอด 24 ชั่วโมง
-          </div>
-        </div>
       </div>
 
     </div>
