@@ -26,15 +26,8 @@ function renderAppSidebar($activeRoute = 'home') {
                 'items' => [
                     [
                         'id' => 'home',
-                        'title' => 'หน้าแรก',
+                        'title' => 'หน้าแรก / ตรวจสอบค่าน้ำ',
                         'icon' => '🏠',
-                        'url' => 'index.php',
-                        'is_sub' => false
-                    ],
-                    [
-                        'id' => 'citizen',
-                        'title' => 'ตรวจสอบค่าน้ำออนไลน์',
-                        'icon' => '🔍',
                         'url' => 'index.php',
                         'is_sub' => false
                     ],
@@ -102,13 +95,7 @@ function renderAppSidebar($activeRoute = 'home') {
                         'url' => 'index.php',
                         'is_sub' => false
                     ],
-                    [
-                        'id' => 'citizen',
-                        'title' => 'ตรวจสอบและบริการประชาชน',
-                        'icon' => '👥',
-                        'url' => 'index.php',
-                        'is_sub' => false
-                    ]
+                    
                 ]
             ],
             [
@@ -250,13 +237,7 @@ function renderAppSidebar($activeRoute = 'home') {
                         'url' => 'finance_billing.php#pane-vouchers',
                         'is_sub' => true
                     ],
-                    [
-                        'id' => 'citizen',
-                        'title' => 'ตรวจสอบและบริการประชาชน',
-                        'icon' => '👥',
-                        'url' => 'index.php',
-                        'is_sub' => false
-                    ],
+                    
                     [
                         'id' => 'qr_labels',
                         'title' => 'พิมพ์ QR สติกเกอร์มิเตอร์',
@@ -576,3 +557,4 @@ function renderAppTopBar($title, $subtitle) {
     </script>
     <?php
 }
+

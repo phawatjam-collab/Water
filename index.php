@@ -868,6 +868,76 @@ try {
 
 
 
+    <!-- Additional Public Citizen Services (Service Grid) -->
+    <div style="margin-top: 40px;" id="citizen-services">
+      <h3 style="font-family: 'Prompt', sans-serif; font-size: 20px; color: #0f172a; margin-bottom: 4px;">
+        🛠️ บริการประชาชนและคำขอด้านน้ำประปา
+      </h3>
+      <p style="color: #64748b; font-size: 13.5px; margin-bottom: 16px;">ยื่นคำขอหรือแจ้งเรื่องร้องเรียนออนไลน์ ส่งตรงถึงคณะกรรมการบริหารการประปาหมู่บ้าน</p>
+
+      <div class="service-grid">
+        <!-- Service 1: แจ้งท่อแตกรั่ว -->
+        <div class="card" style="padding: 20px;">
+          <div style="font-size: 28px; margin-bottom: 8px;">🚨</div>
+          <h4 style="font-family: 'Prompt', sans-serif; font-size: 16px; margin-bottom: 6px;">แจ้งเหตุท่อแตกรั่ว / น้ำไม่ไหล</h4>
+          <p style="font-size: 13px; color: #64748b; line-height: 1.5; margin-bottom: 14px;">พบเห็นน้ำรั่วไหลริมทาง ท่อเมนแตก หรือน้ำประปาไม่ไหลในซอย แจ้งเจ้าหน้าที่เข้าตรวจสอบด่วน</p>
+          <button class="btn btn-outline" style="width: 100%;" onclick="openServiceModal('แจ้งท่อแตกรั่ว / น้ำไม่ไหล')">📝 กรอกแบบฟอร์มแจ้งเหตุ</button>
+        </div>
+
+        <!-- Service 2: ขอติดตั้งมิเตอร์ใหม่ -->
+        <div class="card" style="padding: 20px;">
+          <div style="font-size: 28px; margin-bottom: 8px;">🚰</div>
+          <h4 style="font-family: 'Prompt', sans-serif; font-size: 16px; margin-bottom: 6px;">ขอติดตั้งมาตรวัดน้ำรายใหม่</h4>
+          <p style="font-size: 13px; color: #64748b; line-height: 1.5; margin-bottom: 14px;">สร้างบ้านใหม่หรือย้ายเข้า ต้องการขอต่อท่อเมนและติดตั้งมิเตอร์น้ำ ค่าธรรมเนียมตามมติชุมชน 1,500 บาท</p>
+          <button class="btn btn-outline" style="width: 100%;" onclick="openServiceModal('ยื่นขอติดตั้งมาตรวัดน้ำรายใหม่')">📋 ยื่นคำร้องขอติดตั้ง</button>
+        </div>
+
+        <!-- Service 3: ตรวจสอบมาตรวัดชำรุด -->
+        <div class="card" style="padding: 20px;">
+          <div style="font-size: 28px; margin-bottom: 8px;">⚙️</div>
+          <h4 style="font-family: 'Prompt', sans-serif; font-size: 16px; margin-bottom: 6px;">แจ้งมาตรวัดน้ำชำรุด / ผิดปกติ</h4>
+          <p style="font-size: 13px; color: #64748b; line-height: 1.5; margin-bottom: 14px;">ตัวเลขไม่เดิน หน้าปัดฝ้า มีน้ำซึมออกจากตัวมิเตอร์ หรือค่าน้ำพุ่งสูงผิดปกติ แจ้งให้ช่างมาทดสอบ</p>
+          <button class="btn btn-outline" style="width: 100%;" onclick="openServiceModal('แจ้งมาตรวัดน้ำชำรุด')">🔧 แจ้งตรวจเช็กมิเตอร์</button>
+        </div>
+      </div>
+
+      <!-- Ticket Tracker Section -->
+      <div class="card" style="margin-top: 24px; padding: 24px; border-left: 4px solid #0284c7;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+          <div>
+            <h4 style="font-family: 'Prompt', sans-serif; font-size: 16px; color: #0f172a; margin: 0 0 4px 0;">🔍 ติดตามสถานะคำร้องแจ้งซ่อม</h4>
+            <span style="font-size: 13px; color: #64748b;">กรอกเบอร์โทรศัพท์ที่ใช้แจ้ง หรือรหัสคำร้อง (เช่น TK-2567-0801) เพื่อตรวจสอบความคืบหน้า</span>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <input type="text" id="track-ticket-input" inputmode="search" class="form-input" placeholder="พิมพ์เบอร์โทร หรือรหัส TK-..." style="min-width: 240px; flex: 1;">
+            <button type="button" class="btn btn-primary" onclick="trackServiceTickets()">ค้นหาคำร้อง</button>
+          </div>
+        </div>
+        <div id="ticket-track-results" style="display: none;">
+          <div class="table-responsive">
+            <table class="table" style="font-size: 13.5px;">
+              <thead>
+                <tr>
+                  <th width="130">รหัสคำร้อง</th>
+                  <th>วันที่แจ้ง</th>
+                  <th>ผู้แจ้ง</th>
+                  <th>ประเภทคำร้อง</th>
+                  <th>สถานที่ / จุดสังเกต</th>
+                  <th width="80" class="text-center">รูปถ่าย</th>
+                  <th width="120" class="text-center">สถานะ</th>
+                  <th>บันทึกจากเจ้าหน้าที่</th>
+                </tr>
+              </thead>
+              <tbody id="ticket-track-tbody">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+
     <!-- Contact & Committee Office Information -->
     <div style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 12px; padding: 20px 24px; margin-bottom: 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
       <div>
@@ -1556,3 +1626,4 @@ try {
   
 </body>
 </html>
+
