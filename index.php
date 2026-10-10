@@ -1018,9 +1018,9 @@ try {
       if (!phone) return '-';
       const clean = String(phone).replace(/\D/g, '');
       if (clean.length === 10) {
-        return clean.replace(/(\d{3})(\d{3})(\d{4})/, '--');
+        return clean.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
       } else if (clean.length === 9) {
-        return clean.replace(/(\d{2})(\d{3})(\d{4})/, '--');
+        return clean.replace(/(\d{2})(\d{3})(\d{4})/, '$1-$2-$3');
       }
       return phone;
     }
@@ -1042,8 +1042,8 @@ try {
       const escapedKw = escapeHtml(kw).trim();
       if (!escapedKw) return escapedText;
       try {
-        const regex = new RegExp(`(${escapedKw.replace(/[.*+?^${}()|[\]\]/g, '\$&')})`, 'gi');
-        return escapedText.replace(regex, '<mark class="search-highlight"></mark>');
+        const regex = new RegExp(`(${escapedKw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+        return escapedText.replace(regex, '<mark class="search-highlight">$1</mark>');
       } catch (e) {
         return escapedText;
       }
@@ -1126,7 +1126,7 @@ try {
         const r = item.reading;
         const isPaid = (r.payment_status === 'PAID');
         const total = parseFloat(r.grand_total || 0).toLocaleString('th-TH', { minimumFractionDigits: 2 });
-        const targetUrl = `portal_citizen.php?phone=${encodeURIComponent(r.phone || '')}&customer=${encodeURIComponent(r.customer_code)}`;
+        const targetUrl = `index.php?phone=${encodeURIComponent(r.phone || '')}&customer=${encodeURIComponent(r.customer_code)}`;
         return `
           <a href="${targetUrl}" class="search-dropdown-item" data-code="${escapeHtml(r.customer_code)}" data-phone="${escapeHtml(r.phone || '')}" data-index="${idx}">
             <div class="item-main">
