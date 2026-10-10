@@ -407,9 +407,7 @@ function renderAppTopBar($title, $subtitle) {
             </button>
 
             <div style="text-align: center; margin-top: 14px; padding-top: 12px; border-top: 1px dashed #e2e8f0; display: flex; flex-direction: column; gap: 8px;">
-              <a href="register.php?tab=member" style="font-size: 13px; color: #0284c7; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
-                <span>📝</span> ยังไม่มีบัญชีผู้ใช้น้ำ? ลงทะเบียนสมาชิกใหม่ที่นี่ &rarr;
-              </a>
+              <!-- Registration link removed as per request -->
               <a href="portal_citizen.php" style="font-size: 12.5px; color: #64748b; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
                 <span>🌐</span> ประชาชนทั่วไป ค้นหาค่าน้ำหรือแจ้งซ่อมโดยไม่ต้องล็อกอิน &rarr;
               </a>

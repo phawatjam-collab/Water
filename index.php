@@ -709,9 +709,6 @@ try {
 
         <?php if (!$currentUser): ?>
         <div style="margin-top: 22px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
-          <a href="register.php" class="btn" style="background: #38bdf8; color: #0f172a; font-weight: 700; padding: 10px 22px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 14px rgba(0,0,0,0.2); font-size: 14px;">
-            <span>📝</span> ลงทะเบียนสมาชิกผู้ใช้น้ำ / เจ้าหน้าที่
-          </a>
           <button type="button" onclick="openLoginModal()" class="btn" style="background: rgba(255,255,255,0.18); color: #fff; border: 1px solid rgba(255,255,255,0.4); font-weight: 600; padding: 10px 20px; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 14px;">
             <span>🔐</span> เข้าสู่ระบบ
           </button>
@@ -761,9 +758,6 @@ try {
           <h3 style="font-family: 'Prompt', sans-serif; font-size: 19px; font-weight: 700; margin: 0; color: #0f172a;">
             🗺️ โซนพื้นที่ให้บริการน้ำประปาชุมชน (2 โซนหลัก)
           </h3>
-          <p style="font-size: 13.5px; color: #64748b; margin: 2px 0 0 0;">
-            ระบบจ่ายน้ำแยกสายท่อเมนหลักเพื่อรักษาแรงดันน้ำให้สม่ำเสมอทั่วถึงทุกครัวเรือน
-          </p>
         </div>
         <span style="font-size: 12.5px; background: #e0f2fe; color: #0369a1; padding: 4px 10px; border-radius: 6px; font-weight: 600;">
           ครอบคลุมผู้ใช้น้ำประมาณ 580 หลังคาเรือน
@@ -773,7 +767,7 @@ try {
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px;">
         <!-- Zone 1: โซนทุ่งสามัคคี -->
         <div style="background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-left: 4px solid #0284c7;">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
             <div>
               <span style="font-size: 12px; font-weight: 700; color: #0284c7; text-transform: uppercase;">รหัสโซน 01</span>
               <h4 style="font-family: 'Prompt', sans-serif; font-size: 17px; font-weight: 700; margin: 2px 0; color: #0f172a;">โซนทุ่งสามัคคี</h4>
@@ -782,9 +776,6 @@ try {
               จ่ายน้ำปกติ ✅
             </span>
           </div>
-          <p style="font-size: 13.5px; color: #475569; margin: 0 0 12px 0; line-height: 1.5;">
-            ครอบคลุมคุ้มทุ่งสามัคคี ฝั่งทิศเหนือและโรงเรียนหมู่บ้าน แหล่งจ่ายน้ำจากหอถังสูงทุ่งสามัคคี
-          </p>
           <div style="background: #f8fafc; border-radius: 8px; padding: 10px 12px; font-size: 13px; color: #334155; display: flex; flex-direction: column; gap: 4px;">
             <div>👤 <strong>ช่างประจำโซน:</strong> นายสมหมาย มีสุข (โทร. 081-987-6543)</div>
             <div>🏠 <strong>ผู้ใช้น้ำโดยประมาณ:</strong> ~290 ครัวเรือน</div>
@@ -794,7 +785,7 @@ try {
 
         <!-- Zone 2: โซนโค้งขี้เหล็ก -->
         <div style="background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-left: 4px solid #0ea5e9;">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
             <div>
               <span style="font-size: 12px; font-weight: 700; color: #0ea5e9; text-transform: uppercase;">รหัสโซน 02</span>
               <h4 style="font-family: 'Prompt', sans-serif; font-size: 17px; font-weight: 700; margin: 2px 0; color: #0f172a;">โซนโค้งขี้เหล็ก</h4>
@@ -803,9 +794,6 @@ try {
               จ่ายน้ำปกติ ✅
             </span>
           </div>
-          <p style="font-size: 13.5px; color: #475569; margin: 0 0 12px 0; line-height: 1.5;">
-            ครอบคลุมคุ้มโค้งขี้เหล็ก ฝั่งทิศใต้และถนนเส้นทางเข้าหมู่บ้าน แหล่งจ่ายน้ำจากหอถังสูงโค้งขี้เหล็ก
-          </p>
           <div style="background: #f8fafc; border-radius: 8px; padding: 10px 12px; font-size: 13px; color: #334155; display: flex; flex-direction: column; gap: 4px;">
             <div>👤 <strong>ช่างประจำโซน:</strong> นายคำดี ช่างประปา (โทร. 082-345-6789)</div>
             <div>🏠 <strong>ผู้ใช้น้ำโดยประมาณ:</strong> ~290 ครัวเรือน</div>
@@ -851,15 +839,16 @@ try {
       </div>
 
       <!-- Technical Warning: Pressure Collision / Dual Systems -->
-      <div style="background: #fff; border: 1px solid #fed7aa; border-radius: 12px; padding: 22px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); background: linear-gradient(180deg, #fffaf5 0%, #ffffff 100%);">
-        <h4 style="font-family: 'Prompt', sans-serif; font-size: 16px; font-weight: 700; margin: 0 0 10px 0; color: #9a3412; display: flex; align-items: center; gap: 8px;">
-          <span>⚠️</span> ข้อแนะนำระบบน้ำ: การป้องกันแรงดันตีกลับ (มิเตอร์ติดลบ)
+      <div style="background: linear-gradient(180deg, #fffaf5 0%, #ffffff 100%); border: 1px solid #fed7aa; border-radius: 12px; padding: 22px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+        <h4 style="font-family: 'Prompt', sans-serif; font-size: 15.5px; font-weight: 700; margin: 0 0 12px 0; color: #9a3412; display: flex; align-items: center; gap: 8px;">
+          <span>⚠️</span> ระวังแรงดันน้ำตีกลับสำหรับบ้านที่มีบ่อบาดาลส่วนตัว
         </h4>
-        <p style="font-size: 13.5px; color: #7c2d12; line-height: 1.6; margin: 0 0 12px 0;">
-          สำหรับบ้านเรือนที่มี <strong>บ่อบาดาลส่วนตัว</strong> และต่อท่อร่วมกับระบบประปาหมู่บ้าน กรุณาตรวจสอบ <strong>เช็ควาล์ว (Check Valve)</strong> หรือปิดวาล์วแยกส่วนทุกครั้ง เพื่อป้องกันไม่ให้แรงดันจากปั๊มบาดาลดันน้ำย้อนเข้าสู่ท่อประปาหมู่บ้าน ซึ่งจะทำให้ตัวเลขมิเตอร์น้ำหมุนถอยหลังหรือเกิดค่าใช้น้ำผิดปกติ
-        </p>
-        <div style="background: #fff; border: 1px solid #fdba74; border-radius: 8px; padding: 10px 14px; font-size: 12.5px; color: #9a3412;">
-          📞 หากพบปัญหามิเตอร์หมุนถอยหลัง ท่อเมนแตกรั่ว หรือน้ำไม่ไหล กรุณาแจ้งช่างประจำโซนหรือผู้ใหญ่บ้านได้ทันทีตลอด 24 ชั่วโมง
+        <div style="background: #fff; border: 1px solid #fdba74; border-radius: 8px; padding: 12px 14px; font-size: 13px; color: #9a3412; display: flex; gap: 10px; align-items: flex-start;">
+          <span style="font-size: 18px; line-height: 1;">📞</span>
+          <div>
+            <strong>พบปัญหาน้ำไม่ไหล หรือ มิเตอร์หมุนถอยหลัง?</strong><br>
+            แจ้งช่างประจำโซนหรือผู้ใหญ่บ้านได้ตลอด 24 ชั่วโมง
+          </div>
         </div>
       </div>
 
