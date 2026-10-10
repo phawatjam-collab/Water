@@ -44,7 +44,7 @@ $VALID_USERS = [
         'meter_serial' => 'MTR-0002',
         'badge_color' => '#0284c7',
         'badge_bg' => '#e0f2fe',
-        'default_page' => 'portal_citizen.php?customer=WY-002'
+        'default_page' => 'index.php?customer=WY-002'
     ],
     'user' => [
         'username' => 'user',
@@ -156,7 +156,7 @@ function loginMember($identifier) {
                         'meter_serial' => $cust['meter_serial'],
                         'badge_color' => '#0284c7',
                         'badge_bg' => '#e0f2fe',
-                        'default_page' => 'portal_citizen.php?phone=' . urlencode($cust['phone']) . '&customer=' . urlencode($cust['customer_code'])
+                        'default_page' => 'index.php?phone=' . urlencode($cust['phone']) . '&customer=' . urlencode($cust['customer_code'])
                     ];
                     return true;
                 }
@@ -188,7 +188,7 @@ function loginMember($identifier) {
                     'meter_serial' => $cust['meter_serial'],
                     'badge_color' => '#0284c7',
                     'badge_bg' => '#e0f2fe',
-                    'default_page' => 'portal_citizen.php?phone=' . urlencode($cust['phone']) . '&customer=' . urlencode($cust['customer_code'])
+                    'default_page' => 'index.php?phone=' . urlencode($cust['phone']) . '&customer=' . urlencode($cust['customer_code'])
                 ];
                 return true;
             }
@@ -225,7 +225,7 @@ function loginMember($identifier) {
                     'phone' => $phone,
                     'badge_color' => '#0284c7',
                     'badge_bg' => '#e0f2fe',
-                    'default_page' => 'portal_citizen.php' . (!empty($phone) ? '?phone=' . urlencode($phone) : (!empty($custCode) ? '?customer=' . urlencode($custCode) : ''))
+                    'default_page' => 'index.php' . (!empty($phone) ? '?phone=' . urlencode($phone) : (!empty($custCode) ? '?customer=' . urlencode($custCode) : ''))
                 ];
                 return true;
             }
@@ -321,7 +321,7 @@ function loginStaff($username, $password = '') {
                             'phone' => $phone,
                             'badge_color' => '#0284c7',
                             'badge_bg' => '#e0f2fe',
-                            'default_page' => 'portal_citizen.php' . (!empty($custCode) ? '?customer=' . urlencode($custCode) : '')
+                            'default_page' => 'index.php' . (!empty($custCode) ? '?customer=' . urlencode($custCode) : '')
                         ];
                         return true;
                     }
@@ -471,7 +471,7 @@ function registerMember($data) {
             'success' => true,
             'message' => 'ลงทะเบียนสมาชิกผู้ใช้น้ำสำเร็จเรียบร้อย',
             'customer_code' => $customerCode,
-            'redirect' => 'portal_citizen.php?customer=' . urlencode($customerCode)
+            'redirect' => 'index.php?customer=' . urlencode($customerCode)
         ];
     } catch (Exception $e) {
         if ($db->inTransaction()) {
@@ -738,7 +738,7 @@ HTML;
 
     $navLinks = [
         ['url' => 'index.php', 'title' => '🏠 หน้าหลัก (Portal)', 'id' => 'portal'],
-        ['url' => 'portal_citizen.php', 'title' => '👥 ตรวจสอบค่าน้ำ (ประชาชน)', 'id' => 'citizen'],
+        ['url' => 'index.php', 'title' => '👥 ตรวจสอบค่าน้ำ (ประชาชน)', 'id' => 'citizen'],
         ['url' => 'meter_reading.php', 'title' => '🚶‍♂️ งานจดมิเตอร์ภาคสนาม', 'id' => 'field'],
         ['url' => 'finance_billing.php', 'title' => '💼 รับชำระเงิน & สรุปค่าใช้จ่าย', 'id' => 'finance'],
         ['url' => 'executive_reports.php', 'title' => '🏛️ นโยบาย & งบการเงิน', 'id' => 'executive']

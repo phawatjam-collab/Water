@@ -35,14 +35,14 @@ function renderAppSidebar($activeRoute = 'home') {
                         'id' => 'citizen',
                         'title' => 'ตรวจสอบค่าน้ำออนไลน์',
                         'icon' => '🔍',
-                        'url' => 'portal_citizen.php',
+                        'url' => 'index.php',
                         'is_sub' => false
                     ],
                     [
                         'id' => 'citizen_services',
                         'title' => 'แจ้งท่อแตก / ยื่นคำร้อง',
                         'icon' => '🔧',
-                        'url' => 'portal_citizen.php#citizen-services',
+                        'url' => 'index.php#citizen-services',
                         'is_sub' => true
                     ],
                     [
@@ -58,7 +58,7 @@ function renderAppSidebar($activeRoute = 'home') {
     } elseif ($currentRole === 'member') {
         // 2. ระดับสมาชิกผู้ใช้น้ำประจำหมู่บ้าน (Member Portal)
         $memberCustomerCode = $currentUser['customer_code'] ?? '';
-        $billUrl = 'portal_citizen.php' . (!empty($memberCustomerCode) ? '?customer=' . urlencode($memberCustomerCode) : '');
+        $billUrl = 'index.php' . (!empty($memberCustomerCode) ? '?customer=' . urlencode($memberCustomerCode) : '');
         $sections = [
             [
                 'title' => 'บริการสมาชิกผู้ใช้น้ำ (Member)',
@@ -82,7 +82,7 @@ function renderAppSidebar($activeRoute = 'home') {
                         'id' => 'citizen_services',
                         'title' => 'แจ้งท่อแตก / ติดตามคำร้อง',
                         'icon' => '🔧',
-                        'url' => 'portal_citizen.php#citizen-services',
+                        'url' => 'index.php#citizen-services',
                         'is_sub' => true
                     ]
                 ]
@@ -106,7 +106,7 @@ function renderAppSidebar($activeRoute = 'home') {
                         'id' => 'citizen',
                         'title' => 'ตรวจสอบและบริการประชาชน',
                         'icon' => '👥',
-                        'url' => 'portal_citizen.php',
+                        'url' => 'index.php',
                         'is_sub' => false
                     ]
                 ]
@@ -254,7 +254,7 @@ function renderAppSidebar($activeRoute = 'home') {
                         'id' => 'citizen',
                         'title' => 'ตรวจสอบและบริการประชาชน',
                         'icon' => '👥',
-                        'url' => 'portal_citizen.php',
+                        'url' => 'index.php',
                         'is_sub' => false
                     ],
                     [
@@ -410,7 +410,7 @@ function renderAppTopBar($title, $subtitle) {
 
             <div style="text-align: center; margin-top: 14px; padding-top: 12px; border-top: 1px dashed #e2e8f0; display: flex; flex-direction: column; gap: 8px;">
               <!-- Registration link removed as per request -->
-              <a href="portal_citizen.php" style="font-size: 12.5px; color: #64748b; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
+              <a href="index.php" style="font-size: 12.5px; color: #64748b; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
                 <span>🌐</span> ประชาชนทั่วไป ค้นหาค่าน้ำหรือแจ้งซ่อมโดยไม่ต้องล็อกอิน &rarr;
               </a>
             </div>
