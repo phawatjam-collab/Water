@@ -47,6 +47,24 @@ try {
         $rStmt->execute([(int)$cycle['id']]);
         $stats['total_units'] = (float)($rStmt->fetch()['units'] ?? 0);
     }
+    // Fetch zones for UI
+    $zonesList = [];
+    try {
+        $zoneStmt = $pdo->query("SELECT zone_id, zone_name FROM tb_zone ORDER BY zone_id");
+        $zonesList = $zoneStmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        $zoneStmt = $pdo->query("SELECT DISTINCT zone FROM customers WHERE zone IS NOT NULL AND zone != ''");
+        $idx = 1;
+        foreach ($zoneStmt as $row) {
+            $zonesList[] = [
+                'zone_id' => str_pad($idx++, 2, '0', STR_PAD_LEFT),
+                'zone_name' => $row['zone']
+            ];
+        }
+    }
+    if (count($zonesList) > 0) {
+        $stats['total_zones'] = count($zonesList);
+    }
 } catch (Exception $e) {
     // ใช้งานค่าเริ่มต้นหากยังไม่ได้เริ่ม MySQL
 }
@@ -824,49 +842,40 @@ try {
       </div>
     </div>
 
-    <!-- Community Water Supply Zones Section -->
+        <!-- Community Water Supply Zones Section -->
     <div style="margin-bottom: 32px;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;">
         <div>
           <h3 style="font-family: 'Prompt', sans-serif; font-size: 19px; font-weight: 700; margin: 0; color: #0f172a;">
-            🗺️ โซนพื้นที่ให้บริการน้ำประปาชุมชน (2 โซนหลัก)
+            🏢 โซนพื้นที่ให้บริการน้ำประปาชุมชน (<?php echo $stats['total_zones']; ?> โซนหลัก)
           </h3>
         </div>
         <span style="font-size: 12.5px; background: #e0f2fe; color: #0369a1; padding: 4px 10px; border-radius: 6px; font-weight: 600;">
-          ครอบคลุมผู้ใช้น้ำประมาณ 580 หลังคาเรือน
+          ครอบคลุมผู้ใช้น้ำประมาณ <?php echo $stats['total_customers']; ?> ครัวเรือน
         </span>
       </div>
 
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px;">
-        <!-- Zone 1: โซนทุ่งสามัคคี -->
-        <div style="background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-left: 4px solid #0284c7;">
+        <?php foreach ($zonesList as $i => $z): 
+          $colors = ['#0284c7', '#0ea5e9', '#3b82f6', '#6366f1'];
+          $color = $colors[$i % count($colors)];
+          $zId = htmlspecialchars($z['zone_id']);
+          $zName = htmlspecialchars($z['zone_name']);
+        ?>
+        <div style="background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-left: 4px solid <?php echo $color; ?>;">
           <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0;">
             <div>
-              <span style="font-size: 12px; font-weight: 700; color: #0284c7; text-transform: uppercase;">รหัสโซน 01</span>
-              <h4 style="font-family: 'Prompt', sans-serif; font-size: 17px; font-weight: 700; margin: 2px 0; color: #0f172a;">โซนทุ่งสามัคคี</h4>
+              <span style="font-size: 12px; font-weight: 700; color: <?php echo $color; ?>; text-transform: uppercase;">รหัสโซน <?php echo $zId; ?></span>
+              <h4 style="font-family: 'Prompt', sans-serif; font-size: 17px; font-weight: 700; margin: 2px 0; color: #0f172a;"><?php echo $zName; ?></h4>
             </div>
             <span style="background: #ecfdf5; color: #059669; font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: 9999px;">
               จ่ายน้ำปกติ ✅
             </span>
           </div>
         </div>
-
-        <!-- Zone 2: โซนโค้งขี้เหล็ก -->
-        <div style="background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-left: 4px solid #0ea5e9;">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0;">
-            <div>
-              <span style="font-size: 12px; font-weight: 700; color: #0ea5e9; text-transform: uppercase;">รหัสโซน 02</span>
-              <h4 style="font-family: 'Prompt', sans-serif; font-size: 17px; font-weight: 700; margin: 2px 0; color: #0f172a;">โซนโค้งขี้เหล็ก</h4>
-            </div>
-            <span style="background: #ecfdf5; color: #059669; font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: 9999px;">
-              จ่ายน้ำปกติ ✅
-            </span>
-          </div>
-        </div>
+        <?php endforeach; ?>
       </div>
     </div>
-
-
 
     <!-- Additional Public Citizen Services (Service Grid) -->
     <div style="margin-top: 40px;" id="citizen-services">
@@ -969,7 +978,7 @@ try {
   </div> <!-- /.app-layout -->
 
   <!-- Scripts: Citizen Search & Modals -->
-  <script>
+    <script>
     // Check URL parameters to auto-open login modal if needed
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('login_required') || urlParams.has('open_login') || urlParams.has('switch_role')) {
@@ -1117,7 +1126,7 @@ try {
         const r = item.reading;
         const isPaid = (r.payment_status === 'PAID');
         const total = parseFloat(r.grand_total || 0).toLocaleString('th-TH', { minimumFractionDigits: 2 });
-        const targetUrl = `index.php?phone=${encodeURIComponent(r.phone || '')}&customer=${encodeURIComponent(r.customer_code)}`;
+        const targetUrl = `portal_citizen.php?phone=${encodeURIComponent(r.phone || '')}&customer=${encodeURIComponent(r.customer_code)}`;
         return `
           <a href="${targetUrl}" class="search-dropdown-item" data-code="${escapeHtml(r.customer_code)}" data-phone="${escapeHtml(r.phone || '')}" data-index="${idx}">
             <div class="item-main">
@@ -1571,59 +1580,8 @@ try {
     });
   </script>
 
-  <div class="modal" id="service-request-modal">
-    <div class="modal-dialog" style="max-width: 520px;">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 id="service-modal-title" style="font-size: 16px; font-weight: 700;">แบบฟอร์มคำร้องออนไลน์</h3>
-          <button class="modal-close" onclick="closeModal('service-request-modal')">&times;</button>
-        </div>
-        <div class="modal-body">
-          <form id="service-req-form" onsubmit="handleServiceSubmit(event)">
-            <input type="hidden" id="form-service-topic">
-            <div class="form-group" style="margin-bottom: 12px;">
-              <label class="form-label">ชื่อ - นามสกุล ผู้แจ้ง:</label>
-              <input type="text" class="form-input" id="req-name" required placeholder="เช่น นายสมใจ รักถิ่น">
-            </div>
-            <div class="form-group" style="margin-bottom: 12px;">
-              <label class="form-label">เบอร์โทรศัพท์ที่ติดต่อได้:</label>
-              <input type="tel" class="form-input" id="req-phone" inputmode="tel" required placeholder="เช่น 081-xxxxxxx">
-            </div>
-            <div class="form-group" style="margin-bottom: 12px;">
-              <label class="form-label">คุ้ม / โซน:</label>
-              <select class="form-select" id="req-zone">
-                <option value="โซนทุ่งสามัคคี">โซนทุ่งสามัคคี</option>
-                <option value="โซนโค้งขี้เหล็ก">โซนโค้งขี้เหล็ก</option>
-              </select>
-            </div>
-            <div class="form-group" style="margin-bottom: 12px;">
-              <label class="form-label">สถานที่ / จุดสังเกต (บ้านเลขที่ / ซอย):</label>
-              <input type="text" class="form-input" id="req-location" required placeholder="เช่น หน้าบ้านเลขที่ 25 ซอยวัดเหนือ">
-            </div>
-            <div class="form-group" style="margin-bottom: 12px;">
-              <label class="form-label">รายละเอียดเพิ่มเติม:</label>
-              <textarea class="form-input" id="req-details" rows="3" placeholder="ระบุรายละเอียดอาการที่พบ..."></textarea>
-            </div>
-            <div class="form-group" style="margin-bottom: 14px;">
-              <label class="form-label">📸 แนบรูปถ่ายจุดเกิดเหตุ (ท่อแตก / น้ำรั่ว / หน้าปัดมิเตอร์):</label>
-              <input type="file" id="req-photo" class="form-input" accept="image/*" style="padding: 6px 10px;" onchange="previewTicketImage(this)">
-              <div id="photo-preview-container" style="display: none; margin-top: 8px; text-align: center; background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px dashed #cbd5e1;">
-                <img id="photo-preview-img" src="" alt="ตัวอย่างรูปภาพ" style="max-height: 140px; max-width: 100%; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.08);">
-                <button type="button" onclick="clearPhotoPreview()" style="display: block; margin: 6px auto 0; font-size: 12.5px; color: #dc2626; background: none; border: none; cursor: pointer; font-weight: 600;">❌ ลบรูปภาพ</button>
-              </div>
-              <span style="font-size: 12px; color: #64748b; display: block; margin-top: 4px;">* รองรับไฟล์ภาพ JPG, PNG, WEBP ขนาดไม่เกิน 5 MB</span>
-            </div>
-            <div class="form-actions text-right">
-              <button type="button" class="btn btn-outline" onclick="closeModal('service-request-modal')">ยกเลิก</button>
-              <button type="submit" class="btn btn-primary" id="btn-submit-ticket">🚀 ส่งคำร้องเข้าระบบ</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  
+
 </body>
 </html>
 
